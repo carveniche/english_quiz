@@ -16,8 +16,8 @@ export default function Whiteboard() {
   const sceneHeight = 500;
 
   const WhiteBoardFirst = () => {
-    let CANVAS_WIDTH = 600;
-    let CANVAS_HEIGHT = 300;
+    let CANVAS_WIDTH = 800;
+    let CANVAS_HEIGHT = 400;
 
     let scaleX = CANVAS_WIDTH / sceneWidth;
     let scaleY = CANVAS_HEIGHT / sceneHeight;
@@ -105,23 +105,23 @@ export default function Whiteboard() {
     let scaleX = CANVAS_WIDTH / sceneWidth;
     let scaleY = CANVAS_HEIGHT / sceneHeight;
 
-    useEffect(() => {
-      fitStageIntoParentContainer();
-    }, [currentLines]);
+    // useEffect(() => {
+    //   fitStageIntoParentContainer();
+    // }, [currentLines]);
 
-    function fitStageIntoParentContainer() {
-      var container = document.querySelector("#secondWhiteboard");
+    // function fitStageIntoParentContainer() {
+    //   var container = document.querySelector("#secondWhiteboard");
 
-      var containerWidth = container.offsetWidth;
+    //   var containerWidth = container.offsetWidth;
 
-      var containerHeight = container.offsetHeight;
+    //   var containerHeight = container.offsetHeight;
 
-      var scaleX = containerWidth / sceneWidth;
-      var scaleY = containerHeight / sceneHeight;
+    //   var scaleX = containerWidth / sceneWidth;
+    //   var scaleY = containerHeight / sceneHeight;
 
-      setScaleValueX(scaleX);
-      setScaleValueY(scaleY);
-    }
+    //   setScaleValueX(scaleX);
+    //   setScaleValueY(scaleY);
+    // }
 
     const handleMouseDown = (e) => {
       isDrawing.current = true;

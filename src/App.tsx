@@ -1,12 +1,22 @@
+import { useEffect } from "react";
 import "./index.css";
-import Whiteboard from "./components/Whiteboard/Whiteboard.jsx";
+
+import { getDeviceInfo } from "./utils/permission";
+
 function App() {
-  return (
-    <div>
-      <h3 className="text-3xl font-bold">Whiteboard</h3>
-      <Whiteboard />
-    </div>
-  );
+  useEffect(() => {
+    initialPermissionsTaking();
+  }, []);
+
+  const initialPermissionsTaking = async () => {
+    let permission = await getDeviceInfo().catch((err) => {
+      console.log("error", err);
+    });
+
+    console.log("permission", permission);
+  };
+
+  return <div></div>;
 }
 
 export default App;

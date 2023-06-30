@@ -11,16 +11,21 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/react-router": "^5.1.20",
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "is-plain-object": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",
     "react-router": "^6.12.1",
+    "react-router-dom": "^6.14.0",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "twilio-video": "^2.27.0"
   },
   "devDependencies": {
+    "@types/is-plain-object": "^2.0.4",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@types/react-redux": "^7.1.25",
