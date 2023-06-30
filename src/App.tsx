@@ -4,6 +4,7 @@ import "./index.css";
 import { getDeviceInfo } from "./utils/permission";
 
 function App() {
+  console.log("hello");
   useEffect(() => {
     initialPermissionsTaking();
   }, []);
