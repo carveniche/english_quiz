@@ -1,23 +1,21 @@
-import { useEffect } from "react";
 import "./index.css";
-
-import { getDeviceInfo } from "./utils/permission";
+import AppStateProvider, { useAppState } from "./state";
+import { VideoProvider } from "./components/VideoProvider";
+import JoiningScreen from "./components/JoiningScreen/JoiningScreen";
+import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
 
 function App() {
-  console.log("hello");
-  useEffect(() => {
-    initialPermissionsTaking();
-  }, []);
+  const { error, setError } = useAppState();
+  const connectionOptions = useConnectionOptions();
 
-  const initialPermissionsTaking = async () => {
-    let permission = await getDeviceInfo().catch((err) => {
-      console.log("error", err);
-    });
-
-    console.log("permission", permission);
-  };
-
-  return <div></div>;
+  return (
+    <div>
+      <h1>Hello</h1>
+      <VideoProvider options={connectionOptions} onError={setError}>
+        <JoiningScreen />
+      </VideoProvider>
+    </div>
+  );
 }
 
 export default App;

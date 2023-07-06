@@ -3,7 +3,7 @@ import { isMobile } from "../../../utils/devices";
 import Video, { ConnectOptions, LocalTrack, Room } from "twilio-video";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { VideoRoomMonitor } from "@twilio/video-room-monitor";
+// import { VideoRoomMonitor } from "@twilio/video-room-monitor";
 // @ts-ignore
 window.TwilioVideo = Video;
 export default function useRoom(
@@ -32,7 +32,7 @@ export default function useRoom(
         (newRoom) => {
           console.warn(newRoom, "newRoom");
           setRoom(newRoom);
-          VideoRoomMonitor.registerVideoRoom(newRoom);
+          // VideoRoomMonitor.registerVideoRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
 
           // This app can add up to 16 'participantDisconnected' listeners to the room object, which can trigger
