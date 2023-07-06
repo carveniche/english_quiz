@@ -4,15 +4,23 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
+    "noisecancellation:krisp": "npm install @twilio/krisp-audio-plugin && rimraf public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/*\" public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/weights/*\" public/noisecancellation/weights",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@reduxjs/toolkit": "^1.9.5",
+    "@twilio/video-processors": "^2.0.0",
+    "@twilio/video-room-monitor": "^1.0.1",
     "@types/react-router": "^5.1.20",
     "axios": "^1.4.0",
+    "clsx": "^1.2.1",
     "dotenv": "^16.3.1",
     "is-plain-object": "^5.0.0",
     "react": "^18.2.0",
@@ -26,6 +34,7 @@
   },
   "devDependencies": {
     "@types/is-plain-object": "^2.0.4",
+    "@types/node": "^20.3.3",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@types/react-redux": "^7.1.25",
