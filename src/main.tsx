@@ -6,12 +6,20 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import AppStateProvider from "../src/state";
 
+import { CssBaseline } from "@material-ui/core";
+
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import theme from "./theme.ts";
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppStateProvider>
-        <App />
-      </AppStateProvider>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppStateProvider>
+          <App />
+        </AppStateProvider>
+      </MuiThemeProvider>
     </Provider>
   </React.StrictMode>
 );

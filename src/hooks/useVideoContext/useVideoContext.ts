@@ -5,7 +5,6 @@ import { VideoContext } from "../../components/VideoProvider";
 export default function useVideoContext() {
   const context = useContext(VideoContext);
 
-  console.log("context", context);
   if (!context) {
     throw new Error("useVideoContext must be used within a VideoProvider");
   }

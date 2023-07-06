@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import MediaErrorSnackbar from "./MediaErrorSnackbar/MediaErrorSnackbar";
 
-import { useAppState } from "../../state";
-
-import { useParams } from "react-router-dom";
-
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import DeviceSelectionScreen from "./DeviceSelectionScreen/DeviceSelectionScreen";
+import IntroContainer from "../IntroContainer/IntroContainer";
 
-export default function JoiningScreen() {
+export default function PreJoinScreen() {
   //   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
 
@@ -26,9 +24,9 @@ export default function JoiningScreen() {
   }, [getAudioAndVideoTracks, mediaError]);
 
   return (
-    <div>
+    <IntroContainer>
       <MediaErrorSnackbar error={mediaError} />
-      <div>Hello, this is joining Screen</div>
-    </div>
+      <DeviceSelectionScreen name={"Vipul"} />
+    </IntroContainer>
   );
 }
