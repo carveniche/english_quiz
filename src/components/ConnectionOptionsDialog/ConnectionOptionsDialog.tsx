@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import {
   Button,
   Dialog,
@@ -16,9 +16,35 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { inputLabels, Settings } from "../../state/settings/settingsReducer";
-import { useAppState } from "../../state";
+import { inputLabels } from "../../state/settings/settingsReducer";
 import useRoomState from "../../hooks/useRoomState/useRoomState";
+
+import { Track, VideoBandwidthProfileOptions } from "twilio-video";
+
+export interface Settings {
+  trackSwitchOffMode: VideoBandwidthProfileOptions["trackSwitchOffMode"];
+  dominantSpeakerPriority?: Track.Priority;
+  bandwidthProfileMode: VideoBandwidthProfileOptions["mode"];
+  maxAudioBitrate: string;
+  contentPreferencesMode?: "auto" | "manual";
+  clientTrackSwitchOffControl?: "auto" | "manual";
+}
+
+type SettingsKeys = keyof Settings;
+
+export interface SettingsAction {
+  name: SettingsKeys;
+  value: string;
+}
+
+export const initialSettings: Settings = {
+  trackSwitchOffMode: undefined,
+  dominantSpeakerPriority: "standard",
+  bandwidthProfileMode: "collaboration",
+  maxAudioBitrate: "16000",
+  contentPreferencesMode: "auto",
+  clientTrackSwitchOffControl: "auto",
+};
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -62,25 +88,40 @@ export default function ConnectionOptionsDialog({
   onClose: () => void;
 }) {
   const classes = useStyles();
-  const { settings, dispatchSetting } = useAppState();
+  // const { settings, dispatchSetting } = useAppState();
+
+  const settings = initialSettings; // Neet to create separate redux store to get this values and store these values
+
   const roomState = useRoomState();
   const isDisabled = roomState !== "disconnected";
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
-      dispatchSetting({
-        name: e.target.name as keyof Settings,
-        value: e.target.value as string,
-      });
+    () => {
+      // Function logic here
     },
-    [dispatchSetting]
+    [
+      /* dependencies */
+    ]
+    // (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
+    //   dispatchSetting({
+    //     name: e.target.name as keyof Settings,
+    //     value: e.target.value as string,
+    //   });
+    // },
+    // [dispatchSetting]
   );
 
   const handleNumberChange = useCallback(
-    (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
-      if (!/[^\d]/.test(e.target.value as string)) handleChange(e);
+    () => {
+      // Function logic here
     },
-    [handleChange]
+    [
+      /* dependencies */
+    ]
+    // (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
+    //   if (!/[^\d]/.test(e.target.value as string)) handleChange(e);
+    // },
+    // [handleChange]
   );
 
   return (

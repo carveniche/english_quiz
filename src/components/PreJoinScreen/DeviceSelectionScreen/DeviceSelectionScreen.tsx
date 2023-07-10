@@ -1,4 +1,8 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { videoCallToken } from "../../../api/index";
+import { useSelector, useDispatch } from "react-redux";
+import { updateVideoCallTokenData } from "../../../redux/features/videoCallTokenData";
+import { RootState } from "../../../redux/store";
 import {
   makeStyles,
   Typography,
@@ -15,7 +19,6 @@ import LocalVideoPreview from "./LocalVideoPreview/LocalVideoPreview";
 import SettingsMenu from "./SettingsMenu/SettingsMenu";
 import ToggleAudioButton from "../../Buttons/ToggleAudioButton/ToggleAudioButton";
 import ToggleVideoButton from "../../Buttons/ToggleVideoButton/ToggleVideoButton";
-import { useAppState } from "../../../state";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useKrispToggle } from "../../../hooks/useKrispToggle/useKrispToggle";
@@ -80,12 +83,99 @@ interface DeviceSelectionScreenProps {
   name: string;
 }
 
+interface tokenParameters {
+  getVideoCallToken: (userId: Number, liveClassId: Number) => Promise<void>;
+}
+
+interface tokenData {
+  class_start_time: string;
+  class_type: string;
+  country: string;
+  demo: boolean;
+  env: string;
+  grade: string;
+  group_class: boolean;
+  iso_code: string;
+  new_coding_plan: boolean;
+  role_name: string;
+  room_id: string;
+  show_new_codings: boolean;
+  status: boolean;
+  student_ids: string[];
+  students: string[];
+  teacher_id: Number;
+  teacher_name: string;
+  time_zone: string;
+  token: string;
+  user_name: string;
+  white_board_url: string;
+}
+
 export default function DeviceSelectionScreen({
   name,
 }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const { getToken, isFetching, isKrispEnabled, isKrispInstalled } =
-    useAppState();
+  const [userId, setUserId] = useState<Number>(0);
+  const [liveClassId, setLiveClassId] = useState<Number>(0);
+
+  const videoCallTokenData = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let userID = Number(params.get("userID"));
+    let liveClassID = Number(params.get("liveClassID"));
+    setUserId(userID);
+    setLiveClassId(liveClassID);
+  }, []);
+
+  useEffect(() => {
+    console.log("userId", userId);
+    console.log("liveClassId", liveClassId);
+    getVideoCallToken(userId, liveClassId);
+  }, []);
+
+  const getVideoCallToken: tokenParameters["getVideoCallToken"] = async (
+    userId,
+    liveClassId
+  ) => {
+    try {
+      await videoCallToken(userId, liveClassId).then((response) => {
+        if (response.data.status) {
+          setNeccessaryInformationsFromVideoCallTokenApi(response.data);
+        }
+      });
+    } catch (error) {
+      console.error("API request error:", error);
+    }
+  };
+
+  const setNeccessaryInformationsFromVideoCallTokenApi = (data: tokenData) => {
+    if (typeof data === "object" && data !== null) {
+      const convertedDataToArray = Object.entries(data);
+
+      convertedDataToArray.map(([key, value]) => {
+        const finalData = {
+          key,
+          value,
+        };
+        dispatch(updateVideoCallTokenData(finalData));
+      });
+    }
+  };
+
+  // const { getToken, isFetching, isKrispEnabled, isKrispInstalled } =
+  //   useAppState();
+
+  const isFetching = false; //Get this value from redux store;
+  //First Dispatch and then Get token value from redux store;
+  const isKrispEnabled = false; //Get this value from redux store;
+  const isKrispInstalled = false; //Get this value from redux store;
+
   const {
     connect: videoConnect,
     isAcquiringLocalTracks,
@@ -96,11 +186,13 @@ export default function DeviceSelectionScreen({
   const disableButtons = isFetching || isAcquiringLocalTracks || isConnecting;
 
   const handleJoin = () => {
-    console.log("Join Button Clicked");
-    // getToken(name, roomName).then(({ token }) => {
-    //   videoConnect(token);
-    //   process.env.REACT_APP_DISABLE_TWILIO_CONVERSATIONS !== 'true' && chatConnect(token);
-    // });
+    if (videoCallTokenData.token != null) {
+      let token = JSON.stringify(videoCallTokenData.token);
+
+      videoConnect(JSON.parse(token));
+    } else {
+      console.log("Something went wrong please try again later");
+    }
   };
 
   if (isFetching || isConnecting) {

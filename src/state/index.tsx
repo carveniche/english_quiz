@@ -1,6 +1,13 @@
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 import { RoomType } from "../types";
+import { videoCallToken } from "../api/index";
 import { TwilioError } from "twilio-video";
 import {
   settingsReducer,
@@ -9,7 +16,7 @@ import {
   SettingsAction,
 } from "./settings/settingsReducer";
 
-import useActiveSinkId from "./useActiveSinkId/useActiveSinkId";
+import useActiveSinkId from "../hooks/useActiveSinkId/useActiveSinkId";
 
 import { useLocalStorageState } from "../hooks/useLocalStorageState/useLocalStorageState";
 
@@ -30,7 +37,10 @@ export interface StateContextType {
   setIsKrispEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   isKrispInstalled: boolean;
   setIsKrispInstalled: React.Dispatch<React.SetStateAction<boolean>>;
+  getToken: (userId: Number, liveClassId: Number) => Promise<void>;
 }
+
+//connect: (token: string) => Promise<void>;
 
 export const StateContext = createContext<StateContextType>(null!);
 
@@ -62,6 +72,20 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
 
   const [isKrispEnabled, setIsKrispEnabled] = useState(false);
   const [isKrispInstalled, setIsKrispInstalled] = useState(false);
+  const [userId, setUserId] = useState(67259);
+  const [liveClassId, setLiveClassId] = useState(227166);
+  const [videoCallToken, setVideoCallToken] = useState("");
+
+  useEffect(() => {
+    getToken(userId, liveClassId);
+  }, []);
+
+  const getToken: StateContextType["getToken"] = async (
+    userId,
+    liveClassId
+  ) => {
+    let token = await videoCallToken(userId, liveClassId);
+  };
 
   let contextValue = {
     error,
@@ -80,6 +104,9 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     setIsKrispEnabled,
     isKrispInstalled,
     setIsKrispInstalled,
+    userId,
+    liveClassId,
+    getToken,
   } as StateContextType;
 
   contextValue = {

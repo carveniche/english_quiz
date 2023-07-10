@@ -1,6 +1,5 @@
 import { LocalAudioTrack } from "twilio-video";
 import { useCallback } from "react";
-import { useAppState } from "../../state";
 import useVideoContext from "../useVideoContext/useVideoContext";
 
 export function useKrispToggle() {
@@ -10,7 +9,9 @@ export function useKrispToggle() {
   ) as LocalAudioTrack;
   const noiseCancellation = audioTrack && audioTrack.noiseCancellation;
   const vendor = noiseCancellation && noiseCancellation.vendor;
-  const { setIsKrispEnabled } = useAppState();
+  // const { setIsKrispEnabled } = useAppState();
+
+  const setIsKrispEnabled = (arg1: boolean) => {}; // This is some state which will set State to other component using redux
 
   const toggleKrisp = useCallback(() => {
     if (noiseCancellation) {

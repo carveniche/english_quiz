@@ -2,10 +2,39 @@ import { ConnectOptions } from "twilio-video";
 
 import { isMobile } from "../devices";
 import removeUndefineds from "../common";
-import { useAppState } from "../../state";
+
+import { Track, VideoBandwidthProfileOptions } from "twilio-video";
+
+export interface Settings {
+  trackSwitchOffMode: VideoBandwidthProfileOptions["trackSwitchOffMode"];
+  dominantSpeakerPriority?: Track.Priority;
+  bandwidthProfileMode: VideoBandwidthProfileOptions["mode"];
+  maxAudioBitrate: string;
+  contentPreferencesMode?: "auto" | "manual";
+  clientTrackSwitchOffControl?: "auto" | "manual";
+  name: string;
+}
+
+type SettingsKeys = keyof Settings;
+
+export interface SettingsAction {
+  name: SettingsKeys;
+  value: string;
+}
+
+export const initialSettings: Settings = {
+  trackSwitchOffMode: undefined,
+  dominantSpeakerPriority: "standard",
+  bandwidthProfileMode: "collaboration",
+  maxAudioBitrate: "16000",
+  contentPreferencesMode: "auto",
+  clientTrackSwitchOffControl: "auto",
+  name: "RM8a6df75a01a51e2f1d3933e21b15c15f",
+};
 
 export default function useConnectionOptions() {
-  const { settings } = useAppState();
+  // const { settings } = useAppState();
+  const settings = initialSettings; // Neet to create separate redux store to get this values and store these values
 
   // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.

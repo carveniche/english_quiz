@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import reservationsReducer from "./features/reservationSlice";
 import liveClassDetailsReducer from "./features/liveClassDetails";
+import videoCallTokenDataReducer from "./features/videoCallTokenData";
 
 export const store = configureStore({
   reducer: {
-    reservations: reservationsReducer,
     liveClassDetails: liveClassDetailsReducer,
+    videoCallTokenData: videoCallTokenDataReducer,
   },
 });
 

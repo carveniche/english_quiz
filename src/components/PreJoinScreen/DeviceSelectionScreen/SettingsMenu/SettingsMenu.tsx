@@ -10,14 +10,15 @@ import AboutDialog from "../../../AboutDialog/AboutDialog";
 import ConnectionOptionsDialog from "../../../ConnectionOptionsDialog/ConnectionOptionsDialog";
 import DeviceSelectionDialog from "../../../DeviceSelectionDialog/DeviceSelectionDialog";
 import SettingsIcon from "../../../../icons/SettingsIcon";
-import { useAppState } from "../../../../state";
 
 export default function SettingsMenu({
   mobileButtonClass,
 }: {
   mobileButtonClass?: string;
 }) {
-  const { roomType } = useAppState();
+  // const { roomType } = useAppState();
+
+  let roomType = "group"; //Get this value from redux store
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
   );

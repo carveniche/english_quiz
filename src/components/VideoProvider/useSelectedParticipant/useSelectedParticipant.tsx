@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Participant, Room } from "twilio-video";
-import { useAppState } from "../../../state";
 
 type selectedParticipantContextType = [
   Participant | null,
@@ -26,7 +25,8 @@ export function SelectedParticipantProvider({
   room,
   children,
 }: SelectedParticipantProviderProps) {
-  const { isGalleryViewActive } = useAppState();
+  // const { isGalleryViewActive } = useAppState();
+  let isGalleryViewActive = true; //Get this value from redux store
   const [selectedParticipant, _setSelectedParticipant] =
     useState<Participant | null>(null);
   const setSelectedParticipant = (participant: Participant) =>

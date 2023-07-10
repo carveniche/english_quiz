@@ -22,15 +22,18 @@ export default function useRoom(
   }, [options]);
 
   const connect = useCallback(
-    (token) => {
+    (token: string) => {
       setIsConnecting(true);
 
+      // return;
       return Video.connect(token, {
         ...optionsRef.current,
         tracks: localTracks,
+        logLevel: "off",
+        // name: "RM8a6df75a01a51e2f1d3933e21b15c15f",
       }).then(
         (newRoom) => {
-          console.warn(newRoom, "newRoom");
+          console.warn("newRoom", "newRoom");
           setRoom(newRoom);
           // VideoRoomMonitor.registerVideoRoom(newRoom);
           const disconnect = () => newRoom.disconnect();
@@ -71,6 +74,7 @@ export default function useRoom(
           }
         },
         (error) => {
+          console.warn("error", error);
           onError(error);
           setIsConnecting(false);
         }
@@ -78,8 +82,6 @@ export default function useRoom(
     },
     [localTracks, onError]
   );
-
-  console.log("After connect room ", room);
 
   return { room, isConnecting, connect };
 }

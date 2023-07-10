@@ -1,7 +1,6 @@
 import { RemoteParticipant } from "twilio-video";
 import { useEffect, useState } from "react";
 import useDominantSpeaker from "../useDominantSpeaker/useDominantSpeaker";
-import { useAppState } from "../../state";
 import useVideoContext from "../useVideoContext/useVideoContext";
 
 //  If a participant that is not currently on the first page becomes
@@ -20,7 +19,8 @@ export default function useGalleryViewParticipants(
 ) {
   const { room } = useVideoContext();
   const dominantSpeaker = useDominantSpeaker();
-  const { maxGalleryViewParticipants } = useAppState();
+  // const { maxGalleryViewParticipants } = useAppState();
+  let maxGalleryViewParticipants = 4; // Get this value from redux store.
   const [orderedParticipants, setOrderedParticipants] = useState<
     OrderedParticipant[]
   >(

@@ -1,5 +1,8 @@
 import AudioInputList from "./AudioInputList/AudioInputList";
 import AudioOutputList from "./AudioOutputList/AudioOutputList";
+
+import { useState } from "react";
+
 import {
   DialogContent,
   Typography,
@@ -21,7 +24,6 @@ import { useKrispToggle } from "../../hooks/useKrispToggle/useKrispToggle";
 import SmallCheckIcon from "../../icons/SmallCheckIcon";
 import InfoIconOutlined from "../../icons/InfoIconOutlined";
 import KrispLogo from "../../icons/KrispLogo";
-import { useAppState } from "../../state";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -79,7 +81,10 @@ export default function DeviceSelectionDialog({
   onClose: () => void;
 }) {
   const { isAcquiringLocalTracks } = useVideoContext();
-  const { isKrispEnabled, isKrispInstalled } = useAppState();
+  const [isKrispEnabled, setIsKrispEnabled] = useState(false);
+  const [isKrispInstalled, setIsKrispInstalled] = useState(false);
+  // const { isKrispEnabled, isKrispInstalled } = useAppState();
+
   const { toggleKrisp } = useKrispToggle();
   const classes = useStyles();
 

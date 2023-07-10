@@ -5,13 +5,17 @@ import {
   Select,
   Grid,
 } from "@material-ui/core";
-import { useAppState } from "../../../state";
+
+import { useLocalStorageState } from "../../../hooks/useLocalStorageState/useLocalStorageState";
 
 const MAX_PARTICIPANT_OPTIONS = [6, 12, 24];
 
 export default function MaxGalleryViewParticipants() {
-  const { maxGalleryViewParticipants, setMaxGalleryViewParticipants } =
-    useAppState();
+  // const { maxGalleryViewParticipants, setMaxGalleryViewParticipants } =
+  //   useAppState();
+
+  const [maxGalleryViewParticipants, setMaxGalleryViewParticipants] =
+    useLocalStorageState("max-gallery-participants-key", 6);
 
   return (
     <div>

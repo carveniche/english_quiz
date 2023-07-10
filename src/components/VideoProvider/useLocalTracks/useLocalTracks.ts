@@ -16,15 +16,17 @@ import Video, {
   NoiseCancellationOptions,
 } from "twilio-video";
 
-import { useAppState } from "../../../state";
-
 const noiseCancellationOptions: NoiseCancellationOptions = {
   sdkAssetsPath: "/noisecancellation",
   vendor: "krisp",
 };
 
 export default function useLocalTracks() {
-  const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
+  // const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
+
+  const setIsKrispEnabled = (arg1: boolean) => {}; // Get this function from redux store;
+  const setIsKrispInstalled = (arg1: boolean) => {}; // Store this function value to redux store;
+
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
   const [isAcquiringLocalTracks, setIsAcquiringLocalTracks] = useState(false);
