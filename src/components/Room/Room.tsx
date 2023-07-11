@@ -4,6 +4,7 @@ import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAud
 
 import ChatSnackButton from "../Buttons/ChatSnakeButton/ChatSnakeButton";
 import MainParticipant from "../MainParticipant/MainParticipant";
+import ParticipantList from "../ParticipantList/ParticipantList";
 
 export default function Room() {
   const { room } = useVideoContext();
@@ -24,6 +25,7 @@ export default function Room() {
       <ParticipantAudioTracks />
 
       <MainParticipant />
+      <ParticipantList />
     </div>
   );
 }

@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import { DataTrack as IDataTrack } from "twilio-video";
 
+import { useSnackbar } from "notistack";
+
 export default function DataTrack({ track }: { track: IDataTrack }) {
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
-    const handleMessage = (message: string) =>
-      console.log("Datatrack Message", message);
+    const handleMessage = (message: string) => enqueueSnackbar(message);
+
     track.on("message", handleMessage);
     return () => {
       track.off("message", handleMessage);
