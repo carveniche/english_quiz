@@ -7,7 +7,6 @@ import React, {
 } from "react";
 
 import { RoomType } from "../types";
-import { videoCallToken } from "../api/index";
 import { TwilioError } from "twilio-video";
 import {
   settingsReducer,

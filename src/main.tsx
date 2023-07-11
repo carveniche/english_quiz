@@ -10,12 +10,24 @@ import theme from "./theme.ts";
 import { VideoProvider } from "./components/VideoProvider";
 import { VideoApp } from "./App.tsx";
 
+import { SnackbarProvider } from "notistack";
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <VideoApp />
+        <SnackbarProvider
+          maxSnack={8}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          autoHideDuration={10000}
+          variant="info"
+        >
+          <VideoApp />
+        </SnackbarProvider>
       </MuiThemeProvider>
     </Provider>
   </React.StrictMode>

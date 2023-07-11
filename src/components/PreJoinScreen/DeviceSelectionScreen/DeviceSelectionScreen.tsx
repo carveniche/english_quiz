@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { videoCallToken } from "../../../api/index";
 import { useSelector, useDispatch } from "react-redux";
 import { updateVideoCallTokenData } from "../../../redux/features/videoCallTokenData";
@@ -115,29 +115,29 @@ export default function DeviceSelectionScreen({
   name,
 }: DeviceSelectionScreenProps) {
   const classes = useStyles();
-  const [userId, setUserId] = useState<Number>(0);
-  const [liveClassId, setLiveClassId] = useState<Number>(0);
 
   const videoCallTokenData = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+  const userId = useSelector(
+    (state: RootState) => state.liveClassDetails.userId
+  );
+
+  const liveClassId = useSelector(
+    (state: RootState) => state.liveClassDetails.liveClassId
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let userID = Number(params.get("userID"));
-    let liveClassID = Number(params.get("liveClassID"));
-    setUserId(userID);
-    setLiveClassId(liveClassID);
-  }, []);
-
-  useEffect(() => {
     console.log("userId", userId);
     console.log("liveClassId", liveClassId);
-    getVideoCallToken(userId, liveClassId);
-  }, []);
+
+    if (userId != 0 && liveClassId != 0) {
+      console.log("h1");
+      getVideoCallToken(userId, liveClassId);
+    }
+  }, [userId, liveClassId]);
 
   const getVideoCallToken: tokenParameters["getVideoCallToken"] = async (
     userId,

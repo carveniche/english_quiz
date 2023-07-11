@@ -1,6 +1,11 @@
 import { Callback } from "../../../types";
 import { isMobile } from "../../../utils/devices";
-import Video, { ConnectOptions, LocalTrack, Room } from "twilio-video";
+import Video, {
+  ConnectOptions,
+  LocalTrack,
+  LocalDataTrack,
+  Room,
+} from "twilio-video";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // import { VideoRoomMonitor } from "@twilio/video-room-monitor";
@@ -28,9 +33,8 @@ export default function useRoom(
       // return;
       return Video.connect(token, {
         ...optionsRef.current,
-        tracks: localTracks,
-        logLevel: "off",
-        // name: "RM8a6df75a01a51e2f1d3933e21b15c15f",
+        tracks: [...localTracks, new LocalDataTrack()],
+        logLevel: "error",
       }).then(
         (newRoom) => {
           console.warn("newRoom", "newRoom");

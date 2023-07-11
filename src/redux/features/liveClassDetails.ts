@@ -4,6 +4,8 @@ import { TwilioError } from "twilio-video";
 import { RoomType } from "../../types";
 
 interface liveClassDetailsTypes {
+  userId: Number;
+  liveClassId: Number;
   userIdentity: string;
   userName: string;
   studentsAssignInClass: string[];
@@ -23,6 +25,8 @@ interface liveClassDetailsTypes {
 }
 
 const initialState: liveClassDetailsTypes = {
+  userId: 0,
+  liveClassId: 0,
   userIdentity: "",
   userName: "",
   studentsAssignInClass: [],
@@ -48,12 +52,16 @@ export const liveClassDetailsSlice = createSlice({
     addDetails: (state, action: PayloadAction<string>) => {
       state.value.push(action.payload);
     },
-    addToken: (state, action: PayloadAction<string>) => {
-      state.roomToken.push(action.payload);
+    addUserId: (state, action) => {
+      return { ...state, userId: action.payload };
+    },
+    addLiveClassId: (state, action) => {
+      return { ...state, liveClassId: action.payload };
     },
   },
 });
 
-export const { addDetails, addToken } = liveClassDetailsSlice.actions;
+export const { addDetails, addUserId, addLiveClassId } =
+  liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

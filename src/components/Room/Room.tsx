@@ -2,13 +2,18 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 
+import ChatSnackButton from "../Buttons/ChatSnakeButton/ChatSnakeButton";
+import MainParticipant from "../MainParticipant/MainParticipant";
+
 export default function Room() {
   const { room } = useVideoContext();
 
-  // console.log("Main Video Room Component Class room", room);
+  console.log("Main Video Room Component Class room", room);
   return (
     <div>
       <h1>Main Video Room Component Class</h1>
+
+      <ChatSnackButton />
 
       {/* 
         This ParticipantAudioTracks component will render the audio track for all participants in the room.
@@ -17,6 +22,8 @@ export default function Room() {
       */}
 
       <ParticipantAudioTracks />
+
+      <MainParticipant />
     </div>
   );
 }

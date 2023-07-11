@@ -3,7 +3,7 @@ import { useState } from "react";
 import { VideoProvider } from "./components/VideoProvider";
 import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
 import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
-import { TwilioError } from "twilio-video";
+import { TwilioError, Logger } from "twilio-video";
 import useRoomState from "./hooks/useRoomState/useRoomState";
 // import { ParticipantProvider } from "./components/ParticipantProvider";
 import ErrorDialog from "./components/ErrorDialog/ErrorDialog";
@@ -24,6 +24,9 @@ const Main = styled("main")(({ theme }: { theme: Theme }) => ({
     paddingBottom: `${theme.mobileFooterHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
   },
 }));
+
+const logger = Logger.getLogger("twilio-video");
+logger.setLevel("SILENT");
 
 export function VideoApp() {
   // const { error, setError } = useAppState();
