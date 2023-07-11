@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
-    "noisecancellation:krisp": "npm install @twilio/krisp-audio-plugin && rimraf public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/*\" public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/weights/*\" public/noisecancellation/weights",
+    "noisecancellation:krisp": "npm install @twilio/krisp-audio-plugin && rimraf public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/*\" public/noisecancellation && copyfiles -f \"node_modules/@twilio/krisp-audio-plugin/dist/weights/*\" public/noisecancellation/weights && npm uninstall @twilio/krisp-audio-plugin",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -48,6 +48,7 @@
     "@typescript-eslint/parser": "^5.59.0",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
