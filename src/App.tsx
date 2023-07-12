@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 import { VideoProvider } from "./components/VideoProvider";
+import MenuBar from "./components/MenuBar/MenuBar";
 import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
 import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
 import { TwilioError, Logger } from "twilio-video";
@@ -58,6 +59,7 @@ function App() {
         <Main>
           <ReconnectingNotification />
           <Room />
+          <MenuBar />
         </Main>
       )}
     </>

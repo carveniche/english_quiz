@@ -221,9 +221,7 @@ export default function DeviceSelectionScreen({
 
   return (
     <>
-      <Typography variant="h5" className={classes.gutterBottom}>
-        Join
-      </Typography>
+      <Typography variant="h5" className={classes.gutterBottom}></Typography>
 
       <Grid container justifyContent="center">
         <Grid item md={7} sm={12} xs={12}>
@@ -328,11 +326,11 @@ export default function DeviceSelectionScreen({
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={() => {
-                    console.log("Cancel button pressed");
+                  style={{
+                    cursor: "none",
                   }}
                 >
-                  Cancel
+                  V2.1
                 </Button>
                 <Button
                   variant="contained"
