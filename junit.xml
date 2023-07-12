@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="2.716">
+  <testsuite name="the AboutDialog component" errors="0" failures="0" skipped="0" timestamp="2023-07-12T08:10:40" time="2.431" tests="5">
+    <testcase classname="the AboutDialog component should display Video.isSupported" name="the AboutDialog component should display Video.isSupported" time="0.061">
+    </testcase>
+    <testcase classname="the AboutDialog component should display the SDK version" name="the AboutDialog component should display the SDK version" time="0.018">
+    </testcase>
+    <testcase classname="the AboutDialog component should display the package.json version" name="the AboutDialog component should display the package.json version" time="0.016">
+    </testcase>
+    <testcase classname="the AboutDialog component should not display the room type when it is unknown" name="the AboutDialog component should not display the room type when it is unknown" time="0.012">
+    </testcase>
+    <testcase classname="the AboutDialog component should display the room type" name="the AboutDialog component should display the room type" time="0.016">
+    </testcase>
+  </testsuite>
+</testsuites>

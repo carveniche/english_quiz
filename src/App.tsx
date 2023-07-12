@@ -47,6 +47,7 @@ function App() {
   const [error, setError] = useState<TwilioError | null>(null);
 
   const roomState = useRoomState();
+
   console.warn("RoomState", roomState);
 
   return (
@@ -57,7 +58,6 @@ function App() {
         <Main>
           <ReconnectingNotification />
           <Room />
-          {/* <MenuBar /> */}
         </Main>
       )}
     </>

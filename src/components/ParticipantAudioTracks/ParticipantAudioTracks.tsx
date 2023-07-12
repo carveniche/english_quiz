@@ -20,7 +20,7 @@ function Participant({ participant }: { participant: RemoteParticipant }) {
   unnecessarily unmounted/mounted as the user switches between Gallery View and Speaker View.
 */
 export function ParticipantAudioTracks() {
-  const participants = useParticipants();
+  const participants = useParticipants(); // It will return all the participant array
 
   return (
     <>

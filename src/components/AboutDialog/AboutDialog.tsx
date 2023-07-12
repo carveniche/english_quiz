@@ -16,7 +16,7 @@ interface AboutDialogProps {
 }
 
 function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
-  const roomType = null;
+  const roomType = "group";
 
   // const { roomType } = useAppState();
 
@@ -32,15 +32,15 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
         <DialogContentText>
           App Version: {packageJSON.version}
         </DialogContentText>
-        <DialogContentText>Deployed Tag</DialogContentText>
-        <DialogContentText>Deployed Commit Hash</DialogContentText>
+        <DialogContentText>Deployed Tag: "N/A"</DialogContentText>
+        <DialogContentText>Deployed Commit Hash: "N/A"</DialogContentText>
         {roomType && (
           <DialogContentText>Room Type: {roomType}</DialogContentText>
         )}
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button onClick={onClose} color="primary" variant="contained" autoFocus>
+        <Button onClick={onClose} color="primary" variant="contained">
           OK
         </Button>
       </DialogActions>
