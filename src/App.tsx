@@ -10,6 +10,11 @@ import ErrorDialog from "./components/ErrorDialog/ErrorDialog";
 import { styled, Theme } from "@material-ui/core/styles";
 import Room from "./components/Room/Room";
 import ReconnectingNotification from "./components/ReconnetingNotification/ReconnectingNotification";
+import { BrowserRouter, Navigate, useLocation } from "react-router-dom";
+import AllPageRoutes from "./Router/AllPageRoutes";
+
+
+
 
 const Container = styled("div")({
   display: "grid",
@@ -37,27 +42,32 @@ export function VideoApp() {
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
       <ParticipantProvider>
+      <BrowserRouter>
         <App />
+        </BrowserRouter>
       </ParticipantProvider>
     </VideoProvider>
   );
 }
 
 function App() {
-  const [error, setError] = useState<TwilioError | null>(null);
-
-  const roomState = useRoomState();
-
-  console.warn("RoomState", roomState);
+   const [error, setError] = useState<TwilioError | null>(null);
+   const roomState = useRoomState();
+   const {pathname}=useLocation()
 
   return (
     <>
+    
       {roomState === "disconnected" ? (
+        <>
         <PreJoinScreen />
+       {pathname!=='/'&& <Navigate to={`/?${params}`}/>}
+        </>
       ) : (
         <Main>
           <ReconnectingNotification />
           <Room />
+          <AllPageRoutes />
         </Main>
       )}
     </>
