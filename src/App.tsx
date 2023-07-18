@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 import { VideoProvider } from "./components/VideoProvider";
+import MenuBar from "./components/MenuBar/MenuBar";
 import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
 import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
 import { TwilioError, Logger } from "twilio-video";
@@ -12,10 +13,8 @@ import Room from "./components/Room/Room";
 import ReconnectingNotification from "./components/ReconnetingNotification/ReconnectingNotification";
 import { BrowserRouter, Navigate, useLocation } from "react-router-dom";
 import AllPageRoutes from "./Router/AllPageRoutes";
-
-
-
-
+import Navbar from "./components/Navbar/Navbar";
+import ActiveTabMenu from "./components/Navbar/ActiveTabMenu";
 const Container = styled("div")({
   display: "grid",
   gridTemplateRows: "1fr auto",
@@ -52,6 +51,7 @@ export function VideoApp() {
 
 function App() {
    const [error, setError] = useState<TwilioError | null>(null);
+   const params = new URLSearchParams(window.location.search).toString()
    const roomState = useRoomState();
    const {pathname}=useLocation()
 
@@ -65,9 +65,13 @@ function App() {
         </>
       ) : (
         <Main>
+          <ActiveTabMenu />
+          <Navbar queryParams={params}/>
+          <AllPageRoutes/>
           <ReconnectingNotification />
           <Room />
-          <AllPageRoutes />
+        
+          <MenuBar />
         </Main>
       )}
     </>

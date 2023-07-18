@@ -15,3 +15,4 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY =
 
 export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
+export const MAXIMUMACTIVETAB = 4;
