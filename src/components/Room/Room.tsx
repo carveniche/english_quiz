@@ -2,11 +2,11 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 
-import ChatSnackButton from "../Buttons/ChatSnakeButton/ChatSnakeButton";
 import MainParticipant from "../MainParticipant/MainParticipant";
 import ParticipantList from "../ParticipantList/ParticipantList";
 import { makeStyles, Theme, useMediaQuery, useTheme } from "@material-ui/core";
 import clsx from "clsx";
+import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 
 const useStyles = makeStyles((theme: Theme) => {
   const totalMobileSidebarHeight = `${
@@ -38,7 +38,6 @@ export default function Room() {
   const isChatWindowOpen = false;
   const isBackgroundSelectionOpen = false;
 
-  console.log("Main Video Room Component Class room", room);
   return (
     <div>
       <div
@@ -47,9 +46,7 @@ export default function Room() {
             isChatWindowOpen || isBackgroundSelectionOpen,
         })}
       >
-        <h1>Main Video Room Component Class</h1>
-
-        <ChatSnackButton />
+        {/* <ChatSnackButton /> */}
 
         {/* 
         This ParticipantAudioTracks component will render the audio track for all participants in the room.
@@ -59,8 +56,11 @@ export default function Room() {
 
         <ParticipantAudioTracks />
 
-        <MainParticipant />
-        <ParticipantList />
+        <>
+          <MainParticipant />
+          <ParticipantList />
+        </>
+        <BackgroundSelectionDialog />
       </div>
     </div>
   );

@@ -9,10 +9,38 @@ import {
   isSupported,
 } from "@twilio/video-processors";
 
-import Abstract from "./BackgroundImages/Abstract.jpg";
-import AbstractThumb from "./BackgroundImages/thumb/Abstract.jpg";
-import BohoHome from "./BackgroundImages/BohoHome.jpg";
-import BohoHomeThumb from "./BackgroundImages/thumb/BohoHome.jpg";
+import Abstract from "../../../images/Abstract.jpg";
+import AbstractThumb from "../../../images/thumb/Abstract.jpg";
+import BohoHome from "../../../images/BohoHome.jpg";
+import BohoHomeThumb from "../../../images/thumb/BohoHome.jpg";
+import Bookshelf from "../../../images/Bookshelf.jpg";
+import BookshelfThumb from "../../../images/thumb/Bookshelf.jpg";
+import CoffeeShop from "../../../images/CoffeeShop.jpg";
+import CoffeeShopThumb from "../../../images/thumb/CoffeeShop.jpg";
+import Contemporary from "../../../images/Contemporary.jpg";
+import ContemporaryThumb from "../../../images/thumb/Contemporary.jpg";
+import CozyHome from "../../../images/CozyHome.jpg";
+import CozyHomeThumb from "../../../images/thumb/CozyHome.jpg";
+import Desert from "../../../images/Desert.jpg";
+import DesertThumb from "../../../images/thumb/Desert.jpg";
+import Fishing from "../../../images/Fishing.jpg";
+import FishingThumb from "../../../images/thumb/Fishing.jpg";
+import Flower from "../../../images/Flower.jpg";
+import FlowerThumb from "../../../images/thumb/Flower.jpg";
+import Kitchen from "../../../images/Kitchen.jpg";
+import KitchenThumb from "../../../images/thumb/Kitchen.jpg";
+import ModernHome from "../../../images/ModernHome.jpg";
+import ModernHomeThumb from "../../../images/thumb/ModernHome.jpg";
+import Nature from "../../../images/Nature.jpg";
+import NatureThumb from "../../../images/thumb/Nature.jpg";
+import Ocean from "../../../images/Ocean.jpg";
+import OceanThumb from "../../../images/thumb/Ocean.jpg";
+import Patio from "../../../images/Patio.jpg";
+import PatioThumb from "../../../images/thumb/Patio.jpg";
+import Plant from "../../../images/Plant.jpg";
+import PlantThumb from "../../../images/thumb/Plant.jpg";
+import SanFrancisco from "../../../images/SanFrancisco.jpg";
+import SanFranciscoThumb from "../../../images/thumb/SanFrancisco.jpg";
 
 import { Thumbnail } from "../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail";
 import { useLocalStorageState } from "../../../hooks/useLocalStorageState/useLocalStorageState";
@@ -21,10 +49,62 @@ export interface BackgroundSettings {
   index?: number;
 }
 
-const imageNames: string[] = ["Abstract", "Boho Home"];
+const imageNames: string[] = [
+  "Abstract",
+  "Boho Home",
+  "Bookshelf",
+  "Coffee Shop",
+  "Contemporary",
+  "Cozy Home",
+  "Desert",
+  "Fishing",
+  "Flower",
+  "Kitchen",
+  "Modern Home",
+  "Nature",
+  "Ocean",
+  "Patio",
+  "Plant",
+  "San Francisco",
+];
 
-const images = [AbstractThumb, BohoHomeThumb];
-const rawImagePaths = [Abstract, BohoHome];
+const images = [
+  AbstractThumb,
+  BohoHomeThumb,
+  BookshelfThumb,
+  CoffeeShopThumb,
+  ContemporaryThumb,
+  CozyHomeThumb,
+  DesertThumb,
+  FishingThumb,
+  FlowerThumb,
+  KitchenThumb,
+  ModernHomeThumb,
+  NatureThumb,
+  OceanThumb,
+  PatioThumb,
+  PlantThumb,
+  SanFranciscoThumb,
+];
+
+const rawImagePaths = [
+  Abstract,
+  BohoHome,
+  Bookshelf,
+  CoffeeShop,
+  Contemporary,
+  CozyHome,
+  Desert,
+  Fishing,
+  Flower,
+  Kitchen,
+  ModernHome,
+  Nature,
+  Ocean,
+  Patio,
+  Plant,
+  SanFrancisco,
+];
 
 let imageElements = new Map();
 
@@ -36,9 +116,11 @@ const getImage = (index: number): Promise<HTMLImageElement> => {
     const img = new Image();
     img.onload = () => {
       imageElements.set(index, img);
+
       resolve(img);
     };
     img.onerror = reject;
+
     img.src = rawImagePaths[index];
   });
 };
@@ -76,15 +158,18 @@ export default function useBackgroundSettings(
         return;
       }
       removeProcessor();
+
       videoTrack.addProcessor(processor);
     },
     [videoTrack, removeProcessor]
   );
 
   useEffect(() => {
+    console.log("isSupported", isSupported);
     if (!isSupported) {
       return;
     }
+
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
@@ -115,6 +200,7 @@ export default function useBackgroundSettings(
         virtualBackgroundProcessor.backgroundImage = await getImage(
           backgroundSettings.index
         );
+
         addProcessor(virtualBackgroundProcessor);
       } else {
         removeProcessor();

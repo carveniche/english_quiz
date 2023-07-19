@@ -130,11 +130,7 @@ export default function DeviceSelectionScreen({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("userId", userId);
-    console.log("liveClassId", liveClassId);
-
     if (userId != 0 && liveClassId != 0) {
-      console.log("h1");
       getVideoCallToken(userId, liveClassId);
     }
   }, [userId, liveClassId]);

@@ -46,7 +46,6 @@ export default function ParticipantList() {
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
 
-  console.log("speakerViewParticipants", speakerViewParticipants);
   const [selectedParticipant, setSelectedParticipant] =
     useSelectedParticipant();
   const screenShareParticipant = useScreenShareParticipant();

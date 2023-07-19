@@ -11,6 +11,7 @@ import ErrorDialog from "./components/ErrorDialog/ErrorDialog";
 import { styled, Theme } from "@material-ui/core/styles";
 import Room from "./components/Room/Room";
 import ReconnectingNotification from "./components/ReconnetingNotification/ReconnectingNotification";
+import MobileTopMenuBar from "./components/MobileTopMenuBar/MobileTopMenuBar";
 
 const Container = styled("div")({
   display: "grid",
@@ -49,8 +50,6 @@ function App() {
 
   const roomState = useRoomState();
 
-  console.warn("RoomState", roomState);
-
   return (
     <>
       {roomState === "disconnected" ? (
@@ -58,6 +57,7 @@ function App() {
       ) : (
         <Main>
           <ReconnectingNotification />
+          <MobileTopMenuBar />
           <Room />
           <MenuBar />
         </Main>

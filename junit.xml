@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="2.716">
-  <testsuite name="the AboutDialog component" errors="0" failures="0" skipped="0" timestamp="2023-07-12T08:10:40" time="2.431" tests="5">
-    <testcase classname="the AboutDialog component should display Video.isSupported" name="the AboutDialog component should display Video.isSupported" time="0.061">
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="2.416">
+  <testsuite name="the AudioTrack component" errors="0" failures="0" skipped="0" timestamp="2023-07-17T13:40:31" time="1.829" tests="3">
+    <testcase classname="the AudioTrack component should add an audio element to the DOM when the component mounts" name="the AudioTrack component should add an audio element to the DOM when the component mounts" time="0.013">
     </testcase>
-    <testcase classname="the AboutDialog component should display the SDK version" name="the AboutDialog component should display the SDK version" time="0.018">
+    <testcase classname="the AudioTrack component should remove the audio element from the DOM when the component unmounts" name="the AudioTrack component should remove the audio element from the DOM when the component unmounts" time="0.002">
     </testcase>
-    <testcase classname="the AboutDialog component should display the package.json version" name="the AboutDialog component should display the package.json version" time="0.016">
+    <testcase classname="the AudioTrack component should set the audio elements srcObject to null when the component unmounts" name="the AudioTrack component should set the audio elements srcObject to null when the component unmounts" time="0.001">
     </testcase>
-    <testcase classname="the AboutDialog component should not display the room type when it is unknown" name="the AboutDialog component should not display the room type when it is unknown" time="0.012">
+  </testsuite>
+  <testsuite name="the AboutDialog component" errors="0" failures="0" skipped="0" timestamp="2023-07-17T13:40:31" time="1.992" tests="5">
+    <testcase classname="the AboutDialog component should display Video.isSupported" name="the AboutDialog component should display Video.isSupported" time="0.06">
     </testcase>
-    <testcase classname="the AboutDialog component should display the room type" name="the AboutDialog component should display the room type" time="0.016">
+    <testcase classname="the AboutDialog component should display the SDK version" name="the AboutDialog component should display the SDK version" time="0.021">
+    </testcase>
+    <testcase classname="the AboutDialog component should display the package.json version" name="the AboutDialog component should display the package.json version" time="0.015">
+    </testcase>
+    <testcase classname="the AboutDialog component should not display the room type when it is unknown" name="the AboutDialog component should not display the room type when it is unknown" time="0.011">
+    </testcase>
+    <testcase classname="the AboutDialog component should display the room type" name="the AboutDialog component should display the room type" time="0.014">
     </testcase>
   </testsuite>
 </testsuites>
