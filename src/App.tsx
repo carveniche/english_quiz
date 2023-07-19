@@ -15,6 +15,7 @@ import { BrowserRouter, Navigate, useLocation } from "react-router-dom";
 import AllPageRoutes from "./Router/AllPageRoutes";
 import Navbar from "./components/Navbar/Navbar";
 import ActiveTabMenu from "./components/Navbar/ActiveTabMenu";
+import Header2 from "./components/Navbar/Header2";
 const Container = styled("div")({
   display: "grid",
   gridTemplateRows: "1fr auto",
@@ -65,8 +66,9 @@ function App() {
         </>
       ) : (
         <Main>
-          <ActiveTabMenu />
-          <Navbar queryParams={params}/>
+          
+          <Header2 />
+        
           <AllPageRoutes/>
           <ReconnectingNotification />
           <Room />

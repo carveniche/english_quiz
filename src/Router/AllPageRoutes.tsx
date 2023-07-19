@@ -9,9 +9,9 @@ export default function AllPageRoutes() {
     <>
       <Routes>
         {routerConfig?.map((item) => (
-          <>
-            <Route path={item.path} Component={item.component} key={item.key}></Route>
-          </>
+        
+            <Route path={item.path.toString()} Component={item.component} key={item.key.toString()}></Route>
+          
         ))}
       </Routes>
     </>

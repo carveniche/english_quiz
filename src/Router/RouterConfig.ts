@@ -1,7 +1,19 @@
+import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard"
 import AllScreen from "../components/FeatureComponent/AllScreen/AllScreen"
 import Coding from "../components/FeatureComponent/Coding/Coding"
+import Lesson from "../components/FeatureComponent/Lesson/Lesson"
+import Mathzone from "../components/FeatureComponent/Mathzone/Mathzone"
+import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen"
+import React from "react"
+interface routerConfig{
+    path:String,
+    key:String,
+    exact:Boolean,
+    component:React.ComponentType,
+    name:String,
 
-const routerConfig=[
+}
+const routerConfig:routerConfig[]=[
     {
         path:"/allscreen",
         key:"/allscreen",
@@ -15,7 +27,7 @@ const routerConfig=[
         path:"/myscreen",
         key:"/myscreen",
         exact:true,
-        component:AllScreen,
+        component:MyScreen,
         name:"My Screen"
 
     },
@@ -30,20 +42,21 @@ const routerConfig=[
         path:"/mathzone",
         key:"/mathzone",
         exact:true,
-        component:AllScreen,
+        component:Mathzone,
         name:"Mathzone"
     },
     {
         path:"/Whiteboard",
         key:"/Whiteboard",
         exact:true,
-        component:AllScreen,
+        component:Whiteboard,
         name:"Whiteboard"
     },
     {
         path:"/Lesson",
+        key:"/Lesson",
         exact:true,
-        component:AllScreen,
+        component:Lesson,
         name:"Lesson"
     },
 ]
