@@ -165,7 +165,6 @@ export default function useBackgroundSettings(
   );
 
   useEffect(() => {
-    console.log("isSupported", isSupported);
     if (!isSupported) {
       return;
     }

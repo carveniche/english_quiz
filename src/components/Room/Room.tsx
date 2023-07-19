@@ -54,7 +54,7 @@ export default function Room() {
         unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
       */}
 
-        <ParticipantAudioTracks />
+        {/* <ParticipantAudioTracks /> */}
 
         <>
           <MainParticipant />

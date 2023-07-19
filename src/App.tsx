@@ -17,6 +17,7 @@ import { BrowserRouter, Navigate, useLocation } from "react-router-dom";
 import AllPageRoutes from "./Router/AllPageRoutes";
 
 import Header2 from "./components/Navbar/Header2";
+import Header from "./components/Navbar/Header";
 const Container = styled("div")({
   display: "grid",
   gridTemplateRows: "1fr auto",
@@ -66,6 +67,8 @@ function App() {
         </>
       ) : (
         <Main>
+          {pathname === "/" && <Navigate to={`/allscreen?${params}`} />}
+          <Header />
           <Header2 />
           <AllPageRoutes />
           <ReconnectingNotification />
