@@ -13,6 +13,10 @@ import Room from "./components/Room/Room";
 import ReconnectingNotification from "./components/ReconnetingNotification/ReconnectingNotification";
 import MobileTopMenuBar from "./components/MobileTopMenuBar/MobileTopMenuBar";
 
+import { BrowserRouter, Navigate, useLocation } from "react-router-dom";
+import AllPageRoutes from "./Router/AllPageRoutes";
+
+import Header2 from "./components/Navbar/Header2";
 const Container = styled("div")({
   display: "grid",
   gridTemplateRows: "1fr auto",
@@ -39,7 +43,9 @@ export function VideoApp() {
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
       <ParticipantProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ParticipantProvider>
     </VideoProvider>
   );
@@ -47,18 +53,24 @@ export function VideoApp() {
 
 function App() {
   const [error, setError] = useState<TwilioError | null>(null);
-
+  const params = new URLSearchParams(window.location.search).toString();
   const roomState = useRoomState();
+  const { pathname } = useLocation();
 
   return (
     <>
       {roomState === "disconnected" ? (
-        <PreJoinScreen />
+        <>
+          <PreJoinScreen />
+          {pathname !== "/" && <Navigate to={`/?${params}`} />}
+        </>
       ) : (
         <Main>
+          <Header2 />
+          <AllPageRoutes />
           <ReconnectingNotification />
           <MobileTopMenuBar />
-          <Room />
+          {/* <Room /> */}
           <MenuBar />
         </Main>
       )}

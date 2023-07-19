@@ -50,9 +50,11 @@ export const liveClassDetailsSlice = createSlice({
   initialState,
   reducers: {
     addDetails: (state, action: PayloadAction<string>) => {
+     
       state.value.push(action.payload);
     },
     addUserId: (state, action) => {
+      console.log(state.userId)
       return { ...state, userId: action.payload };
     },
     addLiveClassId: (state, action) => {
