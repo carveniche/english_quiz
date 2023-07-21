@@ -18,17 +18,18 @@ const Container = styled.div`
   margin: auto;
   width: 100%;
   box-sizing: border-box;
+  gap: 5px;
 `;
 
 const Item = styled.div<remotePCountInterface>`
   width: ${(props) =>
     props.remotePCount === 0
-      ? "100%"
+      ? "calc(100% - 5px)"
       : props.remotePCount === 1
-      ? "50%"
+      ? "calc(50% - 5px)"
       : props.remotePCount === 2 || props.remotePCount === 3
-      ? "50%"
-      : "100%"};
+      ? "calc(50% - 5px)"
+      : "calc(33% - 5px)"};
   max-height: ${(props) =>
     props.remotePCount === 0 || props.remotePCount === 1
       ? "100%"
