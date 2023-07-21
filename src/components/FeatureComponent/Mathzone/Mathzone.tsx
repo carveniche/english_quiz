@@ -1,5 +1,3 @@
 export default function Mathzone() {
-  return (
-    <div>Mathzone</div>
-  )
+  return <div>Mathzone Component</div>;
 }

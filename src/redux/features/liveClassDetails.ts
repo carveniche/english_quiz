@@ -6,6 +6,7 @@ import { RoomType } from "../../types";
 interface liveClassDetailsTypes {
   userId: Number;
   liveClassId: Number;
+  currentSelectedScreen: string;
   userIdentity: string;
   userName: string;
   studentsAssignInClass: string[];
@@ -27,6 +28,7 @@ interface liveClassDetailsTypes {
 const initialState: liveClassDetailsTypes = {
   userId: 0,
   liveClassId: 0,
+  currentSelectedScreen: "/allScreen",
   userIdentity: "",
   userName: "",
   studentsAssignInClass: [],
@@ -58,10 +60,17 @@ export const liveClassDetailsSlice = createSlice({
     addLiveClassId: (state, action) => {
       return { ...state, liveClassId: action.payload };
     },
+    addCurrentSelectedScreen: (state, action) => {
+      return { ...state, currentSelectedScreen: action.payload };
+    },
   },
 });
 
-export const { addDetails, addUserId, addLiveClassId } =
-  liveClassDetailsSlice.actions;
+export const {
+  addDetails,
+  addUserId,
+  addLiveClassId,
+  addCurrentSelectedScreen,
+} = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

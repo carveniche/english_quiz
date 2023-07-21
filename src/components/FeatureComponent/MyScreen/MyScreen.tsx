@@ -1,6 +1,3 @@
-
 export default function MyScreen() {
-  return (
-    <div>MyScreen</div>
-  )
+  return <div>MyScreen Component</div>;
 }

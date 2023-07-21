@@ -18,6 +18,8 @@ import AllPageRoutes from "./Router/AllPageRoutes";
 
 import Header2 from "./components/Navbar/Header2";
 import Header from "./components/Navbar/Header";
+import { getQueryParams } from "./utils/getQueryParams";
+
 const Container = styled("div")({
   display: "grid",
   gridTemplateRows: "1fr auto",
@@ -54,7 +56,7 @@ export function VideoApp() {
 
 function App() {
   const [error, setError] = useState<TwilioError | null>(null);
-  const params = new URLSearchParams(window.location.search).toString();
+  const params = getQueryParams();
   const roomState = useRoomState();
   const { pathname } = useLocation();
 
@@ -67,13 +69,13 @@ function App() {
         </>
       ) : (
         <Main>
-          {pathname === "/" && <Navigate to={`/allscreen?${params}`} />}
+          {pathname === "/" && <Navigate to={`/allScreen?${params}`} />}
           <Header />
           <Header2 />
           <AllPageRoutes />
           <ReconnectingNotification />
           <MobileTopMenuBar />
-          {/* <Room /> */}
+          <Room />
           <MenuBar />
         </Main>
       )}

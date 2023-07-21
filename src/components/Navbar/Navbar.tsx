@@ -4,13 +4,26 @@ import {
   ActiveTabParams,
   addToActiveTab,
 } from "../../redux/features/addActiveTabLink";
-import routerConfig from "../../Router/RouterConfig";
 
+import { addCurrentSelectedScreen } from "../../redux/features/liveClassDetails";
+import routerConfig from "../../Router/RouterConfig";
+import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import { getQueryParams } from "../../utils/getQueryParams";
 export default function Navbar() {
-  const queryParams = new URLSearchParams(window.location.search).toString();
+  const queryParams = getQueryParams();
+  const { room } = useVideoContext();
   const dispatch = useDispatch();
   const handleClick = ({ path, key, name }: ActiveTabParams) => {
     dispatch(addToActiveTab({ path, key, name }));
+    dispatch(addCurrentSelectedScreen(path));
+
+    // const [localDataTrackPublication] = [
+    //   ...room.localParticipant.dataTracks.values(),
+    // ];
+
+    // console.log("Data message send");
+    // localDataTrackPublication.track.send(`${path}`);
+
     //send datatrack
   };
 

@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 
 export default function Coding() {
-    useEffect(()=>{
-        console.log('coding')
-    },[])
-  return (
-    <div>Coding</div>
-  )
+  useEffect(() => {
+    console.log("coding");
+  }, []);
+  return <div>Coding Component</div>;
 }
