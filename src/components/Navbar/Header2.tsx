@@ -1,4 +1,3 @@
-import ActiveTabMenu from "./ActiveTabMenu";
 import Navbar from "./Navbar";
 import MenuHamburger from "./NavbarIcons/MenuHamburger";
 import MenuDropDownArrow from "./NavbarIcons/MenuDropDownArrow";
@@ -21,7 +20,7 @@ export default function Header2() {
             </div>
           </button>
           {showMenu && (
-            <div className="absolute left-0 mt-2 bg-header-black border-black-300 rounded-md p-2 ">
+            <div className="absolute z-50 left-0 mt-2 bg-header-black border-black-300 rounded-md p-2 ">
               <div className="min-w-[200px] flex justify-center content-center flex-col">
                 <Navbar />
               </div>

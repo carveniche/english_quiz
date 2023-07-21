@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#root main {
+  height: 100%;
+}
+
 svg {
   display: inline;
 }

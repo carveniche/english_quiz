@@ -26,21 +26,23 @@ export function Participant({
   isDominantSpeaker,
 }: ParticipantProps) {
   return (
-    <ParticipantInfo
+    // <ParticipantInfo
+    //   participant={participant}
+    //   onClick={onClick}
+    //   isSelected={isSelected}
+    //   isLocalParticipant={isLocalParticipant}
+    //   hideParticipant={hideParticipant}
+    //   isDominantSpeaker={isDominantSpeaker}
+    // >
+
+    <ParticipantTracks
       participant={participant}
-      onClick={onClick}
-      isSelected={isSelected}
+      videoOnly={videoOnly}
+      enableScreenShare={enableScreenShare}
       isLocalParticipant={isLocalParticipant}
-      hideParticipant={hideParticipant}
-      isDominantSpeaker={isDominantSpeaker}
-    >
-      <ParticipantTracks
-        participant={participant}
-        videoOnly={videoOnly}
-        enableScreenShare={enableScreenShare}
-        isLocalParticipant={isLocalParticipant}
-      />
-    </ParticipantInfo>
+    />
+
+    // </ParticipantInfo>
   );
 }
 

@@ -43,7 +43,7 @@ export default function PreJoinScreen() {
   return (
     <IntroContainer>
       <MediaErrorSnackbar error={mediaError} />
-      <DeviceSelectionScreen name={"Vipul Soni"} />
+      <DeviceSelectionScreen name="" />
     </IntroContainer>
   );
 }

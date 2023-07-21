@@ -11,7 +11,9 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const handleClick = ({ path, key, name }: ActiveTabParams) => {
     dispatch(addToActiveTab({ path, key, name }));
+    //send datatrack
   };
+
   return (
     <>
       {routerConfig.map((item) => {
