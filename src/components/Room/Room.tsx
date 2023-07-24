@@ -79,6 +79,7 @@ export default function Room() {
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
             <Item remotePCount={remotePCount}>
+              <ParticipantsAnimationBar participant={localParticipant} />
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}

@@ -1,13 +1,12 @@
 import { useCallback } from "react";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useLocation } from "react-router";
-export default function useParticipantsAnimationBarDatatracks(
-  identity: string,
-  key: string
-) {
+import { useDispatch } from "react-redux";
+import { addDataTrackValue } from "../../redux/features/dataTrackStore";
+export default function useParticipantsAnimationBarDatatracks() {
   const { room } = useVideoContext();
-
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   const handleKeyClick = useCallback((identity: string, key: string) => {
     const [localDataTrackPublication] = [
@@ -21,6 +20,12 @@ export default function useParticipantsAnimationBarDatatracks(
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(json));
+    dispatch(
+      addDataTrackValue({
+        type: key,
+        identity: identity,
+      })
+    );
   }, []);
   return [handleKeyClick];
 }
