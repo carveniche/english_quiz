@@ -2,14 +2,15 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 
-import { useEffect } from "react";
 import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
+import Draggable from "react-draggable";
 
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/store";
+import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
 
 interface remotePCountInterface {
   remotePCount: number;
@@ -51,7 +52,7 @@ const Item = styled.div<remotePCountInterface>`
       : props.remotePCount === 2 || props.remotePCount == 3
       ? "50%"
       : "100%"};
-  /* The resulting background color will be based on the bg props. */
+  position: relative;
 `;
 
 export default function Room() {
@@ -85,19 +86,24 @@ export default function Room() {
 
             {speakerViewParticipants.map((participant) => {
               return (
-                <Item remotePCount={remotePCount}>
-                  <Participant
-                    key={participant.sid}
-                    participant={participant}
-                  />
-                </Item>
+                <>
+                  <Item remotePCount={remotePCount}>
+                    <ParticipantsAnimationBar participant={participant} />
+                    <Participant
+                      key={participant.sid}
+                      participant={participant}
+                    />
+                  </Item>
+                </>
               );
             })}
           </ContainerAllScreen>
         ) : (
-          <ContainerVideoDraggableOtherScreens>
-            <h1>All other Screens Component</h1>
-          </ContainerVideoDraggableOtherScreens>
+          <Draggable>
+            <ContainerVideoDraggableOtherScreens>
+              <h1>All other Screens Component</h1>
+            </ContainerVideoDraggableOtherScreens>
+          </Draggable>
 
           /* <ContainerAllScreen>
               <Item remotePCount={remotePCount}>

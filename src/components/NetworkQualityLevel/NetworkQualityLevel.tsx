@@ -5,12 +5,12 @@ import useParticipantNetworkQualityLevel from "../../hooks/useParticipantNetwork
 const useStyles = makeStyles({
   outerContainer: {
     width: "2em",
-    height: "2em",
+    // height: "2em",
     padding: "0.9em",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "rgba(0, 0, 0, 0.5)",
+    // background: "rgba(0, 0, 0, 0.5)",
   },
   innerContainer: {
     display: "flex",
@@ -48,7 +48,7 @@ export default function NetworkQualityLevel({
               height: `${STEP * (level + 1)}px`,
               background:
                 networkQualityLevel > level
-                  ? "white"
+                  ? "blue"
                   : "rgba(255, 255, 255, 0.2)",
             }}
           />

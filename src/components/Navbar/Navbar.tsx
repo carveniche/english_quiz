@@ -17,12 +17,12 @@ export default function Navbar() {
     dispatch(addToActiveTab({ path, key, name }));
     dispatch(addCurrentSelectedScreen(path));
 
-    // const [localDataTrackPublication] = [
-    //   ...room.localParticipant.dataTracks.values(),
-    // ];
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
 
-    // console.log("Data message send");
-    // localDataTrackPublication.track.send(`${path}`);
+    console.log("Data message send");
+    localDataTrackPublication.track.send(`${path}`);
 
     //send datatrack
   };
