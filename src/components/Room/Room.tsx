@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
+import { useEffect } from "react";
 
 interface remotePCountInterface {
   remotePCount: number;

@@ -4,11 +4,14 @@ import activeTabReducer from "./features/addActiveTabLink";
 import liveClassDetailsReducer from "./features/liveClassDetails";
 import videoCallTokenDataReducer from "./features/videoCallTokenData";
 
+import dataTrackStore from "./features/dataTrackStore";
+
 export const store = configureStore({
   reducer: {
     liveClassDetails: liveClassDetailsReducer,
     videoCallTokenData: videoCallTokenDataReducer,
-    activeTabReducer:activeTabReducer,
+    activeTabReducer: activeTabReducer,
+    dataTrackStore: dataTrackStore,
   },
 });
 

@@ -18,11 +18,12 @@ export default function useParticipants() {
 
   useEffect(() => {
     if (room) {
-      const participantConnected = (participant: RemoteParticipant) =>
+      const participantConnected = (participant: RemoteParticipant) => {
         setParticipants((prevParticipants) => [
           ...prevParticipants,
           participant,
         ]);
+      };
 
       const participantDisconnected = (participant: RemoteParticipant) =>
         setParticipants((prevParticipants) =>
