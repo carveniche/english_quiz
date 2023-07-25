@@ -14,10 +14,6 @@ export default function StarLottie() {
         animationData: starIcon,
       });
 
-      setTimeout(() => {
-        animation.destroy();
-      }, 5000);
-
       // Other animations configuration or control logic can be added here
 
       return () => {

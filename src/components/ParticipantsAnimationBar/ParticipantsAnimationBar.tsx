@@ -24,17 +24,6 @@ interface ParticipantProps {
   participant: IParticipant;
 }
 
-const useNestedValueChangeEffect = (nestedValue: number, label: string) => {
-  const prevCountRef = useRef<number>();
-
-  useEffect(() => {
-    if (nestedValue !== 0 && nestedValue !== undefined) {
-    }
-
-    prevCountRef.current = nestedValue;
-  }, [nestedValue, label]);
-};
-
 export default function ParticipantsAnimationBar({
   localParticipant,
   participant,
@@ -59,26 +48,28 @@ export default function ParticipantsAnimationBar({
     },
   });
   const [animationPariticipantIdentity, setAnimationParticipantIdentity] =
-    useState("");
-  const [animationPariticipantType, setAnimationParticipantType] = useState("");
+    useState<string>("");
+  const [animationPariticipantType, setAnimationParticipantType] =
+    useState<string>("");
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
 
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
   );
 
-  useNestedValueChangeEffect(
-    animationCount?.ThumbsUpIcon?.count,
-    "ThumbsUpIcon"
-  );
-
-  useNestedValueChangeEffect(animationCount?.ClapIcon?.count, "ClapIcon");
-  useNestedValueChangeEffect(animationCount?.SmileIcon?.count, "SmileIcon");
-  useNestedValueChangeEffect(animationCount?.StarIcon?.count, "StarIcon");
-
   const animationButtonClicked = (identity: string, key: string) => {
     setAnimationParticipantIdentity(identity);
     setAnimationParticipantType(key);
     handleKeyClick(identity, key);
+    handleAnimationTiming();
+  };
+
+  const handleAnimationTiming = () => {
+    setStartAnimation(true);
+
+    setTimeout(() => {
+      setStartAnimation(false);
+    }, 2500);
   };
 
   const screenShareButtonClicked = () => {};
@@ -100,6 +91,7 @@ export default function ParticipantsAnimationBar({
       setAnimationParticipantType(
         animationDataTracks.animationTrackIdentityAndType.type
       );
+      handleAnimationTiming();
     }
   }, [animationDataTracks]);
 
@@ -114,9 +106,10 @@ export default function ParticipantsAnimationBar({
 
   return (
     <>
-      {participant.identity === animationPariticipantIdentity && (
-        <PlayLottieParticipantBar type={animationPariticipantType} />
-      )}
+      {participant.identity === animationPariticipantIdentity &&
+        startAnimation && (
+          <PlayLottieParticipantBar type={animationPariticipantType} />
+        )}
       <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-99 w-full h-[40px] pl-4 pr-4 py-2.5">
         <div className="flex gap-2 z-20">
           <div className="flex justify-center mb-3">

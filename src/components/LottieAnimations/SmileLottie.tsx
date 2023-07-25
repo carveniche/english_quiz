@@ -16,10 +16,6 @@ export default function SmileLottie() {
         animationData: smileIcon,
       });
 
-      setTimeout(() => {
-        animation.destroy();
-      }, 5000);
-
       // Other animations configuration or control logic can be added here
 
       return () => {

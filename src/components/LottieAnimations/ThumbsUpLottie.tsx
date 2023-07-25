@@ -16,10 +16,6 @@ export default function ThumbsUpLottie() {
         animationData: thumbsUpIcon,
       });
 
-      setTimeout(() => {
-        animation.destroy();
-      }, 5000);
-
       // Other animations configuration or control logic can be added here
 
       return () => {
