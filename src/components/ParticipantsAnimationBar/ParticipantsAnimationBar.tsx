@@ -17,6 +17,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
 import _isEqual from "lodash/isEqual";
+import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
 
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
@@ -28,7 +29,6 @@ const useNestedValueChangeEffect = (nestedValue: number, label: string) => {
 
   useEffect(() => {
     if (nestedValue !== 0 && nestedValue !== undefined) {
-      console.log("label change", label);
     }
 
     prevCountRef.current = nestedValue;
@@ -40,7 +40,6 @@ export default function ParticipantsAnimationBar({
   participant,
 }: ParticipantProps) {
   const [handleKeyClick] = useParticipantsAnimationBarDatatracks();
-  const [animationLabel, setAnimationLabel] = useState("");
   const [animationCount, setAnimationCount] = useState({
     ThumbsUpIcon: {
       type: "",
@@ -59,6 +58,9 @@ export default function ParticipantsAnimationBar({
       count: 0,
     },
   });
+  const [animationPariticipantIdentity, setAnimationParticipantIdentity] =
+    useState("");
+  const [animationPariticipantType, setAnimationParticipantType] = useState("");
 
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
@@ -68,13 +70,14 @@ export default function ParticipantsAnimationBar({
     animationCount?.ThumbsUpIcon?.count,
     "ThumbsUpIcon"
   );
+
   useNestedValueChangeEffect(animationCount?.ClapIcon?.count, "ClapIcon");
   useNestedValueChangeEffect(animationCount?.SmileIcon?.count, "SmileIcon");
   useNestedValueChangeEffect(animationCount?.StarIcon?.count, "StarIcon");
 
   const animationButtonClicked = (identity: string, key: string) => {
-    console.log("identity", identity);
-    console.log("key", key);
+    setAnimationParticipantIdentity(identity);
+    setAnimationParticipantType(key);
     handleKeyClick(identity, key);
   };
 
@@ -85,6 +88,18 @@ export default function ParticipantsAnimationBar({
   useEffect(() => {
     if (animationDataTracks.students.length) {
       showCountOfAnimation();
+    }
+
+    if (
+      animationDataTracks.animationTrackIdentityAndType.identity &&
+      animationDataTracks.animationTrackIdentityAndType.type
+    ) {
+      setAnimationParticipantIdentity(
+        animationDataTracks.animationTrackIdentityAndType.identity
+      );
+      setAnimationParticipantType(
+        animationDataTracks.animationTrackIdentityAndType.type
+      );
     }
   }, [animationDataTracks]);
 
@@ -98,82 +113,95 @@ export default function ParticipantsAnimationBar({
   };
 
   return (
-    <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-99 w-full h-[40px] pl-4 pr-4 py-2.5">
-      <div className="flex gap-2 z-20">
-        <div className="flex justify-center mb-3">
-          <NetworkQualityLevel participant={participant} />
-        </div>
-        <button onClick={() => muteIconButtonClicked()}>
-          <MicIconParticipantAnimationBar />
-        </button>
-        <span className="text-white">{participant.identity}</span>
-        <button
-          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
-          onClick={() =>
-            animationButtonClicked(participant.identity, "ThumbsUpIcon")
-          }
-          className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
-        >
-          <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-            <ThumbsUpIcon />
-            <span className="text-white">
-              {animationCount["ThumbsUpIcon"]?.count || 0}
-            </span>
+    <>
+      {participant.identity === animationPariticipantIdentity && (
+        <PlayLottieParticipantBar type={animationPariticipantType} />
+      )}
+      <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-99 w-full h-[40px] pl-4 pr-4 py-2.5">
+        <div className="flex gap-2 z-20">
+          <div className="flex justify-center mb-3">
+            <NetworkQualityLevel participant={participant} />
           </div>
-        </button>
-        <button
-          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
-          onClick={() =>
-            animationButtonClicked(participant.identity, "ClapIcon")
-          }
-          className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
-        >
-          <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-            <ClapIcon />
-            <span className="text-white">
-              {animationCount["ClapIcon"]?.count || 0}
-            </span>
-          </div>
-        </button>
-        <button
-          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
-          onClick={() =>
-            animationButtonClicked(participant.identity, "SmileIcon")
-          }
-          className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
-        >
-          <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-            <SmileIcon />
-            <span className="text-white">
-              {animationCount["SmileIcon"]?.count || 0}
-            </span>
-          </div>
-        </button>
-        <button
-          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
-          onClick={() =>
-            animationButtonClicked(participant.identity, "StarIcon")
-          }
-          className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
-        >
-          <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-            <StarIcon />
-            <span className="text-white">
-              {animationCount["StarIcon"]?.count || 0}
-            </span>
-          </div>
-        </button>
-      </div>
-      <div className="flex gap-2 z-10">
-        <button>
-          <div
-            onClick={() => screenShareButtonClicked()}
-            className="flex justify-between gap-1 mt-[2px] mb-[2px]"
+          <button onClick={() => muteIconButtonClicked()}>
+            <MicIconParticipantAnimationBar />
+          </button>
+          <span className="text-white">{participant.identity}</span>
+          <button
+            disabled={
+              !isTutorTechBoth({ identity: localParticipant?.identity })
+            }
+            onClick={() =>
+              animationButtonClicked(participant.identity, "ThumbsUpIcon")
+            }
+            className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
           >
-            <ScreenShareIcon />
-          </div>
-        </button>
+            <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+              <ThumbsUpIcon />
+              <span className="text-white">
+                {animationCount["ThumbsUpIcon"]?.count || 0}
+              </span>
+            </div>
+          </button>
+          <button
+            disabled={
+              !isTutorTechBoth({ identity: localParticipant?.identity })
+            }
+            onClick={() =>
+              animationButtonClicked(participant.identity, "ClapIcon")
+            }
+            className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+          >
+            <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+              <ClapIcon />
+              <span className="text-white">
+                {animationCount["ClapIcon"]?.count || 0}
+              </span>
+            </div>
+          </button>
+          <button
+            disabled={
+              !isTutorTechBoth({ identity: localParticipant?.identity })
+            }
+            onClick={() =>
+              animationButtonClicked(participant.identity, "SmileIcon")
+            }
+            className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+          >
+            <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+              <SmileIcon />
+              <span className="text-white">
+                {animationCount["SmileIcon"]?.count || 0}
+              </span>
+            </div>
+          </button>
+          <button
+            disabled={
+              !isTutorTechBoth({ identity: localParticipant?.identity })
+            }
+            onClick={() =>
+              animationButtonClicked(participant.identity, "StarIcon")
+            }
+            className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+          >
+            <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+              <StarIcon />
+              <span className="text-white">
+                {animationCount["StarIcon"]?.count || 0}
+              </span>
+            </div>
+          </button>
+        </div>
+        <div className="flex gap-2 z-10">
+          <button>
+            <div
+              onClick={() => screenShareButtonClicked()}
+              className="flex justify-between gap-1 mt-[2px] mb-[2px]"
+            >
+              <ScreenShareIcon />
+            </div>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

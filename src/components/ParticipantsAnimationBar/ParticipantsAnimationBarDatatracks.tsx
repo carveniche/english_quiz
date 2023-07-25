@@ -2,7 +2,10 @@ import { useCallback } from "react";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useLocation } from "react-router";
 import { useDispatch } from "react-redux";
-import { addDataTrackValue } from "../../redux/features/dataTrackStore";
+import {
+  addDataTrackValue,
+  addAnimationTrackIdentity,
+} from "../../redux/features/dataTrackStore";
 export default function useParticipantsAnimationBarDatatracks() {
   const { room } = useVideoContext();
   const { pathname } = useLocation();
@@ -20,6 +23,7 @@ export default function useParticipantsAnimationBarDatatracks() {
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(json));
+
     dispatch(
       addDataTrackValue({
         type: key,

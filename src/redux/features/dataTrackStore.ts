@@ -13,10 +13,18 @@ interface StudentAnimation {
 
 interface dataTrackStore {
   students: StudentAnimation[];
+  animationTrackIdentityAndType: {
+    identity: string;
+    type: string;
+  };
 }
 
 const initialState: dataTrackStore = {
   students: [],
+  animationTrackIdentityAndType: {
+    identity: "",
+    type: "",
+  },
 };
 
 export const dataTrackStoreSlice = createSlice({
@@ -25,6 +33,11 @@ export const dataTrackStoreSlice = createSlice({
   reducers: {
     addDataTrackValue: (state, action) => {
       const { type, identity } = action.payload;
+      let obj = {
+        identity: identity,
+        type: type,
+      };
+      state.animationTrackIdentityAndType = obj;
       let { students } = state;
       let i = 0;
       let currentSelectedStudentIndex = -1;

@@ -11,10 +11,14 @@ export default function SmileLottie() {
       const animation: AnimationItem = lottie.loadAnimation({
         container: container.current,
         renderer: "svg",
-        loop: false,
+        loop: true,
         autoplay: true,
         animationData: smileIcon,
       });
+
+      setTimeout(() => {
+        animation.destroy();
+      }, 5000);
 
       // Other animations configuration or control logic can be added here
 

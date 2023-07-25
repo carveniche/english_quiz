@@ -84,7 +84,6 @@ export default function Room() {
                 identity: localParticipant.identity,
               }) && (
                 <>
-                  <PlayLottieParticipantBar />
                   <ParticipantsAnimationBar
                     localParticipant={localParticipant}
                     participant={localParticipant}
