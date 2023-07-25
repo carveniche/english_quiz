@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RemoteParticipant } from "twilio-video";
 import useVideoContext from "../useVideoContext/useVideoContext";
-import { ExcludeParticipant } from "../../utils/excludeParticipant";
+import { excludeParticipant } from "../../utils/excludeParticipant";
 
 export default function useSpeakerViewParticipants() {
   const { room } = useVideoContext();
@@ -29,7 +29,7 @@ export default function useSpeakerViewParticipants() {
       setParticipants(Array.from(room.participants.values()));
 
       const participantConnected = (participant: RemoteParticipant) => {
-        if (ExcludeParticipant.includes(participant.identity)) {
+        if (excludeParticipant.includes(participant.identity)) {
           return;
         } else {
           setParticipants((prevParticipants) => [

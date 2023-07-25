@@ -25,8 +25,6 @@ export const dataTrackStoreSlice = createSlice({
   reducers: {
     addDataTrackValue: (state, action) => {
       const { type, identity } = action.payload;
-
-      console.log("hello");
       let { students } = state;
       let i = 0;
       let currentSelectedStudentIndex = -1;

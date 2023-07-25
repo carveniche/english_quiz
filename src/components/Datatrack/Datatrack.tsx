@@ -14,24 +14,20 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
 
   useEffect(() => {
     const handleMessage = (message: string) => {
-      console.log("message", JSON.parse(message));
       let parseMessage = JSON.parse(message);
 
       if (pathname === parseMessage.pathname) {
       } else {
-        navigate(`${message}?${queryParams}`);
+        navigate(`${parseMessage.pathName}?${queryParams}`);
       }
 
       if (parseMessage.value) {
-        console.log("parseMessage", parseMessage.value);
         dispatch(addDataTrackValue(parseMessage.value));
       }
     };
 
-    console.log("Datatrack Subscribed");
     track.on("message", handleMessage);
     return () => {
-      console.log("Datatrack UnSubscribed");
       track.off("message", handleMessage);
     };
   }, [track]);

@@ -3,32 +3,44 @@ import SmileIcon from "./ParticipantAnimationBarIcons/SmileIcon";
 import StarIcon from "./ParticipantAnimationBarIcons/StarIcon";
 import ThumbsUpIcon from "./ParticipantAnimationBarIcons/ThumbsUpIcon";
 import NetworkQualityLevel from "../NetworkQualityLevel/NetworkQualityLevel";
-import { Participant as IParticipant } from "twilio-video";
+import {
+  Participant as IParticipant,
+  LocalParticipant as ILocalParticipant,
+} from "twilio-video";
 import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIconParticipantAnimationBar";
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
 
 import useParticipantsAnimationBarDatatracks from "./ParticipantsAnimationBarDatatracks";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { RootState } from "../../redux/store";
+import { isTutorTechBoth } from "../../utils/participantIdentity";
+import _isEqual from "lodash/isEqual";
 
 interface ParticipantProps {
+  localParticipant?: ILocalParticipant;
   participant: IParticipant;
 }
 
-interface animationCountType {
-  type: string;
-  count: number;
-}
+const useNestedValueChangeEffect = (nestedValue: number, label: string) => {
+  const prevCountRef = useRef<number>();
+
+  useEffect(() => {
+    if (nestedValue !== 0 && nestedValue !== undefined) {
+      console.log("label change", label);
+    }
+
+    prevCountRef.current = nestedValue;
+  }, [nestedValue, label]);
+};
 
 export default function ParticipantsAnimationBar({
+  localParticipant,
   participant,
 }: ParticipantProps) {
-  const { room } = useVideoContext();
-  const localParticipant = room!.localParticipant;
   const [handleKeyClick] = useParticipantsAnimationBarDatatracks();
+  const [animationLabel, setAnimationLabel] = useState("");
   const [animationCount, setAnimationCount] = useState({
     ThumbsUpIcon: {
       type: "",
@@ -51,8 +63,18 @@ export default function ParticipantsAnimationBar({
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
   );
+
+  useNestedValueChangeEffect(
+    animationCount?.ThumbsUpIcon?.count,
+    "ThumbsUpIcon"
+  );
+  useNestedValueChangeEffect(animationCount?.ClapIcon?.count, "ClapIcon");
+  useNestedValueChangeEffect(animationCount?.SmileIcon?.count, "SmileIcon");
+  useNestedValueChangeEffect(animationCount?.StarIcon?.count, "StarIcon");
+
   const animationButtonClicked = (identity: string, key: string) => {
-    console.log("participant identity", identity);
+    console.log("identity", identity);
+    console.log("key", key);
     handleKeyClick(identity, key);
   };
 
@@ -68,9 +90,8 @@ export default function ParticipantsAnimationBar({
 
   const showCountOfAnimation = () => {
     animationDataTracks?.students?.map((item) => {
-      console.log("item identity", item.identity);
-
       if (item.identity === participant.identity) {
+        //@ts-ignore
         setAnimationCount(item?.animationDetails);
       }
     });
@@ -87,6 +108,7 @@ export default function ParticipantsAnimationBar({
         </button>
         <span className="text-white">{participant.identity}</span>
         <button
+          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
           onClick={() =>
             animationButtonClicked(participant.identity, "ThumbsUpIcon")
           }
@@ -100,6 +122,7 @@ export default function ParticipantsAnimationBar({
           </div>
         </button>
         <button
+          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
           onClick={() =>
             animationButtonClicked(participant.identity, "ClapIcon")
           }
@@ -108,11 +131,12 @@ export default function ParticipantsAnimationBar({
           <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
             <ClapIcon />
             <span className="text-white">
-              {animationCount?.ClapIcon?.count || 0}
+              {animationCount["ClapIcon"]?.count || 0}
             </span>
           </div>
         </button>
         <button
+          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
           onClick={() =>
             animationButtonClicked(participant.identity, "SmileIcon")
           }
@@ -121,11 +145,12 @@ export default function ParticipantsAnimationBar({
           <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
             <SmileIcon />
             <span className="text-white">
-              {animationCount?.SmileIcon?.count || 0}
+              {animationCount["SmileIcon"]?.count || 0}
             </span>
           </div>
         </button>
         <button
+          disabled={!isTutorTechBoth({ identity: localParticipant?.identity })}
           onClick={() =>
             animationButtonClicked(participant.identity, "StarIcon")
           }
@@ -134,7 +159,7 @@ export default function ParticipantsAnimationBar({
           <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
             <StarIcon />
             <span className="text-white">
-              {animationCount?.StarIcon?.count || 0}
+              {animationCount["StarIcon"]?.count || 0}
             </span>
           </div>
         </button>

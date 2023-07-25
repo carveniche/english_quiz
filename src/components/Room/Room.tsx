@@ -11,7 +11,8 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
-import { useEffect } from "react";
+import { allExcludedParticipant } from "../../utils/participantIdentity";
+import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
 
 interface remotePCountInterface {
   remotePCount: number;
@@ -79,7 +80,17 @@ export default function Room() {
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
             <Item remotePCount={remotePCount}>
-              <ParticipantsAnimationBar participant={localParticipant} />
+              {!allExcludedParticipant({
+                identity: localParticipant.identity,
+              }) && (
+                <>
+                  <PlayLottieParticipantBar />
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={localParticipant}
+                  />
+                </>
+              )}
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}
@@ -90,7 +101,14 @@ export default function Room() {
               return (
                 <>
                   <Item remotePCount={remotePCount}>
-                    <ParticipantsAnimationBar participant={participant} />
+                    {!allExcludedParticipant({
+                      identity: participant.identity,
+                    }) && (
+                      <ParticipantsAnimationBar
+                        localParticipant={localParticipant}
+                        participant={participant}
+                      />
+                    )}
                     <Participant
                       key={participant.sid}
                       participant={participant}
