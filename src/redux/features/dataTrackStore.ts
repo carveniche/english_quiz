@@ -16,6 +16,7 @@ interface dataTrackStore {
   animationTrackIdentityAndType: {
     identity: string;
     type: string;
+    count: number;
   };
   ShreenShareTracks: {
     identity: string;
@@ -28,6 +29,7 @@ const initialState: dataTrackStore = {
   animationTrackIdentityAndType: {
     identity: "",
     type: "",
+    count: 0,
   },
   ShreenShareTracks: {
     identity: "",
@@ -41,9 +43,11 @@ export const dataTrackStoreSlice = createSlice({
   reducers: {
     addAnimationDatatrack: (state, action) => {
       const { type, identity } = action.payload;
+
       let obj = {
         identity: identity,
         type: type,
+        count: state.animationTrackIdentityAndType.count + 1,
       };
       state.animationTrackIdentityAndType = obj;
       let { students } = state;

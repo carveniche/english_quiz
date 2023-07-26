@@ -16,7 +16,7 @@ import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioTo
 import { useEffect } from "react";
 
 interface remotePCountInterface {
-  remotePCount: number;
+  remotepcount: number;
 }
 
 const ContainerAllScreen = styled.div`
@@ -32,17 +32,17 @@ const ContainerAllScreen = styled.div`
 
 const Item = styled.div<remotePCountInterface>`
   width: ${(props) =>
-    props.remotePCount === 0
+    props.remotepcount === 0
       ? "calc(100% - 5px)"
-      : props.remotePCount === 1
+      : props.remotepcount === 1
       ? "calc(50% - 5px)"
-      : props.remotePCount === 2 || props.remotePCount === 3
+      : props.remotepcount === 2 || props.remotepcount === 3
       ? "calc(50% - 5px)"
       : "calc(33% - 5px)"};
   max-height: ${(props) =>
-    props.remotePCount === 0 || props.remotePCount === 1
+    props.remotepcount === 0 || props.remotepcount === 1
       ? "100%"
-      : props.remotePCount === 2 || props.remotePCount == 3
+      : props.remotepcount === 2 || props.remotepcount == 3
       ? "50%"
       : "100%"};
   position: relative;
@@ -85,7 +85,7 @@ export default function Room() {
           screenShareState.publishedState && <ScreenShareDraggable />}
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
-            <Item remotePCount={remotePCount}>
+            <Item remotepcount={remotePCount}>
               {!allExcludedParticipant({
                 identity: localParticipant.identity,
               }) && (
@@ -105,7 +105,7 @@ export default function Room() {
             {speakerViewParticipants.map((participant) => {
               return (
                 <>
-                  <Item remotePCount={remotePCount}>
+                  <Item remotepcount={remotePCount}>
                     {!allExcludedParticipant({
                       identity: participant.identity,
                     }) && (

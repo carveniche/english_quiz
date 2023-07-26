@@ -77,6 +77,9 @@ export default function ParticipantsAnimationBar({
   const muteIconButtonClicked = () => {};
 
   useEffect(() => {
+    if (animationDataTracks.animationTrackIdentityAndType.count === 0) {
+      return;
+    }
     if (animationDataTracks.students.length) {
       showCountOfAnimation();
     }
@@ -93,7 +96,7 @@ export default function ParticipantsAnimationBar({
       );
       handleAnimationTiming();
     }
-  }, [animationDataTracks]);
+  }, [animationDataTracks.animationTrackIdentityAndType.count]);
 
   const showCountOfAnimation = () => {
     animationDataTracks?.students?.map((item) => {
