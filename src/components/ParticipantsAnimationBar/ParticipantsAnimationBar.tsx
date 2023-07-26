@@ -11,7 +11,7 @@ import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIc
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
 
 import useParticipantsAnimationBarDatatracks from "./ParticipantsAnimationBarDatatracks";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";

@@ -8,12 +8,41 @@ interface MediaStreamTrackPublishOptions {
   logLevel: LogLevels;
 }
 
+import { useDispatch } from "react-redux";
+
+import { addScreenShareDatatrack } from "../../../redux/features/dataTrackStore";
+
 export default function useScreenShareToggle(
   room: Room | null,
   onError: ErrorCallback
 ) {
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
+  const dispatch = useDispatch();
+
+  const sendScreenShareDatatrack = (state: boolean) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let json = {
+      pathName: "/allScreen",
+      value: {
+        type: "ScreenShare",
+        publishedState: state,
+        identity: room?.localParticipant.identity,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(json));
+
+    dispatch(
+      addScreenShareDatatrack({
+        publishedState: state,
+        identity: room?.localParticipant.identity,
+      })
+    );
+  };
 
   const shareScreen = useCallback(() => {
     navigator.mediaDevices
@@ -32,6 +61,7 @@ export default function useScreenShareToggle(
             name: "screen", // Tracks can be named to easily find them later
             priority: "low", // Priority is set to high by the subscriber when the video track is rendered
           } as MediaStreamTrackPublishOptions)
+
           .then((trackPublication) => {
             stopScreenShareRef.current = () => {
               room!.localParticipant.unpublishTrack(track);
@@ -39,10 +69,12 @@ export default function useScreenShareToggle(
               room!.localParticipant.emit("trackUnpublished", trackPublication);
               track.stop();
               setIsSharing(false);
+              sendScreenShareDatatrack(false);
             };
 
             track.onended = stopScreenShareRef.current;
             setIsSharing(true);
+            sendScreenShareDatatrack(true);
           })
           .catch(onError);
       })

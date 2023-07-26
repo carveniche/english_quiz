@@ -17,6 +17,10 @@ interface dataTrackStore {
     identity: string;
     type: string;
   };
+  ShreenShareTracks: {
+    identity: string;
+    publishedState: boolean;
+  };
 }
 
 const initialState: dataTrackStore = {
@@ -24,6 +28,10 @@ const initialState: dataTrackStore = {
   animationTrackIdentityAndType: {
     identity: "",
     type: "",
+  },
+  ShreenShareTracks: {
+    identity: "",
+    publishedState: false,
   },
 };
 
@@ -74,9 +82,19 @@ export const dataTrackStoreSlice = createSlice({
         }
       }
     },
+
+    addScreenShareDatatrack: (state, action) => {
+      const { identity, publishedState } = action.payload;
+      let obj = {
+        identity: identity,
+        publishedState: publishedState,
+      };
+      state.ShreenShareTracks = obj;
+    },
   },
 });
 
-export const { addDataTrackValue } = dataTrackStoreSlice.actions;
+export const { addDataTrackValue, addScreenShareDatatrack } =
+  dataTrackStoreSlice.actions;
 
 export default dataTrackStoreSlice.reducer;

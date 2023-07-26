@@ -5,28 +5,19 @@ import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAud
 import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
-import Draggable from "react-draggable";
 
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
 import { allExcludedParticipant } from "../../utils/participantIdentity";
-import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
+import ScreenShareDraggable from "../DraggableComponent/ScreenShareDraggable";
+import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioToggle";
+import { useEffect } from "react";
 
 interface remotePCountInterface {
   remotePCount: number;
 }
-
-const ContainerVideoDraggableOtherScreens = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 1px solid black;
-  right: 0;
-  top: 5;
-  margin-right: 10px;
-`;
 
 const ContainerAllScreen = styled.div`
   display: flex;
@@ -61,11 +52,24 @@ export default function Room() {
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
+
   const remotePCount = speakerViewParticipants.length;
+
+  const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
   const currentSelectedScreen = useSelector(
     (state: RootState) => state.liveClassDetails.currentSelectedScreen
   );
+
+  const screenShareState = useSelector(
+    (state: RootState) => state.dataTrackStore.ShreenShareTracks
+  );
+
+  useEffect(() => {
+    if (isAudioEnabled) {
+      toggleAudioEnabled();
+    }
+  }, []);
 
   return (
     <>
@@ -77,6 +81,8 @@ export default function Room() {
 
       <ParticipantAudioTracks />
       <>
+        {screenShareState.identity !== room?.localParticipant.identity &&
+          screenShareState.publishedState && <ScreenShareDraggable />}
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
             <Item remotePCount={remotePCount}>
@@ -118,11 +124,9 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <Draggable>
-            <ContainerVideoDraggableOtherScreens>
-              <h1>All other Screens Component</h1>
-            </ContainerVideoDraggableOtherScreens>
-          </Draggable>
+          <>
+            <h1>All other Screens Component</h1>
+          </>
 
           /* <ContainerAllScreen>
               <Item remotePCount={remotePCount}>

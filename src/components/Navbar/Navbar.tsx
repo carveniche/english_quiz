@@ -21,8 +21,18 @@ export default function Navbar() {
       ...room.localParticipant.dataTracks.values(),
     ];
 
+    console.log("path sending", path);
+
+    let json = {
+      pathName: path,
+      value: {
+        type: null,
+        identity: null,
+      },
+    };
+
     console.log("Data message send");
-    localDataTrackPublication.track.send(`${path}`);
+    localDataTrackPublication.track.send(JSON.stringify(json));
 
     //send datatrack
   };
