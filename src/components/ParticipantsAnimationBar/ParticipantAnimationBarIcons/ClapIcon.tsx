@@ -485,7 +485,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FF6C4C" />
-          <stop offset="1" stop-color="#FF6D47" stop-opacity="0" />
+          <stop offset="1" stop-color="#FF6D47" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_318_9437"
@@ -507,7 +507,7 @@ export default function ClapIcon() {
           gradientTransform="translate(5.83998 7.07075) rotate(92.0826) scale(1.07493 1.06932)"
         >
           <stop stop-color="#FFAE28" />
-          <stop offset="1" stop-color="#FFAF31" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFAF31" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_318_9437"
@@ -518,7 +518,7 @@ export default function ClapIcon() {
           gradientTransform="translate(5.07817 10.1363) rotate(57.331) scale(3.03942 0.870644)"
         >
           <stop stop-color="#FE9E29" />
-          <stop offset="1" stop-color="#FE9E28" stop-opacity="0" />
+          <stop offset="1" stop-color="#FE9E28" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint4_radial_318_9437"
@@ -529,7 +529,7 @@ export default function ClapIcon() {
           gradientTransform="translate(4.88311 9.80512) rotate(63.4349) scale(1.26652 1.03543)"
         >
           <stop stop-color="#FF9D25" />
-          <stop offset="1" stop-color="#FF9F24" stop-opacity="0" />
+          <stop offset="1" stop-color="#FF9F24" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint5_radial_318_9437"
@@ -540,7 +540,7 @@ export default function ClapIcon() {
           gradientTransform="translate(7.36311 5.48825) rotate(58.3392) scale(2.75356 1.19003)"
         >
           <stop stop-color="#FFC133" />
-          <stop offset="1" stop-color="#FFC93C" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFC93C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint6_radial_318_9437"
@@ -551,7 +551,7 @@ export default function ClapIcon() {
           gradientTransform="translate(7.24623 4.98075) rotate(52.3738) scale(1.1837 0.904579)"
         >
           <stop stop-color="#FFC53A" />
-          <stop offset="1" stop-color="#FFC83C" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFC83C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint7_radial_318_9437"
@@ -561,7 +561,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.49249 6.95325) rotate(90.6384) scale(23.2046 20.0669)"
         >
-          <stop offset="0.37" stop-color="#FF6C5E" stop-opacity="0" />
+          <stop offset="0.37" stop-color="#FF6C5E" stopOpacity="0" />
           <stop offset="0.54" stop-color="#FF6B5E" />
         </radialGradient>
         <radialGradient
@@ -573,7 +573,7 @@ export default function ClapIcon() {
           gradientTransform="translate(9.43311 4.47262) rotate(59.816) scale(2.21429 2.43497)"
         >
           <stop stop-color="#FFAC31" />
-          <stop offset="1" stop-color="#FFA92E" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFA92E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint9_radial_318_9437"
@@ -585,7 +585,7 @@ export default function ClapIcon() {
         >
           <stop stop-color="#DB5703" />
           <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stop-opacity="0" />
+          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint10_radial_318_9437"
@@ -597,7 +597,7 @@ export default function ClapIcon() {
         >
           <stop stop-color="#DB5703" />
           <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stop-opacity="0" />
+          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint11_radial_318_9437"
@@ -609,7 +609,7 @@ export default function ClapIcon() {
         >
           <stop stop-color="#DB5703" />
           <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stop-opacity="0" />
+          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint12_radial_318_9437"
@@ -621,7 +621,7 @@ export default function ClapIcon() {
         >
           <stop stop-color="#FFD945" />
           <stop offset="0.633" stop-color="#FFD343" />
-          <stop offset="1" stop-color="#FFD543" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFD543" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint13_radial_318_9437"
@@ -632,7 +632,7 @@ export default function ClapIcon() {
           gradientTransform="translate(18.7331 9.88316) rotate(98.436) scale(9.20113 2.42988)"
         >
           <stop stop-color="#FFE044" />
-          <stop offset="1" stop-color="#FFE143" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFE143" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint14_radial_318_9437"
@@ -643,7 +643,7 @@ export default function ClapIcon() {
           gradientTransform="translate(12.9302 20.781) rotate(-124.618) scale(14.7145 11.5806)"
         >
           <stop stop-color="#FA825D" />
-          <stop offset="0.883" stop-color="#F67B7D" stop-opacity="0" />
+          <stop offset="0.883" stop-color="#F67B7D" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint15_linear_318_9437"
@@ -654,8 +654,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#D48820" />
-          <stop offset="0.345" stop-color="#E39C2A" stop-opacity="0.649" />
-          <stop offset="0.735" stop-color="#FFC03C" stop-opacity="0" />
+          <stop offset="0.345" stop-color="#E39C2A" stopOpacity="0.649" />
+          <stop offset="0.735" stop-color="#FFC03C" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint16_radial_318_9437"
@@ -667,8 +667,8 @@ export default function ClapIcon() {
         >
           <stop stop-color="#FFDB45" />
           <stop offset="0.484" stop-color="#FFD646" />
-          <stop offset="0.915" stop-color="#FFDA45" stop-opacity="0" />
-          <stop offset="0.97" stop-color="#FFDA45" stop-opacity="0" />
+          <stop offset="0.915" stop-color="#FFDA45" stopOpacity="0" />
+          <stop offset="0.97" stop-color="#FFDA45" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint17_linear_318_9437"
@@ -679,7 +679,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stop-opacity="0" />
+          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_318_9437"
@@ -690,7 +690,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stop-opacity="0" />
+          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint19_linear_318_9437"
@@ -701,7 +701,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stop-opacity="0" />
+          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint20_linear_318_9437"
@@ -712,7 +712,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stop-opacity="0" />
+          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint21_linear_318_9437"
@@ -723,7 +723,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stop-opacity="0" />
+          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint22_linear_318_9437"
@@ -734,7 +734,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stop-opacity="0" />
+          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint23_linear_318_9437"
@@ -745,7 +745,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stop-opacity="0" />
+          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint24_linear_318_9437"
@@ -756,7 +756,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stop-opacity="0" />
+          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint25_linear_318_9437"
@@ -767,7 +767,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stop-opacity="0" />
+          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint26_radial_318_9437"
@@ -778,7 +778,7 @@ export default function ClapIcon() {
           gradientTransform="translate(9.16066 9.78881) rotate(57.126) scale(3.27448 0.613401)"
         >
           <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint27_radial_318_9437"
@@ -789,7 +789,7 @@ export default function ClapIcon() {
           gradientTransform="translate(10.5077 7.70538) rotate(57.5209) scale(3.85552 0.717687)"
         >
           <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint28_radial_318_9437"
@@ -800,7 +800,7 @@ export default function ClapIcon() {
           gradientTransform="translate(10.5077 7.70538) rotate(57.521) scale(3.85553 0.717687)"
         >
           <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint29_linear_318_9437"
@@ -811,7 +811,7 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#E49224" />
-          <stop offset="0.589" stop-color="#FFB02E" stop-opacity="0" />
+          <stop offset="0.589" stop-color="#FFB02E" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint30_linear_318_9437"
@@ -822,8 +822,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FDB137" />
-          <stop offset="0.447" stop-color="#FFBA3C" stop-opacity="0" />
-          <stop offset="1" stop-color="#FCAD33" stop-opacity="0" />
+          <stop offset="0.447" stop-color="#FFBA3C" stopOpacity="0" />
+          <stop offset="1" stop-color="#FCAD33" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint31_linear_318_9437"
@@ -834,8 +834,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FDB137" />
-          <stop offset="0.447" stop-color="#FFBA3C" stop-opacity="0" />
-          <stop offset="1" stop-color="#FCAD33" stop-opacity="0" />
+          <stop offset="0.447" stop-color="#FFBA3C" stopOpacity="0" />
+          <stop offset="1" stop-color="#FCAD33" stopOpacity="0" />
         </linearGradient>
         <clipPath id="clip0_318_9437">
           <rect width="20" height="20" fill="white" />

@@ -282,7 +282,7 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.99957 7.81233) rotate(101.31) scale(11.1541 14.2863)"
         >
-          <stop offset="0.788" stop-color="#F59639" stop-opacity="0" />
+          <stop offset="0.788" stop-color="#F59639" stopOpacity="0" />
           <stop offset="0.973" stop-color="#FF7DCE" />
         </radialGradient>
         <radialGradient
@@ -293,7 +293,7 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.25 8.75) rotate(135) scale(25.6326)"
         >
-          <stop offset="0.315" stop-opacity="0" />
+          <stop offset="0.315" stopOpacity="0" />
           <stop offset="1" />
         </radialGradient>
         <radialGradient
@@ -304,7 +304,7 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.99997 10.6255) rotate(77.692) scale(17.5918)"
         >
-          <stop offset="0.508" stop-color="#7D6133" stop-opacity="0" />
+          <stop offset="0.508" stop-color="#7D6133" stopOpacity="0" />
           <stop offset="1" stop-color="#715B32" />
         </radialGradient>
         <radialGradient
@@ -316,7 +316,7 @@ export default function SmileIcon() {
           gradientTransform="translate(10.3125 10.3125) rotate(55.713) scale(8.32093 6.03145)"
         >
           <stop stop-color="#FFB849" />
-          <stop offset="1" stop-color="#FFB847" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB847" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint6_radial_318_9438"
@@ -327,7 +327,7 @@ export default function SmileIcon() {
           gradientTransform="translate(12.8125 11.25) rotate(9.86582) scale(7.29537)"
         >
           <stop stop-color="#FFA64B" />
-          <stop offset="0.9" stop-color="#FFAE46" stop-opacity="0" />
+          <stop offset="0.9" stop-color="#FFAE46" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint7_radial_318_9438"
@@ -337,8 +337,8 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(10.9375 9.37517) rotate(43.971) scale(36.9081)"
         >
-          <stop offset="0.185" stop-opacity="0" />
-          <stop offset="1" stop-opacity="0.4" />
+          <stop offset="0.185" stopOpacity="0" />
+          <stop offset="1" stopOpacity="0.4" />
         </radialGradient>
         <radialGradient
           id="paint8_radial_318_9438"
@@ -348,8 +348,8 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(4.69062 10.3131) scale(4.05929)"
         >
-          <stop stop-color="#F70A8D" stop-opacity="0.59" />
-          <stop offset="1" stop-color="#FF6DC6" stop-opacity="0" />
+          <stop stop-color="#F70A8D" stopOpacity="0.59" />
+          <stop offset="1" stop-color="#FF6DC6" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint9_radial_318_9438"
@@ -359,8 +359,8 @@ export default function SmileIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(15.3156 10.3131) scale(4.05929)"
         >
-          <stop stop-color="#F70A8D" stop-opacity="0.59" />
-          <stop offset="1" stop-color="#FF6DC6" stop-opacity="0" />
+          <stop stop-color="#F70A8D" stopOpacity="0.59" />
+          <stop offset="1" stop-color="#FF6DC6" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint10_linear_318_9438"
