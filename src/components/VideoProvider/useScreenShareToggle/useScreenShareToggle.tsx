@@ -25,16 +25,16 @@ export default function useScreenShareToggle(
       ...room.localParticipant.dataTracks.values(),
     ];
 
-    let json = {
-      pathName: "/allScreen",
+    let DataTrackObj = {
+      pathName: null,
       value: {
-        type: "ScreenShare",
+        datatrackName: "ScreenShare",
         publishedState: state,
         identity: room?.localParticipant.identity,
       },
     };
 
-    localDataTrackPublication.track.send(JSON.stringify(json));
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
 
     dispatch(
       addScreenShareDatatrack({

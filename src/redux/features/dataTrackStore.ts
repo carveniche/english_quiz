@@ -39,7 +39,7 @@ export const dataTrackStoreSlice = createSlice({
   name: "dataTrackStore",
   initialState,
   reducers: {
-    addDataTrackValue: (state, action) => {
+    addAnimationDatatrack: (state, action) => {
       const { type, identity } = action.payload;
       let obj = {
         identity: identity,
@@ -94,7 +94,7 @@ export const dataTrackStoreSlice = createSlice({
   },
 });
 
-export const { addDataTrackValue, addScreenShareDatatrack } =
+export const { addAnimationDatatrack, addScreenShareDatatrack } =
   dataTrackStoreSlice.actions;
 
 export default dataTrackStoreSlice.reducer;

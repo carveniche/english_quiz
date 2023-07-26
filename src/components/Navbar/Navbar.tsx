@@ -23,7 +23,7 @@ export default function Navbar() {
 
     console.log("path sending", path);
 
-    let json = {
+    let DataTrackObj = {
       pathName: path,
       value: {
         type: null,
@@ -32,7 +32,7 @@ export default function Navbar() {
     };
 
     console.log("Data message send");
-    localDataTrackPublication.track.send(JSON.stringify(json));
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
 
     //send datatrack
   };
