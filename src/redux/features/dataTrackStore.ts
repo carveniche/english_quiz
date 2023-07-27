@@ -17,6 +17,7 @@ interface dataTrackStore {
     identity: string;
     type: string;
     count: number;
+    isAnimationOn: boolean;
   };
   ShreenShareTracks: {
     identity: string;
@@ -30,6 +31,7 @@ const initialState: dataTrackStore = {
     identity: "",
     type: "",
     count: 0,
+    isAnimationOn: false,
   },
   ShreenShareTracks: {
     identity: "",
@@ -48,6 +50,7 @@ export const dataTrackStoreSlice = createSlice({
         identity: identity,
         type: type,
         count: state.animationTrackIdentityAndType.count + 1,
+        isAnimationOn: true,
       };
       state.animationTrackIdentityAndType = obj;
       let { students } = state;
@@ -86,6 +89,9 @@ export const dataTrackStoreSlice = createSlice({
         }
       }
     },
+    disabledAnimation: (state, action) => {
+      state.animationTrackIdentityAndType.isAnimationOn = action.payload;
+    },
 
     addScreenShareDatatrack: (state, action) => {
       const { identity, publishedState } = action.payload;
@@ -98,7 +104,10 @@ export const dataTrackStoreSlice = createSlice({
   },
 });
 
-export const { addAnimationDatatrack, addScreenShareDatatrack } =
-  dataTrackStoreSlice.actions;
+export const {
+  addAnimationDatatrack,
+  addScreenShareDatatrack,
+  disabledAnimation,
+} = dataTrackStoreSlice.actions;
 
 export default dataTrackStoreSlice.reducer;

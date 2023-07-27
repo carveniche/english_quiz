@@ -49,7 +49,8 @@ const Item = styled.div<remotePCountInterface>`
 `;
 
 export default function Room() {
-  const { room } = useVideoContext();
+  const { room, toggleScreenShare } = useVideoContext();
+
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
 
@@ -64,6 +65,12 @@ export default function Room() {
   const screenShareState = useSelector(
     (state: RootState) => state.dataTrackStore.ShreenShareTracks
   );
+
+  useEffect(() => {
+    if (screenShareState.identity === room?.localParticipant.identity) {
+      toggleScreenShare();
+    }
+  }, [screenShareState.publishedState, !screenShareState.publishedState]);
 
   useEffect(() => {
     if (isAudioEnabled) {

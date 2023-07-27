@@ -10,7 +10,6 @@ interface PlayLottieParticipantBar {
 export default function PlayLottieParticipantBar({
   type,
 }: PlayLottieParticipantBar) {
-  console.log("Type inside", type);
   return (
     <div className="flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-between w-[200px] h-[200px] z-10">
       {type === "ThumbsUpIcon" ? (

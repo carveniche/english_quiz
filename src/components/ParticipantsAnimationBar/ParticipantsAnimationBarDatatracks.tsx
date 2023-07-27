@@ -8,27 +8,44 @@ export default function useParticipantsAnimationBarDatatracks() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
-  const handleKeyClick = useCallback((identity: string, key: string) => {
-    const [localDataTrackPublication] = [
-      ...room.localParticipant.dataTracks.values(),
-    ];
-    let json = {
-      pathName: pathname,
-      value: {
-        datatrackName: "Animations",
-        type: key,
-        identity: identity,
-      },
-    };
-    localDataTrackPublication.track.send(JSON.stringify(json));
+  const handleKeyClick = useCallback(
+    (identity: string, key: string, state?: boolean) => {
+      const [localDataTrackPublication] = [
+        ...room.localParticipant.dataTracks.values(),
+      ];
 
-    dispatch(
-      addAnimationDatatrack({
-        datatrackName: "Animations",
-        type: key,
-        identity: identity,
-      })
-    );
-  }, []);
+      if (key === "ScreenShare") {
+        let DataTrackObj = {
+          pathName: null,
+          value: {
+            datatrackName: "ScreenShare",
+            publishedState: state,
+            identity: identity,
+          },
+        };
+
+        localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+      } else {
+        let json = {
+          pathName: pathname,
+          value: {
+            datatrackName: "Animations",
+            type: key,
+            identity: identity,
+          },
+        };
+        localDataTrackPublication.track.send(JSON.stringify(json));
+
+        dispatch(
+          addAnimationDatatrack({
+            datatrackName: "Animations",
+            type: key,
+            identity: identity,
+          })
+        );
+      }
+    },
+    []
+  );
   return [handleKeyClick];
 }
