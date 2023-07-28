@@ -13,8 +13,8 @@ export default function Navbar() {
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
   const dispatch = useDispatch();
-  const handleClick = ({ path, key, name }: ActiveTabParams) => {
-    dispatch(addToActiveTab({ path, key, name }));
+  const handleClick = ({ path, key, name,icon }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name,icon }));
     dispatch(addCurrentSelectedScreen(path));
 
     const [localDataTrackPublication] = [
@@ -31,11 +31,11 @@ export default function Navbar() {
     <>
       {routerConfig.map((item) => {
         return (
-          <div className="justify-center text-white" key={item.key}>
+          <div className="justify-center text-white" key={`${item.key}`}>
             <NavLink
               to={`${item.path}?${queryParams}`}
               onClick={() =>
-                handleClick({ path: item.path, key: item.key, name: item.name })
+                handleClick({ path: item.path, key: item.key, name: item.name,icon:item.icon })
               }
             >
               {item.name}

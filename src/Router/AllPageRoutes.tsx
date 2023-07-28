@@ -4,7 +4,7 @@ export default function AllPageRoutes() {
   return (
     <>
       <Routes>
-        {routerConfig?.map((item) => (
+        {routerConfig.map((item) => (
           <Route
             path={item.path.toString()}
             Component={item.component}

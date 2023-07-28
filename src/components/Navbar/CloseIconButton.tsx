@@ -5,7 +5,7 @@ onClick:MouseEventHandler|undefined
 export default function CloseIconButton({onClick}:CloseIconButton) {
    
   return (
-    <div>
+    <div className='cursor-pointer'>
         <img src="/menu-icon/Close.svg" onClick={onClick}/>
     </div>
   )

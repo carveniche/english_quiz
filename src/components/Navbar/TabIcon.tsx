@@ -1,8 +1,5 @@
-import React from 'react'
-
-export default function TabIcon({src}:{src:String|undefined}) {
-
+export default function TabIcon({src}:{src:String}) {
   return (
-    <div>TabIcon</div>
+    <div className="w-[20px] h-[20px]"><img src={`${src}`} /></div>
   )
 }

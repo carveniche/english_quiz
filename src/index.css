@@ -9,3 +9,14 @@
 svg {
   display: inline;
 }
+.activeTabLayout {
+  border-right: 1px solid var(--gray-1, #333);
+  border-left: 1px solid var(--gray-1, #333);
+  background: #1b1b1b;
+  padding: 12px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  color: white;
+}
