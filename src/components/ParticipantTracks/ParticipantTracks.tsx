@@ -55,6 +55,7 @@ export default function ParticipantTracks({
           isLocalParticipant={isLocalParticipant}
           videoOnly={videoOnly}
           videoPriority={videoPriority}
+          enableScreenShare={enableScreenShare}
         />
       ))}
     </>

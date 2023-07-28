@@ -16,6 +16,12 @@ interface dataTrackStore {
   animationTrackIdentityAndType: {
     identity: string;
     type: string;
+    count: number;
+    isAnimationOn: boolean;
+  };
+  ShreenShareTracks: {
+    identity: string;
+    publishedState: boolean;
   };
 }
 
@@ -24,6 +30,12 @@ const initialState: dataTrackStore = {
   animationTrackIdentityAndType: {
     identity: "",
     type: "",
+    count: 0,
+    isAnimationOn: false,
+  },
+  ShreenShareTracks: {
+    identity: "",
+    publishedState: false,
   },
 };
 
@@ -31,11 +43,14 @@ export const dataTrackStoreSlice = createSlice({
   name: "dataTrackStore",
   initialState,
   reducers: {
-    addDataTrackValue: (state, action) => {
+    addAnimationDatatrack: (state, action) => {
       const { type, identity } = action.payload;
+
       let obj = {
         identity: identity,
         type: type,
+        count: state.animationTrackIdentityAndType.count + 1,
+        isAnimationOn: true,
       };
       state.animationTrackIdentityAndType = obj;
       let { students } = state;
@@ -74,9 +89,25 @@ export const dataTrackStoreSlice = createSlice({
         }
       }
     },
+    disabledAnimation: (state, action) => {
+      state.animationTrackIdentityAndType.isAnimationOn = action.payload;
+    },
+
+    addScreenShareDatatrack: (state, action) => {
+      const { identity, publishedState } = action.payload;
+      let obj = {
+        identity: identity,
+        publishedState: publishedState,
+      };
+      state.ShreenShareTracks = obj;
+    },
   },
 });
 
-export const { addDataTrackValue } = dataTrackStoreSlice.actions;
+export const {
+  addAnimationDatatrack,
+  addScreenShareDatatrack,
+  disabledAnimation,
+} = dataTrackStoreSlice.actions;
 
 export default dataTrackStoreSlice.reducer;

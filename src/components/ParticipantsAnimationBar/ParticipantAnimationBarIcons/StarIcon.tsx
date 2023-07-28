@@ -387,7 +387,7 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(16.5037 12.2024) rotate(-27.3239) scale(2.63809 3.65926)"
         >
-          <stop offset="0.747" stop-color="#FFF055" stop-opacity="0" />
+          <stop offset="0.747" stop-color="#FFF055" stopOpacity="0" />
           <stop offset="1" stop-color="#FFF055" />
         </radialGradient>
         <linearGradient
@@ -399,7 +399,7 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF659" />
-          <stop offset="1" stop-color="#FFF659" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF659" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_318_9439"
@@ -410,7 +410,7 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#DEAE2C" />
-          <stop offset="1" stop-color="#DEAE2C" stop-opacity="0" />
+          <stop offset="1" stop-color="#DEAE2C" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_318_9439"
@@ -421,7 +421,7 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#F9C83C" />
-          <stop offset="1" stop-color="#F9C83C" stop-opacity="0" />
+          <stop offset="1" stop-color="#F9C83C" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint4_radial_318_9439"
@@ -443,7 +443,7 @@ export default function StarIcon() {
           gradientTransform="translate(9.68753 8.66746) rotate(90) scale(7.1875)"
         >
           <stop stop-color="#DDBA38" />
-          <stop offset="1" stop-color="#DDBA38" stop-opacity="0" />
+          <stop offset="1" stop-color="#DDBA38" stopOpacity="0" />
         </radialGradient>
         <clipPath id="clip0_318_9439">
           <rect width="20" height="20" fill="white" />

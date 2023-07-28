@@ -5,28 +5,19 @@ import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAud
 import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
-import Draggable from "react-draggable";
 
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
 import { allExcludedParticipant } from "../../utils/participantIdentity";
-import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
+import ScreenShareDraggable from "../DraggableComponent/ScreenShareDraggable";
+import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioToggle";
+import { useEffect } from "react";
 
 interface remotePCountInterface {
-  remotePCount: number;
+  remotepcount: number;
 }
-
-const ContainerVideoDraggableOtherScreens = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border: 1px solid black;
-  right: 0;
-  top: 5;
-  margin-right: 10px;
-`;
 
 const ContainerAllScreen = styled.div`
   display: flex;
@@ -41,31 +32,51 @@ const ContainerAllScreen = styled.div`
 
 const Item = styled.div<remotePCountInterface>`
   width: ${(props) =>
-    props.remotePCount === 0
+    props.remotepcount === 0
       ? "calc(100% - 5px)"
-      : props.remotePCount === 1
+      : props.remotepcount === 1
       ? "calc(50% - 5px)"
-      : props.remotePCount === 2 || props.remotePCount === 3
+      : props.remotepcount === 2 || props.remotepcount === 3
       ? "calc(50% - 5px)"
       : "calc(33% - 5px)"};
   max-height: ${(props) =>
-    props.remotePCount === 0 || props.remotePCount === 1
+    props.remotepcount === 0 || props.remotepcount === 1
       ? "100%"
-      : props.remotePCount === 2 || props.remotePCount == 3
+      : props.remotepcount === 2 || props.remotepcount == 3
       ? "50%"
       : "100%"};
   position: relative;
 `;
 
 export default function Room() {
-  const { room } = useVideoContext();
+  const { room, toggleScreenShare } = useVideoContext();
+
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
+
   const remotePCount = speakerViewParticipants.length;
+
+  const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
   const currentSelectedScreen = useSelector(
     (state: RootState) => state.liveClassDetails.currentSelectedScreen
   );
+
+  const screenShareState = useSelector(
+    (state: RootState) => state.dataTrackStore.ShreenShareTracks
+  );
+
+  useEffect(() => {
+    if (screenShareState.identity === room?.localParticipant.identity) {
+      toggleScreenShare();
+    }
+  }, [screenShareState.publishedState, !screenShareState.publishedState]);
+
+  useEffect(() => {
+    if (isAudioEnabled) {
+      toggleAudioEnabled();
+    }
+  }, []);
 
   return (
     <>
@@ -77,9 +88,11 @@ export default function Room() {
 
       <ParticipantAudioTracks />
       <>
+        {screenShareState.identity !== room?.localParticipant.identity &&
+          screenShareState.publishedState && <ScreenShareDraggable />}
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
-            <Item remotePCount={remotePCount}>
+            <Item remotepcount={remotePCount}>
               {!allExcludedParticipant({
                 identity: localParticipant.identity,
               }) && (
@@ -99,7 +112,7 @@ export default function Room() {
             {speakerViewParticipants.map((participant) => {
               return (
                 <>
-                  <Item remotePCount={remotePCount}>
+                  <Item remotepcount={remotePCount}>
                     {!allExcludedParticipant({
                       identity: participant.identity,
                     }) && (
@@ -118,11 +131,9 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <Draggable>
-            <ContainerVideoDraggableOtherScreens>
-              <h1>All other Screens Component</h1>
-            </ContainerVideoDraggableOtherScreens>
-          </Draggable>
+          <>
+            <h1>All other Screens Component</h1>
+          </>
 
           /* <ContainerAllScreen>
               <Item remotePCount={remotePCount}>

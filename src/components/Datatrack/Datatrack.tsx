@@ -4,11 +4,15 @@ import { useLocation } from "react-router";
 import { DataTrack as IDataTrack } from "twilio-video";
 import { getQueryParams } from "../../utils/getQueryParams";
 import { useDispatch } from "react-redux";
-import { addDataTrackValue } from "../../redux/features/dataTrackStore";
+import {
+  addAnimationDatatrack,
+  addScreenShareDatatrack,
+} from "../../redux/features/dataTrackStore";
+import { addCurrentSelectedScreen } from "../../redux/features/liveClassDetails";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const history = useNavigate();
   const queryParams = getQueryParams();
   const dispatch = useDispatch();
 
@@ -16,13 +20,19 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
 
-      if (pathname === parseMessage.pathname) {
+      if (
+        pathname === parseMessage.pathName ||
+        parseMessage.pathName === null
+      ) {
       } else {
-        navigate(`${parseMessage.pathName}?${queryParams}`);
+        history(`${parseMessage.pathName}?${queryParams}`);
+        dispatch(addCurrentSelectedScreen(parseMessage.pathName));
       }
 
-      if (parseMessage.value) {
-        dispatch(addDataTrackValue(parseMessage.value));
+      if (parseMessage?.value?.datatrackName === "ScreenShare") {
+        dispatch(addScreenShareDatatrack(parseMessage.value));
+      } else if (parseMessage.value.datatrackName === "Animations") {
+        dispatch(addAnimationDatatrack(parseMessage.value));
       }
     };
 

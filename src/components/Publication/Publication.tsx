@@ -16,6 +16,7 @@ interface PublicationProps {
   isLocalParticipant?: boolean;
   videoOnly?: boolean;
   videoPriority?: Track.Priority | null;
+  enableScreenShare?: boolean;
 }
 
 export default function Publication({
@@ -23,6 +24,7 @@ export default function Publication({
   isLocalParticipant,
   videoPriority,
   videoOnly,
+  enableScreenShare,
 }: PublicationProps) {
   const track = useTrack(publication);
 
@@ -40,7 +42,9 @@ export default function Publication({
         />
       );
     case "data":
-      return videoOnly ? null : <DataTrack track={track} />;
+      return videoOnly || enableScreenShare ? null : (
+        <DataTrack track={track} />
+      );
     // All participant audio tracks are rendered in ParticipantAudioTracks.tsx
     default:
       return null;

@@ -11,14 +11,15 @@ import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIc
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
 
 import useParticipantsAnimationBarDatatracks from "./ParticipantsAnimationBarDatatracks";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
 import _isEqual from "lodash/isEqual";
 import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
-
+import { useDispatch } from "react-redux";
+import { disabledAnimation } from "../../redux/features/dataTrackStore";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -28,6 +29,7 @@ export default function ParticipantsAnimationBar({
   localParticipant,
   participant,
 }: ParticipantProps) {
+  const dispatch = useDispatch();
   const [handleKeyClick] = useParticipantsAnimationBarDatatracks();
   const [animationCount, setAnimationCount] = useState({
     ThumbsUpIcon: {
@@ -52,6 +54,7 @@ export default function ParticipantsAnimationBar({
   const [animationPariticipantType, setAnimationParticipantType] =
     useState<string>("");
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
 
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
@@ -66,17 +69,27 @@ export default function ParticipantsAnimationBar({
 
   const handleAnimationTiming = () => {
     setStartAnimation(true);
-
     setTimeout(() => {
       setStartAnimation(false);
+      dispatch(disabledAnimation(false));
     }, 2500);
   };
 
-  const screenShareButtonClicked = () => {};
+  const screenShareButtonClicked = (identity: string, key: string) => {
+    setStundentShareScreen(!studentShareScreen);
+    if (!studentShareScreen) {
+      handleKeyClick(identity, key, true);
+    } else {
+      handleKeyClick(identity, key, false);
+    }
+  };
 
   const muteIconButtonClicked = () => {};
 
   useEffect(() => {
+    if (animationDataTracks.animationTrackIdentityAndType.count === 0) {
+      return;
+    }
     if (animationDataTracks.students.length) {
       showCountOfAnimation();
     }
@@ -91,9 +104,11 @@ export default function ParticipantsAnimationBar({
       setAnimationParticipantType(
         animationDataTracks.animationTrackIdentityAndType.type
       );
-      handleAnimationTiming();
+      if (animationDataTracks.animationTrackIdentityAndType.isAnimationOn) {
+        handleAnimationTiming();
+      }
     }
-  }, [animationDataTracks]);
+  }, [animationDataTracks.animationTrackIdentityAndType.count]);
 
   const showCountOfAnimation = () => {
     animationDataTracks?.students?.map((item) => {
@@ -187,7 +202,9 @@ export default function ParticipantsAnimationBar({
         <div className="flex gap-2 z-10">
           <button>
             <div
-              onClick={() => screenShareButtonClicked()}
+              onClick={() =>
+                screenShareButtonClicked(participant.identity, "ScreenShare")
+              }
               className="flex justify-between gap-1 mt-[2px] mb-[2px]"
             >
               <ScreenShareIcon />

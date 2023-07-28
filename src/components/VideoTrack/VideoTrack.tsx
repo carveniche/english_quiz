@@ -29,8 +29,8 @@ export default function VideoTrack({
   useEffect(() => {
     const el = ref.current;
     el.muted = true;
-    if (track.setPriority && priority) {
-      track.setPriority(priority);
+    if (track?.setPriority && priority) {
+      track?.setPriority(priority);
     }
     track.attach(el);
     return () => {
@@ -40,9 +40,9 @@ export default function VideoTrack({
       // See: https://github.com/twilio/twilio-video.js/issues/1528
       el.srcObject = null;
 
-      if (track.setPriority && priority) {
+      if (track?.setPriority && priority) {
         // Passing `null` to setPriority will set the track's priority to that which it was published with.
-        track.setPriority(null);
+        track?.setPriority(null);
       }
     };
   }, [track, priority]);
@@ -54,7 +54,7 @@ export default function VideoTrack({
   const style = {
     transform: isLocal && isFrontFacing ? "scaleX(-1)" : "",
     objectFit:
-      isPortrait || track.name.includes("screen")
+      isPortrait || track?.name?.includes("screen")
         ? ("contain" as const)
         : ("cover" as const),
   };

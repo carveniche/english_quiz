@@ -496,7 +496,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(12.7751 3.02818) rotate(141.116) scale(3.13478 9.25213)"
         >
           <stop stop-color="#FFE34C" />
-          <stop offset="1" stop-color="#FFE34C" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFE34C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint2_radial_318_9436"
@@ -507,7 +507,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(7.06786 9.85945) rotate(125.191) scale(4.64388 3.3641)"
         >
           <stop stop-color="#FFCA2E" />
-          <stop offset="1" stop-color="#FFCA2E" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFCA2E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_318_9436"
@@ -517,7 +517,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(12.1062 11.3319) rotate(146.743) scale(10.1192 17.7089)"
         >
-          <stop offset="0.681" stop-color="#E18E3F" stop-opacity="0" />
+          <stop offset="0.681" stop-color="#E18E3F" stopOpacity="0" />
           <stop offset="1" stop-color="#E18E3F" />
         </radialGradient>
         <linearGradient
@@ -528,7 +528,7 @@ export default function ThumbsUpIcon() {
           y2="19.1644"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D8796F" stop-opacity="0" />
+          <stop stop-color="#D8796F" stopOpacity="0" />
           <stop offset="1" stop-color="#D8796F" />
         </linearGradient>
         <linearGradient
@@ -562,7 +562,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.49 10.1375) rotate(-142.633) scale(1.45069 0.971047)"
         >
           <stop stop-color="#D98320" />
-          <stop offset="1" stop-color="#D98320" stop-opacity="0" />
+          <stop offset="1" stop-color="#D98320" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint8_linear_318_9436"
@@ -584,7 +584,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.6193 18.5489) scale(4.57092 1.73889)"
         >
           <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stop-opacity="0" />
+          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint10_radial_318_9436"
@@ -595,7 +595,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.3999 15.6301) scale(4.63556 1.24435)"
         >
           <stop stop-color="#DA810B" />
-          <stop offset="1" stop-color="#FFB610" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB610" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint11_linear_318_9436"
@@ -606,7 +606,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#DC7C6A" />
-          <stop offset="1" stop-color="#DC7C6A" stop-opacity="0" />
+          <stop offset="1" stop-color="#DC7C6A" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint12_radial_318_9436"
@@ -617,7 +617,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(9.76439 16.7789) scale(3.50203 5.26419)"
         >
           <stop stop-color="#E38811" />
-          <stop offset="1" stop-color="#E38811" stop-opacity="0" />
+          <stop offset="1" stop-color="#E38811" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint13_linear_318_9436"
@@ -628,7 +628,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_318_9436"
@@ -650,7 +650,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.7837 16.062) scale(5.24073 1.83104)"
         >
           <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stop-opacity="0" />
+          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint16_radial_318_9436"
@@ -661,7 +661,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.5318 12.9888) scale(5.31485 1.3103)"
         >
           <stop stop-color="#DA810B" />
-          <stop offset="1" stop-color="#FFB610" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFB610" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint17_linear_318_9436"
@@ -672,7 +672,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_318_9436"
@@ -694,7 +694,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(11.805 12.7575) scale(3.43792 1.53029)"
         >
           <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stop-opacity="0" />
+          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint20_radial_318_9436"
@@ -705,7 +705,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(7.83562 3.02745) rotate(90) scale(3.97508 1.47589)"
         >
           <stop stop-color="#F3A52A" />
-          <stop offset="1" stop-color="#F3A52A" stop-opacity="0" />
+          <stop offset="1" stop-color="#F3A52A" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint21_radial_318_9436"
@@ -716,7 +716,7 @@ export default function ThumbsUpIcon() {
           gradientTransform="translate(6.675 5.64495) rotate(42.9975) scale(1.99105 3.01278)"
         >
           <stop stop-color="#CDA25E" />
-          <stop offset="1" stop-color="#CDA25E" stop-opacity="0" />
+          <stop offset="1" stop-color="#CDA25E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint22_radial_318_9436"
@@ -726,7 +726,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.74158 2.78177) rotate(-168.366) scale(1.02466 2.23656)"
         >
-          <stop offset="0.55" stop-color="#CCB28B" stop-opacity="0" />
+          <stop offset="0.55" stop-color="#CCB28B" stopOpacity="0" />
           <stop offset="1" stop-color="#CCB28B" />
         </radialGradient>
         <linearGradient
@@ -738,7 +738,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint24_linear_318_9436"
@@ -749,7 +749,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint25_linear_318_9436"
@@ -760,7 +760,7 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
         >
           <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stop-opacity="0" />
+          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
         </linearGradient>
         <clipPath id="clip0_318_9436">
           <rect width="20" height="20" fill="white" />
