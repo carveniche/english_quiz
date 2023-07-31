@@ -19,6 +19,7 @@ import AllPageRoutes from "./Router/AllPageRoutes";
 import Header2 from "./components/Navbar/Header2";
 import Header from "./components/Navbar/Header";
 import { getQueryParams } from "./utils/getQueryParams";
+import { ChatProvider } from "./components/ChatProvider";
 
 const Container = styled("div")({
   display: "grid",
@@ -47,7 +48,9 @@ export function VideoApp() {
       <ErrorDialog dismissError={() => setError(null)} error={error} />
       <ParticipantProvider>
         <BrowserRouter>
-          <App />
+          <ChatProvider>
+            <App />
+          </ChatProvider>
         </BrowserRouter>
       </ParticipantProvider>
     </VideoProvider>

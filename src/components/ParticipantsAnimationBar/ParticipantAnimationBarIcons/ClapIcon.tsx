@@ -7,7 +7,7 @@ export default function ClapIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="Clap" clip-path="url(#clip0_318_9437)">
+      <g id="Clap" clipPath="url(#clip0_318_9437)">
         <g id="Group">
           <g id="Clip path group">
             <mask
@@ -76,30 +76,30 @@ export default function ClapIcon() {
                 />
                 <path
                   id="Vector_12"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M4.80623 8.81832C4.74144 8.80401 4.67593 8.79316 4.60998 8.78582C4.70498 8.78895 4.77248 8.80645 4.80623 8.81832ZM4.83123 8.82332L4.88998 8.83832C5.09373 8.8927 5.28123 8.97894 5.40748 9.09144C5.47123 9.14769 5.56686 9.26332 5.68998 9.43832C5.80998 9.6077 5.94186 9.81332 6.07873 10.0339C6.18998 10.2127 6.30498 10.4033 6.41748 10.5902C6.57686 10.8539 6.73061 11.1077 6.85686 11.3027C6.90186 11.3723 6.97268 11.4212 7.05373 11.4386C7.13478 11.456 7.21942 11.4405 7.28904 11.3955C7.35866 11.3505 7.40755 11.2797 7.42496 11.1986C7.44236 11.1176 7.42686 11.0329 7.38186 10.9633C7.23878 10.7385 7.09897 10.5116 6.96248 10.2827C6.84998 10.0958 6.73123 9.89957 6.60998 9.70457C6.47966 9.49201 6.34336 9.28317 6.20123 9.07832C6.07498 8.89957 5.94436 8.73207 5.82311 8.62395C5.59811 8.42395 5.30811 8.3027 5.05123 8.23457C4.86486 8.18417 4.67301 8.15689 4.47998 8.15332C4.49408 8.18908 4.51036 8.22394 4.52873 8.2577C4.75998 8.68707 4.81998 8.80145 4.83123 8.82332Z"
                   fill="url(#paint9_radial_318_9437)"
                 />
                 <path
                   id="Vector_13"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M5.86132 6.37452C5.81495 6.36172 5.76776 6.35211 5.72007 6.34577C5.76832 6.3483 5.81592 6.35799 5.86132 6.37452ZM5.88132 6.38015C6.05632 6.4314 6.2657 6.53765 6.50132 6.74765C6.51945 6.76327 6.56132 6.81015 6.6282 6.90452C6.6907 6.99327 6.7657 7.10702 6.8482 7.24202C7.01445 7.51077 7.20757 7.84827 7.40445 8.20077C7.50882 8.38577 7.61445 8.57577 7.71695 8.76202C8.0007 9.27327 8.26632 9.75265 8.42945 10.0039C8.451 10.0399 8.47958 10.0712 8.51348 10.0959C8.54739 10.1206 8.58592 10.1383 8.62679 10.1478C8.66766 10.1573 8.71003 10.1585 8.75136 10.1512C8.7927 10.144 8.83216 10.1286 8.86738 10.1058C8.90261 10.083 8.93288 10.0533 8.9564 10.0185C8.97992 9.9838 8.99619 9.94467 9.00426 9.90349C9.01233 9.86231 9.01202 9.81993 9.00335 9.77887C8.99469 9.73782 8.97784 9.69893 8.95382 9.66452C8.80382 9.43202 8.5557 8.98577 8.2782 8.48452L7.95007 7.89515C7.7666 7.56431 7.57656 7.23717 7.38007 6.9139C7.30334 6.78752 7.22246 6.6637 7.13757 6.54265C7.07353 6.44758 6.99957 6.35959 6.91695 6.28015C6.41945 5.83827 5.9607 5.71577 5.60632 5.71265C5.6232 5.96015 5.7157 6.19577 5.88132 6.38015Z"
                   fill="url(#paint10_radial_318_9437)"
                 />
                 <path
                   id="Vector_14"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M8.25134 5.26016L8.30822 5.35266L9.09759 6.62016C9.57964 7.39745 10.0657 8.17225 10.5557 8.94453C10.6013 9.01299 10.672 9.06073 10.7525 9.0774C10.833 9.09408 10.9169 9.07834 10.9859 9.0336C11.0549 8.98886 11.1035 8.91873 11.1211 8.83841C11.1387 8.75809 11.124 8.67406 11.0801 8.60453C10.592 7.83555 10.1078 7.06408 9.62759 6.29016L8.83947 5.02266L8.58947 4.61953L8.57509 4.59766C8.41459 4.78867 8.30342 5.01616 8.25134 5.26016Z"
                   fill="url(#paint11_radial_318_9437)"
                 />
                 <g id="Group_3" filter="url(#filter0_f_318_9437)">
                   <path
                     id="Vector_15"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M14.4707 8.54392L14.5594 13.9452C14.6763 15.4064 13.8438 16.9814 12.6163 17.727C12.385 17.8677 12.1419 17.9808 11.8925 18.0677C10.5463 18.0814 9.20317 17.4589 8.43254 16.367L6.90817 14.2895L5.91567 12.5677C5.64567 12.1245 5.80004 11.2658 6.23067 10.9764C6.83254 10.572 7.21442 10.752 7.21442 10.752C7.21442 10.752 6.72067 9.95767 6.47379 9.49892C6.22629 9.04079 6.35879 8.34204 6.80192 8.07142C7.36942 7.72517 7.83254 8.13267 7.86129 8.16454C7.49004 7.66142 7.46004 6.53142 8.14442 6.11329C8.55692 5.86142 9.30379 5.80267 9.57442 6.24579L9.93379 6.71329C9.93379 6.71329 10.03 6.16517 10.4732 5.89454L10.5107 5.87329L12.0057 8.54454C12.0057 8.54454 12.0369 7.75454 12.6869 7.45517L13.7807 9.40892C13.7807 9.40892 13.81 8.64017 14.4332 8.32517C14.4507 8.40017 14.4625 8.47392 14.4707 8.54392Z"
                     fill="#F06B0C"
                   />
@@ -221,8 +221,8 @@ export default function ClapIcon() {
                     id="Vector_38"
                     d="M9.10193 6.81641C9.3688 6.83578 9.59193 6.87703 9.90443 7.36141C10.2169 7.84578 11.2194 9.49016 11.7407 10.3108"
                     stroke="#FFE240"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_6" filter="url(#filter3_f_318_9437)">
@@ -230,8 +230,8 @@ export default function ClapIcon() {
                     id="Vector_39"
                     d="M8.06628 9.21875C8.33316 9.23812 8.55691 9.27937 8.86941 9.76375C9.18191 10.2481 9.75253 11.3675 10.2732 12.1875"
                     stroke="#FFE240"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_7" filter="url(#filter4_f_318_9437)">
@@ -239,9 +239,9 @@ export default function ClapIcon() {
                     id="Vector_40"
                     d="M8.75 7.83203C9.01687 7.85141 9.31875 7.96266 9.63125 8.44703C9.94375 8.93141 10.6125 10.2933 11.1325 11.1133"
                     stroke="url(#paint30_linear_318_9437)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_8" filter="url(#filter5_f_318_9437)">
@@ -249,9 +249,9 @@ export default function ClapIcon() {
                     id="Vector_41"
                     d="M9.84375 5.5083C10.1106 5.52705 10.7444 5.72705 11.0569 6.2108C11.3694 6.69518 12.2525 8.3983 12.7737 9.21893"
                     stroke="url(#paint31_linear_318_9437)"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_9" filter="url(#filter6_f_318_9437)">
@@ -259,8 +259,8 @@ export default function ClapIcon() {
                     id="Vector_42"
                     d="M10.4863 4.8645C10.7532 4.88388 10.977 4.92513 11.2895 5.4095C11.602 5.89388 13.327 8.49638 13.8476 9.31638"
                     stroke="#FFE240"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_10" filter="url(#filter7_f_318_9437)">
@@ -268,8 +268,8 @@ export default function ClapIcon() {
                     id="Vector_43"
                     d="M12.8269 4.71875C13.0938 4.73875 13.3169 4.77937 13.6294 5.26375C13.9419 5.74812 15.6869 8.99437 16.2075 9.81437"
                     stroke="#FFE240"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_11" filter="url(#filter8_f_318_9437)">
@@ -277,8 +277,8 @@ export default function ClapIcon() {
                     id="Vector_44"
                     d="M17.7163 7.40137C17.9382 7.55137 18.1113 7.69824 18.1413 8.27387C18.1701 8.84949 18.0638 12.5332 18.1063 13.5039"
                     stroke="#FFE240"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="round"
                   />
                 </g>
               </g>
@@ -294,9 +294,9 @@ export default function ClapIcon() {
           width="13.7887"
           height="17.1946"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -315,9 +315,9 @@ export default function ClapIcon() {
           width="13.16"
           height="15.7131"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -336,9 +336,9 @@ export default function ClapIcon() {
           width="5.63879"
           height="6.49438"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -357,9 +357,9 @@ export default function ClapIcon() {
           width="5.20691"
           height="5.96875"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -378,9 +378,9 @@ export default function ClapIcon() {
           width="5.38257"
           height="6.28149"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -399,9 +399,9 @@ export default function ClapIcon() {
           width="5.93018"
           height="6.71069"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -420,9 +420,9 @@ export default function ClapIcon() {
           width="6.36133"
           height="7.4519"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -441,9 +441,9 @@ export default function ClapIcon() {
           width="6.38074"
           height="8.0957"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -462,9 +462,9 @@ export default function ClapIcon() {
           width="3.42993"
           height="9.10254"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -484,8 +484,8 @@ export default function ClapIcon() {
           y2="9.68762"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF6C4C" />
-          <stop offset="1" stop-color="#FF6D47" stopOpacity="0" />
+          <stop stopColor="#FF6C4C" />
+          <stop offset="1" stopColor="#FF6D47" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_318_9437"
@@ -495,8 +495,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(6.54311 8.00762) rotate(58.4429) scale(2.91095 1.16366)"
         >
-          <stop stop-color="#FFAF33" />
-          <stop offset="1" stop-color="#FA8221" />
+          <stop stopColor="#FFAF33" />
+          <stop offset="1" stopColor="#FA8221" />
         </radialGradient>
         <radialGradient
           id="paint2_radial_318_9437"
@@ -506,8 +506,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.83998 7.07075) rotate(92.0826) scale(1.07493 1.06932)"
         >
-          <stop stop-color="#FFAE28" />
-          <stop offset="1" stop-color="#FFAF31" stopOpacity="0" />
+          <stop stopColor="#FFAE28" />
+          <stop offset="1" stopColor="#FFAF31" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_318_9437"
@@ -517,8 +517,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.07817 10.1363) rotate(57.331) scale(3.03942 0.870644)"
         >
-          <stop stop-color="#FE9E29" />
-          <stop offset="1" stop-color="#FE9E28" stopOpacity="0" />
+          <stop stopColor="#FE9E29" />
+          <stop offset="1" stopColor="#FE9E28" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint4_radial_318_9437"
@@ -528,8 +528,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(4.88311 9.80512) rotate(63.4349) scale(1.26652 1.03543)"
         >
-          <stop stop-color="#FF9D25" />
-          <stop offset="1" stop-color="#FF9F24" stopOpacity="0" />
+          <stop stopColor="#FF9D25" />
+          <stop offset="1" stopColor="#FF9F24" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint5_radial_318_9437"
@@ -539,8 +539,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(7.36311 5.48825) rotate(58.3392) scale(2.75356 1.19003)"
         >
-          <stop stop-color="#FFC133" />
-          <stop offset="1" stop-color="#FFC93C" stopOpacity="0" />
+          <stop stopColor="#FFC133" />
+          <stop offset="1" stopColor="#FFC93C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint6_radial_318_9437"
@@ -550,8 +550,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(7.24623 4.98075) rotate(52.3738) scale(1.1837 0.904579)"
         >
-          <stop stop-color="#FFC53A" />
-          <stop offset="1" stop-color="#FFC83C" stopOpacity="0" />
+          <stop stopColor="#FFC53A" />
+          <stop offset="1" stopColor="#FFC83C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint7_radial_318_9437"
@@ -561,8 +561,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.49249 6.95325) rotate(90.6384) scale(23.2046 20.0669)"
         >
-          <stop offset="0.37" stop-color="#FF6C5E" stopOpacity="0" />
-          <stop offset="0.54" stop-color="#FF6B5E" />
+          <stop offset="0.37" stopColor="#FF6C5E" stopOpacity="0" />
+          <stop offset="0.54" stopColor="#FF6B5E" />
         </radialGradient>
         <radialGradient
           id="paint8_radial_318_9437"
@@ -572,8 +572,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.43311 4.47262) rotate(59.816) scale(2.21429 2.43497)"
         >
-          <stop stop-color="#FFAC31" />
-          <stop offset="1" stop-color="#FFA92E" stopOpacity="0" />
+          <stop stopColor="#FFAC31" />
+          <stop offset="1" stopColor="#FFA92E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint9_radial_318_9437"
@@ -583,9 +583,9 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.80061 10.4302) rotate(-35.0958) scale(0.883236 2.70968)"
         >
-          <stop stop-color="#DB5703" />
-          <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
+          <stop stopColor="#DB5703" />
+          <stop offset="0.595" stopColor="#C94A04" />
+          <stop offset="1" stopColor="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint10_radial_318_9437"
@@ -595,9 +595,9 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(6.66007 8.53515) rotate(-42.6141) scale(1.32698 4.25861)"
         >
-          <stop stop-color="#DB5703" />
-          <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
+          <stop stopColor="#DB5703" />
+          <stop offset="0.595" stopColor="#C94A04" />
+          <stop offset="1" stopColor="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint11_radial_318_9437"
@@ -607,9 +607,9 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.75009 7.16828) rotate(-42.1844) scale(0.84347 2.76925)"
         >
-          <stop stop-color="#DB5703" />
-          <stop offset="0.595" stop-color="#C94A04" />
-          <stop offset="1" stop-color="#D65A05" stopOpacity="0" />
+          <stop stopColor="#DB5703" />
+          <stop offset="0.595" stopColor="#C94A04" />
+          <stop offset="1" stopColor="#D65A05" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint12_radial_318_9437"
@@ -619,9 +619,9 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(14.1019 12.5782) rotate(73.365) scale(6.68606 4.43794)"
         >
-          <stop stop-color="#FFD945" />
-          <stop offset="0.633" stop-color="#FFD343" />
-          <stop offset="1" stop-color="#FFD543" stopOpacity="0" />
+          <stop stopColor="#FFD945" />
+          <stop offset="0.633" stopColor="#FFD343" />
+          <stop offset="1" stopColor="#FFD543" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint13_radial_318_9437"
@@ -631,8 +631,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(18.7331 9.88316) rotate(98.436) scale(9.20113 2.42988)"
         >
-          <stop stop-color="#FFE044" />
-          <stop offset="1" stop-color="#FFE143" stopOpacity="0" />
+          <stop stopColor="#FFE044" />
+          <stop offset="1" stopColor="#FFE143" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint14_radial_318_9437"
@@ -642,8 +642,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(12.9302 20.781) rotate(-124.618) scale(14.7145 11.5806)"
         >
-          <stop stop-color="#FA825D" />
-          <stop offset="0.883" stop-color="#F67B7D" stopOpacity="0" />
+          <stop stopColor="#FA825D" />
+          <stop offset="0.883" stopColor="#F67B7D" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint15_linear_318_9437"
@@ -653,9 +653,9 @@ export default function ClapIcon() {
           y2="8.27133"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D48820" />
-          <stop offset="0.345" stop-color="#E39C2A" stopOpacity="0.649" />
-          <stop offset="0.735" stop-color="#FFC03C" stopOpacity="0" />
+          <stop stopColor="#D48820" />
+          <stop offset="0.345" stopColor="#E39C2A" stopOpacity="0.649" />
+          <stop offset="0.735" stopColor="#FFC03C" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint16_radial_318_9437"
@@ -665,10 +665,10 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(15.3518 12.7734) rotate(134.506) scale(6.40837 16.7667)"
         >
-          <stop stop-color="#FFDB45" />
-          <stop offset="0.484" stop-color="#FFD646" />
-          <stop offset="0.915" stop-color="#FFDA45" stopOpacity="0" />
-          <stop offset="0.97" stop-color="#FFDA45" stopOpacity="0" />
+          <stop stopColor="#FFDB45" />
+          <stop offset="0.484" stopColor="#FFD646" />
+          <stop offset="0.915" stopColor="#FFDA45" stopOpacity="0" />
+          <stop offset="0.97" stopColor="#FFDA45" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint17_linear_318_9437"
@@ -678,8 +678,8 @@ export default function ClapIcon() {
           y2="3.16563"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
+          <stop stopColor="#2065A3" />
+          <stop offset="1" stopColor="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_318_9437"
@@ -689,8 +689,8 @@ export default function ClapIcon() {
           y2="3.67001"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
+          <stop offset="0.605" stopColor="#1C60FF" />
+          <stop offset="1" stopColor="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint19_linear_318_9437"
@@ -700,8 +700,8 @@ export default function ClapIcon() {
           y2="2.99438"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
+          <stop stopColor="#2093F1" />
+          <stop offset="1" stopColor="#2294F3" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint20_linear_318_9437"
@@ -711,8 +711,8 @@ export default function ClapIcon() {
           y2="1.72197"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
+          <stop stopColor="#2065A3" />
+          <stop offset="1" stopColor="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint21_linear_318_9437"
@@ -722,8 +722,8 @@ export default function ClapIcon() {
           y2="2.6176"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
+          <stop offset="0.605" stopColor="#1C60FF" />
+          <stop offset="1" stopColor="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint22_linear_318_9437"
@@ -733,8 +733,8 @@ export default function ClapIcon() {
           y2="1.89572"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
+          <stop stopColor="#2093F1" />
+          <stop offset="1" stopColor="#2294F3" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint23_linear_318_9437"
@@ -744,8 +744,8 @@ export default function ClapIcon() {
           y2="5.21498"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2065A3" />
-          <stop offset="1" stop-color="#2067AE" stopOpacity="0" />
+          <stop stopColor="#2065A3" />
+          <stop offset="1" stopColor="#2067AE" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint24_linear_318_9437"
@@ -755,8 +755,8 @@ export default function ClapIcon() {
           y2="5.58623"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.605" stop-color="#1C60FF" />
-          <stop offset="1" stop-color="#1963FF" stopOpacity="0" />
+          <stop offset="0.605" stopColor="#1C60FF" />
+          <stop offset="1" stopColor="#1963FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint25_linear_318_9437"
@@ -766,8 +766,8 @@ export default function ClapIcon() {
           y2="4.94873"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2093F1" />
-          <stop offset="1" stop-color="#2294F3" stopOpacity="0" />
+          <stop stopColor="#2093F1" />
+          <stop offset="1" stopColor="#2294F3" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint26_radial_318_9437"
@@ -777,8 +777,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.16066 9.78881) rotate(57.126) scale(3.27448 0.613401)"
         >
-          <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
+          <stop stopColor="#B64200" />
+          <stop offset="1" stopColor="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint27_radial_318_9437"
@@ -788,8 +788,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(10.5077 7.70538) rotate(57.5209) scale(3.85552 0.717687)"
         >
-          <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
+          <stop stopColor="#B64200" />
+          <stop offset="1" stopColor="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint28_radial_318_9437"
@@ -799,8 +799,8 @@ export default function ClapIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(10.5077 7.70538) rotate(57.521) scale(3.85553 0.717687)"
         >
-          <stop stop-color="#B64200" />
-          <stop offset="1" stop-color="#FFB02E" stopOpacity="0" />
+          <stop stopColor="#B64200" />
+          <stop offset="1" stopColor="#FFB02E" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint29_linear_318_9437"
@@ -810,8 +810,8 @@ export default function ClapIcon() {
           y2="6.21133"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E49224" />
-          <stop offset="0.589" stop-color="#FFB02E" stopOpacity="0" />
+          <stop stopColor="#E49224" />
+          <stop offset="0.589" stopColor="#FFB02E" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint30_linear_318_9437"
@@ -821,9 +821,9 @@ export default function ClapIcon() {
           y2="8.49641"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FDB137" />
-          <stop offset="0.447" stop-color="#FFBA3C" stopOpacity="0" />
-          <stop offset="1" stop-color="#FCAD33" stopOpacity="0" />
+          <stop stopColor="#FDB137" />
+          <stop offset="0.447" stopColor="#FFBA3C" stopOpacity="0" />
+          <stop offset="1" stopColor="#FCAD33" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint31_linear_318_9437"
@@ -833,9 +833,9 @@ export default function ClapIcon() {
           y2="6.2608"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FDB137" />
-          <stop offset="0.447" stop-color="#FFBA3C" stopOpacity="0" />
-          <stop offset="1" stop-color="#FCAD33" stopOpacity="0" />
+          <stop stopColor="#FDB137" />
+          <stop offset="0.447" stopColor="#FFBA3C" stopOpacity="0" />
+          <stop offset="1" stopColor="#FCAD33" stopOpacity="0" />
         </linearGradient>
         <clipPath id="clip0_318_9437">
           <rect width="20" height="20" fill="white" />

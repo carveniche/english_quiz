@@ -1,13 +1,9 @@
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
-
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
-
 import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
-
 import { useSelector } from "react-redux";
-
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
 import { allExcludedParticipant } from "../../utils/participantIdentity";
@@ -15,6 +11,9 @@ import ScreenShareDraggable from "../DraggableComponent/ScreenShareDraggable";
 import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioToggle";
 import { useEffect } from "react";
 
+import ChatWindow from "../ChatWindow/ChatWindow";
+import useChatContext from "../../hooks/useChatContext/useChatContext";
+import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -49,7 +48,9 @@ const Item = styled.div<remotePCountInterface>`
 `;
 
 export default function Room() {
-  const { room, toggleScreenShare } = useVideoContext();
+  const { room, toggleScreenShare, isBackgroundSelectionOpen } =
+    useVideoContext();
+  const { isChatWindowOpen } = useChatContext();
 
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
@@ -87,6 +88,7 @@ export default function Room() {
       */}
 
       <ParticipantAudioTracks />
+
       <>
         {screenShareState.identity !== room?.localParticipant.identity &&
           screenShareState.publishedState && <ScreenShareDraggable />}
@@ -131,31 +133,12 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <>
-            <h1>All other Screens Component</h1>
-          </>
-
-          /* <ContainerAllScreen>
-              <Item remotePCount={remotePCount}>
-                <Participant
-                  participant={localParticipant}
-                  isLocalParticipant={true}
-                />
-              </Item>
-
-              {speakerViewParticipants.map((participant) => {
-                return (
-                  <Item remotePCount={remotePCount}>
-                    <Participant
-                      key={participant.sid}
-                      participant={participant}
-                    />
-                  </Item>
-                );
-              })}
-            </ContainerAllScreen> */
+          <h1>All other Screens Component</h1>
         )}
       </>
+
+      <ChatWindow />
+      <BackgroundSelectionDialog />
     </>
   );
 }

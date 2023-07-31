@@ -7,7 +7,7 @@ export default function ThumbsUpIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="Thumbs up" clip-path="url(#clip0_318_9436)">
+      <g id="Thumbs up" clipPath="url(#clip0_318_9436)">
         <g id="Group">
           <g id="Group_2" filter="url(#filter0_d_318_9436)">
             <path
@@ -93,7 +93,7 @@ export default function ThumbsUpIcon() {
             id="Vector_15"
             d="M14.9832 16.062C16.0125 16.062 16.8469 15.2275 16.8469 14.1982C16.8469 13.1689 16.0125 12.3345 14.9832 12.3345H12.3613C11.332 12.3345 10.4976 13.1689 10.4976 14.1982C10.4976 15.2275 11.332 16.062 12.3613 16.062H14.9832Z"
             fill="#C4C4C4"
-            fill-opacity="0.66"
+            fillOpacity="0.66"
           />
           <g id="Group_7" filter="url(#filter5_d_318_9436)">
             <path
@@ -182,9 +182,9 @@ export default function ThumbsUpIcon() {
           width="15.5919"
           height="21.417"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -217,9 +217,9 @@ export default function ThumbsUpIcon() {
           width="9.56848"
           height="14.3843"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -238,9 +238,9 @@ export default function ThumbsUpIcon() {
           width="8.65186"
           height="6.63745"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -273,9 +273,9 @@ export default function ThumbsUpIcon() {
           width="8.53809"
           height="6.54004"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -308,9 +308,9 @@ export default function ThumbsUpIcon() {
           width="5.8562"
           height="3.42261"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -329,9 +329,9 @@ export default function ThumbsUpIcon() {
           width="9.34937"
           height="6.72754"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -364,9 +364,9 @@ export default function ThumbsUpIcon() {
           width="6.70312"
           height="3.42261"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -385,9 +385,9 @@ export default function ThumbsUpIcon() {
           width="9.32129"
           height="6.64551"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -420,9 +420,9 @@ export default function ThumbsUpIcon() {
           width="6.33496"
           height="4.07251"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -441,9 +441,9 @@ export default function ThumbsUpIcon() {
           width="6.98254"
           height="4.07251"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -462,9 +462,9 @@ export default function ThumbsUpIcon() {
           width="4.29065"
           height="7.49805"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -484,8 +484,8 @@ export default function ThumbsUpIcon() {
           y2="17.3919"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFCA44" />
-          <stop offset="1" stop-color="#F8A528" />
+          <stop stopColor="#FFCA44" />
+          <stop offset="1" stopColor="#F8A528" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_318_9436"
@@ -495,8 +495,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(12.7751 3.02818) rotate(141.116) scale(3.13478 9.25213)"
         >
-          <stop stop-color="#FFE34C" />
-          <stop offset="1" stop-color="#FFE34C" stopOpacity="0" />
+          <stop stopColor="#FFE34C" />
+          <stop offset="1" stopColor="#FFE34C" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint2_radial_318_9436"
@@ -506,8 +506,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(7.06786 9.85945) rotate(125.191) scale(4.64388 3.3641)"
         >
-          <stop stop-color="#FFCA2E" />
-          <stop offset="1" stop-color="#FFCA2E" stopOpacity="0" />
+          <stop stopColor="#FFCA2E" />
+          <stop offset="1" stopColor="#FFCA2E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_318_9436"
@@ -517,8 +517,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(12.1062 11.3319) rotate(146.743) scale(10.1192 17.7089)"
         >
-          <stop offset="0.681" stop-color="#E18E3F" stopOpacity="0" />
-          <stop offset="1" stop-color="#E18E3F" />
+          <stop offset="0.681" stopColor="#E18E3F" stopOpacity="0" />
+          <stop offset="1" stopColor="#E18E3F" />
         </radialGradient>
         <linearGradient
           id="paint4_linear_318_9436"
@@ -528,8 +528,8 @@ export default function ThumbsUpIcon() {
           y2="19.1644"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D8796F" stopOpacity="0" />
-          <stop offset="1" stop-color="#D8796F" />
+          <stop stopColor="#D8796F" stopOpacity="0" />
+          <stop offset="1" stopColor="#D8796F" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_318_9436"
@@ -539,8 +539,8 @@ export default function ThumbsUpIcon() {
           y2="15.9031"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D1730B" />
-          <stop offset="1" stop-color="#E27D47" />
+          <stop stopColor="#D1730B" />
+          <stop offset="1" stopColor="#E27D47" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_318_9436"
@@ -550,8 +550,8 @@ export default function ThumbsUpIcon() {
           y2="8.52505"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDB44" />
-          <stop offset="1" stop-color="#F9A928" />
+          <stop stopColor="#FFDB44" />
+          <stop offset="1" stopColor="#F9A928" />
         </linearGradient>
         <radialGradient
           id="paint7_radial_318_9436"
@@ -561,8 +561,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.49 10.1375) rotate(-142.633) scale(1.45069 0.971047)"
         >
-          <stop stop-color="#D98320" />
-          <stop offset="1" stop-color="#D98320" stopOpacity="0" />
+          <stop stopColor="#D98320" />
+          <stop offset="1" stopColor="#D98320" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint8_linear_318_9436"
@@ -572,8 +572,8 @@ export default function ThumbsUpIcon() {
           y2="16.7789"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDB44" />
-          <stop offset="1" stop-color="#F9A928" />
+          <stop stopColor="#FFDB44" />
+          <stop offset="1" stopColor="#F9A928" />
         </linearGradient>
         <radialGradient
           id="paint9_radial_318_9436"
@@ -583,8 +583,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.6193 18.5489) scale(4.57092 1.73889)"
         >
-          <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
+          <stop stopColor="#F29545" />
+          <stop offset="1" stopColor="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint10_radial_318_9436"
@@ -594,8 +594,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.3999 15.6301) scale(4.63556 1.24435)"
         >
-          <stop stop-color="#DA810B" />
-          <stop offset="1" stop-color="#FFB610" stopOpacity="0" />
+          <stop stopColor="#DA810B" />
+          <stop offset="1" stopColor="#FFB610" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint11_linear_318_9436"
@@ -605,8 +605,8 @@ export default function ThumbsUpIcon() {
           y2="17.7689"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#DC7C6A" />
-          <stop offset="1" stop-color="#DC7C6A" stopOpacity="0" />
+          <stop stopColor="#DC7C6A" />
+          <stop offset="1" stopColor="#DC7C6A" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint12_radial_318_9436"
@@ -616,8 +616,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.76439 16.7789) scale(3.50203 5.26419)"
         >
-          <stop stop-color="#E38811" />
-          <stop offset="1" stop-color="#E38811" stopOpacity="0" />
+          <stop stopColor="#E38811" />
+          <stop offset="1" stopColor="#E38811" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint13_linear_318_9436"
@@ -627,8 +627,8 @@ export default function ThumbsUpIcon() {
           y2="16.3145"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
+          <stop stopColor="#FFF166" />
+          <stop offset="1" stopColor="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_318_9436"
@@ -638,8 +638,8 @@ export default function ThumbsUpIcon() {
           y2="14.1982"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDB44" />
-          <stop offset="1" stop-color="#F9A928" />
+          <stop stopColor="#FFDB44" />
+          <stop offset="1" stopColor="#F9A928" />
         </linearGradient>
         <radialGradient
           id="paint15_radial_318_9436"
@@ -649,8 +649,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.7837 16.062) scale(5.24073 1.83104)"
         >
-          <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
+          <stop stopColor="#F29545" />
+          <stop offset="1" stopColor="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint16_radial_318_9436"
@@ -660,8 +660,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.5318 12.9888) scale(5.31485 1.3103)"
         >
-          <stop stop-color="#DA810B" />
-          <stop offset="1" stop-color="#FFB610" stopOpacity="0" />
+          <stop stopColor="#DA810B" />
+          <stop offset="1" stopColor="#FFB610" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint17_linear_318_9436"
@@ -671,8 +671,8 @@ export default function ThumbsUpIcon() {
           y2="13.8956"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
+          <stop stopColor="#FFF166" />
+          <stop offset="1" stopColor="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint18_linear_318_9436"
@@ -682,8 +682,8 @@ export default function ThumbsUpIcon() {
           y2="11.3756"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDB44" />
-          <stop offset="1" stop-color="#F9A928" />
+          <stop stopColor="#FFDB44" />
+          <stop offset="1" stopColor="#F9A928" />
         </linearGradient>
         <radialGradient
           id="paint19_radial_318_9436"
@@ -693,8 +693,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(11.805 12.7575) scale(3.43792 1.53029)"
         >
-          <stop stop-color="#F29545" />
-          <stop offset="1" stop-color="#F29545" stopOpacity="0" />
+          <stop stopColor="#F29545" />
+          <stop offset="1" stopColor="#F29545" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint20_radial_318_9436"
@@ -704,8 +704,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(7.83562 3.02745) rotate(90) scale(3.97508 1.47589)"
         >
-          <stop stop-color="#F3A52A" />
-          <stop offset="1" stop-color="#F3A52A" stopOpacity="0" />
+          <stop stopColor="#F3A52A" />
+          <stop offset="1" stopColor="#F3A52A" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint21_radial_318_9436"
@@ -715,8 +715,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(6.675 5.64495) rotate(42.9975) scale(1.99105 3.01278)"
         >
-          <stop stop-color="#CDA25E" />
-          <stop offset="1" stop-color="#CDA25E" stopOpacity="0" />
+          <stop stopColor="#CDA25E" />
+          <stop offset="1" stopColor="#CDA25E" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint22_radial_318_9436"
@@ -726,8 +726,8 @@ export default function ThumbsUpIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.74158 2.78177) rotate(-168.366) scale(1.02466 2.23656)"
         >
-          <stop offset="0.55" stop-color="#CCB28B" stopOpacity="0" />
-          <stop offset="1" stop-color="#CCB28B" />
+          <stop offset="0.55" stopColor="#CCB28B" stopOpacity="0" />
+          <stop offset="1" stopColor="#CCB28B" />
         </radialGradient>
         <linearGradient
           id="paint23_linear_318_9436"
@@ -737,8 +737,8 @@ export default function ThumbsUpIcon() {
           y2="7.63389"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
+          <stop stopColor="#FFF166" />
+          <stop offset="1" stopColor="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint24_linear_318_9436"
@@ -748,8 +748,8 @@ export default function ThumbsUpIcon() {
           y2="10.4312"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
+          <stop stopColor="#FFF166" />
+          <stop offset="1" stopColor="#FFF166" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint25_linear_318_9436"
@@ -759,8 +759,8 @@ export default function ThumbsUpIcon() {
           y2="3.31569"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF166" />
-          <stop offset="1" stop-color="#FFF166" stopOpacity="0" />
+          <stop stopColor="#FFF166" />
+          <stop offset="1" stopColor="#FFF166" stopOpacity="0" />
         </linearGradient>
         <clipPath id="clip0_318_9436">
           <rect width="20" height="20" fill="white" />
