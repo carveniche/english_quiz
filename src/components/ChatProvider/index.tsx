@@ -18,6 +18,7 @@ type ChatContextType = {
   hasUnreadMessages: boolean;
   messages: MessageStructure[];
   setMessages: Dispatch<SetStateAction<MessageStructure[]>>;
+  setHasUnreadMessages: Dispatch<SetStateAction<boolean>>;
 };
 
 export const ChatContext = createContext<ChatContextType>(null!);
@@ -48,6 +49,7 @@ export const ChatProvider: React.FC = ({ children }) => {
         hasUnreadMessages,
         messages,
         setMessages,
+        setHasUnreadMessages,
       }}
     >
       {children}

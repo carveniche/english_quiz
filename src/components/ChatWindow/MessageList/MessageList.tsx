@@ -5,16 +5,20 @@ import TextMessage from "./TextMessage/TextMessage";
 
 import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
+import useChatContext from "../../../hooks/useChatContext/useChatContext";
 
-interface MessageStructure {
-  identity: string;
-  message: string;
-}
-
-export default function MessageList(messages) {
+export default function MessageList() {
   const messagesFromStore = useSelector(
     (state: RootState) => state.dataTrackStore.ChatMessages
   );
+
+  const { isChatWindowOpen, setHasUnreadMessages } = useChatContext();
+
+  useEffect(() => {
+    if (!isChatWindowOpen && messagesFromStore.length) {
+      setHasUnreadMessages(true);
+    }
+  }, [messagesFromStore]);
 
   return (
     <MessageListScrollContainer messages={messagesFromStore}>

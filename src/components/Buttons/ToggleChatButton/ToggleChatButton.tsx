@@ -59,12 +59,8 @@ const useStyles = makeStyles({
 export default function ToggleChatButton() {
   const classes = useStyles();
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const {
-    isChatWindowOpen,
-    setIsChatWindowOpen,
-    conversation,
-    hasUnreadMessages,
-  } = useChatContext();
+  const { isChatWindowOpen, setIsChatWindowOpen, hasUnreadMessages } =
+    useChatContext();
   const { setIsBackgroundSelectionOpen } = useVideoContext();
 
   const toggleChatWindow = () => {
@@ -77,16 +73,6 @@ export default function ToggleChatButton() {
       setTimeout(() => setShouldAnimate(false), ANIMATION_DURATION);
     }
   }, [shouldAnimate]);
-
-  useEffect(() => {
-    if (!isChatWindowOpen) {
-      //   const handleNewMessage = () => setShouldAnimate(true);
-      //   conversation.on("messageAdded", handleNewMessage);
-      //   return () => {
-      //     conversation.off("messageAdded", handleNewMessage);
-      //   };
-    }
-  }, [isChatWindowOpen]);
 
   return (
     <Button
