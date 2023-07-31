@@ -14,7 +14,6 @@ export default function MenuDropDownArrow() {
           stroke="#F2F2F2"
           strokeWidth="1.4"
           strokeLinecap="round"
-          strokeWidth="round"
         />
       </g>
     </svg>

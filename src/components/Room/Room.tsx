@@ -12,7 +12,6 @@ import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioTo
 import { useEffect } from "react";
 
 import ChatWindow from "../ChatWindow/ChatWindow";
-import useChatContext from "../../hooks/useChatContext/useChatContext";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 interface remotePCountInterface {
   remotepcount: number;
@@ -48,9 +47,7 @@ const Item = styled.div<remotePCountInterface>`
 `;
 
 export default function Room() {
-  const { room, toggleScreenShare, isBackgroundSelectionOpen } =
-    useVideoContext();
-  const { isChatWindowOpen } = useChatContext();
+  const { room, toggleScreenShare } = useVideoContext();
 
   const localParticipant = room!.localParticipant;
   const { speakerViewParticipants } = useParticipantsContext();
@@ -78,6 +75,8 @@ export default function Room() {
       toggleAudioEnabled();
     }
   }, []);
+
+  console.log("Room Component Mouting");
 
   return (
     <>

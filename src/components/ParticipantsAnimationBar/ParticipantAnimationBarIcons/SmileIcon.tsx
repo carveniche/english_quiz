@@ -101,7 +101,6 @@ export default function SmileIcon() {
                   stroke="#43273B"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  strokeWidth="round"
                 />
                 <g
                   id="Group_5"
@@ -114,7 +113,6 @@ export default function SmileIcon() {
                     stroke="white"
                     strokeWidth="0.75"
                     strokeLinecap="round"
-                    strokeWidth="round"
                   />
                 </g>
                 <path
@@ -123,7 +121,6 @@ export default function SmileIcon() {
                   stroke="#43273B"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  strokeWidth="round"
                 />
                 <g
                   id="Group_6"
@@ -136,7 +133,6 @@ export default function SmileIcon() {
                     stroke="white"
                     strokeWidth="0.75"
                     strokeLinecap="round"
-                    strokeWidth="round"
                   />
                 </g>
                 <path

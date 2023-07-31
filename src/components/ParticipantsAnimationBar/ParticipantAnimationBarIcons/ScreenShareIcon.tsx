@@ -14,7 +14,6 @@ export default function ScreenShareIcon() {
           stroke="white"
           strokeWidth="1.4"
           strokeLinecap="round"
-          strokeWidth="round"
         />
         <path
           id="Vector_2"
@@ -22,7 +21,6 @@ export default function ScreenShareIcon() {
           stroke="white"
           strokeWidth="1.4"
           strokeLinecap="round"
-          strokeWidth="round"
         />
         <path
           id="Vector_3"
@@ -30,7 +28,6 @@ export default function ScreenShareIcon() {
           stroke="white"
           strokeWidth="1.4"
           strokeLinecap="round"
-          strokeWidth="round"
         />
         <path
           id="Vector_4"
@@ -38,7 +35,6 @@ export default function ScreenShareIcon() {
           stroke="white"
           strokeWidth="1.4"
           strokeLinecap="round"
-          strokeWidth="round"
         />
       </g>
     </svg>

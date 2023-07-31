@@ -24,7 +24,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useKrispToggle } from "../../../hooks/useKrispToggle/useKrispToggle";
 import SmallCheckIcon from "../../../icons/SmallCheckIcon";
 import InfoIconOutlined from "../../../icons/InfoIconOutlined";
-import useChatContext from "../../../hooks/useChatContext/useChatContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {

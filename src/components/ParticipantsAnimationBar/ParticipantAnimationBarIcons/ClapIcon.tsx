@@ -241,7 +241,6 @@ export default function ClapIcon() {
                     stroke="url(#paint30_linear_318_9437)"
                     strokeWidth="2"
                     strokeLinecap="round"
-                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_8" filter="url(#filter5_f_318_9437)">
@@ -251,7 +250,6 @@ export default function ClapIcon() {
                     stroke="url(#paint31_linear_318_9437)"
                     strokeWidth="2"
                     strokeLinecap="round"
-                    strokeWidth="round"
                   />
                 </g>
                 <g id="Group_9" filter="url(#filter6_f_318_9437)">

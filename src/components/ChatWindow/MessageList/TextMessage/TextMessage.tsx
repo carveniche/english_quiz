@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 
 interface TextMessageProps {
   body: string;
+  identity: string;
   isLocalParticipant: boolean;
 }
 
@@ -50,6 +51,7 @@ function addLinks(text: string) {
 export default function TextMessage({
   body,
   isLocalParticipant,
+  identity,
 }: TextMessageProps) {
   const classes = useStyles();
 
@@ -60,7 +62,10 @@ export default function TextMessage({
           [classes.isLocalParticipant]: isLocalParticipant,
         })}
       >
-        <div>{addLinks(body)}</div>
+        <div>
+          <div>{identity}</div>
+          <div>{addLinks(body)}</div>
+        </div>
       </div>
     </div>
   );

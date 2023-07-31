@@ -5,6 +5,7 @@ import clsx from "clsx";
 import MessageList from "./MessageList/MessageList";
 import useChatContext from "../../hooks/useChatContext/useChatContext";
 import { Drawer } from "@material-ui/core";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function ChatWindow() {
   const classes = useStyles();
   const { isChatWindowOpen, messages } = useChatContext();
+
+  useEffect(() => {
+    console.log("Chat Window Mount");
+
+    return () => {
+      console.log("Chat Window Unmount");
+    };
+  }, []);
 
   return (
     <Drawer

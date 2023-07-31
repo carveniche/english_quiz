@@ -42,7 +42,7 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   //   const { setIsGalleryViewActive, isGalleryViewActive } = useAppState();
   const isGalleryViewActive = true;
-  //   const { setIsChatWindowOpen } = useChatContext();
+
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);

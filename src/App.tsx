@@ -21,11 +21,6 @@ import Header from "./components/Navbar/Header";
 import { getQueryParams } from "./utils/getQueryParams";
 import { ChatProvider } from "./components/ChatProvider";
 
-const Container = styled("div")({
-  display: "grid",
-  gridTemplateRows: "1fr auto",
-});
-
 const Main = styled("main")(({ theme }: { theme: Theme }) => ({
   overflow: "hidden",
   paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
@@ -39,7 +34,6 @@ const logger = Logger.getLogger("twilio-video");
 logger.setLevel("SILENT");
 
 export function VideoApp() {
-  // const { error, setError } = useAppState();
   const [error, setError] = useState<TwilioError | null>(null);
   const connectionOptions = useConnectionOptions();
 

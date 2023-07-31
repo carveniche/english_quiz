@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 interface animationDetailsType {
   type: string;
   count: number;
@@ -9,6 +10,11 @@ interface dynamicKey {
 interface StudentAnimation {
   identity: string;
   animationDetails: dynamicKey;
+}
+
+interface MessageStructure {
+  identity: string;
+  message: string;
 }
 
 interface dataTrackStore {
@@ -23,6 +29,7 @@ interface dataTrackStore {
     identity: string;
     publishedState: boolean;
   };
+  ChatMessages: MessageStructure[];
 }
 
 const initialState: dataTrackStore = {
@@ -37,6 +44,8 @@ const initialState: dataTrackStore = {
     identity: "",
     publishedState: false,
   },
+
+  ChatMessages: [],
 };
 
 export const dataTrackStoreSlice = createSlice({
@@ -101,6 +110,17 @@ export const dataTrackStoreSlice = createSlice({
       };
       state.ShreenShareTracks = obj;
     },
+
+    addChatMessageDataTrack: (state, action) => {
+      const { identity, message } = action.payload;
+
+      let chatMessageObj = {
+        identity: identity || "",
+        message: message,
+      };
+
+      state.ChatMessages.push(chatMessageObj);
+    },
   },
 });
 
@@ -108,6 +128,7 @@ export const {
   addAnimationDatatrack,
   addScreenShareDatatrack,
   disabledAnimation,
+  addChatMessageDataTrack,
 } = dataTrackStoreSlice.actions;
 
 export default dataTrackStoreSlice.reducer;

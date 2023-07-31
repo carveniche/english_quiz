@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import { Conversation } from "@twilio/conversations";
+
 import { isMobile } from "../../../utils/devices";
 import SendMessageIcon from "../../../icons/SendMessageIcon";
 import Snackbar from "../../Snackbar/Snackbar";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import useChatContext from "../../../hooks/useChatContext/useChatContext";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-interface MessageStructure {
-  identity: string;
-  message: string;
-}
+
+import { useDispatch } from "react-redux";
+import { addChatMessageDataTrack } from "../../../redux/features/dataTrackStore";
 
 const useStyles = makeStyles((theme) => ({
   chatInputContainer: {
@@ -77,8 +76,8 @@ export default function ChatInput({ isChatWindowOpen }: ChatInputProps) {
   const [fileSendError, setFileSendError] = useState<string | null>(null);
   const isValidMessage = /\S/.test(messageBody);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
-
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isChatWindowOpen) {
@@ -106,8 +105,23 @@ export default function ChatInput({ isChatWindowOpen }: ChatInputProps) {
         identity: room?.localParticipant.identity || "",
         message: message.trim(),
       };
-
       setMessages([...messages, messegeObject]);
+
+      const [localDataTrackPublication] = [
+        ...room.localParticipant?.dataTracks.values(),
+      ];
+
+      let messageDataTrackObj = {
+        pathName: null,
+        value: {
+          datatrackName: "ChatMessage",
+          messageArray: messegeObject,
+        },
+      };
+
+      localDataTrackPublication.track.send(JSON.stringify(messageDataTrackObj));
+      dispatch(addChatMessageDataTrack(messegeObject));
+
       setMessageBody("");
     }
   };
