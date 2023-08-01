@@ -37,7 +37,6 @@ export default function useRoom(
         logLevel: "error",
       }).then(
         (newRoom) => {
-          console.warn("newRoom", "newRoom");
           setRoom(newRoom);
           // VideoRoomMonitor.registerVideoRoom(newRoom);
           const disconnect = () => newRoom.disconnect();

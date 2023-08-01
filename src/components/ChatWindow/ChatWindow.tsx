@@ -52,15 +52,9 @@ export default function ChatWindow() {
         paper: classes.drawer,
       }}
     >
-      <aside
-        className={clsx(classes.chatWindowContainer, {
-          [classes.hide]: !isChatWindowOpen,
-        })}
-      >
-        <ChatWindowHeader />
-        <MessageList />
-        <ChatInput isChatWindowOpen={isChatWindowOpen} />
-      </aside>
+      <ChatWindowHeader />
+      <MessageList />
+      <ChatInput isChatWindowOpen={isChatWindowOpen} />
     </Drawer>
   );
 }
