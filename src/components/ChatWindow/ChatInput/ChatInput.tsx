@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 

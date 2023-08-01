@@ -21,8 +21,14 @@ const noiseCancellationOptions: NoiseCancellationOptions = {
   vendor: "krisp",
 };
 
+import { useDispatch } from "react-redux";
+
+import { addKrispInstalledEnabledDetails } from "../../../redux/features/liveClassDetails";
+
 export default function useLocalTracks() {
   // const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
+
+  const dispatch = useDispatch();
 
   const setIsKrispEnabled = (arg1: boolean) => {}; // Get this function from redux store;
   const setIsKrispInstalled = (arg1: boolean) => {}; // Store this function value to redux store;
@@ -145,9 +151,15 @@ export default function useLocalTracks() {
         }
         if (newAudioTrack) {
           setAudioTrack(newAudioTrack);
+
           if (newAudioTrack.noiseCancellation) {
-            setIsKrispEnabled(true);
-            setIsKrispInstalled(true);
+            let krispObj = {
+              isKrispEnabled: true,
+              isKrispInstalled: true,
+            };
+            dispatch(addKrispInstalledEnabledDetails(krispObj));
+            // setIsKrispEnabled(true);
+            // setIsKrispInstalled(true);
           }
         }
 

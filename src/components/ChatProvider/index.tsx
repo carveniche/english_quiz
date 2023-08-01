@@ -23,7 +23,11 @@ type ChatContextType = {
 
 export const ChatContext = createContext<ChatContextType>(null!);
 
-export const ChatProvider: React.FC = ({ children }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const ChatProvider: React.FC<Props> = ({ children }) => {
   const isChatWindowOpenRef = useRef(false);
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
   const [messages, setMessages] = useState<MessageStructure[]>([]);

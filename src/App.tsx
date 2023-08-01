@@ -6,7 +6,7 @@ import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
 import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
 import { TwilioError, Logger } from "twilio-video";
 import useRoomState from "./hooks/useRoomState/useRoomState";
-import { ParticipantProvider } from "./components/ParticipantProvider";
+
 import ErrorDialog from "./components/ErrorDialog/ErrorDialog";
 import { styled, Theme } from "@material-ui/core/styles";
 import Room from "./components/Room/Room";
@@ -40,19 +40,16 @@ export function VideoApp() {
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <ParticipantProvider>
-        <BrowserRouter>
-          <ChatProvider>
-            <App />
-          </ChatProvider>
-        </BrowserRouter>
-      </ParticipantProvider>
+      <BrowserRouter>
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </BrowserRouter>
     </VideoProvider>
   );
 }
 
 function App() {
-  const [error, setError] = useState<TwilioError | null>(null);
   const params = getQueryParams();
   const roomState = useRoomState();
   const { pathname } = useLocation();

@@ -1,27 +1,35 @@
 import { LocalAudioTrack } from "twilio-video";
 import { useCallback } from "react";
 import useVideoContext from "../useVideoContext/useVideoContext";
+import { useDispatch } from "react-redux";
+
+import { addKrispInstalledEnabledDetails } from "../../redux/features/liveClassDetails";
 
 export function useKrispToggle() {
   const { localTracks } = useVideoContext();
+
   const audioTrack = localTracks.find(
     (track) => track.kind === "audio"
   ) as LocalAudioTrack;
   const noiseCancellation = audioTrack && audioTrack.noiseCancellation;
   const vendor = noiseCancellation && noiseCancellation.vendor;
-  // const { setIsKrispEnabled } = useAppState();
 
-  const setIsKrispEnabled = (arg1: boolean) => {}; // This is some state which will set State to other component using redux
+  const dispatch = useDispatch();
 
   const toggleKrisp = useCallback(() => {
     if (noiseCancellation) {
       noiseCancellation[
         noiseCancellation.isEnabled ? "disable" : "enable"
       ]().then(() => {
-        setIsKrispEnabled(noiseCancellation.isEnabled);
+        dispatch(
+          addKrispInstalledEnabledDetails({
+            isKrispEnabled: noiseCancellation.isEnabled,
+          })
+        );
+        // setIsKrispEnabled(noiseCancellation.isEnabled);
       });
     }
-  }, [noiseCancellation, setIsKrispEnabled]);
+  }, [noiseCancellation]);
 
   return { vendor, toggleKrisp };
 }

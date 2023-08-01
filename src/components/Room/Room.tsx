@@ -13,6 +13,7 @@ import { useEffect } from "react";
 
 import ChatWindow from "../ChatWindow/ChatWindow";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
+import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -50,7 +51,8 @@ export default function Room() {
   const { room, toggleScreenShare } = useVideoContext();
 
   const localParticipant = room!.localParticipant;
-  const { speakerViewParticipants } = useParticipantsContext();
+
+  const speakerViewParticipants = useSpeakerViewParticipants();
 
   const remotePCount = speakerViewParticipants.length;
 
@@ -113,7 +115,7 @@ export default function Room() {
             {speakerViewParticipants.map((participant) => {
               return (
                 <>
-                  <Item remotepcount={remotePCount}>
+                  <Item remotepcount={remotePCount} key={participant.sid}>
                     {!allExcludedParticipant({
                       identity: participant.identity,
                     }) && (

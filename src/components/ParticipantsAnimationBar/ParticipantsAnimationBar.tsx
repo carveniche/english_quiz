@@ -87,14 +87,6 @@ export default function ParticipantsAnimationBar({
   const muteIconButtonClicked = () => {};
 
   useEffect(() => {
-    console.log("Animation bar mouting");
-
-    return () => {
-      console.log("Animation bar unmouting");
-    };
-  }, []);
-
-  useEffect(() => {
     if (animationDataTracks.animationTrackIdentityAndType.count === 0) {
       return;
     }
