@@ -79,13 +79,13 @@ export default function ChatInput({ isChatWindowOpen }: ChatInputProps) {
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isChatWindowOpen) {
-      // When the chat window is opened, we will focus on the text input.
-      // This is so the user doesn't have to click on it to begin typing a message.
-      textInputRef.current?.focus();
-    }
-  }, [isChatWindowOpen]);
+  // useEffect(() => {
+  //   if (isChatWindowOpen) {
+  //     // When the chat window is opened, we will focus on the text input.
+  //     // This is so the user doesn't have to click on it to begin typing a message.
+  //     textInputRef.current?.focus();
+  //   }
+  // }, [isChatWindowOpen]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessageBody(event.target.value);
