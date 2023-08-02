@@ -12,25 +12,22 @@ export default function MenuHamburger() {
           id="Vector"
           d="M2.5 10.5H17.5"
           stroke="#F2F2F2"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
         />
         <path
           id="Vector_2"
           d="M2.5 5.5H17.5"
           stroke="#F2F2F2"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
         />
         <path
           id="Vector_3"
           d="M2.5 15.5H17.5"
           stroke="#F2F2F2"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
         />
       </g>
     </svg>

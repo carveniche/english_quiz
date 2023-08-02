@@ -6,7 +6,7 @@ import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
 import useConnectionOptions from "./utils/useConnectionOptions/useConnectionOptions";
 import { TwilioError, Logger } from "twilio-video";
 import useRoomState from "./hooks/useRoomState/useRoomState";
-import { ParticipantProvider } from "./components/ParticipantProvider";
+
 import ErrorDialog from "./components/ErrorDialog/ErrorDialog";
 import { styled, Theme } from "@material-ui/core/styles";
 import Room from "./components/Room/Room";
@@ -19,11 +19,7 @@ import AllPageRoutes from "./Router/AllPageRoutes";
 import Header2 from "./components/Navbar/Header2";
 import Header from "./components/Navbar/Header";
 import { getQueryParams } from "./utils/getQueryParams";
-
-const Container = styled("div")({
-  display: "grid",
-  gridTemplateRows: "1fr auto",
-});
+import { ChatProvider } from "./components/ChatProvider";
 
 const Main = styled("main")(({ theme }: { theme: Theme }) => ({
   overflow: "hidden",
@@ -38,24 +34,22 @@ const logger = Logger.getLogger("twilio-video");
 logger.setLevel("SILENT");
 
 export function VideoApp() {
-  // const { error, setError } = useAppState();
   const [error, setError] = useState<TwilioError | null>(null);
   const connectionOptions = useConnectionOptions();
 
   return (
     <VideoProvider options={connectionOptions} onError={setError}>
       <ErrorDialog dismissError={() => setError(null)} error={error} />
-      <ParticipantProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <ChatProvider>
           <App />
-        </BrowserRouter>
-      </ParticipantProvider>
+        </ChatProvider>
+      </BrowserRouter>
     </VideoProvider>
   );
 }
 
 function App() {
-  const [error, setError] = useState<TwilioError | null>(null);
   const params = getQueryParams();
   const roomState = useRoomState();
   const { pathname } = useLocation();

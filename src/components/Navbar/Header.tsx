@@ -1,4 +1,5 @@
-import BegalileoLogo from "./NavbarIcons/beGalileoLogo";
+import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
+import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
 
 export default function Header() {
   return (
@@ -14,8 +15,8 @@ export default function Header() {
           </span>
         </div>
         <div className=" justify-center content-center items-center p-4">
-          <BegalileoLogo />
           <span className="text-BDBDBD p-4 mt-10">Coach: Ms.Styella</span>
+          <ReportErrorScreenShot />
         </div>
       </div>
     </>

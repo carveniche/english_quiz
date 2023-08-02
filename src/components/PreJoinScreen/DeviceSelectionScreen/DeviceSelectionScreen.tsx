@@ -119,12 +119,9 @@ export default function DeviceSelectionScreen({
   const videoCallTokenData = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const userId = useSelector(
-    (state: RootState) => state.liveClassDetails.userId
-  );
 
-  const liveClassId = useSelector(
-    (state: RootState) => state.liveClassDetails.liveClassId
+  const { userId, liveClassId, isKrispEnabled, isKrispInstalled } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
 
   const dispatch = useDispatch();
@@ -164,13 +161,7 @@ export default function DeviceSelectionScreen({
     }
   };
 
-  // const { getToken, isFetching, isKrispEnabled, isKrispInstalled } =
-  //   useAppState();
-
   const isFetching = false; //Get this value from redux store;
-  //First Dispatch and then Get token value from redux store;
-  const isKrispEnabled = false; //Get this value from redux store;
-  const isKrispInstalled = false; //Get this value from redux store;
 
   const {
     connect: videoConnect,
@@ -184,7 +175,6 @@ export default function DeviceSelectionScreen({
   const handleJoin = () => {
     if (videoCallTokenData.token != null) {
       let token = JSON.stringify(videoCallTokenData.token);
-
       videoConnect(JSON.parse(token));
     } else {
       console.log("Something went wrong please try again later");

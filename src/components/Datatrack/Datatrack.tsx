@@ -6,6 +6,7 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import { useDispatch } from "react-redux";
 import {
   addAnimationDatatrack,
+  addChatMessageDataTrack,
   addScreenShareDatatrack,
 } from "../../redux/features/dataTrackStore";
 import { addCurrentSelectedScreen } from "../../redux/features/liveClassDetails";
@@ -33,6 +34,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addScreenShareDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "Animations") {
         dispatch(addAnimationDatatrack(parseMessage.value));
+      } else if (parseMessage.value.datatrackName === "ChatMessage") {
+        dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       }
     };
 
