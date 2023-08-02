@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import ReportErrorLogo from "../Navbar/NavbarIcons/ReportErrorLogo";
+import { getQueryParamsDetails } from "../../utils/getQueryParams";
 
 export default function ReportErrorScreenShot() {
   const [screenShotProgress, setScreenShotProgress] = useState(false);
@@ -38,12 +39,24 @@ export default function ReportErrorScreenShot() {
         track.stop();
 
         canvasCapture.toBlob((blob: Blob) => {
-          // Do things with blob here
-          console.log("output blob:", blob);
-          setScreenShotProgress(false);
+          uploadScreenShotToServer(blob);
         });
       });
     }, 500);
+  };
+
+  const uploadScreenShotToServer = (blob: Blob) => {
+    const params = getQueryParamsDetails();
+    const paramsObj = Object.fromEntries(params.entries());
+
+    const { liveClassID, userID } = paramsObj;
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("live_class_id", liveClassID);
+    bodyFormData.append("user_id", userID);
+    bodyFormData.append("screenshot", blob, "image.png");
+
+    setScreenShotProgress(false);
   };
 
   return (
