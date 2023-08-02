@@ -1,8 +1,6 @@
 import AudioInputList from "./AudioInputList/AudioInputList";
 import AudioOutputList from "./AudioOutputList/AudioOutputList";
 
-import { useState } from "react";
-
 import {
   DialogContent,
   Typography,
@@ -17,6 +15,7 @@ import {
   Switch,
   Tooltip,
 } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
 import VideoInputList from "./VideoInputList/VideoInputList";
 import MaxGalleryViewParticipants from "./MaxGalleryViewParticipants/MaxGalleryViewParticipants";

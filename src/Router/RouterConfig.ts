@@ -1,11 +1,10 @@
 import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
-import AllScreen from "../components/FeatureComponent/AllScreen/AllScreen";
 import Coding from "../components/FeatureComponent/Coding/Coding";
 import Lesson from "../components/FeatureComponent/Lesson/Lesson";
 import Mathzone from "../components/FeatureComponent/Mathzone/Mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
 import React from "react";
-import Room from "../components/Room/Room";
+
 interface routerConfig {
   path: String;
   key: String;

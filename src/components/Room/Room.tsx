@@ -95,7 +95,7 @@ export default function Room() {
           screenShareState.publishedState && <ScreenShareDraggable />}
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
-            <Item remotepcount={remotePCount}>
+            <Item remotepcount={remotePCount} key={localParticipant.sid}>
               {!allExcludedParticipant({
                 identity: localParticipant.identity,
               }) && (
