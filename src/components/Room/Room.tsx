@@ -1,6 +1,5 @@
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
-import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
 import { useSelector } from "react-redux";
@@ -114,22 +113,20 @@ export default function Room() {
 
             {speakerViewParticipants.map((participant) => {
               return (
-                <>
-                  <Item remotepcount={remotePCount} key={participant.sid}>
-                    {!allExcludedParticipant({
-                      identity: participant.identity,
-                    }) && (
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={participant}
-                      />
-                    )}
-                    <Participant
-                      key={participant.sid}
+                <Item remotepcount={remotePCount} key={participant.sid}>
+                  {!allExcludedParticipant({
+                    identity: participant.identity,
+                  }) && (
+                    <ParticipantsAnimationBar
+                      localParticipant={localParticipant}
                       participant={participant}
                     />
-                  </Item>
-                </>
+                  )}
+                  <Participant
+                    key={participant.sid}
+                    participant={participant}
+                  />
+                </Item>
               );
             })}
           </ContainerAllScreen>
