@@ -10,6 +10,8 @@ export default {
         "participant-animation-bar": "rgba(79, 79, 79, 0.6)",
         BDBDBD: "#BDBDBD",
         F2F2F2: "#F2F2F2",
+        black: "#000",
+        callTechSupportLine: "#4B4B4B",
       },
     },
   },
