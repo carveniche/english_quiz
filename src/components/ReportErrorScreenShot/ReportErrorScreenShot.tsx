@@ -1,9 +1,15 @@
 import { useRef, useState } from "react";
 import ReportErrorLogo from "../Navbar/NavbarIcons/ReportErrorLogo";
-import { getQueryParamsDetails } from "../../utils/getQueryParams";
+
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 export default function ReportErrorScreenShot() {
   const [screenShotProgress, setScreenShotProgress] = useState(false);
+
+  const { userId, liveClassId } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
 
   const canvas = useRef(null);
 
@@ -46,14 +52,9 @@ export default function ReportErrorScreenShot() {
   };
 
   const uploadScreenShotToServer = (blob: Blob) => {
-    const params = getQueryParamsDetails();
-    const paramsObj = Object.fromEntries(params.entries());
-
-    const { liveClassID, userID } = paramsObj;
-
     const bodyFormData = new FormData();
-    bodyFormData.append("live_class_id", liveClassID);
-    bodyFormData.append("user_id", userID);
+    bodyFormData.append("live_class_id", String(liveClassId));
+    bodyFormData.append("user_id", String(userId));
     bodyFormData.append("screenshot", blob, "image.png");
 
     setScreenShotProgress(false);

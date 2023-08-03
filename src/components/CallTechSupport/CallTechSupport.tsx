@@ -4,6 +4,7 @@ import CallTechSupportInActiveLogo from "../Navbar/NavbarIcons/CallTechSupportIn
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { callTechSupport } from "../../api";
 
 export default function CallTechSupport() {
   const [backgroundColor, setBackgroundColor] = useState("bg-header-black");
@@ -11,7 +12,7 @@ export default function CallTechSupport() {
   const [connectingFlag, setConnectingFlag] = useState(false);
   const [connectedFlag, setConnectedFlag] = useState(false);
 
-  const { techJoinedClass } = useSelector(
+  const { techJoinedClass, userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
 
@@ -27,7 +28,7 @@ export default function CallTechSupport() {
     }
   }, [techJoinedClass]);
 
-  const requestTechSupport = () => {
+  const requestTechSupport = async () => {
     if (techJoinedClass) {
       console.log("Tech is already in the class");
       return;
@@ -40,6 +41,14 @@ export default function CallTechSupport() {
     }
     setActiveLogo(!activeLogo);
     setConnectingFlag(true);
+
+    try {
+      await callTechSupport(userId, liveClassId).then((response) => {
+        console.log("Response", response);
+      });
+    } catch (error) {
+      console.error("API request error:", error);
+    }
   };
 
   return (
