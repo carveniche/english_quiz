@@ -11,6 +11,7 @@ export default {
         BDBDBD: "#BDBDBD",
         F2F2F2: "#F2F2F2",
         black: "#000",
+        callTechSupportLineConnect: "#27AE60",
         callTechSupportLine: "#4B4B4B",
       },
     },

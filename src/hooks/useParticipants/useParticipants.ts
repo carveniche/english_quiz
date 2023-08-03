@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { RemoteParticipant } from "twilio-video";
 import useVideoContext from "../useVideoContext/useVideoContext";
-
+import { useDispatch } from "react-redux";
+import { addTechJoinedClass } from "../../redux/features/liveClassDetails";
 /**
  * This hook returns an array of the video room's participants. Unlike the hooks
  * "useSpeakerViewParticipants" and "useGalleryViewParticipants", this hook does not reorder
@@ -16,19 +17,30 @@ export default function useParticipants() {
     Array.from(room?.participants.values() ?? [])
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (room) {
       const participantConnected = (participant: RemoteParticipant) => {
+        if (participant.identity === "tech") {
+          dispatch(addTechJoinedClass(true));
+        }
+
         setParticipants((prevParticipants) => [
           ...prevParticipants,
           participant,
         ]);
       };
 
-      const participantDisconnected = (participant: RemoteParticipant) =>
+      const participantDisconnected = (participant: RemoteParticipant) => {
+        if (participant.identity === "tech") {
+          dispatch(addTechJoinedClass(false));
+        }
+
         setParticipants((prevParticipants) =>
           prevParticipants.filter((p) => p !== participant)
         );
+      };
 
       room.on("participantConnected", participantConnected);
       room.on("participantDisconnected", participantDisconnected);
