@@ -1,7 +1,5 @@
 import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
 import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
-
-import CallTechSupportActiveLogo from "./NavbarIcons/CallTechSupportActiveLogo";
 import CallTechSupport from "../CallTechSupport/CallTechSupport";
 export default function Header() {
   return (

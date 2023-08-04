@@ -20,7 +20,7 @@ interface remotePCountInterface {
 const ContainerAllScreen = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: calc(100% - 174px);
+  height: calc(100% - 204px);
   overflow: hidden;
   margin: auto;
   width: 100%;

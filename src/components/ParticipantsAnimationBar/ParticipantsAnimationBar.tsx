@@ -60,6 +60,10 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.dataTrackStore
   );
 
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
+
   const animationButtonClicked = (identity: string, key: string) => {
     setAnimationParticipantIdentity(identity);
     setAnimationParticipantType(key);
@@ -135,9 +139,7 @@ export default function ParticipantsAnimationBar({
           </button>
           <span className="text-white">{participant.identity}</span>
           <button
-            disabled={
-              !isTutorTechBoth({ identity: localParticipant?.identity })
-            }
+            disabled={!isTutorTechBoth({ identity: String(role_name) })}
             onClick={() =>
               animationButtonClicked(participant.identity, "ThumbsUpIcon")
             }
@@ -151,9 +153,7 @@ export default function ParticipantsAnimationBar({
             </div>
           </button>
           <button
-            disabled={
-              !isTutorTechBoth({ identity: localParticipant?.identity })
-            }
+            disabled={!isTutorTechBoth({ identity: String(role_name) })}
             onClick={() =>
               animationButtonClicked(participant.identity, "ClapIcon")
             }
@@ -167,9 +167,7 @@ export default function ParticipantsAnimationBar({
             </div>
           </button>
           <button
-            disabled={
-              !isTutorTechBoth({ identity: localParticipant?.identity })
-            }
+            disabled={!isTutorTechBoth({ identity: String(role_name) })}
             onClick={() =>
               animationButtonClicked(participant.identity, "SmileIcon")
             }
@@ -183,9 +181,7 @@ export default function ParticipantsAnimationBar({
             </div>
           </button>
           <button
-            disabled={
-              !isTutorTechBoth({ identity: localParticipant?.identity })
-            }
+            disabled={!isTutorTechBoth({ identity: String(role_name) })}
             onClick={() =>
               animationButtonClicked(participant.identity, "StarIcon")
             }
@@ -200,13 +196,13 @@ export default function ParticipantsAnimationBar({
           </button>
         </div>
         <div className="flex gap-2 z-10">
-          <button>
-            <div
-              onClick={() =>
-                screenShareButtonClicked(participant.identity, "ScreenShare")
-              }
-              className="flex justify-between gap-1 mt-[2px] mb-[2px]"
-            >
+          <button
+            disabled={!isTutorTechBoth({ identity: String(role_name) })}
+            onClick={() =>
+              screenShareButtonClicked(participant.identity, "ScreenShare")
+            }
+          >
+            <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
               <ScreenShareIcon />
             </div>
           </button>
