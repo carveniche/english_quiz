@@ -24,7 +24,7 @@ interface liveClassDetailsTypes {
   isKrispInstalled: boolean;
   roomToken: string;
   techJoinedClass: boolean;
-  muteAllParticipant: boolean;
+  muteAllParticipant: boolean | undefined;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -48,7 +48,7 @@ const initialState: liveClassDetailsTypes = {
   isKrispInstalled: false,
   roomToken: "",
   techJoinedClass: false,
-  muteAllParticipant: false,
+  muteAllParticipant: undefined,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -76,7 +76,6 @@ export const liveClassDetailsSlice = createSlice({
       state.techJoinedClass = action.payload;
     },
     addMuteAllParticipant: (state, action) => {
-      console.log("Action payload", action.payload);
       state.muteAllParticipant = action.payload;
     },
   },

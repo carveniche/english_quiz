@@ -16,5 +16,22 @@ export default function useLocalAudioToggle() {
     }
   }, [audioTrack]);
 
-  return [isEnabled, toggleAudioEnabled] as const;
+  const muteAudioEnable = useCallback(() => {
+    if (audioTrack) {
+      audioTrack.disable();
+    }
+  }, [audioTrack]);
+
+  const unMuteAudioEnable = useCallback(() => {
+    if (audioTrack) {
+      audioTrack.enable();
+    }
+  }, [audioTrack]);
+
+  return [
+    isEnabled,
+    toggleAudioEnabled,
+    muteAudioEnable,
+    unMuteAudioEnable,
+  ] as const;
 }
