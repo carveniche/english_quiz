@@ -7,7 +7,7 @@ export default function StarIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="Star" clip-path="url(#clip0_318_9439)">
+      <g id="Star" clipPath="url(#clip0_318_9439)">
         <g id="Group">
           <g id="Group_2" filter="url(#filter0_dd_318_9439)">
             <path
@@ -86,9 +86,9 @@ export default function StarIcon() {
           width="5.17512"
           height="4.70049"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -139,9 +139,9 @@ export default function StarIcon() {
           width="5.36252"
           height="5.09409"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -192,9 +192,9 @@ export default function StarIcon() {
           width="4.61082"
           height="4.84678"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -245,9 +245,9 @@ export default function StarIcon() {
           width="3.99841"
           height="3.45532"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -280,9 +280,9 @@ export default function StarIcon() {
           width="4.51941"
           height="4.87036"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -315,9 +315,9 @@ export default function StarIcon() {
           width="20.375"
           height="20.6252"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -387,8 +387,8 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(16.5037 12.2024) rotate(-27.3239) scale(2.63809 3.65926)"
         >
-          <stop offset="0.747" stop-color="#FFF055" stopOpacity="0" />
-          <stop offset="1" stop-color="#FFF055" />
+          <stop offset="0.747" stopColor="#FFF055" stopOpacity="0" />
+          <stop offset="1" stopColor="#FFF055" />
         </radialGradient>
         <linearGradient
           id="paint1_linear_318_9439"
@@ -398,8 +398,8 @@ export default function StarIcon() {
           y2="2.41753"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF659" />
-          <stop offset="1" stop-color="#FFF659" stopOpacity="0" />
+          <stop stopColor="#FFF659" />
+          <stop offset="1" stopColor="#FFF659" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_318_9439"
@@ -409,8 +409,8 @@ export default function StarIcon() {
           y2="11.48"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#DEAE2C" />
-          <stop offset="1" stop-color="#DEAE2C" stopOpacity="0" />
+          <stop stopColor="#DEAE2C" />
+          <stop offset="1" stopColor="#DEAE2C" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_318_9439"
@@ -420,8 +420,8 @@ export default function StarIcon() {
           y2="17.3781"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F9C83C" />
-          <stop offset="1" stop-color="#F9C83C" stopOpacity="0" />
+          <stop stopColor="#F9C83C" />
+          <stop offset="1" stopColor="#F9C83C" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint4_radial_318_9439"
@@ -431,8 +431,8 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(14.0648 5.07141) rotate(132.911) scale(10.2915 10.1841)"
         >
-          <stop stop-color="#FAC632" />
-          <stop offset="1" stop-color="#F7C632" />
+          <stop stopColor="#FAC632" />
+          <stop offset="1" stopColor="#F7C632" />
         </radialGradient>
         <radialGradient
           id="paint5_radial_318_9439"
@@ -442,8 +442,8 @@ export default function StarIcon() {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.68753 8.66746) rotate(90) scale(7.1875)"
         >
-          <stop stop-color="#DDBA38" />
-          <stop offset="1" stop-color="#DDBA38" stopOpacity="0" />
+          <stop stopColor="#DDBA38" />
+          <stop offset="1" stopColor="#DDBA38" stopOpacity="0" />
         </radialGradient>
         <clipPath id="clip0_318_9439">
           <rect width="20" height="20" fill="white" />

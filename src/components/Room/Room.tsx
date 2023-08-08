@@ -1,13 +1,8 @@
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
-
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
-
-import useParticipantsContext from "../../hooks/useParticipantsContext/useParticipantsContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
-
 import { useSelector } from "react-redux";
-
 import { RootState } from "../../redux/store";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
 import { allExcludedParticipant } from "../../utils/participantIdentity";
@@ -15,6 +10,9 @@ import ScreenShareDraggable from "../DraggableComponent/ScreenShareDraggable";
 import useLocalAudioToggle from "../../hooks/useLocalAudioToggle/useLocalAudioToggle";
 import { useEffect } from "react";
 
+import ChatWindow from "../ChatWindow/ChatWindow";
+import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
+import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -52,7 +50,8 @@ export default function Room() {
   const { room, toggleScreenShare } = useVideoContext();
 
   const localParticipant = room!.localParticipant;
-  const { speakerViewParticipants } = useParticipantsContext();
+
+  const speakerViewParticipants = useSpeakerViewParticipants();
 
   const remotePCount = speakerViewParticipants.length;
 
@@ -78,6 +77,8 @@ export default function Room() {
     }
   }, []);
 
+  console.log("Room Component Mouting");
+
   return (
     <>
       {/* 
@@ -87,12 +88,13 @@ export default function Room() {
       */}
 
       <ParticipantAudioTracks />
+
       <>
         {screenShareState.identity !== room?.localParticipant.identity &&
           screenShareState.publishedState && <ScreenShareDraggable />}
         {currentSelectedScreen === "/allScreen" ? (
           <ContainerAllScreen>
-            <Item remotepcount={remotePCount}>
+            <Item remotepcount={remotePCount} key={localParticipant.sid}>
               {!allExcludedParticipant({
                 identity: localParticipant.identity,
               }) && (
@@ -111,87 +113,30 @@ export default function Room() {
 
             {speakerViewParticipants.map((participant) => {
               return (
-                <>
-                  <Item remotepcount={remotePCount}>
-                    {!allExcludedParticipant({
-                      identity: participant.identity,
-                    }) && (
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={participant}
-                      />
-                    )}
-                    <Participant
-                      key={participant.sid}
+                <Item remotepcount={remotePCount} key={participant.sid}>
+                  {!allExcludedParticipant({
+                    identity: participant.identity,
+                  }) && (
+                    <ParticipantsAnimationBar
+                      localParticipant={localParticipant}
                       participant={participant}
                     />
-                  </Item>
-                </>
+                  )}
+                  <Participant
+                    key={participant.sid}
+                    participant={participant}
+                  />
+                </Item>
               );
             })}
           </ContainerAllScreen>
         ) : (
-          <ContainerAllScreen>
-            <Item remotepcount={remotePCount}>
-              {!allExcludedParticipant({
-                identity: localParticipant.identity,
-              }) && (
-                <>
-                  <ParticipantsAnimationBar
-                    localParticipant={localParticipant}
-                    participant={localParticipant}
-                  />
-                </>
-              )}
-              <Participant
-                participant={localParticipant}
-                isLocalParticipant={true}
-              />
-            </Item>
-
-            {speakerViewParticipants.map((participant) => {
-              return (
-                <>
-                  <Item remotepcount={remotePCount}>
-                    {!allExcludedParticipant({
-                      identity: participant.identity,
-                    }) && (
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={participant}
-                      />
-                    )}
-                    <Participant
-                      key={participant.sid}
-                      participant={participant}
-                    />
-                  </Item>
-                </>
-              );
-            })}
-          </ContainerAllScreen>
-
-          /* <ContainerAllScreen>
-              <Item remotePCount={remotePCount}>
-                <Participant
-                  participant={localParticipant}
-                  isLocalParticipant={true}
-                />
-              </Item>
-
-              {speakerViewParticipants.map((participant) => {
-                return (
-                  <Item remotePCount={remotePCount}>
-                    <Participant
-                      key={participant.sid}
-                      participant={participant}
-                    />
-                  </Item>
-                );
-              })}
-            </ContainerAllScreen> */
+          <h1>All other Screens Component</h1>
         )}
       </>
+
+      <ChatWindow />
+      <BackgroundSelectionDialog />
     </>
   );
 }

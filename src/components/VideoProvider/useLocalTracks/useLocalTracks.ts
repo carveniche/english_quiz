@@ -21,11 +21,12 @@ const noiseCancellationOptions: NoiseCancellationOptions = {
   vendor: "krisp",
 };
 
-export default function useLocalTracks() {
-  // const { setIsKrispEnabled, setIsKrispInstalled } = useAppState();
+import { useDispatch } from "react-redux";
 
-  const setIsKrispEnabled = (arg1: boolean) => {}; // Get this function from redux store;
-  const setIsKrispInstalled = (arg1: boolean) => {}; // Store this function value to redux store;
+import { addKrispInstalledEnabledDetails } from "../../../redux/features/liveClassDetails";
+
+export default function useLocalTracks() {
+  const dispatch = useDispatch();
 
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
   const [videoTrack, setVideoTrack] = useState<LocalVideoTrack>();
@@ -145,9 +146,13 @@ export default function useLocalTracks() {
         }
         if (newAudioTrack) {
           setAudioTrack(newAudioTrack);
+
           if (newAudioTrack.noiseCancellation) {
-            setIsKrispEnabled(true);
-            setIsKrispInstalled(true);
+            let krispObj = {
+              isKrispEnabled: true,
+              isKrispInstalled: true,
+            };
+            dispatch(addKrispInstalledEnabledDetails(krispObj));
           }
         }
 
@@ -167,13 +172,7 @@ export default function useLocalTracks() {
         }
       })
       .finally(() => setIsAcquiringLocalTracks(false));
-  }, [
-    audioTrack,
-    videoTrack,
-    isAcquiringLocalTracks,
-    setIsKrispEnabled,
-    setIsKrispInstalled,
-  ]);
+  }, [audioTrack, videoTrack, isAcquiringLocalTracks]);
 
   const localTracks = [audioTrack, videoTrack].filter(
     (track) => track !== undefined

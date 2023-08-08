@@ -125,7 +125,7 @@ export default function ParticipantsAnimationBar({
         startAnimation && (
           <PlayLottieParticipantBar type={animationPariticipantType} />
         )}
-      <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-99 w-full h-[40px] pl-4 pr-4 py-2.5">
+      <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-10 w-full h-[40px] pl-4 pr-4 py-2.5">
         <div className="flex gap-2 z-20">
           <div className="flex justify-center mb-3">
             <NetworkQualityLevel participant={participant} />

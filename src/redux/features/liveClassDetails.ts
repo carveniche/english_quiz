@@ -64,6 +64,11 @@ export const liveClassDetailsSlice = createSlice({
     addCurrentSelectedScreen: (state, action) => {
       return { ...state, currentSelectedScreen: action.payload };
     },
+    addKrispInstalledEnabledDetails: (state, action) => {
+      const { isKrispEnabled, isKrispInstalled } = action.payload;
+      state.isKrispEnabled = isKrispEnabled;
+      state.isKrispInstalled = isKrispInstalled || true;
+    },
   },
 });
 
@@ -72,6 +77,7 @@ export const {
   addUserId,
   addLiveClassId,
   addCurrentSelectedScreen,
+  addKrispInstalledEnabledDetails,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

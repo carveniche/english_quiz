@@ -36,8 +36,6 @@ export default function PreJoinScreen() {
 
     if (!mediaError) {
       getAudioAndVideoTracks().catch((error) => {
-        console.log("Error acquiring local Media");
-        console.dir(error);
         setMediaError(error);
       });
     }

@@ -1,8 +1,6 @@
 import AudioInputList from "./AudioInputList/AudioInputList";
 import AudioOutputList from "./AudioOutputList/AudioOutputList";
 
-import { useState } from "react";
-
 import {
   DialogContent,
   Typography,
@@ -17,6 +15,7 @@ import {
   Switch,
   Tooltip,
 } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
 import VideoInputList from "./VideoInputList/VideoInputList";
 import MaxGalleryViewParticipants from "./MaxGalleryViewParticipants/MaxGalleryViewParticipants";
@@ -25,6 +24,8 @@ import SmallCheckIcon from "../../icons/SmallCheckIcon";
 import InfoIconOutlined from "../../icons/InfoIconOutlined";
 import KrispLogo from "../../icons/KrispLogo";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -81,9 +82,9 @@ export default function DeviceSelectionDialog({
   onClose: () => void;
 }) {
   const { isAcquiringLocalTracks } = useVideoContext();
-  const [isKrispEnabled, setIsKrispEnabled] = useState(false);
-  const [isKrispInstalled, setIsKrispInstalled] = useState(false);
-  // const { isKrispEnabled, isKrispInstalled } = useAppState();
+  const { isKrispEnabled, isKrispInstalled } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
 
   const { toggleKrisp } = useKrispToggle();
   const classes = useStyles();

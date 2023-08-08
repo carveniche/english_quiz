@@ -1,5 +1,4 @@
 import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
-import AllScreen from "../components/FeatureComponent/AllScreen/AllScreen";
 import Coding from "../components/FeatureComponent/Coding/Coding";
 import Lesson from "../components/FeatureComponent/Lesson/Lesson";
 import Mathzone from "../components/FeatureComponent/Mathzone/Mathzone";
@@ -13,16 +12,16 @@ interface routerConfig {
   exact: Boolean;
   component: React.ComponentType;
   name: String;
-  icon:String
+  icon: String;
 }
 const routerConfig: routerConfig[] = [
   {
     path: defaultRouter.path,
     key: defaultRouter.key,
     exact: true,
-    component: AllScreen,
-    name: defaultRouter.name,
-    icon:defaultRouter.icon
+    component: () => "",
+    name: "All Screen",
+    icon: "/menu-icon/Whiteboard.svg",
   },
   {
     path: "/myscreen",
@@ -30,7 +29,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: MyScreen,
     name: "My Screen",
-    icon:"/menu-icon/Whiteboard.svg"
+    icon: "/menu-icon/Whiteboard.svg",
   },
   {
     path: ROUTERKEYCONST.coding,
@@ -38,15 +37,15 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Coding,
     name: "Coding",
-    icon:"/menu-icon/Whiteboard.svg"
+    icon: "/menu-icon/Whiteboard.svg",
   },
   {
-    path:ROUTERKEYCONST.mathzone,
+    path: ROUTERKEYCONST.mathzone,
     key: ROUTERKEYCONST.mathzone,
     exact: true,
     component: Mathzone,
     name: "Mathzone",
-    icon:"/menu-icon/Whiteboard.svg"
+    icon: "/menu-icon/Whiteboard.svg",
   },
   {
     path: ROUTERKEYCONST.whiteboard,
@@ -54,7 +53,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Whiteboard,
     name: "Whiteboard",
-    icon:"/menu-icon/Whiteboard.svg"
+    icon: "/menu-icon/Whiteboard.svg",
   },
   {
     path: ROUTERKEYCONST.lesson,
@@ -62,7 +61,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Lesson,
     name: "Lesson",
-    icon:"/menu-icon/Whiteboard.svg"
+    icon: "/menu-icon/Whiteboard.svg",
   },
 ];
 export default routerConfig;

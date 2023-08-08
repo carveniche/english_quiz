@@ -1,6 +1,7 @@
 import React from "react";
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 import { Participant as IParticipant } from "twilio-video";
+import ParticipantInfo from "../ParticipantInfo/ParticipantInfo";
 
 interface ParticipantProps {
   participant: IParticipant;
@@ -20,12 +21,17 @@ export function Participant({
   isLocalParticipant,
 }: ParticipantProps) {
   return (
-    <ParticipantTracks
+    <ParticipantInfo
       participant={participant}
-      videoOnly={videoOnly}
-      enableScreenShare={enableScreenShare}
       isLocalParticipant={isLocalParticipant}
-    />
+    >
+      <ParticipantTracks
+        participant={participant}
+        videoOnly={videoOnly}
+        enableScreenShare={enableScreenShare}
+        isLocalParticipant={isLocalParticipant}
+      />
+    </ParticipantInfo>
   );
 }
 
