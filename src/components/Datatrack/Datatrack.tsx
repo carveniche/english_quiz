@@ -8,7 +8,10 @@ import {
   addAnimationDatatrack,
   addScreenShareDatatrack,
 } from "../../redux/features/dataTrackStore";
-import { addCurrentSelectedScreen } from "../../redux/features/liveClassDetails";
+import {
+  addToActiveTab,
+  deleteFromActiveTab,
+} from "../../redux/features/addActiveTabLink";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
@@ -25,8 +28,20 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage.pathName === null
       ) {
       } else {
-        history(`${parseMessage.pathName}?${queryParams}`);
-        dispatch(addCurrentSelectedScreen(parseMessage.pathName));
+        if (parseMessage.value.type === "deleteFromActiveTab") {
+          history(`${parseMessage.pathName}?${queryParams}`);
+          dispatch(deleteFromActiveTab(parseMessage.pathName));
+        } else {
+          history(`${parseMessage.pathName}?${queryParams}`);
+          dispatch(
+            addToActiveTab({
+              path: parseMessage.pathName,
+              key: parseMessage.key,
+              icon: parseMessage.icon,
+              name: parseMessage.name,
+            })
+          );
+        }
       }
 
       if (parseMessage?.value?.datatrackName === "ScreenShare") {

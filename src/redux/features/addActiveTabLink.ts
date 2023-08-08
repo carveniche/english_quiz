@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { MAXIMUMACTIVETAB, ROUTERKEYCONST } from "../../constants"
-import routerConfig from "../../Router/RouterConfig"
-let arr=routerConfig
-const {path, key, icon, name}=arr.filter(item=>item.key==ROUTERKEYCONST.allScreen)[0]
+import defaultRouter from "../../Router/defaultRouter"
 export interface ActiveTabParams{
     path:String,
     key:String,
@@ -16,7 +14,10 @@ export interface activeTabStateReducer{
 
 const initialState:activeTabStateReducer={
 activeTabArray:[{
-    path,key,name,icon
+    path:defaultRouter.path,
+    key:defaultRouter.key,
+    name:defaultRouter.name,
+    icon:defaultRouter.icon
 }],
 currentSelectedRouter:ROUTERKEYCONST.allScreen
 }
@@ -48,9 +49,9 @@ const activeTabReducer=createSlice({
             // const navigate=useNavigate()
             activeTabArray=activeTabArray.filter(item=>item.key!==action.payload)
             console.log(activeTabArray)
-            let currentTab=state.currentSelectedRouter
+            let currentTab:String=state.currentSelectedRouter
             if(!activeTabArray.length){
-               
+               const {path,key,icon,name}=defaultRouter
                 activeTabArray=[{
                     path,key,icon,name
                 }]

@@ -6,6 +6,7 @@ import Mathzone from "../components/FeatureComponent/Mathzone/Mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
 import React from "react";
 import { ROUTERKEYCONST } from "../constants";
+import defaultRouter from "./defaultRouter";
 interface routerConfig {
   path: String;
   key: String;
@@ -16,12 +17,12 @@ interface routerConfig {
 }
 const routerConfig: routerConfig[] = [
   {
-    path: ROUTERKEYCONST.allScreen,
-    key: ROUTERKEYCONST.allScreen,
+    path: defaultRouter.path,
+    key: defaultRouter.key,
     exact: true,
     component: AllScreen,
-    name: "All Screen",
-    icon:"/menu-icon/Whiteboard.svg"
+    name: defaultRouter.name,
+    icon:defaultRouter.icon
   },
   {
     path: "/myscreen",

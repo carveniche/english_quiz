@@ -131,9 +131,45 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <>
-            <h1>All other Screens Component</h1>
-          </>
+          <ContainerAllScreen>
+            <Item remotepcount={remotePCount}>
+              {!allExcludedParticipant({
+                identity: localParticipant.identity,
+              }) && (
+                <>
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={localParticipant}
+                  />
+                </>
+              )}
+              <Participant
+                participant={localParticipant}
+                isLocalParticipant={true}
+              />
+            </Item>
+
+            {speakerViewParticipants.map((participant) => {
+              return (
+                <>
+                  <Item remotepcount={remotePCount}>
+                    {!allExcludedParticipant({
+                      identity: participant.identity,
+                    }) && (
+                      <ParticipantsAnimationBar
+                        localParticipant={localParticipant}
+                        participant={participant}
+                      />
+                    )}
+                    <Participant
+                      key={participant.sid}
+                      participant={participant}
+                    />
+                  </Item>
+                </>
+              );
+            })}
+          </ContainerAllScreen>
 
           /* <ContainerAllScreen>
               <Item remotePCount={remotePCount}>
