@@ -1,0 +1,1 @@
+export let touchType=['touchstart',"touchmove",'touchend','touchcancel']

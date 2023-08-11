@@ -29,3 +29,7 @@ svg {
 .submenu-react li > button svg {
   transform: rotate(-90deg);
 }
+
+.section-component-layout {
+  height: calc(100% - 72px - 101.28px);
+}

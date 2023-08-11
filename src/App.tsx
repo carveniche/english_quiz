@@ -63,10 +63,13 @@ function App() {
           {/* {pathname === "/" && <Navigate to={`/allScreen?${params}`} />} */}
           <Header />
           <Header2 />
-          <AllPageRoutes />
+
           <ReconnectingNotification />
           <MobileTopMenuBar />
-          <Room />
+          <div className="section-component-layout">
+            <Room />
+            <AllPageRoutes />
+          </div>
           <MenuBar />
         </Main>
       )}

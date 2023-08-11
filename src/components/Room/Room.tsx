@@ -20,7 +20,7 @@ interface remotePCountInterface {
 const ContainerAllScreen = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: calc(100% - 174px);
+  height: calc(100%);
   overflow: hidden;
   margin: auto;
   width: 100%;
@@ -58,7 +58,7 @@ export default function Room() {
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
   const currentSelectedScreen = useSelector(
-    (state: RootState) => state.liveClassDetails.currentSelectedScreen
+    (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
 
   const screenShareState = useSelector(
@@ -131,7 +131,7 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <h1>All other Screens Component</h1>
+          <></>
         )}
       </>
 
