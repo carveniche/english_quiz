@@ -1,5 +1,4 @@
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
-import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
 import { useSelector } from "react-redux";
@@ -13,6 +12,8 @@ import { useEffect } from "react";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
+
+import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -81,14 +82,6 @@ export default function Room() {
 
   return (
     <>
-      {/* 
-        This ParticipantAudioTracks component will render the audio track for all participants in the room.
-        It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
-        unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
-      */}
-
-      <ParticipantAudioTracks />
-
       <>
         {screenShareState.identity !== room?.localParticipant.identity &&
           screenShareState.publishedState && <ScreenShareDraggable />}
@@ -131,7 +124,9 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <></>
+          <>
+            <div>{/* <FloatingParticipant /> */}</div>
+          </>
         )}
       </>
 

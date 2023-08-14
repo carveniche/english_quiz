@@ -15,7 +15,7 @@ export default function Header2() {
   return (
     <>
       <div className="bg-header-black flex min-h-[40px] w-full">
-        <div className="relative z-1">
+        <div className="relative z-10">
           <NestedMenu />
         </div>
         <ActiveTabMenu />
