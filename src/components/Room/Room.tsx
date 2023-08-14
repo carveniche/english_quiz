@@ -12,8 +12,6 @@ import { useEffect } from "react";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
-
-import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -95,6 +93,7 @@ export default function Room() {
                   <ParticipantsAnimationBar
                     localParticipant={localParticipant}
                     participant={localParticipant}
+                    screen={"allScreen"}
                   />
                 </>
               )}
@@ -113,6 +112,7 @@ export default function Room() {
                     <ParticipantsAnimationBar
                       localParticipant={localParticipant}
                       participant={participant}
+                      screen={"allScreen"}
                     />
                   )}
                   <Participant
@@ -124,9 +124,7 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <>
-            <div>{/* <FloatingParticipant /> */}</div>
-          </>
+          <></>
         )}
       </>
 

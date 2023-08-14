@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import { Participant } from "../../Participant/Participant";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { isTutor } from "../../../utils/participantIdentity";
+import {
+  allExcludedParticipant,
+  isTutor,
+} from "../../../utils/participantIdentity";
 import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
+import FloatingParticipant from "../../FloatingParticipant/FloatingParticipant";
+import ParticipantsAnimationBar from "../../ParticipantsAnimationBar/ParticipantsAnimationBar";
 
 const ContainerMyScreen = styled.div`
   display: flex;
@@ -57,6 +62,31 @@ export default function MyScreen() {
           </>
         )}
       </Item>
+      <FloatingParticipant>
+        <div className="border border-black min-w-[190px] min-h-[150px]">
+          {speakerViewParticipants.map((participant) => {
+            return (
+              participant.identity !== "tutor" && (
+                <>
+                  {!allExcludedParticipant({
+                    identity: participant.identity,
+                  }) && (
+                    <ParticipantsAnimationBar
+                      localParticipant={localParticipant}
+                      participant={participant}
+                      screen={"myScreen"}
+                    />
+                  )}
+                  <Participant
+                    key={participant.sid}
+                    participant={participant}
+                  />
+                </>
+              )
+            );
+          })}
+        </div>
+      </FloatingParticipant>
     </ContainerMyScreen>
   );
 }
