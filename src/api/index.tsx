@@ -9,3 +9,15 @@ export const videoCallToken = async (user: Number, live_class_id: Number) => {
     },
   });
 };
+
+export const callTechSupport = async (
+  user_id: Number,
+  live_class_id: Number
+) => {
+  axios.get(BaseUrl + "app_students/create_tech_support", {
+    params: {
+      user_id,
+      live_class_id,
+    },
+  });
+};

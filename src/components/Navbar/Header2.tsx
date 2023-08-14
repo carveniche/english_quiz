@@ -3,23 +3,27 @@ import Navbar from "./Navbar";
 import { useState } from "react";
 import ActiveTabMenu from "./ActiveTabMenu";
 import NestedMenu from "../MenuBar/NestedMenu";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { isTutorTechBoth } from "../../utils/participantIdentity";
+import MuteAll from "../MuteAll/MuteAll";
 
 export default function Header2() {
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
   return (
     <>
       <div className="bg-header-black flex min-h-[40px] w-full">
-        <div className="relative z-[1]">
+        <div className="relative z-1">
           <NestedMenu />
-
-          {false && (
-            <div className="absolute z-50 left-0 mt-2 bg-header-black border-black-300 rounded-md p-2 ">
-              <div className="min-w-[200px] flex justify-center content-center flex-col">
-                <Navbar />
-              </div>
-            </div>
-          )}
         </div>
         <ActiveTabMenu />
+        {false && isTutorTechBoth({ identity: String(role_name) }) && (
+          <div className=" justify-center content-center items-center p-5 pr-[30px]">
+            <MuteAll />
+          </div>
+        )}
       </div>
     </>
   );

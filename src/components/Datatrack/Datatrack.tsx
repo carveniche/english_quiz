@@ -13,6 +13,10 @@ import {
   addToActiveTab,
   deleteFromActiveTab,
 } from "../../redux/features/addActiveTabLink";
+import {
+  addCurrentSelectedScreen,
+  addMuteAllParticipant,
+} from "../../redux/features/liveClassDetails";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
@@ -51,6 +55,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addAnimationDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "ChatMessage") {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
+      } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
+        dispatch(addMuteAllParticipant(parseMessage.value.muteState));
       }
     };
 

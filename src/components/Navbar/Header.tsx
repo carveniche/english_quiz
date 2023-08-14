@@ -1,6 +1,6 @@
 import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
 import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
-
+import CallTechSupport from "../CallTechSupport/CallTechSupport";
 export default function Header() {
   return (
     <>
@@ -14,9 +14,12 @@ export default function Header() {
             Class 2, Div A, Live class with Aashish
           </span>
         </div>
-        <div className=" justify-center content-center items-center p-4">
-          <span className="text-BDBDBD p-4 mt-10">Coach: Ms.Styella</span>
-          <ReportErrorScreenShot />
+        <div className=" justify-center content-center items-center p-4 pr-[30px]">
+          <div className="flex flex-row justify-between min-w-[180px]">
+            <CallTechSupport />
+            <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
+            <ReportErrorScreenShot />
+          </div>
         </div>
       </div>
     </>
