@@ -9,12 +9,15 @@ import {
   addUserId,
   addLiveClassId,
 } from "../../redux/features/liveClassDetails";
+import { Navigate, useLocation } from "react-router";
+import { getQueryParams } from "../../utils/getQueryParams";
 
 export default function PreJoinScreen() {
   //   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const [mediaError, setMediaError] = useState<Error>();
-
+  const { pathname } = useLocation();
+  const params = getQueryParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,6 +43,7 @@ export default function PreJoinScreen() {
 
   return (
     <IntroContainer>
+      {pathname !== "/" && <Navigate to={`/?${params}`} />}
       <MediaErrorSnackbar error={mediaError} />
       <DeviceSelectionScreen name="" />
     </IntroContainer>

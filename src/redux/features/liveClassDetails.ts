@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TwilioError } from "twilio-video";
+import defaultRouter from "../../Router/defaultRouter";
 
 import { RoomType } from "../../types";
 
@@ -30,7 +31,7 @@ interface liveClassDetailsTypes {
 const initialState: liveClassDetailsTypes = {
   userId: 0,
   liveClassId: 0,
-  currentSelectedScreen: "/allScreen",
+  currentSelectedScreen: defaultRouter.path,
   userIdentity: "",
   userName: "",
   studentsAssignInClass: [],

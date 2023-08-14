@@ -20,3 +20,16 @@ svg {
   gap: 10px;
   color: white;
 }
+.submenu-react li > ul {
+  transform: translatex(100%) scale(1);
+}
+.submenu-react li:hover > ul {
+  transform: translatex(101%) scale(1);
+}
+.submenu-react li > button svg {
+  transform: rotate(-90deg);
+}
+
+.section-component-layout {
+  height: calc(100% - 72px - 101.28px);
+}
