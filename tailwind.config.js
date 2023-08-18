@@ -10,7 +10,11 @@ export default {
         "participant-animation-bar": "rgba(79, 79, 79, 0.6)",
         BDBDBD: "#BDBDBD",
         F2F2F2: "#F2F2F2",
+        F5F5F5: "#F5F5F5",
         black: "#000",
+        "27AE60": "#27AE60", //green for mathzone
+        828282: "#828282",
+        F24A4A: "#F24A4A", //red for mathzone
         callTechSupportLineConnect: "#27AE60",
         callTechSupportLine: "#4B4B4B",
       },

@@ -35,7 +35,7 @@ import MainTensframe from "./component/TensFrame/MainTensFrame";
 import MainVertical from "./component/Vertical/MainVertical";
 import MainVerticalWithSymbols from "./component/VerticalWithSymbols/MainVerticalWithSymbols";
 
-export default function AllFile({ obj, temp, type, isResponse }) {
+export default function AllFile({ obj, temp, type, isResponse, isTutor }) {
   let questionType = {
     "Multiple choice": (
       <MainMultipleChoice obj={obj} meter={obj?.question_no} />

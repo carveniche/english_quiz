@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import {
+  ActiveTabParams,
   addToActiveTab,
   deleteFromActiveTab,
 } from "../../redux/features/addActiveTabLink";
@@ -19,10 +20,16 @@ export default function ActiveTabMenu() {
   const { activeTabArray, currentSelectedRouter } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
-  const handleClick = ({ path, key, name, icon }: ActiveTabParams) => {
-    dispatch(addToActiveTab({ path, key, name, icon }));
+  const handleClick = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     const [localDataTrackPublication] = [
-      ...room.localParticipant.dataTracks.values(),
+      ...room!.localParticipant.dataTracks.values(),
     ];
 
     console.log("path sending", path);
@@ -32,6 +39,7 @@ export default function ActiveTabMenu() {
       key,
       name,
       icon,
+      extraParams,
       value: {
         type: null,
         identity: null,
@@ -77,6 +85,7 @@ export default function ActiveTabMenu() {
                   key: item.key,
                   name: item.name,
                   icon: item.icon,
+                  extraParams: item.extraParams,
                 })
               }
             >

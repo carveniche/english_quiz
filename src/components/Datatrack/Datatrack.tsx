@@ -17,6 +17,8 @@ import {
   addCurrentSelectedScreen,
   addMuteAllParticipant,
 } from "../../redux/features/liveClassDetails";
+import { MATHZONEDATAKEY } from "../../constants";
+import { changeMathzoneData } from "../../redux/features/ComponentLevelDataReducer";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
@@ -27,7 +29,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-
+      console.log(parseMessage);
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
@@ -44,6 +46,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
               key: parseMessage.key,
               icon: parseMessage.icon,
               name: parseMessage.name,
+              extraParams: parseMessage.extraParams || {},
             })
           );
         }
@@ -57,6 +60,19 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
         dispatch(addMuteAllParticipant(parseMessage.value.muteState));
+      }
+      if (parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData) {
+        console.log();
+        dispatch(
+          addToActiveTab({
+            path: parseMessage?.value.activeTabData?.path || "",
+            key: parseMessage?.value?.activeTabData?.key || "",
+            icon: parseMessage?.value?.activeTabData?.icon || "",
+            name: parseMessage?.value?.activeTabData?.name || "",
+            extraParams: parseMessage?.value?.activeTabData?.path || "",
+          })
+        );
+        dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
       }
     };
 

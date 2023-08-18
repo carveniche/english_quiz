@@ -5,10 +5,18 @@ import { serializeResponse } from "../CommonJSFiles/gettingResponse";
 import replaceJsonData from "../CommonJSFiles/replacingJsonData";
 import { addStyles } from "./ExternalPackages";
 import AllFile from "../AllFile";
+import SolveButton from "../SolveButton";
+import oldQuestionWithNoHtmlQuestion from "../CommonJSFiles/oldQuestionWithNoHtmlQuestion";
+import newTypeQuestionChecker from "../CommonJSFiles/newTypeQuestionChecker";
+import { StudentAnswerResponse } from "../../../../api";
+import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
+import TimerClock from "./TimerClock";
+import SolutionComponent from "../SolutionExplanation/SolutionComponent";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
   const [hasAnswerSubmitted, setHasAnswerSubmitted] = useState(false);
+  const [isProgressBarVisible, setIsProgressBarVisible] = useState(true);
   let [responseUrl, setResponseUrl] = useState("");
   let [questionWithAnswer, setQuestionWithAnswer] = useState({});
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
@@ -45,6 +53,8 @@ export function ValidationContextProvider({ children }) {
     isStudentAnswerResponse,
     choices,
     setChoices,
+    isProgressBarVisible,
+    setIsProgressBarVisible,
   };
   return (
     <ValidationContext.Provider value={value}>
@@ -77,23 +87,54 @@ export const TeacherQuizDisplay = ({
     temp = obj;
   }
 
-  return <></>;
+  return (
+    <>
+      <div
+        style={{ position: "relative" }}
+        className={`${
+          obj?.question_data[0]?.operation ? "new_type_question_prev_wrap" : ""
+        } ${styles.bodyPage2}
+      `}
+      >
+        <AllFile
+          type={obj?.question_data[0]?.question_type}
+          obj={obj}
+          temp={temp}
+          isResponse={false}
+        />
+        <SolutionComponent
+          showStudentSolution={true}
+          arr={arr}
+          obj={obj}
+          temp={temp}
+          showCorrectIncorrectImage={false}
+        />
+      </div>
+    </>
+  );
 };
 
-const StudentQuizDisplay = ({ obj }) => {
+const StudentQuizDisplay = ({ obj, identity }) => {
   const [showStudentSolution, setShowStudentSolution] = useState(false);
   const [showTeacherSolution, setShowTeacherSolution] = useState(false);
+  const [response, setResponse] = useState(false);
   let arr = ["orc", "oprc", "ol", "ckeditor"];
   const [showExplation, setShowExplation] = useState(false);
-
-  const {
+  let {
     studentAnswerQuestion,
     setQuestionWithAnswer,
     isAnswerCorrect,
     handleUpdateStudentAnswerResponse,
     isStudentAnswerResponse,
     choicesId,
+    handleCurrentIdentity,
+    questionWithAnswer,
+    studentAnswerChoice,
+    hasAnswerSubmitted,
+    choices,
   } = useContext(ValidationContext);
+  const [count, setCount] = useState(0);
+  const timerRef = useRef(null);
   const checkData = (data) => {
     let arr = ["orc", "ol", "oprc"];
     let arr2 = ["Multiple choice", "Fill in the blanks", "multi select"];
@@ -134,22 +175,138 @@ const StudentQuizDisplay = ({ obj }) => {
   const handleExplation = () => {
     setShowExplation(!showExplation);
   };
+  useEffect(() => {
+    handleCurrentIdentity(identity.trim());
+  }, []);
+  const handleSubmitAnswer = () => {
+    window.handleSubmit();
+  };
+  const handleApiRequestForSavingAnswer = async (type) => {
+    try {
+      let arr = ["ckeditor"];
+      let noResponse = oldQuestionWithNoHtmlQuestion();
+      let question_id = obj.question_data[0].question_id;
+      let live_class_id = obj?.live_class_id || obj?.lice_class_id;
+      let live_class_practice_id = obj?.live_class_practice_id;
+      let level = obj?.level;
+      let tag_id = obj?.tag_id;
+
+      let search = window.location.search;
+      let urlParams = new URLSearchParams(search);
+      let userId = urlParams.get("userID");
+
+      let student_id = "";
+      if (allExcludedParticipants.includes(identity)) {
+        return;
+      }
+      let param = {
+        choicesId,
+        studentAnswerChoice,
+
+        studentAnswerQuestion,
+        question_id,
+        live_class_id,
+        live_class_practice_id,
+        level,
+        tag_id,
+      };
+      if (!arr.includes(obj?.question_data[0]?.question_type))
+        studentAnswerQuestion = serializeResponse("studentAnswerResponse");
+      if (newTypeQuestionChecker(obj?.question_data[0]?.question_type)) {
+        studentAnswerQuestion = JSON.stringify({ ...questionWithAnswer });
+      }
+      if (
+        noResponse.includes(obj?.question_data[0]?.question_type) &&
+        !arr?.includes(obj?.question_data[0]?.question_type)
+      ) {
+        studentAnswerQuestion = "";
+      }
+
+      let formData = new FormData();
+
+      console.log(studentAnswerChoice);
+      console.log("StudentAnswerQuestio live class", studentAnswerQuestion);
+      formData.append("student_answer_question", `${studentAnswerQuestion}`);
+      formData.append("student_answer_choice", `${choices}`);
+
+      if (obj?.question_data[0]?.question_type == "multi select") {
+        for (let item of choicesId) {
+          formData.append("choice[]", item);
+        }
+      } else {
+        formData.append("choice", choicesId);
+      }
+      let queryParams = `?user_id=${userId}&question_id=${question_id}&live_class_practice_id=${live_class_practice_id}&live_class_id=${live_class_id}&tag_id=${tag_id}&level=${level}&student_id=${student_id}&student_answer=${isAnswerCorrect}&time_spent=${count}`;
+      let result = await StudentAnswerResponse(queryParams, formData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    if (hasAnswerSubmitted && !response) {
+      handleApiRequestForSavingAnswer(obj?.question_data[0]?.question_type);
+      setResponse(true);
+    }
+  }, [hasAnswerSubmitted]);
+  useEffect(() => {
+    if (!hasAnswerSubmitted && identity !== "parent") {
+      startTimer();
+    } else if (identity !== "parent" && hasAnswerSubmitted) {
+      clearInterval(timerRef.current);
+    }
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, [hasAnswerSubmitted]);
+  const startTimer = () => {
+    timerRef.current = setInterval(() => {
+      setCount((prev) => {
+        return prev + 1;
+      });
+    }, 1000);
+  };
+  useEffect(() => {
+    if (document.querySelector("#quizWhitePage") && hasAnswerSubmitted) {
+      setTimeout(() => {
+        document.querySelector("#quizWhitePage").scrollTop =
+          document.querySelector("#quizWhitePage").scrollHeight;
+      }, 500);
+    }
+  }, [hasAnswerSubmitted]);
   return (
-    <div
-      style={{ position: "relative" }}
-      className={`${
-        obj?.question_data[0]?.operation ? "new_type_question_prev_wrap" : ""
-      } ${styles.bodyPage2}
+    <>
+      {!allExcludedParticipants.includes(identity) && (
+        <TimerClock count={count} />
+      )}
+      {!allExcludedParticipants.includes(identity) && (
+        <SolveButton onClick={handleSubmitAnswer} />
+      )}
+      <div
+        style={{ position: "relative" }}
+        className={`${
+          obj?.question_data[0]?.operation ? "new_type_question_prev_wrap" : ""
+        } ${styles.bodyPage2}
       `}
-    >
-      <AllFile
-        type={obj?.question_data[0]?.question_type}
-        obj={obj}
-        temp={temp}
-        isResponse={isStudentAnswerResponse}
-      />
-      {/* {"solutionModal"} */}
-    </div>
+      >
+        <AllFile
+          type={obj?.question_data[0]?.question_type}
+          obj={obj}
+          temp={temp}
+          isResponse={isStudentAnswerResponse}
+        />
+        <SolutionComponent
+          showExplation={hasAnswerSubmitted}
+          showStudentSolution={hasAnswerSubmitted}
+          showTeacherSolution={showTeacherSolution}
+          handleExplation={handleExplation}
+          arr={arr}
+          obj={obj}
+          temp={temp}
+          isAnswerCorrect={isAnswerCorrect}
+          showCorrectIncorrectImage={true}
+        />
+      </div>
+    </>
   );
 };
 export function RenderingQuizPage({
@@ -177,7 +334,23 @@ export function RenderingQuizPage({
   return (
     <>
       {identity === "tutor" ? (
-        <>{<h1>Teacher View</h1>}</>
+        <>
+          <ValidationContextProvider>
+            <TeacherQuizDisplay
+              obj={obj}
+              userInfo={userInfo}
+              identity={identity}
+              responseUrlAnswer={responseUrlAnswer}
+              setScoreUpdate={setScoreUpdate}
+              studentResponseSenderMathZone={studentResponseSenderMathZone}
+              conceptName={conceptName}
+              conceptTag={conceptTag}
+              mathZoneQuizLevel={mathZoneQuizLevel}
+              setCount={setCount}
+              count={count}
+            />
+          </ValidationContextProvider>
+        </>
       ) : (
         <ValidationContextProvider>
           <StudentQuizDisplay

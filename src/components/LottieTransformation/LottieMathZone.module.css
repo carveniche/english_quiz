@@ -1,0 +1,17 @@
+.correctAnswerAnimation rect:nth-child(1){
+fill:transparent;
+
+}
+.correctAnswerAnimation{
+    z-index:1;
+    overflow: none;
+}
+.gameLoseAnimation{
+    width: 200px !important;
+    height: 200px !important;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    z-index: 999;
+    transform: translate(-50%, -50%);
+}

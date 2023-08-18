@@ -6,7 +6,12 @@ export default function QuizWhitePage({ children }) {
       <div
         className={styles.whitePage}
         id="quizWhitePage"
-        style={{ clear: "both" }}
+        style={{
+          clear: "both",
+          width: "100%",
+          minHeight: "100%",
+          maxHeight: "100%",
+        }}
       >
         {children}
       </div>

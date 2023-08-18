@@ -9,24 +9,35 @@ import routerConfig from "../../Router/RouterConfig";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { ROUTERKEYCONST } from "../../constants";
+import MathzoneNavbar from "./mathzoneNavbar";
 export default function Navbar() {
+  const { mathzone } = useSelector(
+    (state: RootState) => state.liveClassConceptDetails
+  );
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
   const dispatch = useDispatch();
-  const handleClick = ({ path, key, name, icon }: ActiveTabParams) => {
-    dispatch(addToActiveTab({ path, key, name, icon }));
+  const handleClick = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
 
     const [localDataTrackPublication] = [
-      ...room.localParticipant.dataTracks.values(),
+      ...room!.localParticipant.dataTracks.values(),
     ];
-
-    console.log("path sending", path);
-
     let DataTrackObj = {
       pathName: path,
       key,
       name,
       icon,
+      extraParams,
       value: {
         type: null,
         identity: null,
@@ -100,7 +111,7 @@ export default function Navbar() {
       >
         {true &&
           routerConfig.map((item, index) => {
-            return (
+            return item.key !== ROUTERKEYCONST.mathzone ? (
               <li
                 key={index}
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
@@ -113,6 +124,7 @@ export default function Navbar() {
                       key: item.key,
                       name: item.name,
                       icon: item.icon,
+                      extraParams: {},
                     })
                   }
                   className={"w-48"}
@@ -125,6 +137,14 @@ export default function Navbar() {
                 </NavLink>
                 <TabIcon src={"/menu-icon/chevron.svg"} />
               </li>
+            ) : (
+              <MathzoneNavbar
+                mathzone={mathzone}
+                item={item}
+                key={index}
+                handleClick={handleClick}
+                queryParams={queryParams}
+              />
             );
           })}
       </ul>

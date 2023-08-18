@@ -24,3 +24,6 @@ whiteboard:'/whiteboard',
 lesson:'/lesson',
 mathzone:'/mathzone'
 }
+export const MATHZONEDATAKEY={
+mathzoneQuestionData:"mathzoneQuestionData"
+}

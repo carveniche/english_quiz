@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
 import MathzoneInner from "./MathzoneInner";
+import { useParams } from "react-router";
 export const ViewStatusContext = React.createContext("Status Context");
 function ViewStatusContextProvider({ children }) {
   const [reviewResultStatus, setReviewResultStatus] = useState(false);
   const [hideSolveButton, setHideSolveButton] = useState(false);
   const [hideProgressBorder, setHideProgressBorder] = useState(false);
+  const [currentViewQuestion, setCurrentViewQuestion] = useState({});
   const whitePageRef = useRef(null);
   const handleHideProgressBorder = (val) => {
     setHideProgressBorder(val);
@@ -41,9 +43,14 @@ function ViewStatusContextProvider({ children }) {
       setQuestionDemount(true);
     }, 0);
   };
-  const handleModalOff = () => {
+  const handleModalOff = (state) => {
     setQuestionStatus(false);
-    setCurrentIndex(-1);
+    setCurrentIndex({ index: -1, identity: "" });
+  };
+  const handleOpenCloseResponse = (status, index, question) => {
+    setQuestionStatus(status);
+    setCurrentIndex({ index, identity: "" });
+    setCurrentViewQuestion({ ...question });
   };
   const [viewStatus, setViewStatus] = useState(false);
   const handleViewStatus = () => {
@@ -83,6 +90,9 @@ function ViewStatusContextProvider({ children }) {
     setHideSolveButton,
     hideSolveButton,
     whitePageRef,
+    setCurrentViewQuestion,
+    currentViewQuestion,
+    handleOpenCloseResponse,
   };
   return (
     <ViewStatusContext.Provider value={value}>
@@ -91,9 +101,12 @@ function ViewStatusContextProvider({ children }) {
   );
 }
 export default function mathzone() {
+  const { concept, tag, level } = useParams();
   return (
-    <ViewStatusContextProvider>
-      <MathzoneInner />
-    </ViewStatusContextProvider>
+    <React.Fragment key={`${concept}${tag}${level}`}>
+      <ViewStatusContextProvider>
+        <MathzoneInner />
+      </ViewStatusContextProvider>
+    </React.Fragment>
   );
 }

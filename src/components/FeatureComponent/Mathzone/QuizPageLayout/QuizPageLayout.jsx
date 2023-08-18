@@ -18,7 +18,8 @@ import {
 import handleResizeWidth from "../handleResizeWidth";
 let QuizPageLayout;
 export default QuizPageLayout = forwardRef((props, ref) => {
-  const { children } = props;
+  const { children, height } = props;
+  console.log(height);
   const commonResizeFun = () => {
     handleResizeWidth();
   };
@@ -81,7 +82,15 @@ export default QuizPageLayout = forwardRef((props, ref) => {
   return (
     <>
       <>
-        <div className={styles.bodyPage} id="quizbodypage">
+        <div
+          className={styles.bodyPage}
+          id="quizbodypage"
+          style={{
+            height: `calc(100% - ${height}px)`,
+            maxHeight: `calc(100% - ${height}px)`,
+            minHeight: `calc(100% - ${height}px)`,
+          }}
+        >
           <div style={{ position: "relative" }}></div>
           <div style={{ position: "relative", left: 0 }}></div>
           <img src={eclipse1} alt="not foundd" className={styles.eclipse1} />

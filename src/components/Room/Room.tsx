@@ -13,6 +13,9 @@ import { useEffect } from "react";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
+import { getLessonAndMathZoneConceptDetails } from "../../api";
+import { useDispatch } from "react-redux";
+import { addToStore } from "../../redux/features/ConceptDetailsRedux";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -48,7 +51,7 @@ const Item = styled.div<remotePCountInterface>`
 
 export default function Room() {
   const { room, toggleScreenShare } = useVideoContext();
-
+  const dispatch = useDispatch();
   const localParticipant = room!.localParticipant;
 
   const speakerViewParticipants = useSpeakerViewParticipants();
@@ -60,7 +63,9 @@ export default function Room() {
   const currentSelectedScreen = useSelector(
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
-
+  const { liveClassId } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const screenShareState = useSelector(
     (state: RootState) => state.dataTrackStore.ShreenShareTracks
   );
@@ -76,7 +81,17 @@ export default function Room() {
       toggleAudioEnabled();
     }
   }, []);
-
+  useEffect(() => {
+    getLessonAndMathZoneConceptDetails({ live_class_id: `${liveClassId}` })
+      .then((res) => {
+        if (res.data.status) {
+          dispatch(addToStore(res.data || {}));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
   console.log("Room Component Mouting");
 
   return (
@@ -131,7 +146,47 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <></>
+          <>
+            <div style={{ display: "none" }}>
+              <ContainerAllScreen>
+                <Item remotepcount={remotePCount} key={localParticipant.sid}>
+                  {!allExcludedParticipant({
+                    identity: localParticipant.identity,
+                  }) && (
+                    <>
+                      <ParticipantsAnimationBar
+                        localParticipant={localParticipant}
+                        participant={localParticipant}
+                      />
+                    </>
+                  )}
+                  <Participant
+                    participant={localParticipant}
+                    isLocalParticipant={true}
+                  />
+                </Item>
+
+                {speakerViewParticipants.map((participant) => {
+                  return (
+                    <Item remotepcount={remotePCount} key={participant.sid}>
+                      {!allExcludedParticipant({
+                        identity: participant.identity,
+                      }) && (
+                        <ParticipantsAnimationBar
+                          localParticipant={localParticipant}
+                          participant={participant}
+                        />
+                      )}
+                      <Participant
+                        key={participant.sid}
+                        participant={participant}
+                      />
+                    </Item>
+                  );
+                })}
+              </ContainerAllScreen>
+            </div>
+          </>
         )}
       </>
 
