@@ -4,6 +4,12 @@ interface identity {
   identity?: string;
 }
 
+export function isStudentName({ identity }: identity) {
+  let studentName = identity?.split("-")[1];
+
+  return studentName;
+}
+
 export function isTutor({ identity }: identity) {
   if (identity === "tutor") {
     return true;

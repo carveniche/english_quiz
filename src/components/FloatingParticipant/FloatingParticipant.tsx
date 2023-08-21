@@ -1,17 +1,88 @@
 import { Rnd } from "react-rnd";
+import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
+import { Participant } from "../Participant/Participant";
+import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
+import {
+  allExcludedParticipant,
+  isTutor,
+} from "../../utils/participantIdentity";
+import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import { useEffect, useState } from "react";
 
-export default function FloatingParticipant(props: {
-  children: React.ReactNode;
-}) {
+export default function FloatingParticipant(screen: any) {
+  const [screenName, setScreenName] = useState("");
+  const { room } = useVideoContext();
+  const localParticipant = room!.localParticipant;
+
+  const speakerViewParticipants = useSpeakerViewParticipants();
+
+  useEffect(() => {
+    if (screen) {
+      setScreenName(screen.screen);
+    }
+  }, []);
+
   return (
     <div
       style={{
-        position: "absolute",
-        right: 190,
-        marginRight: 5,
+        zIndex: 10,
       }}
     >
-      <Rnd>{props.children}</Rnd>
+      <Rnd
+        style={{
+          position: "static",
+        }}
+      >
+        {screenName === "/myscreen" ? (
+          <>
+            <div className="flex flex-col border border-black min-w-[190px] mt-[15px] ">
+              {!isTutor({ identity: localParticipant.identity }) && (
+                <div className="max-h-[200px] max-w-[290px]">
+                  <Participant
+                    participant={localParticipant}
+                    isLocalParticipant={true}
+                    screen={"allOtherScreens"}
+                  />
+                  {!allExcludedParticipant({
+                    identity: localParticipant.identity,
+                  }) && (
+                    <ParticipantsAnimationBar
+                      localParticipant={localParticipant}
+                      participant={localParticipant}
+                      screen={"myScreen"}
+                    />
+                  )}
+                </div>
+              )}
+              {speakerViewParticipants.map((participant) => {
+                console.log("participant", participant.identity);
+                return (
+                  participant.identity !== "tutor" && (
+                    <div className="max-h-[200px]">
+                      <Participant
+                        key={participant.sid}
+                        participant={participant}
+                        screen={"allOtherScreens"}
+                      />
+                      {!allExcludedParticipant({
+                        identity: participant.identity,
+                      }) && (
+                        <ParticipantsAnimationBar
+                          localParticipant={localParticipant}
+                          participant={participant}
+                          screen={"myScreen"}
+                        />
+                      )}
+                    </div>
+                  )
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div></div>
+        )}
+      </Rnd>
     </div>
   );
 }

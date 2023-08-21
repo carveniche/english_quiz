@@ -15,7 +15,10 @@ import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
-import { isTutorTechBoth } from "../../utils/participantIdentity";
+import {
+  isStudentName,
+  isTutorTechBoth,
+} from "../../utils/participantIdentity";
 import _isEqual from "lodash/isEqual";
 import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
 import { useDispatch } from "react-redux";
@@ -212,7 +215,7 @@ export default function ParticipantsAnimationBar({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col absolute flew-row flex-auto justify-between bottom-0 z-10 w-full h-[60px]">
+        <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[60px]">
           <div className="flex justify-between bg-participant-animation-bar-main w-full h-[30px]">
             <div className="flex flex-row justify-evenly">
               <div className="flex justify-center mb-3">
@@ -222,7 +225,9 @@ export default function ParticipantsAnimationBar({
                 <MicIconParticipantAnimationBar />
               </button>
 
-              {/* <span className="text-white">{participant.identity}</span> */}
+              <span className="text-white">
+                {isStudentName({ identity: participant.identity })}
+              </span>
             </div>
             <div className="flex gap-2 z-10 mr-1">
               <button

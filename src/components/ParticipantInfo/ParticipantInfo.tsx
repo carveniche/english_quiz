@@ -122,12 +122,14 @@ interface ParticipantInfoProps {
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
+  screen?: string;
 }
 
 export default function ParticipantInfo({
   participant,
   isLocalParticipant,
   children,
+  screen,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
 
@@ -148,7 +150,12 @@ export default function ParticipantInfo({
 
   return (
     <div>
-      <div className={classes.innerContainer}>
+      <div
+        style={{
+          position: screen === "allOtherScreens" ? "relative" : "absolute",
+        }}
+        className={classes.innerContainer}
+      >
         {(!isVideoEnabled || isVideoSwitchedOff) && (
           <>
             <div className={classes.avatarContainer}>

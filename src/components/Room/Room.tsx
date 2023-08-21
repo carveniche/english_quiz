@@ -15,6 +15,7 @@ import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/u
 import { getLessonAndMathZoneConceptDetails } from "../../api";
 import { useDispatch } from "react-redux";
 import { addToStore } from "../../redux/features/ConceptDetailsRedux";
+import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -139,47 +140,7 @@ export default function Room() {
             })}
           </ContainerAllScreen>
         ) : (
-          <>
-            <div style={{ display: "none" }}>
-              <ContainerAllScreen>
-                <Item remotepcount={remotePCount} key={localParticipant.sid}>
-                  {!allExcludedParticipant({
-                    identity: localParticipant.identity,
-                  }) && (
-                    <>
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={localParticipant}
-                      />
-                    </>
-                  )}
-                  <Participant
-                    participant={localParticipant}
-                    isLocalParticipant={true}
-                  />
-                </Item>
-
-                {speakerViewParticipants.map((participant) => {
-                  return (
-                    <Item remotepcount={remotePCount} key={participant.sid}>
-                      {!allExcludedParticipant({
-                        identity: participant.identity,
-                      }) && (
-                        <ParticipantsAnimationBar
-                          localParticipant={localParticipant}
-                          participant={participant}
-                        />
-                      )}
-                      <Participant
-                        key={participant.sid}
-                        participant={participant}
-                      />
-                    </Item>
-                  );
-                })}
-              </ContainerAllScreen>
-            </div>
-          </>
+          <FloatingParticipant screen={currentSelectedScreen} />
         )}
       </>
 
