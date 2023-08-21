@@ -33,3 +33,10 @@ svg {
 .section-component-layout {
   height: calc(100% - 72px - 101.28px);
 }
+
+.sampleoneanimation {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+}

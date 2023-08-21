@@ -7,12 +7,13 @@ import React from "react";
 import { ROUTERKEYCONST } from "../constants";
 import defaultRouter from "./defaultRouter";
 interface routerConfig {
-  path: String;
-  key: String;
+  path: string;
+  key: string;
   exact: Boolean;
   component: React.ComponentType;
   name: String;
   icon: String;
+  hasChildren:Boolean | null;
 }
 const routerConfig: routerConfig[] = [
   {
@@ -22,6 +23,7 @@ const routerConfig: routerConfig[] = [
     component: () => "",
     name: "All Screen",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:false
   },
   {
     path: "/myscreen",
@@ -30,6 +32,7 @@ const routerConfig: routerConfig[] = [
     component: MyScreen,
     name: "My Screen",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:false
   },
   {
     path: ROUTERKEYCONST.coding,
@@ -38,14 +41,16 @@ const routerConfig: routerConfig[] = [
     component: Coding,
     name: "Coding",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:false
   },
   {
-    path: ROUTERKEYCONST.mathzone,
+    path: `${ROUTERKEYCONST.mathzone}`,
     key: ROUTERKEYCONST.mathzone,
     exact: true,
     component: Mathzone,
     name: "Mathzone",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:true
   },
   {
     path: ROUTERKEYCONST.whiteboard,
@@ -54,6 +59,7 @@ const routerConfig: routerConfig[] = [
     component: Whiteboard,
     name: "Whiteboard",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:false
   },
   {
     path: ROUTERKEYCONST.lesson,
@@ -62,6 +68,7 @@ const routerConfig: routerConfig[] = [
     component: Lesson,
     name: "Lesson",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren:false
   },
 ];
 export default routerConfig;

@@ -5,11 +5,15 @@ export interface ActiveTabParams{
     path:String,
     key:String,
     name:String,
-    icon: String
+    icon: String,
+    extraParams:Object,
+   
 }
 export interface activeTabStateReducer{
-    activeTabArray:ActiveTabParams[]
-    currentSelectedRouter:String
+    activeTabArray:ActiveTabParams[];
+    currentSelectedRouter:String;
+    currentSelectedIndex:Number;
+    currentSelectedKey:String
 }
 
 const initialState:activeTabStateReducer={
@@ -17,9 +21,12 @@ activeTabArray:[{
     path:defaultRouter.path,
     key:defaultRouter.key,
     name:defaultRouter.name,
-    icon:defaultRouter.icon
+    icon:defaultRouter.icon,
+    extraParams:{}
 }],
-currentSelectedRouter:ROUTERKEYCONST.allScreen
+currentSelectedRouter:ROUTERKEYCONST.allScreen,
+currentSelectedIndex:0,
+currentSelectedKey:ROUTERKEYCONST.allScreen
 }
 const activeTabReducer=createSlice({
     name:"addToActiveTab",
@@ -27,45 +34,72 @@ const activeTabReducer=createSlice({
     reducers:{
         
         addToActiveTab:(state,action:PayloadAction<ActiveTabParams>)=>{
-            
-          
+            console.log(action.payload)
+        
             const {activeTabArray}=state
             let notIncluded=false
-            state.currentSelectedRouter=action.payload.key
+            state.currentSelectedRouter=action.payload.path
+            state.currentSelectedKey=action.payload.key
+            let index=0
             for(let item of activeTabArray){
-                if(item.key===action.payload.key)
+                if(item.key===action.payload.key){
                 notIncluded=true
+                break
             }
-       
+            index++
+            }
+       state.currentSelectedIndex=index
           if(!notIncluded) {
             if(activeTabArray.length===MAXIMUMACTIVETAB){
                 activeTabArray.shift()
             }
+          
             activeTabArray.push({...action.payload})
+            console.log(action.payload)
+            state.currentSelectedIndex=activeTabArray.length-1
+        }
+        else if(action.payload.key===ROUTERKEYCONST.mathzone) {
+            if(activeTabArray[index].path!==action.payload.path){
+                activeTabArray[index]=action.payload
+            }
         }
         },
         deleteFromActiveTab:(state,action:PayloadAction<String>)=>{
             let {activeTabArray}=state
             // const navigate=useNavigate()
-            activeTabArray=activeTabArray.filter(item=>item.key!==action.payload)
-            console.log(activeTabArray)
+           
+            activeTabArray=activeTabArray.filter(item=>{
+                console.log(item.key!==action.payload,item.key,action.payload)
+                return item.key!==action.payload
+            })
             let currentTab:String=state.currentSelectedRouter
+            let currentSelectedKey=state.currentSelectedKey
+           
             if(!activeTabArray.length){
                const {path,key,icon,name}=defaultRouter
                 activeTabArray=[{
-                    path,key,icon,name
+                    path,key,icon,name,extraParams:{}
                 }]
-                
-                currentTab=key
+                currentTab=path
             }
             else{
-                if(action.payload==state.currentSelectedRouter){
-                    currentTab=state.activeTabArray[activeTabArray.length-1].key
+                console.log(state.currentSelectedRouter)
+                if(action.payload==state.currentSelectedKey){
+                    currentTab=state.activeTabArray[activeTabArray.length-1].path
+                    currentSelectedKey=state.activeTabArray[activeTabArray.length-1].key
                 }
+
                 // navigate(`${currentTab}?${getQueryParams()}`)
                 
             }
-            return {...state,activeTabArray,currentSelectedRouter:currentTab}
+            let i=0
+            for(let item of activeTabArray){
+                if(item.path===currentTab){
+                    break;
+                }
+                i++
+            } console.log(currentTab)
+            return {...state,activeTabArray,currentSelectedRouter:currentTab,currentSelectedIndex:i,currentSelectedKey}
         }
     }
 })

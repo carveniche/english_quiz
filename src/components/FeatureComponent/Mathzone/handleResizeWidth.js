@@ -1,15 +1,8 @@
-export default function handleResizeWidth(identity) {
-  return;
-  let myPage = document.getElementById("quizbodypage");
-  let subTractElem = document.getElementById("outerBoxContainerOuiz");
-  let removeHeight = subTractElem?.getBoundingClientRect()?.bottom;
-
-  myPage.style = `min-height:calc(100% - ${removeHeight}px);height:calc(100% - ${removeHeight}px);max-height:calc(100% - ${removeHeight}px) `;
-  let id = setTimeout(() => {
-    clearTimeout(id);
-    handleResizeCheckBtn();
-  }, 0);
+export default function handleResizeWidth(elementRef, dispatch) {
+  let height = elementRef ? elementRef.clientHeight : 0;
+  typeof dispatch === "function" && dispatch(height || 0);
 }
+
 export function handleResizeCheckBtn() {
   return;
   let myPage = document.getElementById("quizWhitePage");

@@ -5,6 +5,8 @@ import liveClassDetailsReducer from "./features/liveClassDetails";
 import videoCallTokenDataReducer from "./features/videoCallTokenData";
 
 import dataTrackStore from "./features/dataTrackStore";
+import liveClassConceptDetails from "./features/ConceptDetailsRedux";
+import ComponentLevelDataReducer from "./features/ComponentLevelDataReducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     videoCallTokenData: videoCallTokenDataReducer,
     activeTabReducer: activeTabReducer,
     dataTrackStore: dataTrackStore,
+    liveClassConceptDetails:liveClassConceptDetails,
+    ComponentLevelDataReducer:ComponentLevelDataReducer
   },
 });
 
