@@ -12,7 +12,7 @@ interface ParticipantProps {
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
-  screen?: string;
+  fromScreen?: string;
 }
 
 export function Participant({
@@ -20,13 +20,13 @@ export function Participant({
   videoOnly,
   enableScreenShare,
   isLocalParticipant,
-  screen,
+  fromScreen,
 }: ParticipantProps) {
   return (
     <ParticipantInfo
       participant={participant}
       isLocalParticipant={isLocalParticipant}
-      screen={screen}
+      screen={fromScreen}
     >
       <ParticipantTracks
         participant={participant}

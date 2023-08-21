@@ -41,7 +41,7 @@ export default function FloatingParticipant(screen: any) {
                   <Participant
                     participant={localParticipant}
                     isLocalParticipant={true}
-                    screen={"allOtherScreens"}
+                    fromScreen={"allOtherScreens"}
                   />
                   {!allExcludedParticipant({
                     identity: localParticipant.identity,
@@ -55,14 +55,13 @@ export default function FloatingParticipant(screen: any) {
                 </div>
               )}
               {speakerViewParticipants.map((participant) => {
-                console.log("participant", participant.identity);
                 return (
                   participant.identity !== "tutor" && (
-                    <div className="max-h-[200px]">
+                    <div className="max-h-[200px]" key={participant.sid}>
                       <Participant
                         key={participant.sid}
                         participant={participant}
-                        screen={"allOtherScreens"}
+                        fromScreen={"allOtherScreens"}
                       />
                       {!allExcludedParticipant({
                         identity: participant.identity,

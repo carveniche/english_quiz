@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from "twilio-video";
 
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
     },
     innerContainer: {
-      position: "absolute",
       top: 0,
       left: 0,
       width: "100%",
@@ -132,7 +131,6 @@ export default function ParticipantInfo({
   screen,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
-
   const videoPublication = publications.find(
     (p) => !p.trackName.includes("screen") && p.kind === "video"
   );
@@ -147,6 +145,8 @@ export default function ParticipantInfo({
   const isParticipantReconnecting = useParticipantIsReconnecting(participant);
 
   const classes = useStyles();
+
+  console.log("screen", screen);
 
   return (
     <div>

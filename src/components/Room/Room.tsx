@@ -116,6 +116,7 @@ export default function Room() {
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}
+                fromScreen={"allScreen"}
               />
             </Item>
 
@@ -134,6 +135,7 @@ export default function Room() {
                   <Participant
                     key={participant.sid}
                     participant={participant}
+                    fromScreen={"allScreen"}
                   />
                 </Item>
               );
