@@ -27,7 +27,7 @@ export default function NestedMenu() {
             </div>
           </div>
         </button>
-        {showMenu && <Navbar />}
+        {showMenu && <Navbar onClick={() => setShowMenu(false)} />}
       </div>
     </>
   );

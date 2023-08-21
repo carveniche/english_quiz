@@ -13,10 +13,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./mathzoneNavbar";
-export default function Navbar() {
+import { useState } from "react";
+export default function Navbar({ onClick }: { onClick: Function }) {
   const { mathzone } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
+
+  const [currentSelectedMenuIndex, setCurrentSelectedMenuIndex] = useState(-1);
+  const [mathzoneKeys, setMathzoneKeys] = useState(0);
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
   const dispatch = useDispatch();
@@ -28,7 +32,7 @@ export default function Navbar() {
     extraParams,
   }: ActiveTabParams) => {
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
-
+    typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
     ];
@@ -50,6 +54,12 @@ export default function Navbar() {
     //send datatrack
   };
 
+  const handleOpenSubMenu = (index: number) => {
+    if (index === 3 && currentSelectedMenuIndex === 3) {
+      setMathzoneKeys(Number(!mathzoneKeys));
+    }
+    setCurrentSelectedMenuIndex(index);
+  };
   return (
     <>
       {false && (
@@ -115,6 +125,7 @@ export default function Navbar() {
               <li
                 key={index}
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
+                onMouseEnter={() => handleOpenSubMenu(index)}
               >
                 <NavLink
                   to={`${item.path}?${queryParams}`}
@@ -138,13 +149,32 @@ export default function Navbar() {
                 <TabIcon src={"/menu-icon/chevron.svg"} />
               </li>
             ) : (
-              <MathzoneNavbar
-                mathzone={mathzone}
-                item={item}
-                key={index}
-                handleClick={handleClick}
-                queryParams={queryParams}
-              />
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <MathzoneNavbar
+                    mathzone={mathzone}
+                    item={{ ...item, extraParams: {} }}
+                    key={`mathzone-${mathzoneKeys}`}
+                    handleClick={handleClick}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
             );
           })}
       </ul>
