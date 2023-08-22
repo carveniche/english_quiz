@@ -134,7 +134,7 @@ export default function ParticipantsAnimationBar({
         startAnimation && (
           <PlayLottieParticipantBar type={animationPariticipantType} />
         )}
-      {screen === "allScreen" ? (
+      {screen === "allscreen" ? (
         <div className="flex absolute bg-participant-animation-bar-main flew-row flex-auto justify-between bottom-0 z-10 w-full h-[40px] pl-4 pr-4 py-2.5">
           <div className="flex gap-2 z-20">
             <div className="flex justify-center mb-3">
@@ -216,7 +216,7 @@ export default function ParticipantsAnimationBar({
         </div>
       ) : (
         <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[60px]">
-          <div className="flex justify-between bg-participant-animation-bar-main w-full h-[30px]">
+          <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[30px]">
             <div className="flex flex-row justify-evenly">
               <div className="flex justify-center mb-3">
                 <NetworkQualityLevel participant={participant} />

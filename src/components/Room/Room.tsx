@@ -92,7 +92,7 @@ export default function Room() {
         console.log(e);
       });
   }, []);
-  console.log("Room Component Mouting");
+
   console.log("currentSelectedScreen", currentSelectedScreen);
 
   return (
@@ -100,7 +100,7 @@ export default function Room() {
       <>
         {screenShareState.identity !== room?.localParticipant.identity &&
           screenShareState.publishedState && <ScreenShareDraggable />}
-        {currentSelectedScreen === "/allScreen" ? (
+        {currentSelectedScreen === "/allscreen" ? (
           <ContainerAllScreen>
             <Item remotepcount={remotePCount} key={localParticipant.sid}>
               {!allExcludedParticipant({
@@ -110,14 +110,14 @@ export default function Room() {
                   <ParticipantsAnimationBar
                     localParticipant={localParticipant}
                     participant={localParticipant}
-                    screen={"allScreen"}
+                    screen={"allscreen"}
                   />
                 </>
               )}
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}
-                fromScreen={"allScreen"}
+                fromScreen={"allscreen"}
               />
             </Item>
 
@@ -130,7 +130,7 @@ export default function Room() {
                     <ParticipantsAnimationBar
                       localParticipant={localParticipant}
                       participant={participant}
-                      screen={"allScreen"}
+                      screen={"allscreen"}
                     />
                   )}
                   <Participant
@@ -142,49 +142,15 @@ export default function Room() {
               );
             })}
           </ContainerAllScreen>
-        ) : currentSelectedScreen === "/myscreen" ? (
-          <FloatingParticipant screen={currentSelectedScreen} />
         ) : (
           <>
-            <div style={{ display: "none" }}>
-              <ContainerAllScreen>
-                <Item remotepcount={remotePCount} key={localParticipant.sid}>
-                  {!allExcludedParticipant({
-                    identity: localParticipant.identity,
-                  }) && (
-                    <>
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={localParticipant}
-                      />
-                    </>
-                  )}
-                  <Participant
-                    participant={localParticipant}
-                    isLocalParticipant={true}
-                  />
-                </Item>
-
-                {speakerViewParticipants.map((participant) => {
-                  return (
-                    <Item remotepcount={remotePCount} key={participant.sid}>
-                      {!allExcludedParticipant({
-                        identity: participant.identity,
-                      }) && (
-                        <ParticipantsAnimationBar
-                          localParticipant={localParticipant}
-                          participant={participant}
-                        />
-                      )}
-                      <Participant
-                        key={participant.sid}
-                        participant={participant}
-                      />
-                    </Item>
-                  );
-                })}
-              </ContainerAllScreen>
-            </div>
+            {/* <div style={{ display: "none" }}>
+              <Participant
+                participant={localParticipant}
+                isLocalParticipant={true}
+              />
+            </div> */}
+            <FloatingParticipant screen={currentSelectedScreen} />
           </>
         )}
       </>

@@ -29,7 +29,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-      console.log(parseMessage);
+      console.log("DataTrack Message", parseMessage);
+
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null

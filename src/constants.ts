@@ -16,14 +16,14 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY =
 export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
 export const MAXIMUMACTIVETAB = 4;
-export const ROUTERKEYCONST={
-allScreen:'/allScreen',
-myScreen:'/myscreen',
-coding:'/coding',
-whiteboard:'/whiteboard',
-lesson:'/lesson',
-mathzone:'/mathzone'
-}
-export const MATHZONEDATAKEY={
-mathzoneQuestionData:"mathzoneQuestionData"
-}
+export const ROUTERKEYCONST = {
+  allScreen: "/allscreen",
+  myScreen: "/myscreen",
+  coding: "/coding",
+  whiteboard: "/whiteoard",
+  lesson: "/lesson",
+  mathzone: "/mathzone",
+};
+export const MATHZONEDATAKEY = {
+  mathzoneQuestionData: "mathzoneQuestionData",
+};
