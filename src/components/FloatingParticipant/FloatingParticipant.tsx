@@ -41,7 +41,7 @@ export default function FloatingParticipant(screen: any) {
                   <Participant
                     participant={localParticipant}
                     isLocalParticipant={true}
-                    fromScreen={"allOtherScreens"}
+                    fromScreen="allOtherScreens"
                   />
                   {!allExcludedParticipant({
                     identity: localParticipant.identity,
@@ -61,7 +61,7 @@ export default function FloatingParticipant(screen: any) {
                       <Participant
                         key={participant.sid}
                         participant={participant}
-                        fromScreen={"allOtherScreens"}
+                        fromScreen="allOtherScreens"
                       />
                       {!allExcludedParticipant({
                         identity: participant.identity,

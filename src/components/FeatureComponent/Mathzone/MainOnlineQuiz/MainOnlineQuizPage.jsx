@@ -329,8 +329,9 @@ export function RenderingQuizPage({
     setTotalQuestion(obj?.total);
   }, []);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
-    obj = replaceJsonData(obj);
+    // obj = replaceJsonData(obj);
   }
+
   return (
     <>
       {identity === "tutor" ? (

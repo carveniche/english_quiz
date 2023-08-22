@@ -39,6 +39,7 @@ export default function MyScreen() {
           <Participant
             participant={localParticipant}
             isLocalParticipant={true}
+            fromScreen="allOtherScreens"
           />
         ) : (
           <>
@@ -48,6 +49,7 @@ export default function MyScreen() {
                   <Participant
                     key={participant.sid}
                     participant={participant}
+                    fromScreen="allOtherScreens"
                   />
                 )
               );

@@ -93,6 +93,7 @@ export default function Room() {
       });
   }, []);
   console.log("Room Component Mouting");
+  console.log("currentSelectedScreen", currentSelectedScreen);
 
   return (
     <>
@@ -141,8 +142,50 @@ export default function Room() {
               );
             })}
           </ContainerAllScreen>
-        ) : (
+        ) : currentSelectedScreen === "/myscreen" ? (
           <FloatingParticipant screen={currentSelectedScreen} />
+        ) : (
+          <>
+            <div style={{ display: "none" }}>
+              <ContainerAllScreen>
+                <Item remotepcount={remotePCount} key={localParticipant.sid}>
+                  {!allExcludedParticipant({
+                    identity: localParticipant.identity,
+                  }) && (
+                    <>
+                      <ParticipantsAnimationBar
+                        localParticipant={localParticipant}
+                        participant={localParticipant}
+                      />
+                    </>
+                  )}
+                  <Participant
+                    participant={localParticipant}
+                    isLocalParticipant={true}
+                  />
+                </Item>
+
+                {speakerViewParticipants.map((participant) => {
+                  return (
+                    <Item remotepcount={remotePCount} key={participant.sid}>
+                      {!allExcludedParticipant({
+                        identity: participant.identity,
+                      }) && (
+                        <ParticipantsAnimationBar
+                          localParticipant={localParticipant}
+                          participant={participant}
+                        />
+                      )}
+                      <Participant
+                        key={participant.sid}
+                        participant={participant}
+                      />
+                    </Item>
+                  );
+                })}
+              </ContainerAllScreen>
+            </div>
+          </>
         )}
       </>
 

@@ -146,7 +146,7 @@ export default function ParticipantInfo({
 
   const classes = useStyles();
 
-  console.log("screen", screen);
+  // console.log("screen", screen);
 
   return (
     <div>
