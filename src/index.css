@@ -40,3 +40,6 @@ svg {
   position: absolute;
   z-index: 999;
 }
+#quizWhitePage input {
+  border: 1px solid black;
+}

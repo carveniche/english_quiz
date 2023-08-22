@@ -12,6 +12,7 @@ import { StudentAnswerResponse } from "../../../../api";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
+import "../component/mathzone.css";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
@@ -267,10 +268,10 @@ const StudentQuizDisplay = ({ obj, identity }) => {
   };
   useEffect(() => {
     if (document.querySelector("#quizWhitePage") && hasAnswerSubmitted) {
-      setTimeout(() => {
-        document.querySelector("#quizWhitePage").scrollTop =
-          document.querySelector("#quizWhitePage").scrollHeight;
-      }, 500);
+      // setTimeout(() => {
+      //   document.querySelector("#quizWhitePage").scrollTop =
+      //     document.querySelector("#quizWhitePage").scrollHeight;
+      // }, 500);
     }
   }, [hasAnswerSubmitted]);
   return (
@@ -329,7 +330,7 @@ export function RenderingQuizPage({
     setTotalQuestion(obj?.total);
   }, []);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
-    obj = replaceJsonData(obj);
+    obj = replaceJsonData({ ...obj });
   }
   return (
     <>
