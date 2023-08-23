@@ -19,6 +19,7 @@ export const MAXIMUMACTIVETAB = 4;
 export const ROUTERKEYCONST = {
   allScreen: "/allscreen",
   myScreen: "/myscreen",
+  mathvideolesson: "/mathvideolesson",
   coding: "/coding",
   whiteboard: "/whiteoard",
   lesson: "/lesson",

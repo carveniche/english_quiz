@@ -29,14 +29,19 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
+      console.log("pathname", pathname);
       console.log("DataTrack Message", parseMessage);
 
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
       ) {
+        if (parseMessage.value.type === "deleteFromActiveTab") {
+          dispatch(deleteFromActiveTab(parseMessage.pathName));
+        }
       } else {
         if (parseMessage.value.type === "deleteFromActiveTab") {
+          console.log("inside ");
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(deleteFromActiveTab(parseMessage.pathName));
         } else {

@@ -12,6 +12,7 @@ import { RootState } from "../../redux/store";
 import { getQueryParams } from "../../utils/getQueryParams";
 import CloseIconButton from "./CloseIconButton";
 import TabIcon from "./TabIcon";
+import { isTutor, isTutorTechBoth } from "../../utils/participantIdentity";
 
 export default function ActiveTabMenu() {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ export default function ActiveTabMenu() {
   const { room } = useVideoContext();
   const { activeTabArray, currentSelectedRouter } = useSelector(
     (state: RootState) => state.activeTabReducer
+  );
+
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
   );
   const handleClick = ({
     path,
@@ -52,6 +57,9 @@ export default function ActiveTabMenu() {
     //send datatrack
   };
   const handleCloseButton = (key: String | undefined) => {
+    if (!isTutorTechBoth({ identity: String(role_name) })) {
+      return;
+    }
     dispatch(deleteFromActiveTab(`${key}`));
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
@@ -65,7 +73,6 @@ export default function ActiveTabMenu() {
       },
     };
 
-    console.log("Data message send");
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
   useEffect(() => {

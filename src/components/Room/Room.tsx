@@ -93,7 +93,7 @@ export default function Room() {
       });
   }, []);
 
-  console.log("currentSelectedScreen", currentSelectedScreen);
+  console.log("room component mouting");
 
   return (
     <>
@@ -144,13 +144,9 @@ export default function Room() {
           </ContainerAllScreen>
         ) : (
           <>
-            {/* <div style={{ display: "none" }}>
-              <Participant
-                participant={localParticipant}
-                isLocalParticipant={true}
-              />
-            </div> */}
-            <FloatingParticipant screen={currentSelectedScreen} />
+            <div style={{ display: "none" }}>
+              <FloatingParticipant screen={currentSelectedScreen} />
+            </div>
           </>
         )}
       </>
