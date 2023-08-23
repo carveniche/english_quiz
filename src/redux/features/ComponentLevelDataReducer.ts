@@ -21,7 +21,9 @@ const ComponentLevelDataReducer=createSlice({
             const {payload}=action
             
               console.log(payload)
-                    
+                    if(payload?.isFetchAgain){
+                        payload.currentFetchTime=Number(!(state?.flaggedQuestion?.currentFetchTime||""))
+                    }
                     state.flaggedQuestion=payload||{}
                 
             
