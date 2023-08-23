@@ -14,6 +14,7 @@ import { RootState } from "../../redux/store";
 import { ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./mathzoneNavbar";
 import { useState } from "react";
+import MiscelleneousNavbar from "./MiscelleneousNavbar";
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { mathzone } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
@@ -121,34 +122,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       >
         {true &&
           routerConfig.map((item, index) => {
-            return item.key !== ROUTERKEYCONST.mathzone ? (
-              <li
-                key={index}
-                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
-                onMouseEnter={() => handleOpenSubMenu(index)}
-              >
-                <NavLink
-                  to={`${item.path}?${queryParams}`}
-                  onClick={() =>
-                    handleClick({
-                      path: item.path,
-                      key: item.key,
-                      name: item.name,
-                      icon: item.icon,
-                      extraParams: {},
-                    })
-                  }
-                  className={"w-48"}
-                  style={{ display: "block" }}
-                >
-                  <div className="flex gap-2">
-                    <TabIcon src={item.icon} />
-                    <div> {item.name}</div>
-                  </div>
-                </NavLink>
-                <TabIcon src={"/menu-icon/chevron.svg"} />
-              </li>
-            ) : (
+            return item.key === ROUTERKEYCONST.mathzone ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
                 onMouseEnter={() => handleOpenSubMenu(index)}
@@ -174,6 +148,41 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                     currentSelectedMenuIndex={currentSelectedMenuIndex}
                   />
                 )}
+              </li>
+            ) : item.key === ROUTERKEYCONST.miscellaneous.key ? (
+              <MiscelleneousNavbar
+                handleClick={handleClick}
+                handleOpenSubMenu={handleOpenSubMenu}
+                item={item}
+                index={index}
+                queryParams={queryParams}
+              />
+            ) : (
+              <li
+                key={index}
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+              >
+                <NavLink
+                  to={`${item.path}?${queryParams}`}
+                  onClick={() =>
+                    handleClick({
+                      path: item.path,
+                      key: item.key,
+                      name: item.name,
+                      icon: item.icon,
+                      extraParams: {},
+                    })
+                  }
+                  className={"w-48"}
+                  style={{ display: "block" }}
+                >
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </NavLink>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
               </li>
             );
           })}

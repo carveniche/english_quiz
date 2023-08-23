@@ -76,3 +76,27 @@ export const StudentAnswerResponse = async (params: String, data: Object) => {
   };
   return axios(config);
 };
+
+export const getFlagQuestionConceptList = (liveClassID: String) => {
+  return axios(
+    `${BaseUrl}app_teachers/flagged_concepts?live_class_id=${liveClassID}`
+  );
+};
+export const markAsResolvedFlagQuestion = (
+  flagQuestionId: string,
+  userId: string
+) => {
+  return axios(
+    `${BaseUrl}app_teachers/mark_as_resolved/?flagged_question_id=${flagQuestionId}&user_id=${userId}`
+  );
+};
+
+export const fetchFlagQuestion = (
+  conceptId: string,
+  liveClassID: string,
+  tagId: string
+) => {
+  return axios(
+    `${BaseUrl}app_teachers/flagged_questions?sub_concept_id=${conceptId}&tag_id=${tagId}&live_class_id=${liveClassID}`
+  );
+};

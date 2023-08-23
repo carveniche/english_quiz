@@ -64,15 +64,7 @@ export function ValidationContextProvider({ children }) {
   );
 }
 
-export const TeacherQuizDisplay = ({
-  obj,
-  identity,
-  refreshQuestion,
-  conceptName,
-  conceptTag,
-  mathZoneQuizLevel,
-  resultView,
-}) => {
+export const TeacherQuizDisplay = ({ obj, showSolution }) => {
   var temp = {};
   let operation = null;
   let arr = ["orc", "oprc", "ol", "ckeditor"];
@@ -103,13 +95,15 @@ export const TeacherQuizDisplay = ({
           temp={temp}
           isResponse={false}
         />
-        <SolutionComponent
-          showStudentSolution={true}
-          arr={arr}
-          obj={obj}
-          temp={temp}
-          showCorrectIncorrectImage={false}
-        />
+        {showSolution && (
+          <SolutionComponent
+            showStudentSolution={true}
+            arr={arr}
+            obj={obj}
+            temp={temp}
+            showCorrectIncorrectImage={false}
+          />
+        )}
       </div>
     </>
   );
@@ -326,9 +320,6 @@ export function RenderingQuizPage({
   identity,
 }) {
   const { setTotalQuestion } = useContext(ViewStatusContext);
-  useEffect(() => {
-    setTotalQuestion(obj?.total);
-  }, []);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
     obj = replaceJsonData({ ...obj });
   }
@@ -349,6 +340,7 @@ export function RenderingQuizPage({
               mathZoneQuizLevel={mathZoneQuizLevel}
               setCount={setCount}
               count={count}
+              showSolution={true}
             />
           </ValidationContextProvider>
         </>

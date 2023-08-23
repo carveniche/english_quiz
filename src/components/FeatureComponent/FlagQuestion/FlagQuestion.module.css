@@ -1,0 +1,42 @@
+/* .Resetting font-size */
+.conceptContainer table div,
+.conceptContainer table tr,
+.conceptContainer table th,
+.conceptContainer table td {
+  font-size: initial !important;
+
+  color: unset;
+}
+.conceptContainer {
+  border: 1px solid black;
+  padding: 10px 20px;
+  min-width: 330px;
+  min-height: 100px;
+  border-radius: 10px;
+  /* flex: 1 1 0px; */
+  max-width: 330px;
+}
+.conceptContainer table td {
+  font-weight: initial !important;
+}
+.conceptContainer ol li,
+.conceptContainer ol div,
+.conceptContainer li {
+  font-size: initial !important;
+}
+.conceptTable th,
+.conceptTable td {
+  text-align: center;
+}
+.conceptContainer ul {
+  list-style-type: initial;
+  padding: inherit;
+  margin: inherit;
+  margin-left: 10px;
+}
+.conceptContainer li .viewQuestion {
+  color: blue !important;
+}
+.conceptContainer li .viewQuestion:hover {
+  text-decoration: underline !important;
+}

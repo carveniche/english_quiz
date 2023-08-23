@@ -22,8 +22,22 @@ myScreen:'/myscreen',
 coding:'/coding',
 whiteboard:'/whiteboard',
 lesson:'/lesson',
-mathzone:'/mathzone'
+mathzone:'/mathzone',
+miscellaneous:{
+  key:"miscellaneous",
+ subRoute:{
+  homework:"/homework",
+  flagQuestion:{
+    keys:"/flagQuestion",
+    route:"/flagQuestion"
+  },
+ }
+  
+}
 }
 export const MATHZONEDATAKEY={
 mathzoneQuestionData:"mathzoneQuestionData"
+}
+export const FLAGGEDQUESTIONKEY={
+  flaggedQuestionMenu:"flaggedQuestionMenu"
 }

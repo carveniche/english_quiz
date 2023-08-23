@@ -10,7 +10,7 @@ import {
 import jsonDataTesting from "./component/TestingData";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
-import { ViewStatusContext } from "./Mathzone";
+import { ViewStatusContext } from "./mathzone";
 import { handleUpdateNextQuestion, startPracticeMathzone } from "../../../api";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import {
@@ -66,7 +66,6 @@ export default function MathzoneInner() {
       ...room.localParticipant.dataTracks.values(),
     ];
     let activeTabData = activeTabArray[currentSelectedIndex];
-    console.log(localDataTrackPublication);
     let DataTrackObj = {
       pathName: currentSelectedRouter,
       key: currentSelectedKey,
