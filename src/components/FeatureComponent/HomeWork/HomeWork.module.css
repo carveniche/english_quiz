@@ -96,3 +96,47 @@
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px);
 }
+.student-details-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-bottom: 30px;
+}
+.student-details-container img {
+  width: 40px;
+  height: 40px;
+}
+.student-details-container .homework-student-name {
+  font-size: 16px;
+  color: #233584;
+  font-weight: 600;
+}
+.homework-label {
+  border-radius: 26px;
+
+  font-weight: bold;
+  font-size: 9px;
+  padding: 8px 15px;
+}
+.homework-completed-label {
+  background: #daffe9;
+  color: #6fcf97 !important;
+}
+.homework-inactive-label {
+  color: #fc4a4a !important;
+  background: #ffdede;
+}
+.homework-inprogress-label {
+  color: #f2994a !important;
+  background: #fff5d7;
+}
+
+.coding-open-btn {
+  background: #b9dc5b;
+  border-radius: 26px;
+  padding: 8px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}

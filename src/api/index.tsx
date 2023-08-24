@@ -101,7 +101,6 @@ export const fetchFlagQuestion = (
   );
 };
 export const getStudentSHomeWorkDetail = (liveClassId: string) => {
-  liveClassId = "213359";
   return axios.get(
     `${BaseUrl}app_teachers/view_homeworks?live_class_id=${liveClassId}`
   );
@@ -112,7 +111,7 @@ export const getStudentSHomeWorkIncorrectQuestionDate = (
   homeWorkId: string
 ) => {
   //44308 48062
-  liveClassID = "213359";
+
   return axios(
     `${BaseUrl}app_teachers/homework_review?live_class_id=${liveClassID}&tag_quiz_id=${tagQuizId}&homework_id=${homeWorkId}`
   );

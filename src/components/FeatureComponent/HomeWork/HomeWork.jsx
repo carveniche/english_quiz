@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../Mathzone/component/OnlineQuiz.module.css";
 import styles2 from "./HomeWork.module.css";
-// import DisplayHomeWorkQuestion from "./DisplayHomeWorkQuestion";
+import DisplayHomeWorkQuestion from "./DisplayHomeWorkQuestion";
 import FlagQuestionContextProvider from "../FlagQuestion/ContextProvider/FlagQuestionContextProvider";
 import {
   getStudentSHomeWorkDetail,
@@ -10,6 +10,7 @@ import {
 import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import { ValidationContextProvider } from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 const DisplayMathZoneDetails = ({ datas }) => {
   return datas?.map((item) => {
     return (
@@ -27,12 +28,14 @@ const DisplayMathZoneDetails = ({ datas }) => {
                   )}
                   {key === "Status" ? (
                     <div
-                      className={`${styles2.value} homework-label ${
+                      className={`${styles2.value} ${
+                        styles2["homework-label"]
+                      } ${
                         item[key]?.trim() === "Not Started"
-                          ? "homework-inactive-label"
+                          ? styles2["homework-inactive-label"]
                           : item[key]?.trim() === "In Progress"
-                          ? "homework-inprogress-label"
-                          : "homework-completed-label"
+                          ? styles2["homework-inprogress-label"]
+                          : styles2["homework-completed-label"]
                       }`}
                     >
                       {item[key]}
@@ -54,7 +57,7 @@ export default function HomeWork({
   practiceId,
   conceptName,
   conceptTag,
-  identity,
+
   openHomeWorkResponse,
   homeWorkCurrentQuestion,
   displayHomeWorkQuestion,
@@ -73,7 +76,10 @@ export default function HomeWork({
 }) {
   const [data, setData] = useState(new Array(0).fill(0).map((_) => {}));
   const [daywiseConceptDetails, setDaywiseConceptDetails] = useState({});
+
   const [loading, setLoading] = useState(false);
+  const { room } = useVideoContext();
+  const identity = room?.localParticipant?.identity;
   //   const obj = jsonDataTesting();
   const [showQuestion, setShowQuestion] = useState(false);
   const [questionData, setQuestionData] = useState([]);
@@ -81,6 +87,8 @@ export default function HomeWork({
   const [selectedStudentId, setSelectedStudentId] = useState("");
   const [selectedStudentName, setSelectedStudentName] = useState("");
   const [homeWorkId, setHomeWorkId] = useState("");
+
+  const handleDataTrack = (payload) => {};
   const handleShowQuestion = async ({
     val,
     studentName,
@@ -105,16 +113,15 @@ export default function HomeWork({
     setQuizTagId(quizId);
     setLoading(false);
     if (identity !== "tutor") return;
-    typeof openHomeWorkResponse === "function" &&
-      openHomeWorkResponse({
-        studentName,
-        studentId,
-        currentQuestion: 0,
-        displayHomeWorkQuestion: val,
-        quizId,
-        homeWorkId: homeWorkId,
-        fetchAgain: true,
-      });
+    let payload = {
+      showQuestion,
+      quizTagId: quizId,
+      selectedStudentId: studentId,
+      selectedStudentName: studentName,
+      homeWorkId: homeWorkId,
+      fetchAgain: true,
+      currentFetchTime: 0,
+    };
   };
   const groupingData = (data) => {
     console.log({ data });
@@ -200,35 +207,33 @@ export default function HomeWork({
           {" "}
           {showQuestion ? (
             <FlagQuestionContextProvider>
-              <ValidationContextProvider>
-                {/* <DisplayHomeWorkQuestion
-                  setShowQuestion={handleSetShowQuestion}
-                  questionData={questionData}
-                  homeWorkStudentId={
-                    identity === "tutor" ? selectedStudentId : homeWorkStudentId
-                  }
-                  displayHomeWorkQuestion={showQuestion}
-                  userId={userId}
-                  homeWorkCurrentQuestion={homeWorkCurrentQuestion}
-                  homewWorkStudentName={
-                    identity === "tutor"
-                      ? selectedStudentName
-                      : homewWorkStudentName
-                  }
-                  openHomeWorkResponse={openHomeWorkResponse}
-                  identity={identity}
-                  quizId={quizTagId ?? quizId}
-                  val={showQuestion}
-                  homeWorkId={homeWorkId ?? studentHomeWorkId}
-                  liveClassId={liveClassId}
-                  handleShowQuestion={handleShowQuestion}
-                  clearCanvas={clearCanvas}
-                  onSendWhiteBoardLines={onSendWhiteBoardLines}
-                  openRoughBoardScreen={openRoughBoardScreen}
-                  updatestateforchild={updatestateforchild}
-                  reference={reference}
-                /> */}
-              </ValidationContextProvider>
+              <DisplayHomeWorkQuestion
+                setShowQuestion={handleSetShowQuestion}
+                questionData={questionData}
+                homeWorkStudentId={
+                  identity === "tutor" ? selectedStudentId : homeWorkStudentId
+                }
+                displayHomeWorkQuestion={showQuestion}
+                userId={userId}
+                homeWorkCurrentQuestion={homeWorkCurrentQuestion}
+                homewWorkStudentName={
+                  identity === "tutor"
+                    ? selectedStudentName
+                    : homewWorkStudentName
+                }
+                openHomeWorkResponse={() => {}}
+                identity={identity}
+                quizId={quizTagId ?? quizId}
+                val={showQuestion}
+                homeWorkId={homeWorkId ?? studentHomeWorkId}
+                liveClassId={liveClassId}
+                handleShowQuestion={handleShowQuestion}
+                clearCanvas={clearCanvas}
+                onSendWhiteBoardLines={onSendWhiteBoardLines}
+                openRoughBoardScreen={openRoughBoardScreen}
+                updatestateforchild={updatestateforchild}
+                reference={reference}
+              />
             </FlagQuestionContextProvider>
           ) : (
             <>
@@ -314,14 +319,20 @@ export default function HomeWork({
                               }}
                               key={item?.student_id || i}
                             >
-                              <div className="student-details-container">
-                                <div className="homework-student-avatar">
+                              <div
+                                className={styles2["student-details-container"]}
+                              >
+                                <div
+                                  className={styles2["homework-student-avatar"]}
+                                >
                                   <img
                                     src={item?.student_avatar}
                                     alt={"Avatar"}
                                   />
                                 </div>
-                                <div className="homework-student-name">
+                                <div
+                                  className={styles2["homework-student-name"]}
+                                >
                                   {item?.name}
                                 </div>
                               </div>
@@ -452,7 +463,9 @@ export default function HomeWork({
                                                 <a
                                                   target="_blank"
                                                   href={coding?.coding_url}
-                                                  className="coding-open-btn"
+                                                  className={
+                                                    styles2["coding-open-btn"]
+                                                  }
                                                 >
                                                   Open
                                                 </a>

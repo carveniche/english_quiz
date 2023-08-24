@@ -1,13 +1,26 @@
 import React, { useContext, useEffect, useRef } from "react";
-import styles from "../Mathzone/component";
-import QuizWhitePage from "../QuizPageLayout/QuizWhitePage";
+import styles from "../Mathzone/component/OnlineQuiz.module.css";
 import styled from "styled-components";
 import { FlagQuestionContext } from "../FlagQuestion/ContextProvider/FlagQuestionContextProvider";
 import { markAsResolvedHomeWorkQuestion } from "../../../api";
-import { ValidationContext } from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
+import {
+  TeacherQuizDisplay,
+  ValidationContext,
+  ValidationContextProvider,
+} from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
 import FlagQuestionPagination from "../FlagQuestion/FlagQuestionPagination/FlagQuestionPagination";
 import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import TeacherViewEachResponseEnd from "../Mathzone/Results/Teacher/TeacherViewEachResponseEnd";
+import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
+const StaticQuestionRender = ({ obj }) => {
+  const { handleUpdateStudentAnswerResponse, setIsProgressBarVisible } =
+    useContext(ValidationContext);
+  useEffect(() => {
+    handleUpdateStudentAnswerResponse(false);
+    setIsProgressBarVisible(false);
+  }, []);
+  return <TeacherQuizDisplay obj={obj} showSolution={true} />;
+};
 const RenderedStudentResponse = ({ datas }) => {
   const ckeditorRef = useRef();
   const {
@@ -31,9 +44,9 @@ const RenderedStudentResponse = ({ datas }) => {
           return (
             <div style={{ clear: "both" }} ref={ckeditorRef}>
               {questionDemount ? (
-                <>
-                  {/* <HomeWorkAndFlaggedQuestion obj={obj} resultView={false} /> */}
-                </>
+                <ValidationContextProvider>
+                  <StaticQuestionRender obj={obj} />
+                </ValidationContextProvider>
               ) : (
                 ""
               )}
@@ -104,10 +117,10 @@ export default function DisplayHomeWorkQuestion({
     questionDemount,
     handleChangeHomeQuestionReview,
   } = useContext(FlagQuestionContext);
-  const { handleUpdateStudentAnswerResponse } = useContext(ValidationContext);
+
   useEffect(() => {
     updateTotalQuestionReview(questionData?.length || 0);
-    handleUpdateStudentAnswerResponse(true);
+    // handleUpdateStudentAnswerResponse(true);
   }, []);
   useEffect(() => {
     if (identity === "tutor") return;
@@ -182,7 +195,10 @@ export default function DisplayHomeWorkQuestion({
           </div>
         )}
       </div>
-      <div className={styles.mainPage}>
+      <div
+        className={`${styles.mainPage} h-full w-full m-0`}
+        style={{ margin: 0, padding: 0, width: "100%" }}
+      >
         <QuizPageLayout
           clearCanvas={clearCanvas}
           onSendWhiteBoardLines={onSendWhiteBoardLines}
@@ -190,6 +206,7 @@ export default function DisplayHomeWorkQuestion({
           updatestateforchild={updatestateforchild}
           ref={reference}
           identity={identity}
+          height={50}
         >
           {identity === "tutor" && (
             <Button>
@@ -214,10 +231,21 @@ export default function DisplayHomeWorkQuestion({
               </div>
             </Button>
           )}
-
-          <QuizWhitePage>
-            <RenderedStudentResponse datas={questionData} />
-          </QuizWhitePage>
+          <div
+            style={{
+              position: "relative",
+              margin: "0 auto",
+              width: "calc(100% - 160px)",
+              maxHeight: `calc(100% - ${"tutor" ? 60 : 60}px)`,
+              minHeight: `calc(100% - ${"tutor" ? 60 : 60}px)`,
+            }}
+          >
+            <QuizWhitePage>
+              <ValidationContextProvider>
+                <RenderedStudentResponse datas={questionData} />
+              </ValidationContextProvider>
+            </QuizWhitePage>
+          </div>
         </QuizPageLayout>
       </div>
     </>
