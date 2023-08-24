@@ -110,7 +110,7 @@ export default function MathzoneNavbar({
                                       handleClickMathVideoLesson({
                                         path: ROUTERKEYCONST.mathvideolesson,
                                         key: ROUTERKEYCONST.mathvideolesson,
-                                        name: ROUTERKEYCONST.mathvideolesson,
+                                        name: "Play Video",
                                         icon: item.icon,
                                         extraParams: {
                                           videoUrl: tag.url,
