@@ -110,6 +110,7 @@ export default function DisplayHomeWorkQuestion({
   openRoughBoardScreen,
   updatestateforchild,
   reference,
+  handleFlagQuestionChange,
 }) {
   const {
     updateTotalQuestionReview,
@@ -178,7 +179,9 @@ export default function DisplayHomeWorkQuestion({
               className={styles.paginationContainer}
               style={{ alignItem: "center" }}
             >
-              <FlagQuestionPagination />
+              <FlagQuestionPagination
+                handleFlagQuestionChange={handleFlagQuestionChange}
+              />
             </div>
             <div className={styles.nextBtnContainer} style={{ width: "180px" }}>
               <button

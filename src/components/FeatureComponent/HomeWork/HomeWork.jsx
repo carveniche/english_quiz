@@ -11,6 +11,8 @@ import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import { ValidationContextProvider } from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { useSelector } from "react-redux";
+import { HOMEWORKQUESTIONKEY } from "../../../constants";
 const DisplayMathZoneDetails = ({ datas }) => {
   return datas?.map((item) => {
     return (
@@ -53,27 +55,7 @@ const DisplayMathZoneDetails = ({ datas }) => {
     );
   });
 };
-export default function HomeWork({
-  practiceId,
-  conceptName,
-  conceptTag,
-
-  openHomeWorkResponse,
-  homeWorkCurrentQuestion,
-  displayHomeWorkQuestion,
-  homewWorkStudentName,
-  homeWorkStudentId,
-  quizId,
-  liveClassId,
-  userId,
-  studentHomeWorkId,
-  reference,
-  clearCanvas,
-  onSendWhiteBoardLines,
-  openRoughBoardScreen,
-  updatestateforchild,
-  fetchAgainHomeWorkQuestion,
-}) {
+export default function HomeWork() {
   const [data, setData] = useState(new Array(0).fill(0).map((_) => {}));
   const [daywiseConceptDetails, setDaywiseConceptDetails] = useState({});
 
@@ -87,8 +69,35 @@ export default function HomeWork({
   const [selectedStudentId, setSelectedStudentId] = useState("");
   const [selectedStudentName, setSelectedStudentName] = useState("");
   const [homeWorkId, setHomeWorkId] = useState("");
-
-  const handleDataTrack = (payload) => {};
+  const {
+    currentSelectedRouter,
+    currentSelectedIndex,
+    currentSelectedKey,
+    activeTabArray,
+  } = useSelector((state) => state.activeTabReducer);
+  const { liveClassId, userId } = useSelector(
+    (state) => state.liveClassDetails
+  );
+  const { otherData } = useSelector((state) => state.ComponentLevelDataReducer);
+  const handleDataTrack = (payload) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+    let activeTabData = activeTabArray[currentSelectedIndex];
+    let DataTrackObj = {
+      pathName: currentSelectedRouter,
+      key: currentSelectedKey,
+      value: {
+        type: HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack,
+        identity: null,
+        HomeWorkQuestionData: {
+          ...payload,
+        },
+        activeTabData,
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
   const handleShowQuestion = async ({
     val,
     studentName,
@@ -114,14 +123,16 @@ export default function HomeWork({
     setLoading(false);
     if (identity !== "tutor") return;
     let payload = {
-      showQuestion,
+      showQuestion: val,
       quizTagId: quizId,
       selectedStudentId: studentId,
       selectedStudentName: studentName,
       homeWorkId: homeWorkId,
       fetchAgain: true,
       currentFetchTime: 0,
+      currentQuestion: 0,
     };
+    handleDataTrack(payload);
   };
   const groupingData = (data) => {
     console.log({ data });
@@ -172,31 +183,53 @@ export default function HomeWork({
   }, []);
   useEffect(() => {
     if (identity === "tutor") return;
-    if (!homeWorkStudentId) {
-      setShowQuestion(false);
-      return;
-    }
-    if (!fetchAgainHomeWorkQuestion) return;
-    handleShowQuestion({
-      val: displayHomeWorkQuestion,
-      studentName: homewWorkStudentName,
-      studentId: homeWorkStudentId,
-      quizId: quizId,
-      homeWorkId: studentHomeWorkId,
-    });
-  }, [displayHomeWorkQuestion, fetchAgainHomeWorkQuestion]);
+    if (otherData?.fetchAgain)
+      handleShowQuestion({
+        val: otherData?.showQuestion,
+        quizId: otherData?.quizTagId,
+        studentId: otherData?.selectedStudentId,
+        studentName: otherData?.selectedStudentName,
+
+        homeWorkId: otherData?.homeWorkId,
+      });
+    else setShowQuestion(otherData?.showQuestion);
+  }, [
+    otherData?.showQuestion,
+    otherData?.quizTagId,
+    otherData?.selectedStudentId,
+    otherData?.selectedStudentName,
+    otherData?.fetchAgain,
+    otherData?.currentFetchTime,
+    otherData?.homeWorkId,
+  ]);
   const handleSetShowQuestion = (val) => {
     setQuizTagId("");
     setHomeWorkId("");
     setShowQuestion(val);
-    openHomeWorkResponse({
-      studentName: homewWorkStudentName,
-      studentId: homeWorkStudentId,
-      currentQuestion: 0,
-      displayHomeWorkQuestion: val,
-      quizId: "",
+    let payload = {
+      showQuestion: val,
+      quizTagId: "",
+      selectedStudentId: "",
+      selectedStudentName: "",
       homeWorkId: "",
-    });
+      fetchAgain: false,
+      currentFetchTime: 0,
+      currentQuestion: 0,
+    };
+    handleDataTrack(payload);
+  };
+  const handleFlagQuestionChange = (val) => {
+    let payload = {
+      showQuestion: true,
+      quizTagId: selectedStudentName,
+      selectedStudentId: selectedStudentName,
+      selectedStudentName: selectedStudentName,
+      homeWorkId: homeWorkId,
+      fetchAgain: showQuestion === true ? false : true,
+      currentFetchTime: 0,
+      currentQuestion: val,
+    };
+    handleDataTrack(payload);
   };
   return (
     <>
@@ -211,28 +244,24 @@ export default function HomeWork({
                 setShowQuestion={handleSetShowQuestion}
                 questionData={questionData}
                 homeWorkStudentId={
-                  identity === "tutor" ? selectedStudentId : homeWorkStudentId
+                  identity === "tutor" ? selectedStudentId : selectedStudentId
                 }
                 displayHomeWorkQuestion={showQuestion}
                 userId={userId}
-                homeWorkCurrentQuestion={homeWorkCurrentQuestion}
+                homeWorkCurrentQuestion={otherData?.currentQuestion || 0}
                 homewWorkStudentName={
                   identity === "tutor"
                     ? selectedStudentName
-                    : homewWorkStudentName
+                    : selectedStudentName
                 }
                 openHomeWorkResponse={() => {}}
                 identity={identity}
                 quizId={quizTagId ?? quizId}
                 val={showQuestion}
-                homeWorkId={homeWorkId ?? studentHomeWorkId}
+                homeWorkId={homeWorkId}
                 liveClassId={liveClassId}
                 handleShowQuestion={handleShowQuestion}
-                clearCanvas={clearCanvas}
-                onSendWhiteBoardLines={onSendWhiteBoardLines}
-                openRoughBoardScreen={openRoughBoardScreen}
-                updatestateforchild={updatestateforchild}
-                reference={reference}
+                handleFlagQuestionChange={handleFlagQuestionChange}
               />
             </FlagQuestionContextProvider>
           ) : (

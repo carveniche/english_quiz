@@ -45,3 +45,6 @@ export const MATHZONEDATAKEY = {
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",
 };
+export const HOMEWORKQUESTIONKEY={
+  homeWorkQuestionDataTrack:"homeWorkQuestionDataTrack"
+}

@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit"
 export interface ComponentLevelData{
     mathzone:object;
     flaggedQuestion:object;
+    otherData:object;
 }
 
 const initialState={
     mathzone:{},
-    flaggedQuestion :{}
+    flaggedQuestion :{},
+    otherData:{}
 }
 
 const ComponentLevelDataReducer=createSlice({
@@ -20,15 +22,20 @@ const ComponentLevelDataReducer=createSlice({
         flagQuestionDetailsStore:(state:ComponentLevelData,action:any)=>{
             const {payload}=action
             
-              console.log(payload)
+             
                     if(payload?.isFetchAgain){
                         payload.currentFetchTime=Number(!(state?.flaggedQuestion?.currentFetchTime||""))
                     }
                     state.flaggedQuestion=payload||{}
                 
             
+        },
+        homeWorkQuestionDataTrack:(state:ComponentLevelData,action:any)=>{
+
+            const {payload}=action;
+            state.otherData=payload||{}
         }
     }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer
