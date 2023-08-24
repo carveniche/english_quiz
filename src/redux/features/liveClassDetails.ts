@@ -26,6 +26,7 @@ interface liveClassDetailsTypes {
   roomToken: string;
   techJoinedClass: boolean;
   muteAllParticipant: boolean | undefined;
+  videoPlayState: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -50,6 +51,7 @@ const initialState: liveClassDetailsTypes = {
   roomToken: "",
   techJoinedClass: false,
   muteAllParticipant: undefined,
+  videoPlayState: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -79,6 +81,11 @@ export const liveClassDetailsSlice = createSlice({
     addMuteAllParticipant: (state, action) => {
       state.muteAllParticipant = action.payload;
     },
+    addVideoPlayState: (state, action) => {
+      const { muteAllState, videoPlayState } = action.payload;
+      state.videoPlayState = videoPlayState;
+      state.muteAllParticipant = muteAllState;
+    },
   },
 });
 
@@ -90,6 +97,7 @@ export const {
   addKrispInstalledEnabledDetails,
   addTechJoinedClass,
   addMuteAllParticipant,
+  addVideoPlayState,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

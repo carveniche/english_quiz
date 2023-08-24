@@ -16,6 +16,7 @@ import {
 import {
   addCurrentSelectedScreen,
   addMuteAllParticipant,
+  addVideoPlayState,
 } from "../../redux/features/liveClassDetails";
 import { FLAGGEDQUESTIONKEY, MATHZONEDATAKEY } from "../../constants";
 import {
@@ -100,7 +101,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           )
         );
       } else if (parseMessage?.value?.type === "PlayVideo") {
-        console.log("Inside PlayVideo Else if condition");
         dispatch(
           addToActiveTab({
             path: parseMessage.pathName,
@@ -108,6 +108,13 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             icon: parseMessage.icon,
             name: parseMessage.name,
             extraParams: parseMessage.extraParams || {},
+          })
+        );
+      } else if (parseMessage?.value?.datatrackName === "PlayVideoState") {
+        dispatch(
+          addVideoPlayState({
+            muteAllState: parseMessage.value.muteState,
+            videoPlayState: parseMessage.value.videoPlayState,
           })
         );
       }
