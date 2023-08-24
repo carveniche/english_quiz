@@ -105,7 +105,7 @@ export default function MathzoneNavbar({
                                 <div className="flex gap-2">
                                   <NavLink
                                     key={tagIndex}
-                                    to={"/mathvideolesson"}
+                                    to={`/mathvideolesson?${queryParams}`}
                                     onClick={() =>
                                       handleClickMathVideoLesson({
                                         path: ROUTERKEYCONST.mathvideolesson,

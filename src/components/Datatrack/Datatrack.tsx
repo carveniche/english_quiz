@@ -44,7 +44,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         }
       } else {
         if (parseMessage.value.type === "deleteFromActiveTab") {
-          console.log("inside ");
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(deleteFromActiveTab(parseMessage.pathName));
         } else {
@@ -69,9 +68,9 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
         dispatch(addMuteAllParticipant(parseMessage.value.muteState));
-      }
-      if (parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData) {
-        console.log();
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
+      ) {
         dispatch(
           addToActiveTab({
             path: parseMessage?.value.activeTabData?.path || "",
@@ -82,8 +81,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
         dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
-      }
-      if (
+      } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
         console.log(parseMessage);
@@ -100,6 +98,17 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           flagQuestionDetailsStore(
             parseMessage?.value?.flaggedQuestionData || {}
           )
+        );
+      } else if (parseMessage?.value?.type === "PlayVideo") {
+        console.log("Inside PlayVideo Else if condition");
+        dispatch(
+          addToActiveTab({
+            path: parseMessage.pathName,
+            key: parseMessage.key,
+            icon: parseMessage.icon,
+            name: parseMessage.name,
+            extraParams: parseMessage.extraParams || {},
+          })
         );
       }
     };

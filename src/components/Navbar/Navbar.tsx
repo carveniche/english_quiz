@@ -34,6 +34,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     icon,
     extraParams,
   }: ActiveTabParams) => {
+    console.log("extraParams", extraParams);
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
@@ -46,7 +47,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       icon,
       extraParams,
       value: {
-        type: null,
+        type: "PlayVideo",
         identity: null,
       },
     };

@@ -8,11 +8,9 @@ export default function MathVideoLesson() {
 
   const { extraParams } = activeTabArray[currentSelectedIndex];
 
-  console.log("extraParams in math video lesson", extraParams);
-
   useEffect(() => {
-    console.log("Math Video Lesson");
-  }, []);
+    console.log("extraParams in useEffect", extraParams);
+  }, [extraParams]);
 
   return <div>Math Video Lesson</div>;
 }
