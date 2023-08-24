@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { LocalVideoTrack, Participant, RemoteVideoTrack } from "twilio-video";
 
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
     },
     innerContainer: {
-      position: "absolute",
       top: 0,
       left: 0,
       width: "100%",
@@ -122,15 +121,16 @@ interface ParticipantInfoProps {
   isLocalParticipant?: boolean;
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
+  screen?: string;
 }
 
 export default function ParticipantInfo({
   participant,
   isLocalParticipant,
   children,
+  screen,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
-
   const videoPublication = publications.find(
     (p) => !p.trackName.includes("screen") && p.kind === "video"
   );
@@ -148,7 +148,12 @@ export default function ParticipantInfo({
 
   return (
     <div>
-      <div className={classes.innerContainer}>
+      <div
+        style={{
+          position: screen === "allOtherScreens" ? "relative" : "absolute",
+        }}
+        className={classes.innerContainer}
+      >
         {(!isVideoEnabled || isVideoSwitchedOff) && (
           <>
             <div className={classes.avatarContainer}>

@@ -16,31 +16,32 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY =
 export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
 export const MAXIMUMACTIVETAB = 4;
-export const ROUTERKEYCONST={
-allScreen:'/allScreen',
-myScreen:'/myscreen',
-coding:'/coding',
-whiteboard:'/whiteboard',
-lesson:'/lesson',
-mathzone:'/mathzone',
-miscellaneous:{
-  key:"miscellaneous",
- subRoute:{
-  homework:{
-    keys:"/homework",
-    route:"/homework"
-  },
-  flagQuestion:{
-    keys:"/flagQuestion",
-    route:"/flagQuestion"
-  },
- }
-  
-}
-}
-export const MATHZONEDATAKEY={
-mathzoneQuestionData:"mathzoneQuestionData"
-}
-export const FLAGGEDQUESTIONKEY={
-  flaggedQuestionMenu:"flaggedQuestionMenu"
-}
+export const ROUTERKEYCONST = {
+  allScreen: "/allscreen",
+  myScreen: "/myscreen",
+  mathvideolesson: "/mathvideolesson",
+  coding: "/coding",
+  whiteboard: "/whiteboard",
+  lesson: "/lesson",
+  mathzone: "/mathzone",
+  miscellaneous:{
+    key:"miscellaneous",
+   subRoute:{
+    homework:{
+      keys:"/homework",
+      route:"/homework"
+    },
+    flagQuestion:{
+      keys:"/flagQuestion",
+      route:"/flagQuestion"
+    },
+   }
+    
+  }
+};
+export const MATHZONEDATAKEY = {
+  mathzoneQuestionData: "mathzoneQuestionData",
+};
+export const FLAGGEDQUESTIONKEY = {
+  flaggedQuestionMenu: "flaggedQuestionMenu",
+};

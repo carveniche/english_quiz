@@ -1,6 +1,3 @@
-import Navbar from "./Navbar";
-
-import { useState } from "react";
 import ActiveTabMenu from "./ActiveTabMenu";
 import NestedMenu from "../MenuBar/NestedMenu";
 import { useSelector } from "react-redux";
@@ -14,12 +11,13 @@ export default function Header2() {
   );
   return (
     <>
-      <div className="bg-header-black flex min-h-[40px] w-full">
-        <div className="relative z-10">
+      <div className="bg-header-black flex min-h-[40px] h-[46px] w-full justify-between items-center ">
+        <div className="relative flex flex-row z-10">
           <NestedMenu />
+          <ActiveTabMenu />
         </div>
-        <ActiveTabMenu />
-        {false && isTutorTechBoth({ identity: String(role_name) }) && (
+
+        {isTutorTechBoth({ identity: String(role_name) }) && (
           <div className=" justify-center content-center items-center p-5 pr-[30px]">
             <MuteAll />
           </div>

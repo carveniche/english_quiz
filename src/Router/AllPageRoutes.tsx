@@ -8,7 +8,7 @@ export default function AllPageRoutes() {
   let y = `${ROUTERKEYCONST.mathzone}/:concept/:tag/:level`;
   return (
     <>
-      {pathname === "/" && <Navigate to={`/allScreen?${params}`} />}
+      {pathname === "/" && <Navigate to={`/allscreen?${params}`} />}
       <Routes>
         {routerConfig.map((item) =>
           item.key === "/mathzone" ? (

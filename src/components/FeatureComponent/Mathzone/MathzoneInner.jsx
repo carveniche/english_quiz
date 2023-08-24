@@ -169,7 +169,6 @@ export default function MathzoneInner() {
     };
   }, []);
   useEffect(() => {
-    console.log("djdjd", heightRef.current);
     if (!loading)
       setTimeout(() => {
         handleResizeWidth(heightRef.current, setCurrentHeight);

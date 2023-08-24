@@ -1,5 +1,4 @@
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
-import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
 import { useSelector } from "react-redux";
@@ -16,6 +15,7 @@ import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/u
 import { getLessonAndMathZoneConceptDetails } from "../../api";
 import { useDispatch } from "react-redux";
 import { addToStore } from "../../redux/features/ConceptDetailsRedux";
+import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -92,22 +92,15 @@ export default function Room() {
         console.log(e);
       });
   }, []);
-  console.log("Room Component Mouting");
+
+  console.log("room component mouting");
 
   return (
     <>
-      {/* 
-        This ParticipantAudioTracks component will render the audio track for all participants in the room.
-        It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
-        unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
-      */}
-
-      <ParticipantAudioTracks />
-
       <>
         {screenShareState.identity !== room?.localParticipant.identity &&
           screenShareState.publishedState && <ScreenShareDraggable />}
-        {currentSelectedScreen === "/allScreen" ? (
+        {currentSelectedScreen === "/allscreen" ? (
           <ContainerAllScreen>
             <Item remotepcount={remotePCount} key={localParticipant.sid}>
               {!allExcludedParticipant({
@@ -117,12 +110,14 @@ export default function Room() {
                   <ParticipantsAnimationBar
                     localParticipant={localParticipant}
                     participant={localParticipant}
+                    screen={"allscreen"}
                   />
                 </>
               )}
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}
+                fromScreen={"allscreen"}
               />
             </Item>
 
@@ -135,11 +130,13 @@ export default function Room() {
                     <ParticipantsAnimationBar
                       localParticipant={localParticipant}
                       participant={participant}
+                      screen={"allscreen"}
                     />
                   )}
                   <Participant
                     key={participant.sid}
                     participant={participant}
+                    fromScreen={"allscreen"}
                   />
                 </Item>
               );
@@ -148,43 +145,7 @@ export default function Room() {
         ) : (
           <>
             <div style={{ display: "none" }}>
-              <ContainerAllScreen>
-                <Item remotepcount={remotePCount} key={localParticipant.sid}>
-                  {!allExcludedParticipant({
-                    identity: localParticipant.identity,
-                  }) && (
-                    <>
-                      <ParticipantsAnimationBar
-                        localParticipant={localParticipant}
-                        participant={localParticipant}
-                      />
-                    </>
-                  )}
-                  <Participant
-                    participant={localParticipant}
-                    isLocalParticipant={true}
-                  />
-                </Item>
-
-                {speakerViewParticipants.map((participant) => {
-                  return (
-                    <Item remotepcount={remotePCount} key={participant.sid}>
-                      {!allExcludedParticipant({
-                        identity: participant.identity,
-                      }) && (
-                        <ParticipantsAnimationBar
-                          localParticipant={localParticipant}
-                          participant={participant}
-                        />
-                      )}
-                      <Participant
-                        key={participant.sid}
-                        participant={participant}
-                      />
-                    </Item>
-                  );
-                })}
-              </ContainerAllScreen>
+              <FloatingParticipant screen={currentSelectedScreen} />
             </div>
           </>
         )}

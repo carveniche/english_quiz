@@ -1,9 +1,17 @@
 import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
 import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
 import CallTechSupport from "../CallTechSupport/CallTechSupport";
+import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 export default function Header() {
   return (
     <>
+      {/* 
+        This ParticipantAudioTracks component will render the audio track for all participants in the room.
+        It is in a separate component so that the audio tracks will always be rendered, and that they will never be 
+        unnecessarily unmounted/mounted as the user switches between Gallery View and speaker View.
+      */}
+
+      <ParticipantAudioTracks />
       <div className="bg-header-black-top flex min-h-[40px] w-full justify-between ">
         <div className=" justify-center content-center p-4">
           <BegalileoLogo />

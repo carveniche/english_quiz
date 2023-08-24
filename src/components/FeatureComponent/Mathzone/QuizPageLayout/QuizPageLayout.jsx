@@ -19,7 +19,7 @@ import handleResizeWidth from "../handleResizeWidth";
 let QuizPageLayout;
 export default QuizPageLayout = forwardRef((props, ref) => {
   const { children, height } = props;
-  console.log(height);
+
   const commonResizeFun = () => {
     handleResizeWidth();
   };
@@ -48,7 +48,6 @@ export default QuizPageLayout = forwardRef((props, ref) => {
         localStorage.getItem("quizcanvasretainedlines")
       );
       if (storedLine != "") {
-        console.log("hello");
         props.onSendWhiteBoardLines(storedLine);
         ref.current.onRemoteLineUpdate(storedLine);
       }
@@ -58,12 +57,10 @@ export default QuizPageLayout = forwardRef((props, ref) => {
         localStorage.getItem("quizcanvasretainedlines")
       );
       if (storedLine != "") {
-        console.log("Its not empty");
         if (quizCanvasScreenElement.current != null) {
           quizCanvasScreenElement.current.onRemoteLineUpdate(quizCanvasLine);
         }
       } else {
-        console.log("It is actually empty");
         if (quizCanvasScreenElement.current != null) {
           quizCanvasScreenElement.current.onRemoteLineUpdate(quizCanvasLine);
         }

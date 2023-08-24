@@ -31,7 +31,9 @@ svg {
 }
 
 .section-component-layout {
-  height: calc(100% - 72px - 101.28px);
+  height: calc(100% - 86px - 101.28px);
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .sampleoneanimation {

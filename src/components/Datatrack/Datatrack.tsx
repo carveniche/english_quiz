@@ -16,6 +16,7 @@ import {
 import {
   addCurrentSelectedScreen,
   addMuteAllParticipant,
+  addVideoPlayState,
 } from "../../redux/features/liveClassDetails";
 import { FLAGGEDQUESTIONKEY, MATHZONEDATAKEY } from "../../constants";
 import {
@@ -32,11 +33,16 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-      console.log(parseMessage);
+      console.log("pathname", pathname);
+      console.log("DataTrack Message", parseMessage);
+
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
       ) {
+        if (parseMessage.value.type === "deleteFromActiveTab") {
+          dispatch(deleteFromActiveTab(parseMessage.pathName));
+        }
       } else {
         if (parseMessage.value.type === "deleteFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
@@ -63,9 +69,9 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
         dispatch(addMuteAllParticipant(parseMessage.value.muteState));
-      }
-      if (parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData) {
-        console.log();
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
+      ) {
         dispatch(
           addToActiveTab({
             path: parseMessage?.value.activeTabData?.path || "",
@@ -76,8 +82,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
         dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
-      }
-      if (
+      } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
         console.log(parseMessage);
@@ -94,6 +99,23 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           flagQuestionDetailsStore(
             parseMessage?.value?.flaggedQuestionData || {}
           )
+        );
+      } else if (parseMessage?.value?.type === "PlayVideo") {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage.pathName,
+            key: parseMessage.key,
+            icon: parseMessage.icon,
+            name: parseMessage.name,
+            extraParams: parseMessage.extraParams || {},
+          })
+        );
+      } else if (parseMessage?.value?.datatrackName === "PlayVideoState") {
+        dispatch(
+          addVideoPlayState({
+            muteAllState: parseMessage.value.muteState,
+            videoPlayState: parseMessage.value.videoPlayState,
+          })
         );
       }
     };

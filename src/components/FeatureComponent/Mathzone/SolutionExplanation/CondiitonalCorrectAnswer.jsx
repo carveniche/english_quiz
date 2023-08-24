@@ -14,7 +14,6 @@ export default function CondiitonalCorrectAnswer({ questionData, temp }) {
       ? temp.answerValue
       : false) ||
     temp?.answerCount;
-  console.log(answerValue);
 
   let oldType = ["Multiple choice", "True/False"];
   if (questionData?.question_type == "questiontextoptions") {

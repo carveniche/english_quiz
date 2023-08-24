@@ -42,7 +42,7 @@ const ScreenShareStyles = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "solid 1px #ddd",
+  border: "1px solid #ddd",
   background: "#f0f0f0",
   zIndex: "1",
   width: "400px",
