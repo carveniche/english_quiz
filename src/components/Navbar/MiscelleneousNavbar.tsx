@@ -26,11 +26,11 @@ export default function MiscelleneousNavbar({
         onMouseEnter={() => handleOpenSubMenu(index)}
       >
         <NavLink
-          to={`${item.path}${ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route}?${queryParams}`}
+          to={`${item.path}${ROUTERKEYCONST.miscellaneous.subRoute.homework.route}?${queryParams}`}
           onClick={() =>
             handleClick({
-              path: `${item.path}${ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route}`,
-              key: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
+              path: `${item.path}${ROUTERKEYCONST.miscellaneous.subRoute.homework.route}`,
+              key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
               name: item.name,
               icon: item.icon,
               extraParams: {},
