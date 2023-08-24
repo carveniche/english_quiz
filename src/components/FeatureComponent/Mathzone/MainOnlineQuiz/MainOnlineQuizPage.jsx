@@ -12,6 +12,7 @@ import { StudentAnswerResponse } from "../../../../api";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
+import "../component/mathzone.css";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
@@ -63,15 +64,7 @@ export function ValidationContextProvider({ children }) {
   );
 }
 
-export const TeacherQuizDisplay = ({
-  obj,
-  identity,
-  refreshQuestion,
-  conceptName,
-  conceptTag,
-  mathZoneQuizLevel,
-  resultView,
-}) => {
+export const TeacherQuizDisplay = ({ obj, showSolution }) => {
   var temp = {};
   let operation = null;
   let arr = ["orc", "oprc", "ol", "ckeditor"];
@@ -102,13 +95,15 @@ export const TeacherQuizDisplay = ({
           temp={temp}
           isResponse={false}
         />
-        <SolutionComponent
-          showStudentSolution={true}
-          arr={arr}
-          obj={obj}
-          temp={temp}
-          showCorrectIncorrectImage={false}
-        />
+        {showSolution && (
+          <SolutionComponent
+            showStudentSolution={true}
+            arr={arr}
+            obj={obj}
+            temp={temp}
+            showCorrectIncorrectImage={false}
+          />
+        )}
       </div>
     </>
   );
@@ -267,10 +262,10 @@ const StudentQuizDisplay = ({ obj, identity }) => {
   };
   useEffect(() => {
     if (document.querySelector("#quizWhitePage") && hasAnswerSubmitted) {
-      setTimeout(() => {
-        document.querySelector("#quizWhitePage").scrollTop =
-          document.querySelector("#quizWhitePage").scrollHeight;
-      }, 500);
+      // setTimeout(() => {
+      //   document.querySelector("#quizWhitePage").scrollTop =
+      //     document.querySelector("#quizWhitePage").scrollHeight;
+      // }, 500);
     }
   }, [hasAnswerSubmitted]);
   return (
@@ -325,11 +320,8 @@ export function RenderingQuizPage({
   identity,
 }) {
   const { setTotalQuestion } = useContext(ViewStatusContext);
-  useEffect(() => {
-    setTotalQuestion(obj?.total);
-  }, []);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
-    // obj = replaceJsonData(obj);
+    obj = replaceJsonData({ ...obj });
   }
 
   return (
@@ -349,6 +341,7 @@ export function RenderingQuizPage({
               mathZoneQuizLevel={mathZoneQuizLevel}
               setCount={setCount}
               count={count}
+              showSolution={true}
             />
           </ValidationContextProvider>
         </>

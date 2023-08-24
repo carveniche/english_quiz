@@ -17,8 +17,11 @@ import {
   addCurrentSelectedScreen,
   addMuteAllParticipant,
 } from "../../redux/features/liveClassDetails";
-import { MATHZONEDATAKEY } from "../../constants";
-import { changeMathzoneData } from "../../redux/features/ComponentLevelDataReducer";
+import { FLAGGEDQUESTIONKEY, MATHZONEDATAKEY } from "../../constants";
+import {
+  changeMathzoneData,
+  flagQuestionDetailsStore,
+} from "../../redux/features/ComponentLevelDataReducer";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
@@ -79,6 +82,25 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
         dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
+      }
+      if (
+        parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
+      ) {
+        console.log(parseMessage);
+        dispatch(
+          addToActiveTab({
+            path: parseMessage?.value.activeTabData?.path || "",
+            key: parseMessage?.value?.activeTabData?.key || "",
+            icon: parseMessage?.value?.activeTabData?.icon || "",
+            name: parseMessage?.value?.activeTabData?.name || "",
+            extraParams: parseMessage?.value?.activeTabData?.path || "",
+          })
+        );
+        dispatch(
+          flagQuestionDetailsStore(
+            parseMessage?.value?.flaggedQuestionData || {}
+          )
+        );
       }
     };
 

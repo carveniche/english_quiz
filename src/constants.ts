@@ -17,14 +17,27 @@ export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
 export const MAXIMUMACTIVETAB = 4;
 export const ROUTERKEYCONST = {
-  allScreen: "/allscreen",
+  allScreen: "/allScreen",
   myScreen: "/myscreen",
   mathvideolesson: "/mathvideolesson",
   coding: "/coding",
-  whiteboard: "/whiteoard",
+  whiteboard: "/whiteboard",
   lesson: "/lesson",
   mathzone: "/mathzone",
+  miscellaneous: {
+    key: "miscellaneous",
+    subRoute: {
+      homework: "/homework",
+      flagQuestion: {
+        keys: "/flagQuestion",
+        route: "/flagQuestion",
+      },
+    },
+  },
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
+};
+export const FLAGGEDQUESTIONKEY = {
+  flaggedQuestionMenu: "flaggedQuestionMenu",
 };

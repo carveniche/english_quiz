@@ -6,7 +6,7 @@ export interface ActiveTabParams {
   key: String;
   name: String;
   icon: String;
-  extraParams: Object;
+  extraParams?: Object;
 }
 export interface activeTabStateReducer {
   activeTabArray: ActiveTabParams[];

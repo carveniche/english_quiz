@@ -13,6 +13,16 @@ export default function AllPageRoutes() {
         {routerConfig.map((item) =>
           item.key === "/mathzone" ? (
             <Route path={y} Component={item.component} key={item.key}></Route>
+          ) : item.hasSubRoute ? (
+            <Route key={item.key} path={item.path}>
+              {item?.subRoute?.map((subRouteItem) => (
+                <Route
+                  key={`${subRouteItem?.key}`}
+                  path={`${item.path}/${subRouteItem?.path}`}
+                  Component={subRouteItem?.component}
+                ></Route>
+              ))}
+            </Route>
           ) : (
             <Route
               path={item.path}
