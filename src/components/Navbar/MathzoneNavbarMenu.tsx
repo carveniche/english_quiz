@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import TabIcon from "./TabIcon";
-import { mathzone } from "../../redux/features/ConceptDetailsRedux";
+import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
 interface props {
-  mathzone: mathzone;
+  allConceptsDetails: allConceptsDetails;
   item: ActiveTabParams;
   handleClick: Function;
   queryParams: String;
@@ -14,7 +14,7 @@ interface props {
   handleOpenSubMenu: Function;
 }
 export default function MathzoneNavbar({
-  mathzone,
+  allConceptsDetails,
   item,
   handleClick,
   queryParams,
@@ -56,7 +56,7 @@ export default function MathzoneNavbar({
             overflowY: "auto",
           }}
         >
-          {mathzone?.conceptDetails.map((math, index) => {
+          {allConceptsDetails?.conceptDetails.map((math, index) => {
             return (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"

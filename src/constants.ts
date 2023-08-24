@@ -17,7 +17,7 @@ export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
 export const MAXIMUMACTIVETAB = 4;
 export const ROUTERKEYCONST = {
-  allScreen: "/allScreen",
+  allScreen: "/allscreen",
   myScreen: "/myscreen",
   mathvideolesson: "/mathvideolesson",
   coding: "/coding",

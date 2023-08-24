@@ -42,6 +42,18 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
+
+  {
+    path: "/mathvideolesson",
+    key: ROUTERKEYCONST.mathvideolesson,
+    exact: true,
+    component: MathVideoLesson,
+    name: "Play Video",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
   {
     path: ROUTERKEYCONST.coding,
     key: ROUTERKEYCONST.coding,

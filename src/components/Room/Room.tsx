@@ -136,7 +136,7 @@ export default function Room() {
                   <Participant
                     key={participant.sid}
                     participant={participant}
-                    fromScreen={"allScreen"}
+                    fromScreen={"allscreen"}
                   />
                 </Item>
               );

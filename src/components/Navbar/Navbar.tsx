@@ -13,10 +13,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
+import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import { useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
 export default function Navbar({ onClick }: { onClick: Function }) {
-  const { mathzone } = useSelector(
+  const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
 
@@ -25,6 +26,35 @@ export default function Navbar({ onClick }: { onClick: Function }) {
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
   const dispatch = useDispatch();
+
+  const handleClickMathVideoLesson = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+    typeof onClick === "function" && onClick();
+    const [localDataTrackPublication] = [
+      ...room!.localParticipant.dataTracks.values(),
+    ];
+    let DataTrackObj = {
+      pathName: path,
+      key,
+      name,
+      icon,
+      extraParams,
+      value: {
+        type: null,
+        identity: null,
+      },
+    };
+
+    console.log("Data message send");
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   const handleClick = ({
     path,
     key,
@@ -61,8 +91,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     }
     setCurrentSelectedMenuIndex(index);
   };
-
-  console.log("currentSelectedMenuIndex", currentSelectedMenuIndex);
 
   return (
     <>
@@ -140,7 +168,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 <TabIcon src={"/menu-icon/chevron.svg"} />
                 {index === currentSelectedMenuIndex && (
                   <MathzoneNavbar
-                    mathzone={mathzone}
+                    allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
                     key={`mathzone-${mathzoneKeys}`}
                     handleClick={handleClick}
@@ -160,6 +188,33 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 index={index}
                 queryParams={queryParams}
               />
+            ) : item.key === ROUTERKEYCONST.mathvideolesson ? (
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <MathVideoLessonNavbar
+                    allConceptsDetails={allConceptsDetails}
+                    item={{ ...item, extraParams: {} }}
+                    key={`mathzone-${mathzoneKeys}`}
+                    handleClickMathVideoLesson={handleClickMathVideoLesson}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
             ) : (
               <li
                 key={index}
