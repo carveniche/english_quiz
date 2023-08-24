@@ -26,7 +26,10 @@ mathzone:'/mathzone',
 miscellaneous:{
   key:"miscellaneous",
  subRoute:{
-  homework:"/homework",
+  homework:{
+    keys:"/homework",
+    route:"/homework"
+  },
   flagQuestion:{
     keys:"/flagQuestion",
     route:"/flagQuestion"

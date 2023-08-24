@@ -7,6 +7,7 @@ import React from "react";
 import { ROUTERKEYCONST } from "../constants";
 import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
+import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 interface routerConfig {
   path: string;
   key: string;
@@ -97,12 +98,21 @@ const routerConfig: routerConfig[] = [
     subRoute:[
       {
         key:ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
-        name:"Flag Question",
+        name:"Flagged Question",
         path:ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route,
         exact:true,
         icon:"/menu-icon/Whiteboard.svg",
         hasChildren:false,
         component:FlagQuestionMenu
+      },
+      {
+        key:ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
+        name:"HomeWork",
+        path:ROUTERKEYCONST.miscellaneous.subRoute.homework.route,
+        exact:true,
+        icon:"/menu-icon/Whiteboard.svg",
+        hasChildren:false,
+        component:HomeWork
       }
     ]
 

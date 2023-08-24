@@ -1,0 +1,98 @@
+.layoutContainer {
+  display: flex;
+  gap: 2rem;
+}
+.layoutContainer > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.keyValue {
+  justify-content: center;
+  gap: 0.4rem;
+}
+.childName {
+  display: flex;
+  margin-left: 1rem;
+  margin-bottom: 3rem;
+  color: blue;
+  font-size: 24px !important;
+  font-weight: bold;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 14px;
+  color: #353639;
+  opacity: 0.6;
+}
+.heading {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #353639 !important;
+
+  margin-bottom: 5px;
+}
+.value {
+  font-size: 12px !important;
+  color: #353639 !important;
+  font-weight: bold;
+}
+.container {
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.viewButton {
+  color: blue !important;
+}
+.viewButton:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.homework-class-details {
+  padding-bottom: 30px;
+  padding-left: 30px;
+}
+
+.homework-class-details > table {
+  width: 100%;
+  table-layout: fixed;
+}
+.homework-class-details > table tr > td {
+  line-height: 1.42857143;
+  vertical-align: middle;
+  text-align: center;
+}
+.homework-class-details > table tr > td h3 {
+  font-weight: bold;
+  font-size: 18px;
+  color: #233584;
+  margin: 0;
+}
+.homework-class-details > table tr > td label {
+  color: #353639;
+  opacity: 0.6;
+  font-weight: 600;
+  font-size: 9px;
+}
+.homework-class-details > table tr > td p {
+  font-weight: bold;
+  font-size: 14px;
+  color: #353639;
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
