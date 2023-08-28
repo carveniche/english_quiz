@@ -14,6 +14,7 @@ import { RootState } from "../../redux/store";
 import { ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
+import SpeedMathNavbarMenu from "./SpeedMathNavbarMenu";
 import { useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
 export default function Navbar({ onClick }: { onClick: Function }) {
@@ -47,7 +48,35 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       icon,
       extraParams,
       value: {
-        type: "PlayVideo",
+        datatrackName: "PlayVideo",
+        identity: null,
+      },
+    };
+
+    console.log("Data message send");
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
+  const handleClickSpeedMath = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+    typeof onClick === "function" && onClick();
+    const [localDataTrackPublication] = [
+      ...room!.localParticipant.dataTracks.values(),
+    ];
+    let DataTrackObj = {
+      pathName: path,
+      key,
+      name,
+      icon,
+      extraParams,
+      value: {
+        datatrackName: "SpeedMath",
         identity: null,
       },
     };
@@ -208,6 +237,33 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                     item={{ ...item, extraParams: {} }}
                     key={`mathzone-${mathzoneKeys}`}
                     handleClickMathVideoLesson={handleClickMathVideoLesson}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
+            ) : item.key === ROUTERKEYCONST.speedmath ? (
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <SpeedMathNavbarMenu
+                    allConceptsDetails={allConceptsDetails}
+                    item={{ ...item, extraParams: {} }}
+                    key={`mathzone-${mathzoneKeys}`}
+                    handleClickSpeedMath={handleClickSpeedMath}
                     queryParams={queryParams}
                     calcWidth={44.01}
                     elementPosition={index + 1}

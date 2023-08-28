@@ -61,6 +61,8 @@ const activeTabReducer = createSlice({
         }
       } else if (action.payload.key === ROUTERKEYCONST.mathvideolesson) {
         activeTabArray[index] = action.payload;
+      } else if (action.payload.key === ROUTERKEYCONST.speedmath) {
+        activeTabArray[index] = action.payload;
       }
     },
     deleteFromActiveTab: (state, action: PayloadAction<String>) => {

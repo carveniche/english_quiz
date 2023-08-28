@@ -9,6 +9,7 @@ import { ROUTERKEYCONST } from "../constants";
 import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
+import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 interface routerConfig {
   path: string;
   key: string;
@@ -50,6 +51,18 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: MathVideoLesson,
     name: "Play Video",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
+
+  {
+    path: "/speedmath",
+    key: ROUTERKEYCONST.speedmath,
+    exact: true,
+    component: SpeedMath,
+    name: "Speed Math",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: false,
@@ -110,25 +123,24 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: true,
     subRoute: [
       {
-        key:ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
-        name:"Flagged Question",
-        path:ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route,
-        exact:true,
-        icon:"/menu-icon/Whiteboard.svg",
-        hasChildren:false,
-        component:FlagQuestionMenu
+        key: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
+        name: "Flagged Question",
+        path: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route,
+        exact: true,
+        icon: "/menu-icon/Whiteboard.svg",
+        hasChildren: false,
+        component: FlagQuestionMenu,
       },
       {
-        key:ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
-        name:"HomeWork",
-        path:ROUTERKEYCONST.miscellaneous.subRoute.homework.route,
-        exact:true,
-        icon:"/menu-icon/Whiteboard.svg",
-        hasChildren:false,
-        component:HomeWork
-      }
-    ]
-
-  }
+        key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
+        name: "HomeWork",
+        path: ROUTERKEYCONST.miscellaneous.subRoute.homework.route,
+        exact: true,
+        icon: "/menu-icon/Whiteboard.svg",
+        hasChildren: false,
+        component: HomeWork,
+      },
+    ],
+  },
 ];
 export default routerConfig;

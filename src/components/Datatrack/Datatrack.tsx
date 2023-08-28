@@ -104,7 +104,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             parseMessage?.value?.flaggedQuestionData || {}
           )
         );
-      } else if (parseMessage?.value?.type === "PlayVideo") {
+      } else if (parseMessage?.value?.datatrackName === "PlayVideo") {
         dispatch(
           addToActiveTab({
             path: parseMessage.pathName,
@@ -119,6 +119,16 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           addVideoPlayState({
             muteAllState: parseMessage.value.muteState,
             videoPlayState: parseMessage.value.videoPlayState,
+          })
+        );
+      } else if (parseMessage?.value?.datatrackName === "SpeedMath") {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage.pathName,
+            key: parseMessage.key,
+            icon: parseMessage.icon,
+            name: parseMessage.name,
+            extraParams: parseMessage.extraParams || {},
           })
         );
       } else if (
