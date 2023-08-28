@@ -1,5 +1,7 @@
 import SpeedMathLevelLogo from "./assets/images/SM-Level.svg";
 import SpeedMathLevelNoBg from "./assets/images/SM-Level-Yellow.svg";
+import SpeedMathSpatio from "./assets/images/Spatio.svg";
+import QuestionTimer from "./QuestionTimer";
 
 export default function HeaderBar() {
   //Get level from redux
@@ -16,11 +18,7 @@ export default function HeaderBar() {
           className="w-full h-16 flex justify-center items-center bg-center bg-cover rounded-full"
         >
           <div className="absolute inline-block left-[30px]">
-            <img
-              style={{ maxWidth: "100%", display: "block" }}
-              className="max-w-full block"
-              src={SpeedMathLevelNoBg}
-            />
+            <img className="max-w-full block" src={SpeedMathLevelNoBg} />
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white p-4 font-bold">
               1
             </div>
@@ -43,9 +41,11 @@ export default function HeaderBar() {
         </div>
       </div>
       <div className="flex flex-row w-full h-full justify-center">
-        Game Timer
+        <QuestionTimer duration={100} />
       </div>
-      <div className="flex flex-row w-full h-full justify-center">Emotigon</div>
+      <div className="flex flex-row w-full h-full justify-end ">
+        <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />
+      </div>
     </div>
   );
 }

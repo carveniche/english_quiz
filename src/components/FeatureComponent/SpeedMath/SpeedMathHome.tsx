@@ -39,10 +39,10 @@ export default function SpeedMath() {
         }}
         className="flex flex-col justify-center items-center w-full h-full"
       >
-        <div className="h-1/5 w-full border border-yellow p-5">
+        <div className="h-1/5 w-full p-5">
           <HeaderBar />
         </div>
-        <div className="h-full w-full ">
+        <div className="h-full w-full border border-red-500 ">
           <GameModeSelection
             selectedPlayMode={selectedPlayMode}
             startSpeedMath={startSpeedMath}
