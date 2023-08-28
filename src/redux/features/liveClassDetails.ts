@@ -27,6 +27,7 @@ interface liveClassDetailsTypes {
   techJoinedClass: boolean;
   muteAllParticipant: boolean | undefined;
   videoPlayState: boolean;
+  remoteParticipantCount: number;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -52,6 +53,7 @@ const initialState: liveClassDetailsTypes = {
   techJoinedClass: false,
   muteAllParticipant: undefined,
   videoPlayState: false,
+  remoteParticipantCount: 0,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -86,6 +88,9 @@ export const liveClassDetailsSlice = createSlice({
       state.videoPlayState = videoPlayState;
       state.muteAllParticipant = muteAllState;
     },
+    addRemoteParticipantCount: (state, action) => {
+      state.remoteParticipantCount = action.payload;
+    },
   },
 });
 
@@ -98,6 +103,7 @@ export const {
   addTechJoinedClass,
   addMuteAllParticipant,
   addVideoPlayState,
+  addRemoteParticipantCount,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

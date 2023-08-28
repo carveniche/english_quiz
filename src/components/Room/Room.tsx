@@ -16,6 +16,7 @@ import { getLessonAndMathZoneConceptDetails } from "../../api";
 import { useDispatch } from "react-redux";
 import { addToStore } from "../../redux/features/ConceptDetailsRedux";
 import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
+import { addRemoteParticipantCount } from "../../redux/features/liveClassDetails";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -92,6 +93,10 @@ export default function Room() {
         console.log(e);
       });
   }, []);
+
+  useEffect(() => {
+    dispatch(addRemoteParticipantCount(remotePCount));
+  }, [remotePCount]);
 
   console.log("room component mouting");
 
