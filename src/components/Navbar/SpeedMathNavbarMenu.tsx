@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import TabIcon from "./TabIcon";
-
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
-
 import { ROUTERKEYCONST } from "../../constants";
 
 interface props {
@@ -21,18 +19,16 @@ export default function SpeedMathNavbarMenu({
   queryParams,
   calcWidth,
   elementPosition,
-
   handleOpenSubMenu,
 }: props) {
   const [currentSelectedTopic, setCurrentSelectedTopic] = useState(-1);
-  const [currentSelectedTag, setCurrentSelectedTag] = useState(-1);
+
   const handleSelectTopic = (index: number) => {
     if (index === currentSelectedTopic) {
       setCurrentSelectedTopic(-1);
     } else {
       setCurrentSelectedTopic(index);
     }
-    setCurrentSelectedTag(-1);
   };
 
   const speedMathLevels = [
@@ -93,11 +89,11 @@ export default function SpeedMathNavbarMenu({
                       </NavLink>
                     </div>
                   </div>
-                  <TabIcon
+                  {/* <TabIcon
                     src={`/menu-icon/chevron_${
                       currentSelectedTopic === index ? "up" : "down"
                     }.svg`}
-                  />
+                  /> */}
                 </div>
               </li>
             );

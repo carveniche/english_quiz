@@ -260,7 +260,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 <TabIcon src={"/menu-icon/chevron.svg"} />
                 {index === currentSelectedMenuIndex && (
                   <SpeedMathNavbarMenu
-                    allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
                     key={`mathzone-${mathzoneKeys}`}
                     handleClickSpeedMath={handleClickSpeedMath}

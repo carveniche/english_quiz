@@ -3,7 +3,7 @@ import { RootState } from "../../../redux/store";
 
 import SpeedMathForeground from "./assets/images/SM-Background.svg";
 import SpeedMathBackground from "./assets/images/SM-Image.svg";
-import { url } from "inspector";
+import HeaderBar from "./HeaderBar";
 
 export default function SpeedMath() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
@@ -14,19 +14,27 @@ export default function SpeedMath() {
   );
   const { extraParams } = activeTabArray[currentSelectedIndex];
 
-  console.log("extraParams", extraParams.speedMathLevel);
-
   return (
     <div
       style={{
         background: `url(${SpeedMathBackground}) no-repeat center center
     fixed`,
         backgroundSize: "cover",
-        width: "100%",
       }}
-      className="flex flex-col  w-full h-full justify-center items-center "
+      className="flex flex-col justify-center items-center w-full h-full"
     >
-      <img src={SpeedMathForeground} />
+      <div
+        style={{
+          background: `url(${SpeedMathForeground}) no-repeat center center
+           fixed`,
+        }}
+        className="flex flex-col justify-center items-center w-full h-full"
+      >
+        <div className="h-1/5 w-full border border-yellow p-5">
+          <HeaderBar />
+        </div>
+        <div className="h-full w-full "></div>
+      </div>
     </div>
   );
 }
