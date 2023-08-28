@@ -24,16 +24,20 @@ export const ROUTERKEYCONST = {
   whiteboard: "/whiteboard",
   lesson: "/lesson",
   mathzone: "/mathzone",
-  miscellaneous: {
-    key: "miscellaneous",
-    subRoute: {
-      homework: "/homework",
-      flagQuestion: {
-        keys: "/flagQuestion",
-        route: "/flagQuestion",
-      },
+  miscellaneous:{
+    key:"miscellaneous",
+   subRoute:{
+    homework:{
+      keys:"/homework",
+      route:"/homework"
     },
-  },
+    flagQuestion:{
+      keys:"/flagQuestion",
+      route:"/flagQuestion"
+    },
+   }
+    
+  }
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
@@ -41,3 +45,6 @@ export const MATHZONEDATAKEY = {
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",
 };
+export const HOMEWORKQUESTIONKEY={
+  homeWorkQuestionDataTrack:"homeWorkQuestionDataTrack"
+}

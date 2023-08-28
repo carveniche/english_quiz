@@ -120,6 +120,20 @@ export default function FlagQuestionMenu(props) {
     flaggedQuestion?.selectedTagId,
     flaggedQuestion?.selectedConceptId,
   ]);
+  const handleFlagQuestionChange = (val, fetchAgain) => {
+    console.log("calling", fetchAgain);
+    let payload = {
+      showQuestion: true,
+      currentQuestion: val,
+      selectedTagId: selectedTagId || "",
+      selectedConceptId: selectedConceptId || "",
+      selectedTagName: selectedTagName || "",
+      selectedConceptName: selectedConceptName || "",
+      isFetchAgain: fetchAgain,
+      currentFetchTime: Number(!flaggedQuestion?.currentFetchTime),
+    };
+    handleDataTrack(payload);
+  };
   return (
     <>
       {showQuestion ? (
@@ -136,6 +150,7 @@ export default function FlagQuestionMenu(props) {
           isFetchAgain={flaggedQuestion?.isFetchAgain || false}
           currentFetchTime={flaggedQuestion?.currentFetchTime || 0}
           currentQuestion={flaggedQuestion?.currentQuestion || 0}
+          handleFlagQuestionChange={handleFlagQuestionChange}
         />
       ) : (
         <div

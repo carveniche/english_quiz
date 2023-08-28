@@ -18,10 +18,15 @@ import {
   addMuteAllParticipant,
   addVideoPlayState,
 } from "../../redux/features/liveClassDetails";
-import { FLAGGEDQUESTIONKEY, MATHZONEDATAKEY } from "../../constants";
+import {
+  FLAGGEDQUESTIONKEY,
+  HOMEWORKQUESTIONKEY,
+  MATHZONEDATAKEY,
+} from "../../constants";
 import {
   changeMathzoneData,
   flagQuestionDetailsStore,
+  homeWorkQuestionDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
@@ -60,7 +65,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           );
         }
       }
-
+      console.log(parseMessage);
       if (parseMessage?.value?.datatrackName === "ScreenShare") {
         dispatch(addScreenShareDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "Animations") {
@@ -85,7 +90,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
-        console.log(parseMessage);
         dispatch(
           addToActiveTab({
             path: parseMessage?.value.activeTabData?.path || "",
@@ -116,6 +120,24 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             muteAllState: parseMessage.value.muteState,
             videoPlayState: parseMessage.value.videoPlayState,
           })
+        );
+      } else if (
+        parseMessage?.value?.type ===
+        HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack
+      ) {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage?.value.activeTabData?.path || "",
+            key: parseMessage?.value?.activeTabData?.key || "",
+            icon: parseMessage?.value?.activeTabData?.icon || "",
+            name: parseMessage?.value?.activeTabData?.name || "",
+            extraParams: parseMessage?.value?.activeTabData?.path || "",
+          })
+        );
+        dispatch(
+          homeWorkQuestionDataTrack(
+            parseMessage?.value?.HomeWorkQuestionData || {}
+          )
         );
       }
     };

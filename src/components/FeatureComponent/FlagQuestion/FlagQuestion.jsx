@@ -16,6 +16,7 @@ const FlagQuestionViewer = (props) => {
   const heightRef = useRef();
   const [currentHeight, setCurrentHeight] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
   const {
     updateTotalQuestionReview,
     currentQuestionReview,
@@ -62,8 +63,8 @@ const FlagQuestionViewer = (props) => {
     // handlePaginationRevieResult(props?.currentFlagQuestion);
   };
   useEffect(() => {
+    console.log(props?.isFetchAgain);
     if (props.identity !== "tutor" && props?.isFetchAgain) {
-      console.log;
       studentFetchingDatas();
     }
   }, [props?.currentFetchTime]);
@@ -89,6 +90,7 @@ const FlagQuestionViewer = (props) => {
       } else {
         handlePaginationRevieResult(currentQuestionReview);
       }
+      console.log(props?.handleFlagQuestionChange == "function");
       typeof props?.handleFlagQuestionChange == "function" &&
         props?.handleFlagQuestionChange(
           datas?.length <= currentQuestionReview
@@ -103,7 +105,9 @@ const FlagQuestionViewer = (props) => {
     }
   };
   useEffect(() => {
-    handleResizeWidth(heightRef.current, setCurrentHeight);
+    setTimeout(() => {
+      handleResizeWidth(heightRef.current, setCurrentHeight);
+    }, 1000);
     window.addEventListener("resize", () => {
       setTimeout(() => {
         handleResizeWidth(heightRef.current, setCurrentHeight);
@@ -154,14 +158,18 @@ const FlagQuestionViewer = (props) => {
             >
               {data?.length > 0 && (
                 <div className={styles.mathZoneQuestionNo}>
-                  Q. {currentQuestionReview + 1} of {totalReviewResult}
+                  Q.{" "}
+                  {(props?.identity === "tutor"
+                    ? currentQuestionReview
+                    : props?.currentQuestion) + 1}{" "}
+                  of {totalReviewResult}
                 </div>
               )}
               <div className={styles.mathZonetitle}>
                 {props?.conceptName || "Addition"}&nbsp; - &nbsp;
                 {props?.flagTagName || ""}{" "}
               </div>
-              {props?.identity === "tutor" && !loading && data?.length > 0 && (
+              {props?.identity === "tutor" && !loading && data?.length > 0 ? (
                 <div
                   className={styles.nextBtnContainer}
                   style={{ width: "180px" }}
@@ -175,6 +183,8 @@ const FlagQuestionViewer = (props) => {
                     Mark as resolved
                   </button>
                 </div>
+              ) : (
+                <div style={{ visibility: "hidden" }}>no</div>
               )}
             </div>
           )}
@@ -189,6 +199,26 @@ const FlagQuestionViewer = (props) => {
               minHeight: `calc(100% - ${"tutor" ? 0 : 0}px)`,
             }}
           >
+            {!showSolution && props?.identity !== "tutor" && data.length && (
+              <div
+                style={{
+                  width: "calc(100% - 40px)",
+                  margin: "auto",
+                }}
+              >
+                <button
+                  className={styles.checkButton2}
+                  style={{
+                    padding: 0,
+                    margin: 0,
+                    width: 180,
+                  }}
+                  onClick={() => setShowSolution(true)}
+                >
+                  Show Solution
+                </button>
+              </div>
+            )}
             <QuizWhitePage>
               {props?.identity === "tutor" && (
                 <div
@@ -218,7 +248,7 @@ const FlagQuestionViewer = (props) => {
                       data[currentIndex] && (
                         <TeacherQuizDisplay
                           obj={data[currentIndex]}
-                          showSolution={false}
+                          showSolution={showSolution}
                         />
                       )
                     );
