@@ -5,8 +5,10 @@ import SpeedMathForeground from "./assets/images/SM-Background.svg";
 import SpeedMathBackground from "./assets/images/SM-Image.svg";
 import HeaderBar from "./HeaderBar";
 import GameModeSelection from "./GameModeSelection";
+import { useState } from "react";
 
 export default function SpeedMath() {
+  const [playMode, setPlayMode] = useState("computer");
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
   );
@@ -21,7 +23,11 @@ export default function SpeedMath() {
 
   const startSpeedMath = () => {};
 
-  const selectedPlayMode = () => {};
+  const selectedPlayMode = (event) => {
+    setPlayMode(event.target.value);
+
+    console.log("event", event.target.value);
+  };
 
   return (
     <div
@@ -42,8 +48,9 @@ export default function SpeedMath() {
         <div className="h-1/5 w-full p-5">
           <HeaderBar />
         </div>
-        <div className="h-full w-full border border-red-500 ">
+        <div className="h-full w-full justify-center ">
           <GameModeSelection
+            playMode={playMode}
             selectedPlayMode={selectedPlayMode}
             startSpeedMath={startSpeedMath}
             remoteParticipantCount={remoteParticipantCount}

@@ -4,6 +4,7 @@
 
 #root main {
   height: 100%;
+  font-family: "Montserrat";
 }
 
 svg {

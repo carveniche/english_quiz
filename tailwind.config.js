@@ -18,6 +18,8 @@ export default {
         F24A4A: "#F24A4A", //red for mathzone
         callTechSupportLineConnect: "#27AE60",
         callTechSupportLine: "#4B4B4B",
+        speedMathGameSelectionModeYelloBg: "#fedd52",
+        speedMathTextColor: "#233584",
       },
     },
   },

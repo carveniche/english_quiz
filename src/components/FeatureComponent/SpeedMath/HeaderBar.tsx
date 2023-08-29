@@ -41,7 +41,7 @@ export default function HeaderBar() {
         </div>
       </div>
       <div className="flex flex-row w-full h-full justify-center">
-        <QuestionTimer duration={100} />
+        Question Timer {/* <QuestionTimer duration={100} /> */}
       </div>
       <div className="flex flex-row w-full h-full justify-end ">
         <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />

@@ -20,7 +20,7 @@ const QuestionTimer = ({ duration }: QuestionTimerProps) => {
   const progress = ((duration - timeLeft) / duration) * 100;
 
   return (
-    <div className="w-[100px] h-[100px] rounded-full border-6 border-blue-500 relative bg-white">
+    <div className="w-[80px] h-[80px] rounded-full border-6 border-blue-500 relative bg-white">
       <div
         className="circle-fill"
         style={{
