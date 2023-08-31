@@ -48,3 +48,8 @@ export const FLAGGEDQUESTIONKEY = {
 export const HOMEWORKQUESTIONKEY={
   homeWorkQuestionDataTrack:"homeWorkQuestionDataTrack"
 }
+
+export const PREPOSTTESTKEY={
+  preTest:"pre_test",
+  postTest:"post_test"
+}

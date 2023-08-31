@@ -125,3 +125,14 @@ export const markAsResolvedHomeWorkQuestion = (
   return axios(`${BaseUrl}app_teachers/mark_as_homework_question_resolved?question_id=${question_id}&user_id=${userId}&live_class_id=${liveClassID}&homework_id=${homework_id}
   `);
 };
+
+export const startPrePostTest = (params: object) => {
+  return axios(BaseUrl + "app_teachers/start_pre_post_test", {
+    params: { ...params },
+  });
+};
+export const reviewPrePostTestResult = (params: object) => {
+  return axios(BaseUrl + "app_teachers/review_pre_post_test_result", {
+    params,
+  });
+};

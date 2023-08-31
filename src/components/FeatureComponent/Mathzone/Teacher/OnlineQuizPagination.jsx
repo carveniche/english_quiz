@@ -1,7 +1,7 @@
 import * as React from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 
 export default function OnlineQuizPagination() {
   const handleChange = (event, value) => {
