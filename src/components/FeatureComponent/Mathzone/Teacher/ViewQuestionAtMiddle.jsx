@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 import TeacherViewEachResponse from "./TeacherViewEachResponse";
 import { ValidationContext } from "../MainOnlineQuiz/MainOnlineQuizPage";
 
