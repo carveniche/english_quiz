@@ -8,17 +8,12 @@ import {
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { ViewStatusContext } from "../Mathzone/mathzone";
-import {
-  handleUpdateNextQuestion,
-  startPracticeMathzone,
-  startPrePostTest,
-} from "../../../api";
+import { handleUpdateNextQuestion, startPrePostTest } from "../../../api";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import {
   allExcludedParticipants,
   excludeParticipant,
 } from "../../../utils/excludeParticipant";
-import TeachersTitle from "../Mathzone/Teacher/TeachersTitle";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { isTutorTechBoth } from "../../../utils/participantIdentity";
 import { MATHZONEDATAKEY } from "../../../constants";
@@ -29,6 +24,7 @@ import ViewQuestionAtMiddle from "../Mathzone/Teacher/ViewQuestionAtMiddle";
 import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import QuizCompleted from "./QuizCompleted";
+import TeachersTitle from "./Teacher/TeachersTitle";
 export default function PrePostTestInner() {
   const [loading, setLoading] = useState(true);
   const [keys, setKeys] = useState(0);
@@ -108,7 +104,7 @@ export default function PrePostTestInner() {
     if (data?.status) {
       setLoading(false);
       setObj({ ...data });
-      setPracticeId(data?.live_class_practice_id || "");
+      setPracticeId(data?.pre_post_test_id || "");
       handleDataTrack({ data }, identity);
     }
   };
@@ -236,7 +232,8 @@ export default function PrePostTestInner() {
                 totalQuestion={
                   obj?.quiz_completed ? totalReviewResult : obj?.total
                 }
-                practiceId={practiceId}
+                pre_post_test_id={practiceId}
+                liveClassId={liveClassId}
               />
             ) : (
               <StudentsTitle

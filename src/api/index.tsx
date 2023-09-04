@@ -136,3 +136,8 @@ export const reviewPrePostTestResult = (params: object) => {
     params,
   });
 };
+export const viewPrePostTestQuestionResponse = (params: object) => {
+  return axios(BaseUrl + "app_teachers/view_questions", {
+    params,
+  });
+};
