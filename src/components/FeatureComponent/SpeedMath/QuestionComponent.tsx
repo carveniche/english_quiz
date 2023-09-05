@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { storeGameResponse, createSpeedMathGame } from "../../../api/index";
 import CorrectMark from "./assets/images/Correct.svg";
+import ComputerPlay from "./ComputerPlay";
+import { Room } from "twilio-video";
 interface QuestionComponentProps {
+  room: Room | null;
   speedMathGameId: number;
   identity: string;
   speedMathGameLevel: number;
@@ -17,7 +20,10 @@ interface QuestionComponentProps {
   ) => void;
 }
 
+const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
+
 export default function QuestionComponent({
+  room,
   speedMathGameId,
   identity,
   speedMathGameLevel,
@@ -47,10 +53,24 @@ export default function QuestionComponent({
   }, []);
 
   useEffect(() => {
+    if (playMode == "computer") {
+      setTimeout(function () {
+        setComputerScore(computerScore + 1);
+      }, level_1_seconds[getRandomIndex()] * 1000);
+    }
+  }, [computerScore]);
+
+  useEffect(() => {
     if (!startQuestionTimer) {
       onGameTimerEnd(userAnswerData, computerScore, userScore, speedMathGameId);
     }
   }, [startQuestionTimer]);
+
+  const getRandomIndex = () => {
+    var randomItemIndex =
+      level_1_seconds[Math.floor(Math.random() * level_1_seconds.length)];
+    return randomItemIndex;
+  };
 
   const onUserInputChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -93,9 +113,34 @@ export default function QuestionComponent({
   const onCorrectAnswer = (userAnswer: any) => {
     var currentUserScore = userScore + 1;
     setUserScore(currentUserScore);
-    setCompletionPercentage(Math.floor((currentUserScore / 50) * 100) + "%");
+    if (currentUserScore < 34) {
+      setCompletionPercentage(Math.floor((currentUserScore / 100) * 100) + "%");
+    } else {
+      setCompletionPercentage(Math.floor((currentUserScore / 200) * 100) + "%");
+    }
+
     sendGameDataToServer(gameQuestionsData[questionCount].id, true, userAnswer);
     // onUpdateLiveSpeedMathScore(userId, identity, currentUserScore);
+    updateScoreToOtherParticipant(userId, currentUserScore);
+  };
+
+  const updateScoreToOtherParticipant = (
+    userId: number,
+    currentUserScore: number
+  ) => {
+    const [localDataTrackPublication] = [
+      ...room!.localParticipant.dataTracks.values(),
+    ];
+    let DataTrackObj = {
+      pathName: null,
+      value: {
+        datatrackName: "updateSpeedMathScoreToOtherParticipant",
+        identity: room?.localParticipant.identity,
+        userId: userId,
+        currentUserScoreSpeedMath: currentUserScore,
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
   const sendGameDataToServer = (
@@ -147,7 +192,7 @@ export default function QuestionComponent({
         </div>
       </div>
       <div className="flex w-full h-full justify-center items-center">
-        <div className="flex w-[90%] h-full justify-center">
+        <div className="flex flex-col w-[90%] h-full justify-center">
           <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
             <div>
               <img src={CorrectMark} alt="Correct" />
@@ -163,10 +208,13 @@ export default function QuestionComponent({
             <div
               className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
               style={{
-                width: completionPercentage,
+                width: completionPercentage, // Set the width as a percentage
               }}
             ></div>
           </div>
+          {playMode === "computer" && (
+            <ComputerPlay computerScore={computerScore} />
+          )}
         </div>
       </div>
     </div>

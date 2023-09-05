@@ -31,6 +31,7 @@ interface liveClassDetailsTypes {
   speedMathGameIdStudent: number;
   speedMathGameLevel: number;
   speedMathPlayMode: string;
+  speedMathScoreofAllParticipant: any;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -60,6 +61,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathGameIdStudent: 0,
   speedMathGameLevel: 0,
   speedMathPlayMode: "",
+  speedMathScoreofAllParticipant: [],
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -105,6 +107,36 @@ export const liveClassDetailsSlice = createSlice({
       state.speedMathGameLevel = speedMathGameLevel;
       state.speedMathPlayMode = speedMathPlayMode;
     },
+
+    addSpeedMathScoreOfAllParticipant: (state, action) => {
+      const { identity, userId, currentUserScoreSpeedMath } = action.payload;
+
+      let prevArr = state.speedMathScoreofAllParticipant;
+
+      console.log("prevArr.length", prevArr.length);
+
+      if (prevArr.length === 0) {
+        console.log("h1");
+        prevArr.push({
+          userId,
+          identity,
+          currentUserScoreSpeedMath,
+        });
+      } else {
+        for (let i = 0; i < prevArr.length; i++) {
+          if (prevArr[i]?.userId === userId) {
+            prevArr[i].currentUserScoreSpeedMath = currentUserScoreSpeedMath;
+            break;
+          } else {
+            prevArr.push({
+              userId,
+              identity,
+              currentUserScoreSpeedMath,
+            });
+          }
+        }
+      }
+    },
   },
 });
 
@@ -119,6 +151,7 @@ export const {
   addVideoPlayState,
   addRemoteParticipantCount,
   addSpeedMathGameStartDetails,
+  addSpeedMathScoreOfAllParticipant,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

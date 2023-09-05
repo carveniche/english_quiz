@@ -14,6 +14,7 @@ import ResultPage from "./ResultPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
 import { addSpeedMathGameStartDetails } from "../../../redux/features/liveClassDetails";
+import GameInProgressTeacher from "./GameInProgressTeacher";
 
 export default function SpeedMath() {
   const { room } = useVideoContext();
@@ -49,7 +50,6 @@ export default function SpeedMath() {
   }, [speedMathGameIdStudent]);
 
   useEffect(() => {
-    console.log("speedMathGameLevel changes in redux", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
   }, [speedMathGameLevel]);
@@ -61,8 +61,6 @@ export default function SpeedMath() {
           speedMathGameId: 0,
         })
       );
-
-      console.log("Component Unmount SpeedMath");
     };
   }, []);
 
@@ -126,17 +124,49 @@ export default function SpeedMath() {
     userScore: number,
     speedMathGameId: number
   ) => {
-    console.log("Question Game Timer End");
-    console.log("userAnswerData", userAnswerData);
-    console.log("computerScore", computerScore);
-    console.log("userScore", userScore);
-    console.log("speedMathGameId", speedMathGameId);
     setComponentNo(4);
   };
 
   const questionTimerEndedCallback = () => {
     setStartQuestionTimer(false);
-    console.log("Question Timer Ended In SpeedMath Main Page");
+  };
+
+  const questionComponent = () => {
+    console.log("playMode", playMode);
+    console.log("isTutor", isTutor({ identity: String(role_name) }));
+    if (isTutor({ identity: String(role_name) })) {
+      if (playMode === "teacher") {
+        return (
+          <QuestionComponent
+            room={room}
+            speedMathGameId={speedMathGameId}
+            identity={String(role_name)}
+            speedMathGameLevel={speedMathGameLevel}
+            liveClassId={liveClassId}
+            userId={userId}
+            playMode={playMode}
+            onGameTimerEnd={onGameTimerEnd}
+            startQuestionTimer={startQuestionTimer}
+          />
+        );
+      } else {
+        return <GameInProgressTeacher playMode={playMode} />;
+      }
+    } else {
+      return (
+        <QuestionComponent
+          room={room}
+          speedMathGameId={speedMathGameId}
+          identity={String(role_name)}
+          speedMathGameLevel={speedMathGameLevel}
+          liveClassId={liveClassId}
+          userId={userId}
+          playMode={playMode}
+          onGameTimerEnd={onGameTimerEnd}
+          startQuestionTimer={startQuestionTimer}
+        />
+      );
+    }
   };
 
   return (
@@ -175,18 +205,7 @@ export default function SpeedMath() {
             <></>
           )}
           {componentNo === 2 && <GameStartingTimer onTimerEnd={onTimerEnd} />}
-          {componentNo === 3 && (
-            <QuestionComponent
-              speedMathGameId={speedMathGameId}
-              identity={String(role_name)}
-              speedMathGameLevel={speedMathGameLevel}
-              liveClassId={liveClassId}
-              userId={userId}
-              playMode={playMode}
-              onGameTimerEnd={onGameTimerEnd}
-              startQuestionTimer={startQuestionTimer}
-            />
-          )}
+          {componentNo === 3 && questionComponent()}
           {componentNo === 4 && <ResultPage />}
         </div>
       </div>

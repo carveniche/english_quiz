@@ -18,6 +18,7 @@ import {
   addMuteAllParticipant,
   addVideoPlayState,
   addSpeedMathGameStartDetails,
+  addSpeedMathScoreOfAllParticipant,
 } from "../../redux/features/liveClassDetails";
 import {
   FLAGGEDQUESTIONKEY,
@@ -138,6 +139,18 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             speedMathGameId: parseMessage?.value?.speedMathGameId,
             speedMathGameLevel: parseMessage?.value?.speedMathGameLevel,
             speedMathPlayMode: parseMessage?.value?.speedMathPlayMode,
+          })
+        );
+      } else if (
+        parseMessage?.value?.datatrackName ===
+        "updateSpeedMathScoreToOtherParticipant"
+      ) {
+        dispatch(
+          addSpeedMathScoreOfAllParticipant({
+            identity: parseMessage?.value?.identity,
+            userId: parseMessage?.value?.userId,
+            currentUserScoreSpeedMath:
+              parseMessage?.value?.currentUserScoreSpeedMath,
           })
         );
       } else if (
