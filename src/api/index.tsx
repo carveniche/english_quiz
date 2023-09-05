@@ -138,3 +138,28 @@ export const startSpeedMathGame = async (
       play_with,
     },
   });
+
+export const storeGameResponse = async (
+  player_id: number,
+  game_id: number,
+  question_id: number,
+  correct: boolean,
+  answer: any
+) =>
+  axios.get(BaseUrl + "app_students/store_game_response", {
+    params: {
+      player_id,
+      game_id,
+      question_id,
+      correct,
+      answer,
+    },
+  });
+
+export const createSpeedMathGame = async (game_id: number, player_id: number) =>
+  axios.get(BaseUrl + "app_students/create_game_players", {
+    params: {
+      game_id,
+      player_id,
+    },
+  });

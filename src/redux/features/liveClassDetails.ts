@@ -28,6 +28,9 @@ interface liveClassDetailsTypes {
   muteAllParticipant: boolean | undefined;
   videoPlayState: boolean;
   remoteParticipantCount: number;
+  speedMathGameIdStudent: number;
+  speedMathGameLevel: number;
+  speedMathPlayMode: string;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -54,6 +57,9 @@ const initialState: liveClassDetailsTypes = {
   muteAllParticipant: undefined,
   videoPlayState: false,
   remoteParticipantCount: 0,
+  speedMathGameIdStudent: 0,
+  speedMathGameLevel: 0,
+  speedMathPlayMode: "",
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -91,6 +97,14 @@ export const liveClassDetailsSlice = createSlice({
     addRemoteParticipantCount: (state, action) => {
       state.remoteParticipantCount = action.payload;
     },
+    addSpeedMathGameStartDetails: (state, action) => {
+      const { speedMathGameId, speedMathGameLevel, speedMathPlayMode } =
+        action.payload;
+
+      state.speedMathGameIdStudent = speedMathGameId;
+      state.speedMathGameLevel = speedMathGameLevel;
+      state.speedMathPlayMode = speedMathPlayMode;
+    },
   },
 });
 
@@ -104,6 +118,7 @@ export const {
   addMuteAllParticipant,
   addVideoPlayState,
   addRemoteParticipantCount,
+  addSpeedMathGameStartDetails,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

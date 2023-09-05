@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import "./QuestionTimer.css";
 interface QuestionTimerProps {
   duration: number;
+  questionTimerEndedCallback: () => void;
 }
 
-const QuestionTimer = ({ duration }: QuestionTimerProps) => {
+const QuestionTimer = ({
+  duration,
+  questionTimerEndedCallback,
+}: QuestionTimerProps) => {
   const [timeLeft, setTimeLeft] = useState(duration);
 
   useEffect(() => {
@@ -14,6 +18,8 @@ const QuestionTimer = ({ duration }: QuestionTimerProps) => {
       }, 1000);
 
       return () => clearInterval(interval);
+    } else {
+      questionTimerEndedCallback();
     }
   }, [timeLeft]);
 

@@ -6,17 +6,16 @@ import QuestionTimer from "./QuestionTimer";
 interface HeaderBarProps {
   speedMathGameLevel: number;
   playMode: string;
+  startQuestionTimer: boolean;
+  questionTimerEndedCallback: () => void;
 }
 
 export default function HeaderBar({
   speedMathGameLevel,
   playMode,
+  startQuestionTimer,
+  questionTimerEndedCallback,
 }: HeaderBarProps) {
-  console.log("speedMathGameLevel", speedMathGameLevel);
-  //Get level from redux
-  //Get Play Mode with Redux
-  //Start timer when game starts
-
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row w-full h-full justify-around items-center p-2">
@@ -50,7 +49,12 @@ export default function HeaderBar({
         </div>
       </div>
       <div className="flex flex-row w-full h-full justify-center">
-        Question Timer {/* <QuestionTimer duration={100} /> */}
+        {startQuestionTimer && (
+          <QuestionTimer
+            duration={60}
+            questionTimerEndedCallback={questionTimerEndedCallback}
+          />
+        )}
       </div>
       <div className="flex flex-row w-full h-full justify-end ">
         <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />

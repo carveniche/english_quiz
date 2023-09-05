@@ -17,6 +17,7 @@ import {
   addCurrentSelectedScreen,
   addMuteAllParticipant,
   addVideoPlayState,
+  addSpeedMathGameStartDetails,
 } from "../../redux/features/liveClassDetails";
 import {
   FLAGGEDQUESTIONKEY,
@@ -129,6 +130,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             icon: parseMessage.icon,
             name: parseMessage.name,
             extraParams: parseMessage.extraParams || {},
+          })
+        );
+      } else if (parseMessage?.value?.datatrackName === "SpeedMathGameStart") {
+        dispatch(
+          addSpeedMathGameStartDetails({
+            speedMathGameId: parseMessage?.value?.speedMathGameId,
+            speedMathGameLevel: parseMessage?.value?.speedMathGameLevel,
+            speedMathPlayMode: parseMessage?.value?.speedMathPlayMode,
           })
         );
       } else if (
