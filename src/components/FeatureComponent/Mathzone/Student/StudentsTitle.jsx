@@ -4,6 +4,8 @@ export default function StudentsTitle({
   currentQuestion,
   totalQuestion,
   obj,
+  isPrepostTest,
+  onClick,
 }) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
@@ -21,10 +23,22 @@ export default function StudentsTitle({
       </div>
 
       <div>
-        {extraParams?.conceptName} - {extraParams?.tagName} Level-
-        {extraParams?.level}
+        {extraParams?.conceptName} - {extraParams?.tagName}{" "}
+        {isPrepostTest ? "" : "Level-"}
+        {isPrepostTest ? "" : extraParams?.level}
       </div>
-      <div style={{ minWidth: 10, visibility: "hidden" }}>dddd</div>
+      {isPrepostTest ? (
+        <>
+          <div
+            onClick={onClick}
+            className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2"
+          >
+            Skip
+          </div>
+        </>
+      ) : (
+        <div style={{ minWidth: 10, visibility: "hidden" }}>dddd</div>
+      )}
     </div>
   );
 }

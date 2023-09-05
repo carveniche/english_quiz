@@ -8,7 +8,11 @@ import {
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { ViewStatusContext } from "../Mathzone/mathzone";
-import { handleUpdateNextQuestion, startPrePostTest } from "../../../api";
+import {
+  handleUpdateNextPrePostQuestion,
+  handleUpdateNextQuestion,
+  startPrePostTest,
+} from "../../../api";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import {
   allExcludedParticipants,
@@ -26,6 +30,8 @@ import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import QuizCompleted from "./QuizCompleted";
 import TeachersTitle from "./Teacher/TeachersTitle";
 export default function PrePostTestInner() {
+  const [showSkippedQuestionReviewModal, setShowSkippedQuestionReviewModal] =
+    useState(false);
   const [loading, setLoading] = useState(true);
   const [keys, setKeys] = useState(0);
   const [obj, setObj] = useState({});
@@ -42,6 +48,7 @@ export default function PrePostTestInner() {
   } = React.useContext(ViewStatusContext);
   const speakerViewParticipants = useSpeakerViewParticipants();
   const { room } = useVideoContext();
+  const lastCallBackRef = useRef(null);
   const localParticipant = room?.localParticipant?.identity;
   const remoteParticipant = speakerViewParticipants.filter((item) => {
     return !allExcludedParticipants.includes(item.identity);
@@ -108,29 +115,16 @@ export default function PrePostTestInner() {
       handleDataTrack({ data }, identity);
     }
   };
-  const handleNextQuestion = async (
-    live_class_practice_id,
-    tag_id,
-    level,
-    live_class_id,
-    identity
-  ) => {
-    let isAuthorizedUser = isTutorTechBoth({ identity });
-    if (!isAuthorizedUser) {
-      return;
-    }
+  const handleNextQuestion = async (skipped_review, pre_post_test_id) => {
     setLoading(true);
-    let { data } = await handleUpdateNextQuestion({
-      live_class_practice_id,
-      tag_id,
-      level,
-      live_class_id,
+    let { data } = await handleUpdateNextPrePostQuestion({
+      skipped_review,
+      pre_post_test_id,
     });
     if (data?.status) {
-      console.log(data);
       setObj({ ...data });
       setLoading(false);
-      handleDataTrack({ data }, identity);
+      // handleDataTrack({ data }, identity);
       setKey(key + 1);
     }
   };
@@ -151,7 +145,6 @@ export default function PrePostTestInner() {
     );
   }, []);
   React.useEffect(() => {
-    console.log(mathzone);
     if (localParticipant !== "tutor") checkStudentData(mathzone);
   }, [JSON.stringify(mathzone)]);
   const checkStudentData = () => {
@@ -187,8 +180,56 @@ export default function PrePostTestInner() {
       }, 500);
   }, [obj?.quiz_completed, loading]);
 
+  const handleCheckLastQuestionBeforeSkipping = (
+    isUpdatedQuestion,
+    cb,
+    data
+  ) => {
+    if (isUpdatedQuestion) {
+      setObj({ ...data });
+      setKey(key + 1);
+      return;
+    }
+    if (
+      obj?.question_no == obj?.total &&
+      obj?.skipped_questions_present &&
+      obj?.questions_from != "skipped"
+    ) {
+      setShowSkippedQuestionReviewModal(true);
+      if (typeof cb === "function") lastCallBackRef.current = cb;
+    } else if (obj?.questions_from == "skipped") {
+      console.log("not same but questions_from is skipped");
+      handleNextQuestion(true, practiceId);
+    } else {
+      console.log("not same");
+      if (typeof cb === "function") {
+        cb(false);
+      } else handleNextQuestion(false, practiceId);
+    }
+  };
+  const handleCheckSkippedQuestion = async (value) => {
+    let skipped_review;
+    if (value === "true") {
+      skipped_review = true;
+    } else {
+      skipped_review = false;
+    }
+    if (typeof lastCallBackRef.current === "function") {
+      lastCallBackRef.current(skipped_review);
+      lastCallBackRef.current = null;
+    } else handleNextQuestion(skipped_review, practiceId);
+    setShowSkippedQuestionReviewModal(false);
+  };
   return (
     <>
+      {showSkippedQuestionReviewModal &&
+        (() => {
+          let y = confirm("Do you want to visit skipped question?");
+
+          handleCheckSkippedQuestion(y ? "true" : "false");
+
+          return "";
+        })()}
       {!loading ? (
         <div
           className={`${styles.mainPage} h-full w-full m-0`}
@@ -215,15 +256,7 @@ export default function PrePostTestInner() {
               <TeachersTitle
                 remoteParticipant={remoteParticipant}
                 isQuizCompleted={obj?.quiz_completed}
-                onClick={() =>
-                  handleNextQuestion(
-                    practiceId,
-                    tag,
-                    level,
-                    liveClassId,
-                    localParticipant
-                  )
-                }
+                onClick={() => handleCheckLastQuestionBeforeSkipping()}
                 currentQuestion={
                   obj?.quiz_completed
                     ? currentQuestionReview + 1
@@ -241,6 +274,8 @@ export default function PrePostTestInner() {
                 currentQuestion={obj?.question_no}
                 totalQuestion={obj?.total}
                 obj={obj}
+                isPrepostTest={true}
+                onClick={handleCheckLastQuestionBeforeSkipping}
               />
             )}
           </div>
@@ -277,7 +312,14 @@ export default function PrePostTestInner() {
                     <ViewQuestionAtMiddle />
                   </ValidationContextProvider>
                 ) : (
-                  <RenderingQuizPage obj={obj} identity={localParticipant} />
+                  <RenderingQuizPage
+                    obj={obj}
+                    identity={localParticipant}
+                    isPrePostTest={true}
+                    handleCheckLastQuestionBeforeSkipping={
+                      handleCheckLastQuestionBeforeSkipping
+                    }
+                  />
                 )}
               </QuizWhitePage>
             </div>

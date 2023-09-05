@@ -92,12 +92,7 @@ export default function TeachersTitle({
           ) : (
             ""
           )}
-          <div
-            onClick={onClick}
-            className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2"
-          >
-            Next
-          </div>
+          <div style={{ minWidth: 10, visibility: "hidden" }}>dddd</div>
         </div>
       ) : (
         <div style={{ minWidth: 10, visibility: "hidden" }}>dddddd</div>

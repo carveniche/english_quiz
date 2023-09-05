@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import CorrectAnswerAnimation from "../../LottieTransformation/CorrectAnswerAnimation";
 import GameLoseEmotionMathZone from "../../LottieTransformation/GameLoseEmotionMathZone";
-import { ViewStatusContext } from "./Mathzone";
+import { ViewStatusContext } from "./mathzone";
 import { ValidationContext } from "./MainOnlineQuiz/MainOnlineQuizPage";
 import styles from "./component/OnlineQuiz.module.css";
 import styles2 from "./outerPage.module.css";

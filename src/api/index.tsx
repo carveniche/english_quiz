@@ -141,3 +141,29 @@ export const viewPrePostTestQuestionResponse = (params: object) => {
     params,
   });
 };
+
+export const saveStudentPrePostTestResponse = async (
+  params: String,
+  data: Object
+) => {
+  let config = {
+    method: "post",
+    url: `${BaseUrl}app_teachers/save_pre_post_test${params}`,
+    data: data,
+  };
+  return axios(config);
+};
+
+export const handleUpdateNextPrePostQuestion = (params: {
+  live_class_id: Number;
+  sub_concept_id: Number;
+  tag_id: Number;
+  level: Number;
+}) => {
+  return axios.get(
+    BaseUrl + "app_teachers/skip_pre_post_test?pre_post_test_id",
+    {
+      params: { ...params },
+    }
+  );
+};
