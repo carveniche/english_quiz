@@ -5,8 +5,8 @@ import defaultRouter from "../../Router/defaultRouter";
 import { RoomType } from "../../types";
 
 interface liveClassDetailsTypes {
-  userId: Number;
-  liveClassId: Number;
+  userId: number;
+  liveClassId: number;
   currentSelectedScreen: string;
   userIdentity: string;
   userName: string;

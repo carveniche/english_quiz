@@ -125,3 +125,16 @@ export const markAsResolvedHomeWorkQuestion = (
   return axios(`${BaseUrl}app_teachers/mark_as_homework_question_resolved?question_id=${question_id}&user_id=${userId}&live_class_id=${liveClassID}&homework_id=${homework_id}
   `);
 };
+
+export const startSpeedMathGame = async (
+  level_id: any,
+  live_class_id: number,
+  play_with: string
+) =>
+  axios.get(BaseUrl + "app_students/start_game", {
+    params: {
+      level_id,
+      live_class_id,
+      play_with,
+    },
+  });

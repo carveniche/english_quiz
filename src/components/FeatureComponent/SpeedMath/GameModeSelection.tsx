@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import SpeedMathSpatio from "./assets/images/Spatio.svg";
+import StartSpeedMath from "./assets/images/SM-Lets-go.svg";
 
 import "./GameModeSelection.css";
 
 interface GameModeSelectionProps {
-  startSpeedMath: React.ChangeEventHandler<HTMLInputElement>;
+  startSpeedMath: () => void;
   selectedPlayMode: React.ChangeEventHandler<HTMLInputElement>;
   remoteParticipantCount: number;
   playMode: string;
@@ -90,7 +91,11 @@ export default function GameModeSelection({
                   return <div key={item.id}>{item.name}</div>;
                 })}
           </div>
-          <div className="h-2/5 w-full justify-center"></div>
+          <div className="flex h-2/5 w-full justify-center items-center">
+            <button onClick={startSpeedMath}>
+              <img src={StartSpeedMath} alt="Let's go" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

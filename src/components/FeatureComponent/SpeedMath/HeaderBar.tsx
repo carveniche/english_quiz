@@ -3,7 +3,16 @@ import SpeedMathLevelNoBg from "./assets/images/SM-Level-Yellow.svg";
 import SpeedMathSpatio from "./assets/images/Spatio.svg";
 import QuestionTimer from "./QuestionTimer";
 
-export default function HeaderBar() {
+interface HeaderBarProps {
+  speedMathGameLevel: number;
+  playMode: string;
+}
+
+export default function HeaderBar({
+  speedMathGameLevel,
+  playMode,
+}: HeaderBarProps) {
+  console.log("speedMathGameLevel", speedMathGameLevel);
   //Get level from redux
   //Get Play Mode with Redux
   //Start timer when game starts
@@ -20,7 +29,7 @@ export default function HeaderBar() {
           <div className="absolute inline-block left-[30px]">
             <img className="max-w-full block" src={SpeedMathLevelNoBg} />
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white p-4 font-bold">
-              1
+              {speedMathGameLevel}
             </div>
           </div>
           <div>
@@ -36,7 +45,7 @@ export default function HeaderBar() {
           className="w-full h-16 flex justify-center items-center bg-center bg-cover rounded-full"
         >
           <h1 className="text-center text-white m-0 text-base overflow-hidden overflow-ellipsis">
-            Play Mode - With Computer
+            Play Mode - With {playMode}
           </h1>
         </div>
       </div>
