@@ -12,9 +12,12 @@ import { isTutor } from "../../../utils/participantIdentity";
 import QuestionComponent from "./QuestionComponent";
 import ResultPage from "./ResultPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { useDispatch } from "react-redux";
+import { addSpeedMathGameStartDetails } from "../../../redux/features/liveClassDetails";
 
 export default function SpeedMath() {
   const { room } = useVideoContext();
+  const dispatch = useDispatch();
   const [playMode, setPlayMode] = useState("computer");
   const [speedMathGameId, setSpeedMathGameId] = useState(0);
   const [componentNo, setComponentNo] = useState(1);
@@ -44,6 +47,24 @@ export default function SpeedMath() {
       setComponentNo(2);
     }
   }, [speedMathGameIdStudent]);
+
+  useEffect(() => {
+    console.log("speedMathGameLevel changes in redux", speedMathGameLevel);
+    setComponentNo(1);
+    setStartQuestionTimer(false);
+  }, [speedMathGameLevel]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        addSpeedMathGameStartDetails({
+          speedMathGameId: 0,
+        })
+      );
+
+      console.log("Component Unmount SpeedMath");
+    };
+  }, []);
 
   const startSpeedMath = () => {
     if (playMode === "") {
