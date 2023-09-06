@@ -51,7 +51,7 @@ export default function HeaderBar({
       <div className="flex flex-row w-full h-full justify-center">
         {startQuestionTimer && (
           <QuestionTimer
-            duration={600}
+            duration={30}
             questionTimerEndedCallback={questionTimerEndedCallback}
           />
         )}

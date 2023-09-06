@@ -3,6 +3,7 @@ import { storeGameResponse, createSpeedMathGame } from "../../../api/index";
 import CorrectMark from "./assets/images/Correct.svg";
 import ComputerPlay from "./ComputerPlay";
 import { Room } from "twilio-video";
+import { isStudentName } from "../../../utils/participantIdentity";
 interface QuestionComponentProps {
   room: Room | null;
   speedMathGameId: number;
@@ -18,6 +19,7 @@ interface QuestionComponentProps {
     userScore: number,
     gameId: number
   ) => void;
+  speedMathScoreofAllParticipant: any;
 }
 
 const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
@@ -32,6 +34,7 @@ export default function QuestionComponent({
   playMode,
   onGameTimerEnd,
   startQuestionTimer,
+  speedMathScoreofAllParticipant,
 }: QuestionComponentProps) {
   const [gameQuestionsData, setGameQuestionsData] = useState([]);
   const [questionCount, setQuestionCount] = useState<number>(0);
@@ -148,10 +151,6 @@ export default function QuestionComponent({
     status: boolean,
     userAnswer: any
   ) => {
-    console.log(
-      "userId checking before saving question data to server",
-      userId
-    );
     storeGameResponse(userId, speedMathGameId, questionId, status, userAnswer);
   };
 
@@ -212,6 +211,36 @@ export default function QuestionComponent({
               }}
             ></div>
           </div>
+          {speedMathScoreofAllParticipant.length > 0 &&
+            speedMathScoreofAllParticipant.map((studentData: any) => {
+              return (
+                <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
+                  <div>
+                    <img src={CorrectMark} alt="Correct" />
+                  </div>
+                  <div>
+                    <p className="text-speedMathTextColor font-bold text-xl">
+                      {studentData.identity === "tutor" ? (
+                        <>{studentData.identity}</>
+                      ) : (
+                        <>{isStudentName({ identity: studentData.identity })}</>
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-speedMathTextColor font-bold text-2xl">
+                      {studentData.currentUserScoreSpeedMath}
+                    </p>
+                  </div>
+                  <div
+                    className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
+                    style={{
+                      width: completionPercentage, // Set the width as a percentage
+                    }}
+                  ></div>
+                </div>
+              );
+            })}
           {playMode === "computer" && (
             <ComputerPlay computerScore={computerScore} />
           )}

@@ -20,7 +20,7 @@ interface videoCallTokenDataStructure {
   status: boolean;
   student_ids: string[];
   students: string[];
-  teacher_id: Number;
+  teacher_id: number;
   teacher_name: string;
   time_zone: string;
   token: string;

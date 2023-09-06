@@ -23,6 +23,9 @@ export default function SpeedMath() {
   const [speedMathGameId, setSpeedMathGameId] = useState(0);
   const [componentNo, setComponentNo] = useState(1);
   const [startQuestionTimer, setStartQuestionTimer] = useState(false);
+  const [userAnswerData, setUserAnswerData] = useState([]);
+  const [gameComputerScore, setGameComputerScore] = useState(0);
+  const [gameUserScore, setGameUserScore] = useState(0);
 
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
@@ -30,8 +33,13 @@ export default function SpeedMath() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { liveClassId, userId, speedMathGameIdStudent, speedMathPlayMode } =
-    useSelector((state: RootState) => state.liveClassDetails);
+  const {
+    liveClassId,
+    userId,
+    speedMathGameIdStudent,
+    speedMathPlayMode,
+    speedMathScoreofAllParticipant,
+  } = useSelector((state: RootState) => state.liveClassDetails);
 
   const { extraParams } = activeTabArray[currentSelectedIndex];
 
@@ -124,6 +132,10 @@ export default function SpeedMath() {
     userScore: number,
     speedMathGameId: number
   ) => {
+    setUserAnswerData(userAnswerData);
+    setGameComputerScore(computerScore);
+    setSpeedMathGameId(speedMathGameId);
+    setGameUserScore(userScore);
     setComponentNo(4);
   };
 
@@ -132,8 +144,6 @@ export default function SpeedMath() {
   };
 
   const questionComponent = () => {
-    console.log("playMode", playMode);
-    console.log("isTutor", isTutor({ identity: String(role_name) }));
     if (isTutor({ identity: String(role_name) })) {
       if (playMode === "teacher") {
         return (
@@ -147,10 +157,16 @@ export default function SpeedMath() {
             playMode={playMode}
             onGameTimerEnd={onGameTimerEnd}
             startQuestionTimer={startQuestionTimer}
+            speedMathScoreofAllParticipant={speedMathScoreofAllParticipant}
           />
         );
       } else {
-        return <GameInProgressTeacher playMode={playMode} />;
+        return (
+          <GameInProgressTeacher
+            playMode={playMode}
+            speedMathScoreofAllParticipant={speedMathScoreofAllParticipant}
+          />
+        );
       }
     } else {
       return (
@@ -164,6 +180,7 @@ export default function SpeedMath() {
           playMode={playMode}
           onGameTimerEnd={onGameTimerEnd}
           startQuestionTimer={startQuestionTimer}
+          speedMathScoreofAllParticipant={speedMathScoreofAllParticipant}
         />
       );
     }
@@ -206,7 +223,16 @@ export default function SpeedMath() {
           )}
           {componentNo === 2 && <GameStartingTimer onTimerEnd={onTimerEnd} />}
           {componentNo === 3 && questionComponent()}
-          {componentNo === 4 && <ResultPage />}
+          {componentNo === 4 && (
+            <ResultPage
+              userAnswerData={userAnswerData}
+              computerScore={gameComputerScore}
+              identity={String(role_name)}
+              liveClassId={liveClassId}
+              playerId={userId}
+              gameId={speedMathGameId}
+            />
+          )}
         </div>
       </div>
     </div>

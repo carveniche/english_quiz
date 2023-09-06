@@ -113,10 +113,7 @@ export const liveClassDetailsSlice = createSlice({
 
       let prevArr = state.speedMathScoreofAllParticipant;
 
-      console.log("prevArr.length", prevArr.length);
-
       if (prevArr.length === 0) {
-        console.log("h1");
         prevArr.push({
           userId,
           identity,
