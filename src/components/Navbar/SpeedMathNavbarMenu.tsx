@@ -51,8 +51,9 @@ export default function SpeedMathNavbarMenu({
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
               elementPosition * calcWidth
             }px)`,
-            overflowX: "hidden",
-            overflowY: "auto",
+            // overflowX: "hidden",
+            // overflowY: "auto",
+            zIndex: 99,
           }}
         >
           {speedMathLevels.map((levels, index) => {

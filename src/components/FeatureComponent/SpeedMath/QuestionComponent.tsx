@@ -191,7 +191,7 @@ export default function QuestionComponent({
         </div>
       </div>
       <div className="flex w-full h-full justify-center items-center">
-        <div className="flex flex-col w-[90%] h-full justify-center">
+        <div className="flex flex-col w-[90%] h-full items-center">
           <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
             <div>
               <img src={CorrectMark} alt="Correct" />

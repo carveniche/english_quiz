@@ -12,6 +12,7 @@ interface ResultPageProps {
   liveClassId: number;
   playerId: number;
   gameId: number;
+  playMode: string;
 }
 
 export default function ResultPage({
@@ -21,6 +22,7 @@ export default function ResultPage({
   liveClassId,
   playerId,
   gameId,
+  playMode,
 }: ResultPageProps) {
   const [counter, setCounter] = useState(10);
   const [gameResultData, setGameResultData] = useState(null);
@@ -61,7 +63,7 @@ export default function ResultPage({
     return (
       <div className="flex flex-col justify-start items-start border border-green-200 rounded">
         <>
-          {gameResultData.response_data.map((item) => {
+          {gameResultData.response_data.map((item: any) => {
             return (
               <>
                 <div className="flex flex-row w-full h-full mt-5">
@@ -113,15 +115,44 @@ export default function ResultPage({
               </>
             );
           })}
+
+          {playMode === "computer" && (
+            <div className="flex flex-row w-full h-full mt-5">
+              <div className="flex w-2/3 h-[10%] justify-between items-center  p-1">
+                <div className="flex w-[60%] flex-wrap">
+                  <p className="text-speedMathTextColor font-bold text-lg">
+                    Computer Score
+                  </p>
+                </div>
+                <div className="flex w-[20%] flex-wrap justify-center">
+                  <p className="text-speedMathTextColor font-bold text-lg">-</p>
+                </div>
+                <div className="flex w-[20%] flex-wrap justify-center">
+                  <p className="text-speedMathTextColor font-bold text-lg">
+                    {gameResultData?.computer_score || 0}
+                  </p>
+                </div>
+              </div>
+              <div className="flex w-1/3 h-[10%] justify-center items-center m-auto  p-1">
+                Computer Animation
+              </div>
+            </div>
+          )}
         </>
       </div>
     );
   };
 
+  const scoreBoard = () => {
+    return <div></div>;
+  };
+
   const resultView = () => {
     return (
       <div className="flex flex-row w-full h-full justify-center items-center">
-        <div className="flex w-4/5 h-full justify-center items-center">1</div>
+        <div className="flex w-4/5 h-[90%] justify-center items-center border border-red-500 overflow-auto">
+          {gameResultData !== null && scoreBoard()}
+        </div>
         <div className="flex w-1/5 h-full items-start mt-10">
           {gameResultData !== null && showParticipantsScore()}
         </div>

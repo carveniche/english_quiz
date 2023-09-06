@@ -231,6 +231,7 @@ export default function SpeedMath() {
               liveClassId={liveClassId}
               playerId={userId}
               gameId={speedMathGameId}
+              playMode={playMode}
             />
           )}
         </div>

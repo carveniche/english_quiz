@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import SpeedMathSpatio from "./assets/images/Spatio.svg";
 import StartSpeedMath from "./assets/images/SM-Lets-go.svg";
 
-import "./GameModeSelection.css";
-
 interface GameModeSelectionProps {
   startSpeedMath: () => void;
   selectedPlayMode: React.ChangeEventHandler<HTMLInputElement>;
@@ -66,11 +64,11 @@ export default function GameModeSelection({
         </div>
         <div className="flex flex-col h-full w-full  justify-center bg-speedMathGameSelectionModeYelloBg border rounded">
           <div className="flex h-1/5 w-full justify-center mt-2">
-            <p className="text-speedMathTextColor font-semibold">
+            <p className="text-speedMathTextColor font-semibold text-lg">
               Select Play Mode for Kids
             </p>
           </div>
-          <div className="flex flex-row h-3/5 w-full justify-center items-center">
+          <div className="flex flex-row gap-5 h-3/5 w-full justify-center items-center">
             {gameModeOfPlay === "SinglePlayer"
               ? singleUserModeOfPlay.map((obj) => {
                   return (
@@ -83,7 +81,12 @@ export default function GameModeSelection({
                         onChange={selectedPlayMode}
                         value={obj.value}
                       />
-                      <label htmlFor={obj.id}>{obj.label}</label>
+                      <label
+                        className="text-speedMathTextColor text-xl"
+                        htmlFor={obj.id}
+                      >
+                        {obj.label}
+                      </label>
                     </div>
                   );
                 })
