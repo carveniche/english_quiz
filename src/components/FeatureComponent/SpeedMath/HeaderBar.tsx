@@ -2,12 +2,14 @@ import SpeedMathLevelLogo from "./assets/images/SM-Level.svg";
 import SpeedMathLevelNoBg from "./assets/images/SM-Level-Yellow.svg";
 import SpeedMathSpatio from "./assets/images/Spatio.svg";
 import QuestionTimer from "./QuestionTimer";
+import SpeedMathSummaryBoard from "./assets/images/Speedmath-summary.svg";
 
 interface HeaderBarProps {
   speedMathGameLevel: number;
   playMode: string;
   startQuestionTimer: boolean;
   questionTimerEndedCallback: () => void;
+  showSpeedMathSummaryBoard: boolean;
 }
 
 export default function HeaderBar({
@@ -15,6 +17,7 @@ export default function HeaderBar({
   playMode,
   startQuestionTimer,
   questionTimerEndedCallback,
+  showSpeedMathSummaryBoard,
 }: HeaderBarProps) {
   return (
     <div className="flex flex-row justify-between items-center">
@@ -55,6 +58,7 @@ export default function HeaderBar({
             questionTimerEndedCallback={questionTimerEndedCallback}
           />
         )}
+        {showSpeedMathSummaryBoard && <img src={SpeedMathSummaryBoard} />}
       </div>
       <div className="flex flex-row w-full h-full justify-end ">
         <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />

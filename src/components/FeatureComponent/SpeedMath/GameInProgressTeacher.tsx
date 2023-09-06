@@ -6,6 +6,8 @@ import { isStudentName } from "../../../utils/participantIdentity";
 interface GameInProgressTeacherProps {
   playMode: string;
   speedMathScoreofAllParticipant: any;
+  startQuestionTimer: boolean;
+  onGameInProgressTimerEnd: (computerScore: number) => void;
 }
 
 const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
@@ -13,6 +15,8 @@ const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
 export default function GameInProgressTeacher({
   playMode,
   speedMathScoreofAllParticipant,
+  startQuestionTimer,
+  onGameInProgressTimerEnd,
 }: GameInProgressTeacherProps) {
   const [completionPercentage, setCompletionPercentage] = useState("0%");
   const [computerScore, setComputerScore] = useState(0);
@@ -24,6 +28,12 @@ export default function GameInProgressTeacher({
       }, level_1_seconds[getRandomIndex()] * 1000);
     }
   }, [computerScore]);
+
+  useEffect(() => {
+    if (!startQuestionTimer) {
+      onGameInProgressTimerEnd(computerScore);
+    }
+  }, [startQuestionTimer]);
 
   const getRandomIndex = () => {
     var randomItemIndex =

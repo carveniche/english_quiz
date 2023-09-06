@@ -27,8 +27,7 @@ export default function ResultPage({
   const [counter, setCounter] = useState(10);
   const [gameResultData, setGameResultData] = useState(null);
   const [studentScore, setStudentScore] = useState([]);
-
-  console.log("gameResultData", gameResultData);
+  const [computerWinnerStatus, setComputerWinnerStatus] = useState(false);
 
   useEffect(() => {
     counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
@@ -36,6 +35,25 @@ export default function ResultPage({
       getSpeedMathResult();
     }
   }, [counter]);
+
+  useEffect(() => {
+    if (gameResultData !== null && playMode == "computer") {
+      findWhoWinsComputerOrStudent();
+    }
+  }, [studentScore]);
+
+  function findWhoWinsComputerOrStudent() {
+    let finalStudentScore = studentScore;
+    for (let i = 0; i < finalStudentScore.length; i++) {
+      if (finalStudentScore[i].game_result === "winner") {
+        setComputerWinnerStatus(false);
+      } else if (finalStudentScore[i].game_result === "tied") {
+        setComputerWinnerStatus(true);
+      } else {
+        setComputerWinnerStatus(true);
+      }
+    }
+  }
 
   function getSpeedMathResult() {
     getGameResult(gameId, liveClassId, playerId, computerScore).then((res) => {
@@ -134,7 +152,23 @@ export default function ResultPage({
                 </div>
               </div>
               <div className="flex w-1/3 h-[10%] justify-center items-center m-auto  p-1">
-                Computer Animation
+                {computerWinnerStatus ? (
+                  <img
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    src={WinnerIcon}
+                  ></img>
+                ) : (
+                  <img
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                    }}
+                    src={LosserIcon}
+                  ></img>
+                )}
               </div>
             </div>
           )}
@@ -194,13 +228,13 @@ export default function ResultPage({
                       <div key={res.id}>
                         {res.player_question_data[index] !== undefined ? (
                           res.player_question_data[index].correct ? (
-                            <div className="flex w-[30px] h-[30px] justify-center items-center bg-green-400 rounded-full p-1">
+                            <div className="flex min-w-[30px] min-h-[30px] w-auto h-auto justify-center items-center bg-green-400 rounded-full p-1">
                               <p className="text-speedMathTextColor font-bold text-xl text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>
                             </div>
                           ) : (
-                            <div className="flex w-[30px] h-[30px] justify-center items-center bg-red-400 rounded-full p-1">
+                            <div className="flex min-w-[30px] min-h-[30px] w-auto h-auto justify-center items-center bg-red-400 rounded-full p-1">
                               <p className="text-speedMathTextColor font-bold text-xl text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>

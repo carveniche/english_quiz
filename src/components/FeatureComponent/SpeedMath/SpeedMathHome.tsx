@@ -26,6 +26,8 @@ export default function SpeedMath() {
   const [userAnswerData, setUserAnswerData] = useState([]);
   const [gameComputerScore, setGameComputerScore] = useState(0);
   const [gameUserScore, setGameUserScore] = useState(0);
+  const [showSpeedMathSummaryBoard, setShowSpeedMathSummaryBoard] =
+    useState(false);
 
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
@@ -58,6 +60,7 @@ export default function SpeedMath() {
   }, [speedMathGameIdStudent]);
 
   useEffect(() => {
+    console.log("SpeedMathGameLevel", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
   }, [speedMathGameLevel]);
@@ -137,6 +140,14 @@ export default function SpeedMath() {
     setSpeedMathGameId(speedMathGameId);
     setGameUserScore(userScore);
     setComponentNo(4);
+    setShowSpeedMathSummaryBoard(true);
+  };
+
+  const onGameInProgressTimerEnd = (computerScore: number) => {
+    console.log("computerScore", computerScore);
+    setGameComputerScore(computerScore);
+    setShowSpeedMathSummaryBoard(true);
+    setComponentNo(4);
   };
 
   const questionTimerEndedCallback = () => {
@@ -165,6 +176,8 @@ export default function SpeedMath() {
           <GameInProgressTeacher
             playMode={playMode}
             speedMathScoreofAllParticipant={speedMathScoreofAllParticipant}
+            startQuestionTimer={startQuestionTimer}
+            onGameInProgressTimerEnd={onGameInProgressTimerEnd}
           />
         );
       }
@@ -208,6 +221,7 @@ export default function SpeedMath() {
             speedMathGameLevel={speedMathGameLevel}
             startQuestionTimer={startQuestionTimer}
             questionTimerEndedCallback={questionTimerEndedCallback}
+            showSpeedMathSummaryBoard={showSpeedMathSummaryBoard}
           />
         </div>
         <div className="h-full w-full justify-center">
