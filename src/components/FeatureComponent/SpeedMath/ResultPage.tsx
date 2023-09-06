@@ -61,7 +61,7 @@ export default function ResultPage({
 
   const showParticipantsScore = () => {
     return (
-      <div className="flex flex-col justify-start items-start border border-green-200 rounded">
+      <div className="flex flex-col justify-start items-start">
         <>
           {gameResultData.response_data.map((item: any) => {
             return (
@@ -144,13 +144,89 @@ export default function ResultPage({
   };
 
   const scoreBoard = () => {
-    return <div></div>;
+    return (
+      <div className="flex flex-col w-full h-full items-start gap-2">
+        <div className="flex flex-row w-[98%] h-[10%] justify-center items-start  rounded-full bg-white">
+          <div className="flex w-1/2 h-full justify-around items-center  p-5">
+            <div className="flex w-1/2 justify-center items-center">
+              <p className="text-speedMathTextColor font-bold text-xl">
+                Questions
+              </p>
+            </div>
+            <div className="flex w-1/2 justify-center items-center">
+              <p className="text-speedMathTextColor font-bold text-xl">
+                Corrent Answer
+              </p>
+            </div>
+          </div>
+          <div className="flex w-1/2 h-full justify-around items-center  p-5">
+            {gameResultData.response_data.map((student) => {
+              return (
+                <div className="flex w-1/2 justify-center items-center">
+                  <p className="text-speedMathTextColor font-bold text-xl">
+                    {student.name}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {gameResultData.question_data.map((obj, index) => {
+          return (
+            <>
+              <div className="flex flex-row w-[98%] h-[10%] justify-center items-start border rounded-full bg-speedMathGameSelectionModeYelloBg">
+                <div className="flex w-1/2 h-full justify-around items-center  p-5">
+                  <div className="flex w-1/2 justify-center items-center">
+                    <p
+                      dangerouslySetInnerHTML={{ __html: obj.question }}
+                      className="text-speedMathTextColor font-bold text-xl"
+                    />
+                  </div>
+                  <div className="flex w-1/2 justify-center items-center ">
+                    <p className="text-speedMathTextColor font-bold text-xl">
+                      {obj.answer}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-1/2 h-full justify-around items-center  p-5">
+                  {gameResultData?.response_data.map((res) => {
+                    return (
+                      <div key={res.id}>
+                        {res.player_question_data[index] !== undefined ? (
+                          res.player_question_data[index].correct ? (
+                            <div className="flex w-[30px] h-[30px] justify-center items-center bg-green-400 rounded-full p-1">
+                              <p className="text-speedMathTextColor font-bold text-xl text-center">
+                                {res.player_question_data[index].player_answer}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex w-[30px] h-[30px] justify-center items-center bg-red-400 rounded-full p-1">
+                              <p className="text-speedMathTextColor font-bold text-xl text-center">
+                                {res.player_question_data[index].player_answer}
+                              </p>
+                            </div>
+                          )
+                        ) : (
+                          <p className="text-speedMathTextColor font-bold text-xl">
+                            Na
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          );
+        })}
+      </div>
+    );
   };
 
   const resultView = () => {
     return (
-      <div className="flex flex-row w-full h-full justify-center items-center">
-        <div className="flex w-4/5 h-[90%] justify-center items-center border border-red-500 overflow-auto">
+      <div className="flex flex-row w-full h-full justify-center items-center ">
+        <div className="flex w-4/5 h-[95%] max-h-[400px] justify-center items-center overflow-auto mt-5">
           {gameResultData !== null && scoreBoard()}
         </div>
         <div className="flex w-1/5 h-full items-start mt-10">
