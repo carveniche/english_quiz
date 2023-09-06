@@ -11,11 +11,12 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { ROUTERKEYCONST } from "../../constants";
+import { CICO, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import { useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
+import CicoNavbar from "./CicoNavbar";
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
@@ -119,6 +120,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                     allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
                     key={`mathzone-${mathzoneKeys}`}
+                    handleClick={handleClick}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
+            ) : item.key === CICO.key ? (
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+                key={index}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <CicoNavbar
+                    allConceptsDetails={allConceptsDetails}
+                    item={{ ...item, extraParams: {} }}
+                    key={`cico-${mathzoneKeys}`}
                     handleClick={handleClick}
                     queryParams={queryParams}
                     calcWidth={44.01}

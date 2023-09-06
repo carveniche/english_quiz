@@ -167,3 +167,32 @@ export const handleUpdateNextPrePostQuestion = (params: {
     }
   );
 };
+
+export const fetchCheckInData = (student_id: String, live_class_id: String) => {
+  return axios.get("http://localhost:5555/check-in");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const getStudentActivityResponse = (
+  student_id: string,
+  live_class_id: string
+) => {
+  return axios.get("http://localhost:5555/response-data");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_out_activity_responses`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};

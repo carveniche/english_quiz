@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MAXIMUMACTIVETAB, ROUTERKEYCONST } from "../../constants";
+import { CICO, MAXIMUMACTIVETAB, ROUTERKEYCONST } from "../../constants";
 import defaultRouter from "../../Router/defaultRouter";
 export interface ActiveTabParams {
   path: String;
@@ -11,7 +11,7 @@ export interface ActiveTabParams {
 export interface activeTabStateReducer {
   activeTabArray: ActiveTabParams[];
   currentSelectedRouter: String;
-  currentSelectedIndex: Number;
+  currentSelectedIndex: number;
   currentSelectedKey: String;
 }
 
@@ -59,7 +59,7 @@ const activeTabReducer = createSlice({
         if (activeTabArray[index].path !== action.payload.path) {
           activeTabArray[index] = action.payload;
         }
-      } else if (action.payload.key === ROUTERKEYCONST.mathvideolesson) {
+      } else if (action.payload.key === ROUTERKEYCONST.mathvideolesson||action.payload.key === CICO.key) {
         activeTabArray[index] = action.payload;
       }
     },

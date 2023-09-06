@@ -1,0 +1,84 @@
+.OuterContainer {
+  width: 108%;
+
+  margin-left: -5.4%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #ffdd63;
+}
+
+.OuterContainer > .shapeChallengeInnerContainer {
+  width: 94%;
+  background-color: white;
+  margin: 0 auto;
+  padding: 5px;
+  padding-bottom: 25px;
+  border-radius: 5px;
+  min-height: calc(100% - 56px);
+  height: 100%;
+  max-height: calc(100% - 56px);
+  overflow: hidden;
+}
+.OuterContainer > div {
+  width: 94%;
+  margin: 0 auto;
+  margin-bottom: 0.2rem;
+}
+.whiteboardContainerInstruction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: "Montserrat";
+  user-select: none;
+  margin: 1.2rem;
+}
+.whiteboardContainerInstruction .instructionHeading {
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  color: #233584;
+}
+
+.whiteboardContainerInstruction .contentPart {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-style: normal;
+  max-height: 85px;
+  overflow: auto;
+}
+.OuterContainer > .shapeChallengeInnerContainer2 {
+  width: 94%;
+  background-color: white;
+  margin: 0 auto;
+  padding: 5px;
+  padding-bottom: 25px;
+  border-radius: 5px;
+
+  min-height: calc(100% - 56px);
+  height: 100%;
+  max-height: calc(100% - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.svgInitial svg {
+  position: "initial";
+  width: auto;
+  height: auto;
+  -webkit-transform: rotateY(0deg) rotateZ(0deg);
+  transform: rotateY(0deg) rotateZ(0deg);
+}
+.LoadingModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-family: "Montserrat";
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}

@@ -1,0 +1,6 @@
+.ledScreen {
+  height: 58px;
+}
+.ledScreen > img {
+  height: 106.08333333333px;
+}

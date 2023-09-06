@@ -5,10 +5,11 @@ import Mathzone from "../components/FeatureComponent/Mathzone/mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
 import MathVideoLesson from "../components/FeatureComponent/MathVideoLesson/MathVideoLesson";
 import React from "react";
-import { ROUTERKEYCONST } from "../constants";
+import { CICO, ROUTERKEYCONST } from "../constants";
 import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
+import MainCico from "../components/FeatureComponent/CICO/MainCico";
 interface routerConfig {
   path: string;
   key: string;
@@ -129,6 +130,17 @@ const routerConfig: routerConfig[] = [
       }
     ]
 
-  }
+  },
+  {
+    path: CICO.path,
+    key: CICO.key,
+    exact: true,
+    component: MainCico,
+    name: "Cico",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
 ];
 export default routerConfig;

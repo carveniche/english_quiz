@@ -53,3 +53,9 @@ export const PREPOSTTESTKEY={
   preTest:"pre_test",
   postTest:"post_test"
 }
+export const CICO={
+  path:"/cico",
+  key:"cico",
+  checkIn:"checkIn",
+  checkOut:"checkOut"
+}
