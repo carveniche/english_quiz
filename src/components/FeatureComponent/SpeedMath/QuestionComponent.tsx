@@ -4,6 +4,7 @@ import CorrectMark from "./assets/images/Correct.svg";
 import ComputerPlay from "./ComputerPlay";
 import { Room } from "twilio-video";
 import { isStudentName } from "../../../utils/participantIdentity";
+import { iPadDevice } from "../../../utils/devices";
 interface QuestionComponentProps {
   room: Room | null;
   speedMathGameId: number;
@@ -23,6 +24,8 @@ interface QuestionComponentProps {
 }
 
 const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
+
+const numpadNumberIpad = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "X", "Enter"];
 
 export default function QuestionComponent({
   room,
@@ -111,6 +114,32 @@ export default function QuestionComponent({
     }
   };
 
+  const handleEnterForIpad = (event: any) => {
+    if (event === "Enter" && userInput !== "") {
+      var userAnswer = userInput;
+      setQuestionCount((questionCount) => questionCount + 1);
+      clearAnswerInput();
+
+      if (userAnswer == gameQuestionsData[questionCount].answer) {
+        onCorrectAnswer(userAnswer);
+      } else {
+        sendGameDataToServer(
+          gameQuestionsData[questionCount].id,
+          false,
+          userAnswer
+        );
+      }
+      var userData = {
+        question: gameQuestionsData[questionCount].question,
+        correctAnswer: gameQuestionsData[questionCount].answer,
+        studentAnswer: userAnswer,
+        status: userAnswer == gameQuestionsData[questionCount].answer,
+      };
+
+      setUserAnswersData([...userAnswerData, userData]);
+    }
+  };
+
   const clearAnswerInput = () => setUserInput("");
 
   const onCorrectAnswer = (userAnswer: any) => {
@@ -154,6 +183,27 @@ export default function QuestionComponent({
     storeGameResponse(userId, speedMathGameId, questionId, status, userAnswer);
   };
 
+  const eraseIpadInputField = () => {
+    let str = userInput;
+    let x = str.slice(0, -1);
+    setUserInput(x);
+  };
+
+  const numpadValueIpadOnChange = (event) => {
+    if (event === "X") {
+      eraseIpadInputField();
+      return;
+    }
+    if (event === "Enter") {
+      handleEnterForIpad(event);
+      return;
+    }
+    const re = /^[0-9\b]+$/;
+    if (event === "" || re.test(event)) {
+      setUserInput(userInput + event);
+    }
+  };
+
   return (
     <div className="flex flex-row w-full h-full justify-between items-center">
       <div className="flex flex-col w-full h-full justify-center items-center p-5 gap-4">
@@ -181,7 +231,7 @@ export default function QuestionComponent({
             autoFocus
             placeholder="Answer and Enter"
             type="text"
-            // inputMode={ipad ? "none" : "numeric"}
+            inputMode={iPadDevice ? "none" : "numeric"}
             onChange={onUserInputChange}
             value={userInput}
             ref={textAnswerInput}
@@ -190,62 +240,96 @@ export default function QuestionComponent({
           />
         </div>
       </div>
-      <div className="flex w-full h-full justify-center items-center">
-        <div className="flex flex-col w-[90%] h-full items-center">
-          <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
-            <div>
-              <img src={CorrectMark} alt="Correct" />
+      {!iPadDevice ? (
+        <div className="flex w-full h-full justify-center items-center">
+          <div className="flex flex-col w-[90%] h-full items-center">
+            <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
+              <div>
+                <img src={CorrectMark} alt="Correct" />
+              </div>
+              <div>
+                <p className="text-speedMathTextColor font-bold text-xl">You</p>
+              </div>
+              <div>
+                <p className="text-speedMathTextColor font-bold text-2xl">
+                  {userScore}
+                </p>
+              </div>
+              <div
+                className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
+                style={{
+                  width: completionPercentage, // Set the width as a percentage
+                }}
+              ></div>
             </div>
-            <div>
-              <p className="text-speedMathTextColor font-bold text-xl">You</p>
-            </div>
-            <div>
-              <p className="text-speedMathTextColor font-bold text-2xl">
-                {userScore}
-              </p>
-            </div>
-            <div
-              className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
-              style={{
-                width: completionPercentage, // Set the width as a percentage
-              }}
-            ></div>
+            {speedMathScoreofAllParticipant.length > 0 &&
+              speedMathScoreofAllParticipant.map((studentData: any) => {
+                return (
+                  <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
+                    <div>
+                      <img src={CorrectMark} alt="Correct" />
+                    </div>
+                    <div>
+                      <p className="text-speedMathTextColor font-bold text-xl">
+                        {studentData.identity === "tutor" ? (
+                          <>{studentData.identity}</>
+                        ) : (
+                          <>
+                            {isStudentName({ identity: studentData.identity })}
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-speedMathTextColor font-bold text-2xl">
+                        {studentData.currentUserScoreSpeedMath}
+                      </p>
+                    </div>
+                    <div
+                      className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
+                      style={{
+                        width: completionPercentage, // Set the width as a percentage
+                      }}
+                    ></div>
+                  </div>
+                );
+              })}
+            {playMode === "computer" && (
+              <ComputerPlay computerScore={computerScore} />
+            )}
           </div>
-          {speedMathScoreofAllParticipant.length > 0 &&
-            speedMathScoreofAllParticipant.map((studentData: any) => {
-              return (
-                <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
-                  <div>
-                    <img src={CorrectMark} alt="Correct" />
-                  </div>
-                  <div>
-                    <p className="text-speedMathTextColor font-bold text-xl">
-                      {studentData.identity === "tutor" ? (
-                        <>{studentData.identity}</>
-                      ) : (
-                        <>{isStudentName({ identity: studentData.identity })}</>
-                      )}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-speedMathTextColor font-bold text-2xl">
-                      {studentData.currentUserScoreSpeedMath}
-                    </p>
-                  </div>
-                  <div
-                    className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
-                    style={{
-                      width: completionPercentage, // Set the width as a percentage
-                    }}
-                  ></div>
+        </div>
+      ) : (
+        <div className="flex w-full h-full justify-center items-center  p-2">
+          <div className="grid grid-cols-3 gap-4 w-[70%] h-[70%]">
+            {numpadNumberIpad.map((item) => {
+              return item === "X" || item === "Enter" ? (
+                <div
+                  onClick={() => {
+                    numpadValueIpadOnChange(item);
+                  }}
+                  className="bg-red-500 text-white p-4"
+                >
+                  <p className="text-speedMathTextColor font-bold text-2xl text-center">
+                    {item}
+                  </p>
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    numpadValueIpadOnChange(item);
+                  }}
+                  className="bg-blue-500 text-white p-4"
+                >
+                  <p className="text-speedMathTextColor font-bold text-2xl text-center">
+                    {item}
+                  </p>
                 </div>
               );
             })}
-          {playMode === "computer" && (
-            <ComputerPlay computerScore={computerScore} />
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
