@@ -2,6 +2,7 @@ import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
 import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
 import CallTechSupport from "../CallTechSupport/CallTechSupport";
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
+import RecordingStartNotification from "../RecordingStartNotification/RecordingStartNotification";
 export default function Header() {
   return (
     <>
@@ -24,6 +25,7 @@ export default function Header() {
         </div>
         <div className=" justify-center content-center items-center p-4 pr-[30px]">
           <div className="flex flex-row justify-between min-w-[180px]">
+            <RecordingStartNotification />
             <CallTechSupport />
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
             <ReportErrorScreenShot />

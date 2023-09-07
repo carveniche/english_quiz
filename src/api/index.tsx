@@ -249,3 +249,88 @@ export const updateStatusofCicoActivity = (
     `${baseURL2}live_class_checkinout_activities/update_status?live_class_id=${liveClassID}&checkin_ativity_id=${activityId}&duration=${duration}`
   );
 };
+export const recordingUpdateToServer = async (
+  live_class_id: string,
+  recording_links: string,
+  recording_id: string
+) =>
+  axios.get(baseURL + "app_students/check_recording_api", {
+    params: {
+      live_class_id,
+      recording_links,
+      recording_id,
+    },
+  });
+
+export const doCreateLiveClassRecordings = async (
+  live_class_id: string,
+  upload_id: string,
+  file_key: string
+) =>
+  axios.get(baseURL + "app_students/create_live_class_recording", {
+    params: {
+      live_class_id,
+      upload_id,
+      file_key,
+    },
+  });
+
+export const doPartUploadingStatus = async (
+  recording_id: string,
+  part: string,
+  etag: string
+) => {
+  return;
+  return axios.get(baseURL + "app_students/create_recording_parts", {
+    params: {
+      recording_id,
+      part,
+      etag,
+    },
+  });
+};
+
+export const recordingFailedError = (body: object) => {
+  let url = baseURL + "app_students/create_recording_error_logs";
+  return axios.post(url, body);
+};
+
+export const getAllRecordingUploadId = async (live_class_id: string) =>
+  axios.get(baseURL + "app_students/get_live_class_recording_details", {
+    params: {
+      live_class_id,
+    },
+  });
+export const checkRecordingStatus = async (live_class_id: string) =>
+  axios.get(baseURL + "app_students/show_recording_status", {
+    params: {
+      live_class_id,
+    },
+  });
+
+export const submitErrorLog = async (
+  user_id: string,
+  live_class_id: string,
+  message: string,
+  error_code: string,
+  network_quality: string
+) =>
+  axios
+    .get(baseURL + "app_students/create_error_log", {
+      params: {
+        user_id,
+        live_class_id,
+        message,
+        error_code,
+        network_quality,
+      },
+    })
+    .catch((error: any) => {
+      if (error.response) {
+        console.log(error.response.data, "h1");
+      } else if (error.request) {
+        console.log(error.request, "h2");
+      } else {
+        console.log("Error", error.message, "h3");
+      }
+    });

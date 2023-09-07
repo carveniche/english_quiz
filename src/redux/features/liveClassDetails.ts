@@ -27,6 +27,7 @@ interface liveClassDetailsTypes {
   techJoinedClass: boolean;
   muteAllParticipant: boolean | undefined;
   videoPlayState: boolean;
+  isRecordingEnabled:boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -52,6 +53,7 @@ const initialState: liveClassDetailsTypes = {
   techJoinedClass: false,
   muteAllParticipant: undefined,
   videoPlayState: false,
+  isRecordingEnabled:false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -86,6 +88,12 @@ export const liveClassDetailsSlice = createSlice({
       state.videoPlayState = videoPlayState;
       state.muteAllParticipant = muteAllState;
     },
+    startAndStopRecordingRecording:(state,action)=>{
+      
+      const {payload}=action
+      console.log("llll")
+      state.isRecordingEnabled=payload
+    }
   },
 });
 
@@ -98,6 +106,7 @@ export const {
   addTechJoinedClass,
   addMuteAllParticipant,
   addVideoPlayState,
+  startAndStopRecordingRecording
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

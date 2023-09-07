@@ -20,6 +20,7 @@ import Header2 from "./components/Navbar/Header2";
 import Header from "./components/Navbar/Header";
 import { getQueryParams } from "./utils/getQueryParams";
 import { ChatProvider } from "./components/ChatProvider";
+import MainScreenRecording from "./components/ScreenRecording/MainScreenRecording";
 
 const Main = styled("main")(({ theme }: { theme: Theme }) => ({
   overflow: "hidden",
@@ -68,6 +69,7 @@ function App() {
           <MobileTopMenuBar />
           <div className="section-component-layout">
             <Room />
+            <MainScreenRecording />
             <AllPageRoutes />
           </div>
           <MenuBar />
