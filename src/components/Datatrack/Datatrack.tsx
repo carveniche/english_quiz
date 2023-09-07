@@ -154,9 +154,12 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             extraParams: parseMessage?.value?.activeTabData?.path || "",
           })
         );
-        dispatch(
-          cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
-        );
+        if (parseMessage?.value?.behaviour === "old_data_flow")
+          typeof window.oldDataTrack === "function" &&
+            window.oldDataTrack(parseMessage?.value?.cicoData || "");
+        // dispatch(
+        //   cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
+        // );
       }
     };
 

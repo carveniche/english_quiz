@@ -10,6 +10,7 @@ import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
+import Cico from "../components/FeatureComponent/CICO/Cico";
 interface routerConfig {
   path: string;
   key: string;
@@ -135,7 +136,7 @@ const routerConfig: routerConfig[] = [
     path: CICO.path,
     key: CICO.key,
     exact: true,
-    component: MainCico,
+    component: Cico,
     name: "Cico",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,

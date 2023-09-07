@@ -1,6 +1,8 @@
 import BaseUrl from "./ApiConfig.js";
 import axios from "axios";
-
+export const baseURL2 = BaseUrl;
+export const baseURL = BaseUrl;
+export const imageUrl = "https://www.begalileo.com";
 export const videoCallToken = async (user: Number, live_class_id: Number) => {
   return axios.get(BaseUrl + "app_students/video_call_token", {
     params: {
@@ -194,5 +196,56 @@ export const getStudentActivityResponse = (
         live_class_id,
       },
     }
+  );
+};
+
+export const studentCheckInGetData = (
+  student_id: string,
+  live_class_id: string
+) => {
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const studentCheckOutGetData = (obj: object) => {
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
+    {
+      params: obj,
+    }
+  );
+};
+
+export const StudentActivityResponseSave = (body: any) => {
+  const config = {
+    method: "post",
+    url: baseURL2 + "live_class_checkinout_activities/store_student_response",
+    data: body,
+  };
+  return axios(config);
+};
+export const StudentActivityTeacherResponseSave = (body: object) => {
+  const config = {
+    method: "post",
+    url: baseURL2 + "live_class_checkinout_activities/store_teacher_response",
+    data: body,
+  };
+  return axios(config);
+};
+
+export const updateStatusofCicoActivity = (
+  liveClassID: string,
+  activityId: string,
+  duration: string
+) => {
+  return axios(
+    `${baseURL2}live_class_checkinout_activities/update_status?live_class_id=${liveClassID}&checkin_ativity_id=${activityId}&duration=${duration}`
   );
 };
