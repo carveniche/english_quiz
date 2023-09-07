@@ -11,6 +11,7 @@ export default function Coding() {
   );
 
   useEffect(() => {
+    console.log("h1llo");
     let oldCodingUrl =
       BaseUrl + "online_classes/coding_links?live_class_id=" + liveClassId;
     setOldCodingApi(oldCodingUrl);
