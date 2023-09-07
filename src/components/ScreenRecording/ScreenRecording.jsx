@@ -174,7 +174,12 @@ const ScreenRecording = forwardRef((props, ref) => {
     // if (recorder != undefined && recorder.state == "inactive" && isUploading == 'COMPLETED' && uploadQueue < 1)
     //   onAllRecordingCompleted()
   }, [uploadQueue, isUploading, status]);
-
+  useEffect(() => {
+    return () => {
+      console.log("recording has stoped", recorder);
+      stopRecording();
+    };
+  }, []);
   useImperativeHandle(ref, () => ({
     leaveClassStopRecording() {
       console.log("Leave Class Stop Recording");
@@ -774,9 +779,14 @@ const ScreenRecording = forwardRef((props, ref) => {
   }
 
   async function stopRecording() {
+    console.log("recording has stoped");
     if (!recorder) return;
-
+    console.log(desktopStream);
     recorder.stop();
+    if (desktopStream) {
+      let tracks = desktopStream.getTracks();
+      tracks.forEach((item) => item.stop());
+    }
     setRunning(false);
     setTime(0);
     setStatus(false);
@@ -1052,56 +1062,6 @@ const ScreenRecording = forwardRef((props, ref) => {
           </Button>
         </Modal.Body>
       </Modal>
-      <Button className="record" variant="default">
-        <Form>
-          <Form.Check
-            onClick={() => startExtension()}
-            // onClick={() =>
-            //   this.temporaryChromeExtensionPopup()
-            // }
-            className="record-switch"
-            type="switch"
-            id="custom-switch"
-            label={status ? getCurrentTimer() : "Record"}
-            checked={status}
-            onChange={() => {}}
-          />
-        </Form>
-
-        {/* <div className="numbers">
-            <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-            <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-            <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
-          </div> */}
-        {/* <div className="buttons">
-            <button onClick={() => setRunning(true)}>Start</button>
-            <button onClick={() => setRunning(false)}>Stop</button>
-            <button onClick={() => setTime(0)}>Reset</button>
-          </div> */}
-      </Button>
-      {/* <video width="400" height="200" controls src={blobUrl} /> */}
-      {showLoading ? (
-        <div className="loadingdiv_container">
-          <Row>
-            <Col className="text-center" md={12}>
-              <div className="loading">
-                <div className="dot"></div>
-                <div className="dot"></div>
-                <div className="dot"></div>
-                <div className="dot"></div>
-              </div>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12} className="text-center">
-              <p style={{ color: "#233584" }}>
-                Uploading Recording please wait ...
-              </p>
-            </Col>
-          </Row>
-        </div>
-      ) : null}
     </>
   );
 });

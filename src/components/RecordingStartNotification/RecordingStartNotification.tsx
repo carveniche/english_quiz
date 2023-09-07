@@ -23,27 +23,29 @@ export default function RecordingStartNotification() {
   }, [isRecordingStarted]);
   return (
     <>
-      <div className="flex items-center gap-x-1 mx-2">
-        <div>
-          <img src="/static/media/startRecordingIcon.svg" />
+      {isRecordingStarted && (
+        <div className="flex items-center gap-x-1 mx-2">
+          <div>
+            <img src="/static/media/startRecordingIcon.svg" />
+          </div>
+          <div
+            className="text-white "
+            style={{
+              fontSize: "12px",
+              fontStyle: "normal",
+              fontWeight: 500,
+            }}
+          >
+            {(() => {
+              let mm = Math.floor(count / 60);
+              let ss = count % 60;
+              return `${mm.toString().padStart(2, "0")}:${ss
+                .toString()
+                .padStart(2, "0")}`;
+            })()}
+          </div>
         </div>
-        <div
-          className="text-white "
-          style={{
-            fontSize: "12px",
-            fontStyle: "normal",
-            fontWeight: 500,
-          }}
-        >
-          {(() => {
-            let mm = Math.floor(count / 60);
-            let ss = count % 60;
-            return `${mm.toString().padStart(2, "0")}:${ss
-              .toString()
-              .padStart(2, "0")}`;
-          })()}
-        </div>
-      </div>
+      )}
     </>
   );
 }
