@@ -296,7 +296,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                     <div> {item.name}</div>
                   </div>
                 </NavLink>
-                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {/* <TabIcon src={"/menu-icon/chevron.svg"} /> */}
               </li>
             );
           })}
