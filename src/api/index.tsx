@@ -223,7 +223,6 @@ export const handleUpdateNextPrePostQuestion = (params: {
 };
 
 export const fetchCheckInData = (student_id: String, live_class_id: String) => {
-  return axios.get("http://localhost:5555/check-in");
   return axios.get(
     `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
     {
@@ -239,7 +238,6 @@ export const fetchCheckOutData = (
   student_id: String,
   live_class_id: String
 ) => {
-  return axios.get("http://localhost:5555/check-out");
   return axios.get(
     `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
     {
@@ -255,7 +253,6 @@ export const getStudentActivityResponse = (
   student_id: string,
   live_class_id: string
 ) => {
-  return axios.get("http://localhost:5555/response-data");
   return axios.get(
     `${BaseUrl}live_class_checkinout_activities/checkin_out_activity_responses`,
     {
@@ -348,7 +345,6 @@ export const doPartUploadingStatus = async (
   part: string,
   etag: string
 ) => {
-  return;
   return axios.get(baseURL + "app_students/create_recording_parts", {
     params: {
       recording_id,
@@ -402,3 +398,42 @@ export const submitErrorLog = async (
         console.log("Error", error.message, "h3");
       }
     });
+
+export const getThunkableLinks = async (live_class_id: number) =>
+  axios.get(baseURL + "app_students/generate_thunkable_link", {
+    params: {
+      live_class_id,
+    },
+  });
+
+export const storeCodingLogNewCurriculam = async (
+  live_class_id: number,
+  coding_learning_outcome_id: number
+) =>
+  axios
+    .get(baseURL + "app_students/live_class_video_lesson_logs", {
+      params: {
+        live_class_id,
+        coding_learning_outcome_id,
+      },
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data, "h1");
+      } else if (error.request) {
+        console.log(error.request, "h2");
+      } else {
+        console.log("Error", error.message, "h3");
+      }
+    });
+
+export const showScratchTeacher = async (
+  live_class_id: number,
+  user_id: number
+) =>
+  axios.get(baseURL + "app_students/codings", {
+    params: {
+      live_class_id,
+      user_id,
+    },
+  });
