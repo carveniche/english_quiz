@@ -20,7 +20,7 @@ export default function CodingNew({ identity, env }: CodingNew) {
         {isTutor({ identity: identity }) ? (
           <CodingNewTeacher env={env} />
         ) : (
-          <CodingNewStudent />
+          <CodingNewStudent env={env} />
         )}
       </div>
     </div>

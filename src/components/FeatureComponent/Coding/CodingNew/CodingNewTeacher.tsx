@@ -27,6 +27,8 @@ interface newCodingData {
   class_title: string;
   name: string;
   learning_outcome: string;
+  project_type: string;
+  lesson_data: [];
   students: {
     student_id: number;
     name: string;
