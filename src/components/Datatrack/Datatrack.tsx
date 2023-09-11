@@ -21,12 +21,14 @@ import {
   addSpeedMathScoreOfAllParticipant,
 } from "../../redux/features/liveClassDetails";
 import {
+  CICO,
   FLAGGEDQUESTIONKEY,
   HOMEWORKQUESTIONKEY,
   MATHZONEDATAKEY,
 } from "../../constants";
 import {
   changeMathzoneData,
+  cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
@@ -171,6 +173,27 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             parseMessage?.value?.HomeWorkQuestionData || {}
           )
         );
+      } else if (
+        parseMessage?.value?.type === CICO.checkIn ||
+        parseMessage?.value?.type === CICO.checkOut
+      ) {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage?.value.activeTabData?.path || "",
+            key: parseMessage?.value?.activeTabData?.key || "",
+            icon: parseMessage?.value?.activeTabData?.icon || "",
+            name: parseMessage?.value?.activeTabData?.name || "",
+            extraParams: parseMessage?.value?.activeTabData?.path || "",
+          })
+        );
+        if (parseMessage?.value?.behaviour === "old_data_flow")
+          typeof window.oldDataTrack === "function" &&
+            window.oldDataTrack(parseMessage?.value?.cicoData || "");
+        else {
+          dispatch(
+            cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
+          );
+        }
       }
     };
 

@@ -1,6 +1,8 @@
 import BaseUrl from "./ApiConfig.js";
 import axios from "axios";
-
+export const baseURL2 = BaseUrl;
+export const baseURL = BaseUrl;
+export const imageUrl = "https://www.begalileo.com";
 export const videoCallToken = async (user: Number, live_class_id: Number) => {
   return axios.get(BaseUrl + "app_students/video_call_token", {
     params: {
@@ -178,3 +180,225 @@ export const getGameResult = async (
       computer_score,
     },
   });
+export const startPrePostTest = (params: object) => {
+  return axios(BaseUrl + "app_teachers/start_pre_post_test", {
+    params: { ...params },
+  });
+};
+export const reviewPrePostTestResult = (params: object) => {
+  return axios(BaseUrl + "app_teachers/review_pre_post_test_result", {
+    params,
+  });
+};
+export const viewPrePostTestQuestionResponse = (params: object) => {
+  return axios(BaseUrl + "app_teachers/view_questions", {
+    params,
+  });
+};
+
+export const saveStudentPrePostTestResponse = async (
+  params: String,
+  data: Object
+) => {
+  let config = {
+    method: "post",
+    url: `${BaseUrl}app_teachers/save_pre_post_test${params}`,
+    data: data,
+  };
+  return axios(config);
+};
+
+export const handleUpdateNextPrePostQuestion = (params: {
+  live_class_id: Number;
+  sub_concept_id: Number;
+  tag_id: Number;
+  level: Number;
+}) => {
+  return axios.get(
+    BaseUrl + "app_teachers/skip_pre_post_test?pre_post_test_id",
+    {
+      params: { ...params },
+    }
+  );
+};
+
+export const fetchCheckInData = (student_id: String, live_class_id: String) => {
+  return axios.get("http://localhost:5555/check-in");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const fetchCheckOutData = (
+  student_id: String,
+  live_class_id: String
+) => {
+  return axios.get("http://localhost:5555/check-out");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const getStudentActivityResponse = (
+  student_id: string,
+  live_class_id: string
+) => {
+  return axios.get("http://localhost:5555/response-data");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_out_activity_responses`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const studentCheckInGetData = (
+  student_id: string,
+  live_class_id: string
+) => {
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
+export const studentCheckOutGetData = (obj: object) => {
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
+    {
+      params: obj,
+    }
+  );
+};
+
+export const StudentActivityResponseSave = (body: any) => {
+  const config = {
+    method: "post",
+    url: baseURL2 + "live_class_checkinout_activities/store_student_response",
+    data: body,
+  };
+  return axios(config);
+};
+export const StudentActivityTeacherResponseSave = (body: object) => {
+  const config = {
+    method: "post",
+    url: baseURL2 + "live_class_checkinout_activities/store_teacher_response",
+    data: body,
+  };
+  return axios(config);
+};
+
+export const updateStatusofCicoActivity = (
+  liveClassID: string,
+  activityId: string,
+  duration: string
+) => {
+  return axios(
+    `${baseURL2}live_class_checkinout_activities/update_status?live_class_id=${liveClassID}&checkin_ativity_id=${activityId}&duration=${duration}`
+  );
+};
+export const recordingUpdateToServer = async (
+  live_class_id: string,
+  recording_links: string,
+  recording_id: string
+) =>
+  axios.get(baseURL + "app_students/check_recording_api", {
+    params: {
+      live_class_id,
+      recording_links,
+      recording_id,
+    },
+  });
+
+export const doCreateLiveClassRecordings = async (
+  live_class_id: string,
+  upload_id: string,
+  file_key: string
+) =>
+  axios.get(baseURL + "app_students/create_live_class_recording", {
+    params: {
+      live_class_id,
+      upload_id,
+      file_key,
+    },
+  });
+
+export const doPartUploadingStatus = async (
+  recording_id: string,
+  part: string,
+  etag: string
+) => {
+  return;
+  return axios.get(baseURL + "app_students/create_recording_parts", {
+    params: {
+      recording_id,
+      part,
+      etag,
+    },
+  });
+};
+
+export const recordingFailedError = (body: object) => {
+  let url = baseURL + "app_students/create_recording_error_logs";
+  return axios.post(url, body);
+};
+
+export const getAllRecordingUploadId = async (live_class_id: string) =>
+  axios.get(baseURL + "app_students/get_live_class_recording_details", {
+    params: {
+      live_class_id,
+    },
+  });
+export const checkRecordingStatus = async (live_class_id: string) =>
+  axios.get(baseURL + "app_students/show_recording_status", {
+    params: {
+      live_class_id,
+    },
+  });
+
+export const submitErrorLog = async (
+  user_id: string,
+  live_class_id: string,
+  message: string,
+  error_code: string,
+  network_quality: string
+) =>
+  axios
+    .get(baseURL + "app_students/create_error_log", {
+      params: {
+        user_id,
+        live_class_id,
+        message,
+        error_code,
+        network_quality,
+      },
+    })
+    .catch((error: any) => {
+      if (error.response) {
+        console.log(error.response.data, "h1");
+      } else if (error.request) {
+        console.log(error.request, "h2");
+      } else {
+        console.log("Error", error.message, "h3");
+      }
+    });

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "../component/OnlineQuiz.module.css";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 import { serializeResponse } from "../CommonJSFiles/gettingResponse";
 import replaceJsonData from "../CommonJSFiles/replacingJsonData";
 import { addStyles } from "./ExternalPackages";
@@ -8,7 +8,10 @@ import AllFile from "../AllFile";
 import SolveButton from "../SolveButton";
 import oldQuestionWithNoHtmlQuestion from "../CommonJSFiles/oldQuestionWithNoHtmlQuestion";
 import newTypeQuestionChecker from "../CommonJSFiles/newTypeQuestionChecker";
-import { StudentAnswerResponse } from "../../../../api";
+import {
+  StudentAnswerResponse,
+  saveStudentPrePostTestResponse,
+} from "../../../../api";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
@@ -109,7 +112,12 @@ export const TeacherQuizDisplay = ({ obj, showSolution }) => {
   );
 };
 
-const StudentQuizDisplay = ({ obj, identity }) => {
+const StudentQuizDisplay = ({
+  obj,
+  identity,
+  isPrePostTest,
+  handleCheckLastQuestionBeforeSkipping,
+}) => {
   const [showStudentSolution, setShowStudentSolution] = useState(false);
   const [showTeacherSolution, setShowTeacherSolution] = useState(false);
   const [response, setResponse] = useState(false);
@@ -176,7 +184,7 @@ const StudentQuizDisplay = ({ obj, identity }) => {
   const handleSubmitAnswer = () => {
     window.handleSubmit();
   };
-  const handleApiRequestForSavingAnswer = async (type) => {
+  const handleApiRequestForSavingAnswer = async (skipped_review) => {
     try {
       let arr = ["ckeditor"];
       let noResponse = oldQuestionWithNoHtmlQuestion();
@@ -231,15 +239,39 @@ const StudentQuizDisplay = ({ obj, identity }) => {
       } else {
         formData.append("choice", choicesId);
       }
-      let queryParams = `?user_id=${userId}&question_id=${question_id}&live_class_practice_id=${live_class_practice_id}&live_class_id=${live_class_id}&tag_id=${tag_id}&level=${level}&student_id=${student_id}&student_answer=${isAnswerCorrect}&time_spent=${count}`;
-      let result = await StudentAnswerResponse(queryParams, formData);
+      if (isPrePostTest) {
+        if (obj?.questions_from == "skipped") {
+          skipped_review = true;
+        }
+        let pre_post_test_id = obj?.pre_post_test_id;
+        let queryParams = `?pre_post_test_id=${pre_post_test_id}&question_id=${question_id}&live_class_id=${live_class_id}&student_answer=${isAnswerCorrect}&time_spent=${count}&skipped_review=${
+          skipped_review || false
+        }`;
+        let result = await saveStudentPrePostTestResponse(
+          queryParams,
+          formData
+        );
+
+        typeof handleCheckLastQuestionBeforeSkipping == "function" &&
+          handleCheckLastQuestionBeforeSkipping(true, "", result?.data);
+      } else {
+        let queryParams = `?user_id=${userId}&question_id=${question_id}&live_class_practice_id=${live_class_practice_id}&live_class_id=${live_class_id}&tag_id=${tag_id}&level=${level}&student_id=${student_id}&student_answer=${isAnswerCorrect}&time_spent=${count}`;
+        let result = await StudentAnswerResponse(queryParams, formData);
+      }
     } catch (e) {
       console.log(e);
     }
   };
+
   useEffect(() => {
     if (hasAnswerSubmitted && !response) {
-      handleApiRequestForSavingAnswer(obj?.question_data[0]?.question_type);
+      if (isPrePostTest) {
+        handleCheckLastQuestionBeforeSkipping(
+          false,
+          handleApiRequestForSavingAnswer
+        );
+      } else
+        handleApiRequestForSavingAnswer(obj?.question_data[0]?.question_type);
       setResponse(true);
     }
   }, [hasAnswerSubmitted]);
@@ -274,7 +306,10 @@ const StudentQuizDisplay = ({ obj, identity }) => {
         <TimerClock count={count} />
       )}
       {!allExcludedParticipants.includes(identity) && (
-        <SolveButton onClick={handleSubmitAnswer} />
+        <SolveButton
+          onClick={handleSubmitAnswer}
+          isPrePostTest={isPrePostTest}
+        />
       )}
       <div
         style={{ position: "relative" }}
@@ -289,17 +324,19 @@ const StudentQuizDisplay = ({ obj, identity }) => {
           temp={temp}
           isResponse={isStudentAnswerResponse}
         />
-        <SolutionComponent
-          showExplation={hasAnswerSubmitted}
-          showStudentSolution={hasAnswerSubmitted}
-          showTeacherSolution={showTeacherSolution}
-          handleExplation={handleExplation}
-          arr={arr}
-          obj={obj}
-          temp={temp}
-          isAnswerCorrect={isAnswerCorrect}
-          showCorrectIncorrectImage={true}
-        />
+        {!isPrePostTest && (
+          <SolutionComponent
+            showExplation={hasAnswerSubmitted}
+            showStudentSolution={hasAnswerSubmitted}
+            showTeacherSolution={showTeacherSolution}
+            handleExplation={handleExplation}
+            arr={arr}
+            obj={obj}
+            temp={temp}
+            isAnswerCorrect={isAnswerCorrect}
+            showCorrectIncorrectImage={true}
+          />
+        )}
       </div>
     </>
   );
@@ -318,6 +355,8 @@ export function RenderingQuizPage({
   setCount,
   count,
   identity,
+  isPrePostTest,
+  handleCheckLastQuestionBeforeSkipping,
 }) {
   const { setTotalQuestion } = useContext(ViewStatusContext);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
@@ -359,6 +398,10 @@ export function RenderingQuizPage({
             mathZoneQuizLevel={mathZoneQuizLevel}
             setCount={setCount}
             count={count}
+            isPrePostTest={isPrePostTest}
+            handleCheckLastQuestionBeforeSkipping={
+              handleCheckLastQuestionBeforeSkipping
+            }
           />
         </ValidationContextProvider>
       )}

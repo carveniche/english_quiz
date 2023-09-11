@@ -5,11 +5,12 @@ import Mathzone from "../components/FeatureComponent/Mathzone/mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
 import MathVideoLesson from "../components/FeatureComponent/MathVideoLesson/MathVideoLesson";
 import React from "react";
-import { ROUTERKEYCONST } from "../constants";
+import { CICO, ROUTERKEYCONST } from "../constants";
 import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
+import MainCico from "../components/FeatureComponent/CICO/MainCico";
 interface routerConfig {
   path: string;
   key: string;

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 export interface ComponentLevelData{
     mathzone:object;
     flaggedQuestion:object;
-    otherData:object;
+    otherData:any;
 }
 
 const initialState={
@@ -34,8 +34,16 @@ const ComponentLevelDataReducer=createSlice({
 
             const {payload}=action;
             state.otherData=payload||{}
+        },
+        cicoComponentLevelDataTrack:(state:ComponentLevelData,action:any)=>{
+            const {payload}=action
+            console.log(payload)
+            for(let key in payload){
+                state.otherData[key]=payload[key]
+            }
+
         }
     }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer

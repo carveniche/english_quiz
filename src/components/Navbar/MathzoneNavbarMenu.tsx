@@ -40,6 +40,7 @@ export default function MathzoneNavbar({
       setCurrentSelectedTag(index);
     }
   };
+
   return (
     <>
       {
@@ -56,7 +57,7 @@ export default function MathzoneNavbar({
             overflowY: "auto",
           }}
         >
-          {allConceptsDetails?.conceptDetails.map((math, index) => {
+          {allConceptsDetails?.mathzoneConceptDetails.map((math, index) => {
             return (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
@@ -82,62 +83,97 @@ export default function MathzoneNavbar({
                   <div className="w-full">
                     {math.tags.map((tag, tagIndex) =>
                       tag.name ? (
-                        <div
-                          className="py-3 pl-2"
-                          key={tagIndex}
-                          onClick={() => handleTagSelected(tagIndex)}
-                        >
+                        tag?.levels?.length ? (
                           <div
-                            className="flex gap-2 relative item-center justify-between"
-                            style={{ cursor: "pointer" }}
+                            className="py-3 pl-2"
+                            key={tagIndex}
+                            onClick={() => handleTagSelected(tagIndex)}
                           >
-                            <div style={{ display: "block" }}>
-                              <div className="flex gap-2">
-                                <div> {tag?.name}</div>
+                            <div
+                              className="flex gap-2 relative item-center justify-between"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div style={{ display: "block" }}>
+                                <div className="flex gap-2">
+                                  <div> {tag?.name}</div>
+                                </div>
                               </div>
+                              <TabIcon
+                                src={`/menu-icon/chevron_${
+                                  currentSelectedTag === index ? "up" : "down"
+                                }.svg`}
+                              />
                             </div>
-                            <TabIcon
-                              src={`/menu-icon/chevron_${
-                                currentSelectedTag === index ? "up" : "down"
-                              }.svg`}
-                            />
-                          </div>
 
-                          {tag.levels.length &&
-                            currentSelectedTag === tagIndex && (
-                              <div className="py-3 pl-2">
-                                {tag.levels.map((level, levelIndex) => (
+                            {Boolean(tag.levels.length) &&
+                              currentSelectedTag === tagIndex && (
+                                <div className="py-3 pl-2">
+                                  {tag.levels.map((level, levelIndex) => (
+                                    <NavLink
+                                      key={levelIndex}
+                                      to={`${item.path}/${math.id}/${
+                                        tag.tag_id
+                                      }/${
+                                        level.split("level")[1]
+                                      }?${queryParams}`}
+                                      onClick={() =>
+                                        handleClick({
+                                          path: `${item.path}/${math.id}/${
+                                            tag.tag_id
+                                          }/${level.split("level")[1]}`,
+                                          key: item.key,
+                                          name: `${item.name}:${math.name} - ${tag.name}`,
+                                          icon: item.icon,
+                                          extraParams: {
+                                            conceptName: math.name,
+                                            tagName: tag.name,
+                                            level: level.split("level")[1],
+                                          },
+                                        })
+                                      }
+                                      className={"w-48"}
+                                      style={{ display: "block" }}
+                                    >
+                                      {level}
+                                    </NavLink>
+                                  ))}
+                                </div>
+                              )}
+                          </div>
+                        ) : (
+                          <div className="py-3 pl-2" key={tagIndex}>
+                            <div
+                              className="flex gap-2 relative item-center justify-between"
+                              style={{ cursor: "pointer" }}
+                            >
+                              <div style={{ display: "block" }}>
+                                <div className="flex gap-2">
                                   <NavLink
-                                    key={levelIndex}
-                                    to={`${item.path}/${math.id}/${
-                                      tag.tag_id
-                                    }/${
-                                      level.split("level")[1]
+                                    to={`${item.path}/${math.id}/${tag.tag_id}/0
                                     }?${queryParams}`}
                                     onClick={() =>
                                       handleClick({
-                                        path: `${item.path}/${math.id}/${
-                                          tag.tag_id
-                                        }/${level.split("level")[1]}`,
+                                        path: `${item.path}/${math.id}/${tag.tag_id}/0`,
                                         key: item.key,
                                         name: `${item.name}:${math.name} - ${tag.name}`,
                                         icon: item.icon,
                                         extraParams: {
                                           conceptName: math.name,
                                           tagName: tag.name,
-                                          level: level.split("level")[1],
+                                          level: 0,
                                         },
                                       })
                                     }
                                     className={"w-48"}
                                     style={{ display: "block" }}
                                   >
-                                    {level}
+                                    {tag?.name}
                                   </NavLink>
-                                ))}
+                                </div>
                               </div>
-                            )}
-                        </div>
+                            </div>
+                          </div>
+                        )
                       ) : (
                         ""
                       )

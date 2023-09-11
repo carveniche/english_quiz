@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { viewQuestionStatusApi } from "../../../../api";
 import TeacherViewEachResponse from "./TeacherViewEachResponse";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 
 export default function ViewQuestionStatus({
   totalQuestion,
@@ -24,7 +24,7 @@ export default function ViewQuestionStatus({
       }
       i++;
     }
-    console.log("isInclude", isInclude);
+
     if (isInclude) {
       let studentQuestionData = data[i]?.student_question_data || [];
       setTotalQuestionArray(studentQuestionData);
@@ -64,57 +64,55 @@ export default function ViewQuestionStatus({
   return (
     <>
       {totalQuestionArray.length ? (
-        totalQuestionArray.map(
-          (item, i) =>
-            !console.log(item) &&
-            (() => {
-              let backgroundColor = "";
-              let textColor = "";
-              let result_data = item?.result_data || [];
-              let objResponse = result_data[0] || {};
-              let isCorrect = objResponse.hasOwnProperty("correct");
-              isCorrect = isCorrect ? (objResponse.correct ? 1 : 0) : -1; //-1,0,1 for skipped, incorrect and correct question respectivelt
-              switch (isCorrect) {
-                case 0: {
-                  backgroundColor = "bg-F24A4A";
-                  textColor = "text-white";
-                  break;
-                }
-                case 1: {
-                  backgroundColor = "bg-27AE60";
-                  textColor = "text-white";
-                  break;
-                }
-                default: {
-                  backgroundColor = "";
-                  textColor =
-                    item?.current_question === i + 1
-                      ? "text-828282"
-                      : "text-white";
-                  break;
-                }
+        totalQuestionArray.map((item, i) =>
+          (() => {
+            let backgroundColor = "";
+            let textColor = "";
+            let result_data = item?.result_data || [];
+            let objResponse = result_data[0] || {};
+            let isCorrect = objResponse.hasOwnProperty("correct");
+            isCorrect = isCorrect ? (objResponse.correct ? 1 : 0) : -1; //-1,0,1 for skipped, incorrect and correct question respectivelt
+            switch (isCorrect) {
+              case 0: {
+                backgroundColor = "bg-F24A4A";
+                textColor = "text-white";
+                break;
               }
-              return (
-                <div
-                  key={i}
-                  className={`${backgroundColor} ${textColor} w-7 h-7 rounded-full flex justify-center items-center ${
-                    item?.current_question === i + 1
-                      ? "border-white"
-                      : "border-828282"
-                  } ${
-                    item?.current_question === i + 1 ? "border-2" : "border-2"
-                  } border-solid`}
-                  onClick={() =>
-                    item.current_question > i ? handleShowQestion(i) : ""
-                  }
-                  style={{
-                    cursor: item.current_question > i ? "pointer" : "initial",
-                  }}
-                >
-                  {i + 1}
-                </div>
-              );
-            })()
+              case 1: {
+                backgroundColor = "bg-27AE60";
+                textColor = "text-white";
+                break;
+              }
+              default: {
+                backgroundColor = "";
+                textColor =
+                  item?.current_question === i + 1
+                    ? "text-828282"
+                    : "text-white";
+                break;
+              }
+            }
+            return (
+              <div
+                key={i}
+                className={`${backgroundColor} ${textColor} w-7 h-7 rounded-full flex justify-center items-center ${
+                  item?.current_question === i + 1
+                    ? "border-white"
+                    : "border-828282"
+                } ${
+                  item?.current_question === i + 1 ? "border-2" : "border-2"
+                } border-solid`}
+                onClick={() =>
+                  item.current_question > i ? handleShowQestion(i) : ""
+                }
+                style={{
+                  cursor: item.current_question > i ? "pointer" : "initial",
+                }}
+              >
+                {i + 1}
+              </div>
+            );
+          })()
         )
       ) : (
         <div className="text-white">No Question Found...</div>

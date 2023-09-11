@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import MathzoneInner from "./MathzoneInner";
 import { useParams } from "react-router";
+import { PREPOSTTESTKEY } from "../../../constants";
+import PrePostTestInner from "../PrePostTest/PrePostTestInner";
 export const ViewStatusContext = React.createContext("Status Context");
 function ViewStatusContextProvider({ children }) {
   const [reviewResultStatus, setReviewResultStatus] = useState(false);
@@ -102,11 +104,18 @@ function ViewStatusContextProvider({ children }) {
 }
 export default function mathzone() {
   const { concept, tag, level } = useParams();
+
   return (
     <React.Fragment key={`${concept}${tag}${level}`}>
-      <ViewStatusContextProvider>
-        <MathzoneInner />
-      </ViewStatusContextProvider>
+      {tag === PREPOSTTESTKEY.preTest || tag === PREPOSTTESTKEY.postTest ? (
+        <ViewStatusContextProvider>
+          <PrePostTestInner />
+        </ViewStatusContextProvider>
+      ) : (
+        <ViewStatusContextProvider>
+          <MathzoneInner />
+        </ViewStatusContextProvider>
+      )}
     </React.Fragment>
   );
 }

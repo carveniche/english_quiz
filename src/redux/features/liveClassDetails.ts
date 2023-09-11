@@ -32,6 +32,7 @@ interface liveClassDetailsTypes {
   speedMathGameLevel: number;
   speedMathPlayMode: string;
   speedMathScoreofAllParticipant: any;
+  isRecordingEnabled: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -62,6 +63,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathGameLevel: 0,
   speedMathPlayMode: "",
   speedMathScoreofAllParticipant: [],
+  isRecordingEnabled: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -134,6 +136,11 @@ export const liveClassDetailsSlice = createSlice({
         }
       }
     },
+    startAndStopRecordingRecording: (state, action) => {
+      const { payload } = action;
+      console.log("llll");
+      state.isRecordingEnabled = payload;
+    },
   },
 });
 
@@ -149,6 +156,7 @@ export const {
   addRemoteParticipantCount,
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
+  startAndStopRecordingRecording,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

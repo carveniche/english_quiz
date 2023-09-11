@@ -11,12 +11,13 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { ROUTERKEYCONST } from "../../constants";
+import { CICO, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import SpeedMathNavbarMenu from "./SpeedMathNavbarMenu";
 import { useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
+import CicoNavbar from "./CicoNavbar";
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
@@ -124,59 +125,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
 
   return (
     <>
-      {false && (
-        <ul
-          className="bg-header-black text-white transform group-hover:scale-100 absolute 
-      transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center"
-        >
-          <li className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full">
-            Programming
-          </li>
-          <li className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full">
-            DevOps
-          </li>
-          <li className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full">
-            <button className="w-full text-left flex items-center outline-none focus:outline-none">
-              <span className="pr-1 flex-1">Langauges</span>
-              <span className="mr-auto"></span>
-            </button>
-            <ul
-              className="bg-header-black border rounded-sm absolute top-0 right-0 
-      transition duration-150 ease-in-out origin-top-left
-      min-w-32
-      "
-            >
-              <li className="px-3 py-1 hover:bg-black">Javascript</li>
-              <li className="rounded-sm relative px-3 py-1 hover:bg-black">
-                <button className="w-full text-left flex items-center outline-none focus:outline-none">
-                  <span className="pr-1 flex-1">Python</span>
-                  <span className="mr-auto">
-                    <svg
-                      className="fill-current h-4 w-4
-                    transition duration-150 ease-in-out"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </span>
-                </button>
-                <ul
-                  className="bg-white border rounded-sm absolute top-0 right-0 
-          transition duration-150 ease-in-out origin-top-left
-          min-w-32
-          "
-                >
-                  <li className="px-3 py-1 hover:bg-black">2.7</li>
-                  <li className="px-3 py-1 hover:bg-black">3+</li>
-                </ul>
-              </li>
-              <li className="px-3 py-1 hover:bg-black">Go</li>
-              <li className="px-3 py-1 hover:bg-black">Rust</li>
-            </ul>
-          </li>
-        </ul>
-      )}
       <ul
         className="bg-header-black text-white transform group-hover:scale-100 absolute 
       transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center"
@@ -201,6 +149,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                     allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
                     key={`mathzone-${mathzoneKeys}`}
+                    handleClick={handleClick}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
+            ) : item.key === CICO.key ? (
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onMouseEnter={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+                key={index}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <CicoNavbar
+                    allConceptsDetails={allConceptsDetails}
+                    item={{ ...item, extraParams: {} }}
+                    key={`cico-${mathzoneKeys}`}
                     handleClick={handleClick}
                     queryParams={queryParams}
                     calcWidth={44.01}

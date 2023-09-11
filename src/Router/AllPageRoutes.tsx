@@ -1,11 +1,12 @@
 import { Navigate, Route, Routes, useLocation } from "react-router";
 import { getQueryParams } from "../utils/getQueryParams";
 import routerConfig from "./RouterConfig";
-import { ROUTERKEYCONST } from "../constants";
+import { CICO, ROUTERKEYCONST } from "../constants";
 export default function AllPageRoutes() {
   const params = getQueryParams();
   const { pathname } = useLocation();
   let y = `${ROUTERKEYCONST.mathzone}/:concept/:tag/:level`;
+  const cicoDynamicRoute = `${CICO.path}/:cico_type`;
   return (
     <>
       {pathname === "/" && <Navigate to={`/allscreen?${params}`} />}
@@ -23,6 +24,12 @@ export default function AllPageRoutes() {
                 ></Route>
               ))}
             </Route>
+          ) : item.key === CICO.key ? (
+            <Route
+              path={cicoDynamicRoute}
+              Component={item.component}
+              key={item.key}
+            ></Route>
           ) : (
             <Route
               path={item.path}

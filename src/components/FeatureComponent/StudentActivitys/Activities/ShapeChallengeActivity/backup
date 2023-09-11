@@ -1,0 +1,21 @@
+{false && (
+    <div className={styles.studentTabContainer}>
+      {remoteParticipants?.map((item, i) => {
+        let names = item?.split("-")[1] || "";
+        return (
+          <div
+            key={i}
+            style={{
+              borderWidth: i == selectedStudent ? 0 : 1,
+              backgroundColor:
+                i === selectedStudent ? "#6caf20" : "initial",
+              color: i === selectedStudent ? "white" : "initial",
+            }}
+            onClick={() => handleClick(i)}
+          >
+            {names}
+          </div>
+        );
+      })}
+    </div>
+  )}
