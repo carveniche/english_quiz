@@ -1,0 +1,69 @@
+{
+    "status": true,
+    "activities": [
+        {
+            "today_class": true,
+            "day": 84,
+            "coding_learning_outcome_id": 285,
+            "coding_activity_id": 120,
+            "class_title": "Virtual football",
+            "name": "Scratch Extensions",
+            "learning_outcome": "Learn about video sensing tool",
+            "students": [
+                {
+                    "student_id": 72422,
+                    "name": "Grade4cbse Mathcoding New",
+                    "student_activity_id": 10249,
+                    "status": "active"
+                },
+                {
+                    "student_id": 63438,
+                    "name": "Loki",
+                    "student_activity_id": 10249,
+                    "status": "unactive"
+                }
+            ],
+            "project_type": "scratch",
+            "lesson_data": []
+        },
+        {
+            "today_class": false,
+            "day": 82,
+            "coding_learning_outcome_id": 284,
+            "coding_activity_id": 119,
+            "class_title": "Sorting",
+            "name": "Mini scratch projects",
+            "learning_outcome": "Learning about list operations",
+            "students": [
+                {
+                    "student_id": 72422,
+                    "name": "Grade4cbse Mathcoding New",
+                    "student_activity_id": 8035,
+                    "status": "In progress"
+                }
+            ],
+            "project_type": "scratch",
+            "lesson_data": []
+        },
+        {
+            "today_class": false,
+            "day": 83,
+            "coding_learning_outcome_id": 722,
+            "coding_activity_id": 119,
+            "class_title": "Clock",
+            "name": "Mini scratch projects",
+            "learning_outcome": "Learn about time components",
+            "students": [
+                {
+                    "student_id": 72422,
+                    "name": "Grade4cbse Mathcoding New",
+                    "student_activity_id": 8036,
+                    "status": "In progress"
+                }
+            ],
+            "project_type": "scratch",
+            "lesson_data": []
+        }
+    ],
+    "message": "Activity list sent successfully"
+}
