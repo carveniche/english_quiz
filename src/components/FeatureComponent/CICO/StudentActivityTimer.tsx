@@ -1,27 +1,51 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import styles2 from "./StudentActivity.module.css";
 import HtmlParser from "react-html-parser";
+import { CICO } from "../../../constants";
+import AffirmationBadges from "./AffirmationBadges";
 export default function StudentActivityTimer({
   currentTime = Date.now(),
   timerRef,
   instruction,
+  handleSubmit,
+  isClosed,
+  isShowCornerImage,
+  activityType,
+  selectedItem,
+  isBadgesVisible,
 }: {
   currentTime: number;
   timerRef: any;
+  instruction: string;
+  handleSubmit: Function | null;
+  isClosed: boolean;
 }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
-    timerRef.current = setInterval(() => {
+    timerRef.current.id = setInterval(() => {
       setCount(() => {
         let timer = Math.floor((Date.now() - currentTime) / 1000);
         return timer;
       });
     }, 1000);
-    return () => clearInterval(timerRef.current);
+    return () => clearInterval(timerRef.current.id);
   }, []);
+  const handleClick = () => {
+    typeof handleSubmit === "function" && handleSubmit();
+  };
+  timerRef.current.count = count;
   return (
     <>
+      {isShowCornerImage && (
+        <div style={{ float: "left" }}>
+          <AffirmationBadges
+            checkIn={activityType === CICO.checkIn}
+            visibility={isBadgesVisible ? "visible" : "hidden"}
+            selectedItem={selectedItem}
+          />
+        </div>
+      )}
       <div style={{ position: "absolute", right: 10 }}>
         <button
           style={{
@@ -31,10 +55,12 @@ export default function StudentActivityTimer({
             color: "white",
             borderRadius: 5,
           }}
-          onClick={() => null}
+          onClick={handleClick}
         >
           <img
-            src={`/static/media/Closedicon/${false ? "close2" : "close1"}.png`}
+            src={`/static/media/Closedicon/${
+              isClosed ? "close2" : "close1"
+            }.png`}
             style={{ width: 80 }}
           />
         </button>

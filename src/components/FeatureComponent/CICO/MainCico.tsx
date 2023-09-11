@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { CICO } from "../../../constants";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { fetchCheckInData } from "../../../api";
+import { fetchCheckInData, fetchCheckOutData } from "../../../api";
 import Affirmation from "./Affirmation/Affirmation";
 import { RootState } from "../../../redux/store";
 import { cicoComponentLevelDataTrack } from "../../../redux/features/ComponentLevelDataReducer";
@@ -47,7 +47,7 @@ export default function MainCico() {
     currentSelectedKey,
     activeTabArray,
   } = useSelector((state: RootState) => state.activeTabReducer);
-  const { cico_type } = useParams();
+  const { cico_type }: { cico_type: string } = useParams();
   useEffect(() => {
     window.addEventListener("resize", () => {
       setTimeout(() => {
@@ -71,6 +71,7 @@ export default function MainCico() {
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
     ];
+    if (!payload.key) payload.key = CICO.checkIn;
     let activeTabData = activeTabArray[currentSelectedIndex];
     let DataTrackObj = {
       pathName: currentSelectedRouter,
@@ -109,7 +110,13 @@ export default function MainCico() {
         setApiData({ msg: "No activity assigned To this batch" });
       }
     } else {
-      console.log("checkout");
+      let { data } = await fetchCheckOutData(
+        "63438" || students[0]?.id || "",
+        "217360"
+      );
+      setTimeout(() => {
+        handleDataTrack({ key: CICO.checkOut, data: { apiData: data } });
+      }, 1000);
     }
   };
   const updateStudentData = () => {
@@ -119,6 +126,7 @@ export default function MainCico() {
   };
   useEffect(() => {
     if (allExcludedParticipants.includes(identity ?? "")) {
+      console.log("hello");
       fetchCicoData(cico_type);
     }
   }, [cico_type]);

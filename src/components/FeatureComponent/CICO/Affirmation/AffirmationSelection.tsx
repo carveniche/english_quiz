@@ -10,7 +10,7 @@ export default function AffirmationSelection({
   checkIn,
   micRef,
 }) {
-  const handleClick = (i) => {
+  const handleClick = (i: number) => {
     typeof onClick === "function" && onClick(i);
   };
 
@@ -29,8 +29,8 @@ export default function AffirmationSelection({
                       ? "black"
                       : "initial",
                   borderColor: "black",
-                  width: "310px",
-                  height: "310px",
+                  width: "250px",
+                  height: "250px",
                   borderRadius: "50%",
                   padding: 0,
                   display: "flex",
@@ -43,8 +43,8 @@ export default function AffirmationSelection({
                     src={item?.image} //item?.image
                     alt={item?.name}
                     style={{
-                      width: "300px",
-                      height: "300px",
+                      width: "240px",
+                      height: "240px",
                       display: "block",
                     }}
                   />

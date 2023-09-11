@@ -27,6 +27,7 @@
     "@twilio/video-processors": "^1.0.2",
     "@twilio/video-room-monitor": "^1.0.1",
     "@types/jest": "^29.5.3",
+    "@types/react-html-parser": "^2.0.2",
     "@types/react-router": "^5.1.20",
     "aws-sdk": "^2.1098.0",
     "axios": "^1.4.0",

@@ -183,6 +183,22 @@ export const fetchCheckInData = (student_id: String, live_class_id: String) => {
   );
 };
 
+export const fetchCheckOutData = (
+  student_id: String,
+  live_class_id: String
+) => {
+  return axios.get("http://localhost:5555/check-out");
+  return axios.get(
+    `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
+    {
+      params: {
+        student_id,
+        live_class_id,
+      },
+    }
+  );
+};
+
 export const getStudentActivityResponse = (
   student_id: string,
   live_class_id: string

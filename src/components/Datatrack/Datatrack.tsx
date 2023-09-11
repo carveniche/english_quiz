@@ -157,9 +157,11 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         if (parseMessage?.value?.behaviour === "old_data_flow")
           typeof window.oldDataTrack === "function" &&
             window.oldDataTrack(parseMessage?.value?.cicoData || "");
-        // dispatch(
-        //   cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
-        // );
+        else {
+          dispatch(
+            cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
+          );
+        }
       }
     };
 

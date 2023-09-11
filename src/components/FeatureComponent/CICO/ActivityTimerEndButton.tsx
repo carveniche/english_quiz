@@ -3,6 +3,8 @@ import "./index.css";
 import styles2 from "./StudentActivity.module.css";
 import HtmlParser from "react-html-parser";
 import ActivityButton from "./ActivityButton";
+import AffirmationBadges from "./AffirmationBadges";
+import { CICO } from "../../../constants";
 export default function ActivityTimerEndButton({
   currentTime = Date.now(),
   timerRef,
@@ -11,6 +13,10 @@ export default function ActivityTimerEndButton({
   handleEndActivity,
   text,
   handleClickNext,
+  activityType,
+  isBadgesVisible,
+  selectedItem,
+  isShowCornerImage,
 }: {
   currentTime: number;
   timerRef: any;
@@ -27,6 +33,15 @@ export default function ActivityTimerEndButton({
   }, []);
   return (
     <>
+      {isShowCornerImage && (
+        <div style={{ float: "left" }}>
+          <AffirmationBadges
+            checkIn={activityType === CICO.checkIn}
+            visibility={isBadgesVisible ? "visible" : "hidden"}
+            selectedItem={selectedItem}
+          />
+        </div>
+      )}
       <div
         style={{
           position: "absolute",
