@@ -4,13 +4,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
 import MuteAll from "../MuteAll/MuteAll";
+import TechJoinedClass from "../TechJoinedClass/TechJoinedClass";
 
 export default function Header2() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
+
   return (
     <>
+      {/* TechJoinedClass component will update the techJoinedClass value in redux whenever tech joined the class*/}
+      <TechJoinedClass />
       <div className="bg-header-black flex min-h-[40px] h-[46px] w-full justify-between items-center ">
         <div className="relative flex flex-row z-10">
           <NestedMenu />

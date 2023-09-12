@@ -19,6 +19,7 @@ import {
   addVideoPlayState,
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
+  addTechJoinedClass,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -42,8 +43,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-      // console.log("pathname", pathname);
-      // console.log("DataTrack Message", parseMessage);
 
       if (
         pathname === parseMessage.pathName ||
@@ -143,6 +142,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             speedMathPlayMode: parseMessage?.value?.speedMathPlayMode,
           })
         );
+      } else if (parseMessage?.value?.datatrackName === "techJoinedClass") {
+        dispatch(addTechJoinedClass(true));
       } else if (
         parseMessage?.value?.datatrackName ===
         "updateSpeedMathScoreToOtherParticipant"

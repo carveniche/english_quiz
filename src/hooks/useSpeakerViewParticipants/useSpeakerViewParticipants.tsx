@@ -29,14 +29,15 @@ export default function useSpeakerViewParticipants() {
       setParticipants(Array.from(room.participants.values()));
 
       const participantConnected = (participant: RemoteParticipant) => {
-        if (excludeParticipant.includes(participant.identity)) {
-          return;
-        } else {
-          setParticipants((prevParticipants) => [
-            ...prevParticipants,
-            participant,
-          ]);
-        }
+        // if (excludeParticipant.includes(participant.identity)) {
+        //   return;
+        // } else {
+
+        setParticipants((prevParticipants) => [
+          ...prevParticipants,
+          participant,
+        ]);
+        // }
       };
 
       const participantDisconnected = (participant: RemoteParticipant) =>
