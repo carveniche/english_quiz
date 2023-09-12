@@ -4,6 +4,8 @@ import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/u
 import { useDispatch } from "react-redux";
 import { addTechJoinedClass } from "../../redux/features/liveClassDetails";
 
+import { isTech } from "../../utils/participantIdentity";
+
 export default function TechJoinedClass() {
   const speakerViewParticipants = useSpeakerViewParticipants();
 
@@ -17,7 +19,7 @@ export default function TechJoinedClass() {
 
   const techPresentInClass = (speakerViewParticipants: any) => {
     for (let i = 0; i < speakerViewParticipants.length; i++) {
-      if (speakerViewParticipants[i].identity === "tech") {
+      if (isTech({ identity: speakerViewParticipants[i].identity })) {
         dispatch(addTechJoinedClass(true));
         break;
       }

@@ -1,16 +1,16 @@
 import { allExcludedParticipants } from "./excludeParticipant";
 
-interface identity {
-  identity?: string;
+interface IdentityObject {
+  identity: string;
 }
 
-export function isStudentName({ identity }: identity) {
+export function isStudentName({ identity }: IdentityObject) {
   let studentName = identity?.split("-")[1];
 
   return studentName;
 }
 
-export function isTutor({ identity }: identity) {
+export function isTutor({ identity }: IdentityObject) {
   if (identity === "tutor") {
     return true;
   } else {
@@ -18,7 +18,7 @@ export function isTutor({ identity }: identity) {
   }
 }
 
-export function isTech({ identity }: identity) {
+export function isTech({ identity }: IdentityObject) {
   if (identity === "tech") {
     return true;
   } else {
@@ -26,7 +26,7 @@ export function isTech({ identity }: identity) {
   }
 }
 
-export function isTutorTechBoth({ identity }: identity) {
+export function isTutorTechBoth({ identity }: IdentityObject) {
   if (identity === "tutor" || identity === "tech") {
     return true;
   } else {
@@ -34,7 +34,7 @@ export function isTutorTechBoth({ identity }: identity) {
   }
 }
 
-export function allExcludedParticipant({ identity }: identity) {
+export function allExcludedParticipant({ identity }: IdentityObject) {
   if (allExcludedParticipants.includes(identity || "")) {
     return true;
   } else {
