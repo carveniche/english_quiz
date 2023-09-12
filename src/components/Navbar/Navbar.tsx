@@ -15,19 +15,62 @@ import { CICO, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import SpeedMathNavbarMenu from "./SpeedMathNavbarMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
 import CicoNavbar from "./CicoNavbar";
+import {
+  old_ClassType,
+  math_ClassType,
+  coding_ClassType,
+  mathCoding_ClassType,
+} from "../../utils/classTypesMenus";
+
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
+
+  const { class_type } = useSelector((state) => state.videoCallTokenData);
 
   const [currentSelectedMenuIndex, setCurrentSelectedMenuIndex] = useState(-1);
   const [mathzoneKeys, setMathzoneKeys] = useState(0);
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (routerConfig.length > 0) {
+      filterMenuByClassType();
+    }
+  }, []);
+
+  const filterMenuByClassType = () => {
+    let finalArr = [];
+
+    for (let i = 0; i < routerConfig.length; i++) {
+      if (class_type === "math_coding") {
+        if (mathCoding_ClassType.includes(routerConfig[i].name)) {
+          finalArr.push(routerConfig[i]);
+        }
+      } else if (class_type === "coding") {
+        if (coding_ClassType.includes(routerConfig[i].name)) {
+          finalArr.push(routerConfig[i]);
+        }
+      } else if (class_type === "math") {
+        if (math_ClassType.includes(routerConfig[i].name)) {
+          finalArr.push(routerConfig[i]);
+        }
+      } else {
+        if (old_ClassType.includes(routerConfig[i].name)) {
+          finalArr.push(routerConfig[i]);
+        }
+      }
+    }
+
+    return finalArr;
+  };
+
+  const filterRouterConfig = filterMenuByClassType();
 
   const handleClickMathVideoLesson = ({
     path,
@@ -36,7 +79,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     icon,
     extraParams,
   }: ActiveTabParams) => {
-    console.log("extraParams", extraParams);
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
@@ -130,7 +172,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center"
       >
         {true &&
-          routerConfig.map((item, index) => {
+          filterRouterConfig.map((item, index) => {
             return item.key === ROUTERKEYCONST.mathzone ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"

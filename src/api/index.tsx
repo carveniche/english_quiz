@@ -16,7 +16,7 @@ export const callTechSupport = async (
   user_id: Number,
   live_class_id: Number
 ) => {
-  axios.get(BaseUrl + "app_students/create_tech_support", {
+  return axios.get(BaseUrl + "app_students/create_tech_support", {
     params: {
       user_id,
       live_class_id,
@@ -435,5 +435,12 @@ export const showScratchTeacher = async (
     params: {
       live_class_id,
       user_id,
+    },
+  });
+
+export const techNotPresentApi = async (live_class_id: number) =>
+  axios.get(baseURL + "app_teachers/tech_not_joined_notification", {
+    params: {
+      live_class_id,
     },
   });
