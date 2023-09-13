@@ -2,6 +2,7 @@ import React from "react";
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 import { Participant as IParticipant } from "twilio-video";
 import ParticipantInfo from "../ParticipantInfo/ParticipantInfo";
+import { allExcludedParticipant } from "../../utils/participantIdentity";
 
 interface ParticipantProps {
   participant: IParticipant;
@@ -22,18 +23,22 @@ export function Participant({
   isLocalParticipant,
   fromScreen,
 }: ParticipantProps) {
+  let isStudent = !allExcludedParticipant({ identity: participant.identity });
   return (
     <ParticipantInfo
       participant={participant}
       isLocalParticipant={isLocalParticipant}
       screen={fromScreen}
     >
-      <ParticipantTracks
-        participant={participant}
-        videoOnly={videoOnly}
-        enableScreenShare={enableScreenShare}
-        isLocalParticipant={isLocalParticipant}
-      />
+      <div id={isStudent ? "videoStudentElement" : ""}>
+        {" "}
+        <ParticipantTracks
+          participant={participant}
+          videoOnly={videoOnly}
+          enableScreenShare={enableScreenShare}
+          isLocalParticipant={isLocalParticipant}
+        />
+      </div>
     </ParticipantInfo>
   );
 }

@@ -159,7 +159,7 @@ export default function ActivityTimerEndButton({
             alignItems: "center",
           }}
         ></div>
-        {true && (
+        {instruction && (
           <div
             className={styles2.whiteboardContainerInstruction}
             style={{ width: "94%", marginRight: "6%", padding: 0 }}

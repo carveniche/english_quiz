@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import {
   StudentActivityResponseSave,
@@ -22,13 +22,221 @@ import { RootState } from "../../../../redux/store";
 import { useDispatch } from "react-redux";
 import { cicoComponentLevelDataTrack } from "../../../../redux/features/ComponentLevelDataReducer";
 import AnimatedAnimationStories from "./AnimatedAnimationStories";
+import html2canvas from "html2canvas";
+import PreviewModal from "./PreviewModal";
+import LoadingIndicatorModal from "../LoadingIndicatorModal";
+import HtmlParser from "react-html-parser";
+const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
+  let newListOfAffirmation = listOfAffirmation.map((item) => ({
+    ...item,
+    image: item?.selected_checkin_path,
+    name: item.selected_checkin_name,
+  }));
+  const { otherData } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
+  );
+  const [count, setCount] = useState(1);
+  const [disableCount, setDisableCount] = useState(false);
+  const [retake, setRetake] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [indicatorText, setIndicatorText] = useState("");
+  const [img, setImg] = useState("");
+  useEffect(() => {
+    let id = setInterval(() => {
+      setCount((prev: number) => {
+        let newValue = prev + 1;
+        if (newValue > 3) {
+          clearTimeout(id);
+          setDisableCount(true);
+        }
+
+        return newValue;
+      });
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, []);
+  let instruction = TeacherCheckOutInstruction();
+
+  const takeScreenShot = () => {
+    setIndicatorText("Image is capturing...");
+    let element = document.querySelector("#videoStudentElement");
+    setLoading(true);
+    if (!element) {
+      alert("Please wait for student joining");
+      return;
+    }
+
+    html2canvas(element || document.createElement("div"), {
+      scale: 1,
+    })
+      .then((canvas) => {
+        var img = canvas.toDataURL("image/png");
+        setShowPreview(true);
+        setImg(img);
+        let audio = new Audio("/static/media/Audio/camera.mp3");
+        // audio.play();
+        setLoading(false);
+        setIndicatorText("");
+      })
+      .catch((err) => {
+        console.log("Screen shot failed", err);
+        alert("Please wait for student joining");
+        setLoading(false);
+        setIndicatorText("");
+      });
+  };
+  const handleClosePreviewModal = () => {
+    setShowPreview(false);
+    setRetake(true);
+    setImg("");
+  };
+
+  const takeScreenShot2 = (id: string) => {
+    html2canvas(document.querySelector(id), {
+      scale: 1,
+      useCORS: true,
+      logging: true,
+    })
+      .then(async (canvas) => {
+        var img = canvas.toDataURL("image/png");
+        console.log(img);
+      })
+      .catch((err) => {
+        console.log("Screen shot failed", err);
+        setLoading(false);
+      });
+  };
+  const handleConfirm = () => {
+    takeScreenShot2("#badgesWithImages");
+  };
+  return !otherData?.checkInOutImageUrl ? (
+    <>
+      {identity === "tutor" ? (
+        <div
+          className="flex flex flex-col items-center"
+          style={{ gap: "0.5rem" }}
+        >
+          <div style={{ textAlign: "center" }}>{instruction.instruction4}</div>
+          <div style={{ textAlign: "center" }}>{instruction.instruction5}</div>
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={newListOfAffirmation[0].image}
+              style={{ maxWidth: 250 }}
+            />
+          </div>
+          <div style={{ textAlign: "center" }}>{instruction.instruction6}</div>
+          <div style={{ textAlign: "center" }}>
+            {HtmlParser(instruction.instruction7)}
+          </div>
+        </div>
+      ) : (
+        <div
+          className="flex flex flex-col items-center"
+          style={{ gap: "0.5rem" }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={newListOfAffirmation[0].image}
+              style={{ maxWidth: 250 }}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  ) : (
+    <>
+      {loading && <LoadingIndicatorModal text={indicatorText} />}
+      {showPreview && (
+        <PreviewModal
+          img={img}
+          onClose={handleClosePreviewModal}
+          onConfirm={handleConfirm}
+          badges={newListOfAffirmation[0]?.image}
+        />
+      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "2rem",
+        }}
+      >
+        {!disableCount && (
+          <div>
+            <h3 style={{ fontSize: 23, fontWeight: "bold" }}>
+              Say it loud {count}
+            </h3>
+          </div>
+        )}
+        <AffirmationSelection
+          affirmation={newListOfAffirmation}
+          currentIndex={0}
+          className={"container"}
+          checkIn={CICO.checkIn}
+          micRef={null}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: "0.1rem",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "1rem",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "16px",
+          }}
+        >
+          {instruction?.instruction2}
+        </div>
+        <div style={{ fontSize: "16px" }}>{instruction?.instruction3}</div>
+        <button
+          onClick={takeScreenShot}
+          style={{
+            padding: 5,
+
+            color: "white",
+            borderRadius: 5,
+            display: "block",
+          }}
+        >
+          {retake ? (
+            <button
+              style={{
+                padding: 5,
+                borderRadius: 10,
+                background: "yellowgreen",
+                fontWeight: "normal",
+                color: "black",
+              }}
+            >
+              Retake
+            </button>
+          ) : (
+            <img
+              src="/static/media/camera1.png"
+              style={{
+                width: "60px",
+              }}
+            />
+          )}
+        </button>
+      </div>
+    </>
+  );
+};
 const StoriesToShow = ({ apiData, identity, handleDataTrack }) => {
   const { otherData }: { otherData: any } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
   const [storiesData, setStoriesData] = useState([]);
   useEffect(() => {
-    console.log(apiData);
     let data = apiData || [];
     data = data[0];
     setStoriesData(data?.story_question_data || []);
@@ -113,7 +321,7 @@ function AffirmationStudentScreen({
       await submitErrorLog("", "", "", "", "0");
     }
   };
-  console.log(otherData?.isCheckInSaveResponse);
+
   return (
     <>
       <div>
@@ -167,17 +375,19 @@ function AffirmationTeacherScreen({
   listOfAffirmation,
   activityType,
   handleDataTrack,
+  checkOutData,
 }) {
+  console.log(checkOutData);
   const dispatch = useDispatch();
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
-  console.log(listOfAffirmation);
+
   let instruction =
     activityType === CICO.checkIn
       ? TeacherCheckInInstruction()
       : TeacherCheckOutInstruction();
-
+  console.log(instruction);
   const handleStopTiming = () => {
     clearInterval(timerRef.current);
   };
@@ -210,70 +420,105 @@ function AffirmationTeacherScreen({
   };
   return (
     <>
-      <div>
-        <ActivityTimerEndButton
-          isShowCornerImage={otherData?.isShowStories ? true : false}
-          activityType={activityType}
-          isBadgesVisible={otherData?.isShowStories ? true : false}
-          selectedItem={listOfAffirmation[0]}
-          currentTime={Date.now()}
-          timerRef={timerRef}
-          instruction={
-            isCheckInActivity
-              ? otherData?.isCheckInSaveResponse
-                ? ""
-                : `${instruction?.instruction1} <br/>${instruction?.instruction2}`
-              : ""
-          }
-          showEndButton={
-            isCheckInActivity
-              ? otherData?.isCheckInShowNextButton
-                ? false
-                : true
-              : false
-          }
-          showNextButton={
-            isCheckInActivity
-              ? otherData?.isCheckInShowNextButton
-                ? true
+      {isCheckInActivity ? (
+        <div>
+          <ActivityTimerEndButton
+            isShowCornerImage={otherData?.isShowStories ? true : false}
+            activityType={activityType}
+            isBadgesVisible={otherData?.isShowStories ? true : false}
+            selectedItem={listOfAffirmation[0]}
+            currentTime={Date.now()}
+            timerRef={timerRef}
+            instruction={
+              isCheckInActivity
+                ? otherData?.isCheckInSaveResponse
+                  ? ""
+                  : `${instruction?.instruction1} <br/>${instruction?.instruction2}`
+                : ""
+            }
+            showEndButton={
+              isCheckInActivity
+                ? otherData?.isCheckInShowNextButton
+                  ? false
+                  : true
                 : false
-              : false
-          }
-          handleEndActivity={
-            isCheckInActivity
-              ? !otherData.isCheckInShowNextButton
-                ? handleEndCheckInActivity
-                : () => {}
-              : handleCheckOutActivity
-          }
-          handleClickNext={handleClickNextBtn}
-          text={
-            isCheckInActivity
-              ? otherData?.isCheckInShowNextButton
-                ? "Read a story"
+            }
+            showNextButton={
+              isCheckInActivity
+                ? otherData?.isCheckInShowNextButton
+                  ? true
+                  : false
+                : false
+            }
+            handleEndActivity={
+              isCheckInActivity
+                ? !otherData.isCheckInShowNextButton
+                  ? handleEndCheckInActivity
+                  : () => {}
+                : handleCheckOutActivity
+            }
+            handleClickNext={handleClickNextBtn}
+            text={
+              isCheckInActivity
+                ? otherData?.isCheckInShowNextButton
+                  ? "Read a story"
+                  : null
                 : null
-              : null
-          }
-        />
-        {otherData.isShowStories ? (
-          <StoriesToShow
-            handleDataTrack={handleDataTrack}
-            identity="tutor"
-            apiData={listOfAffirmation}
+            }
           />
-        ) : (
-          <AffirmationSelection
-            affirmation={listOfAffirmation}
-            currentIndex={-1}
-            className={"container"}
-            checkIn={CICO.checkIn}
-            micRef={null}
+          {otherData.isShowStories ? (
+            <StoriesToShow
+              handleDataTrack={handleDataTrack}
+              identity="tutor"
+              apiData={listOfAffirmation}
+            />
+          ) : (
+            <AffirmationSelection
+              affirmation={listOfAffirmation}
+              currentIndex={-1}
+              className={"container"}
+              checkIn={CICO.checkIn}
+              micRef={null}
+            />
+          )}
+        </div>
+      ) : (
+        <div>
+          <ActivityTimerEndButton
+            isShowCornerImage={false}
+            activityType={activityType}
+            isBadgesVisible={false}
+            selectedItem={listOfAffirmation[0]}
+            currentTime={Date.now()}
+            timerRef={timerRef}
+            instruction={
+              otherData?.isCheckOutSaveResponse
+                ? ""
+                : `${instruction?.instruction1?.replace(
+                    "{}",
+                    checkOutData?.selected_checkin_name
+                  )}`
+            }
+            showEndButton={true}
+            showNextButton={false}
+            text={
+              isCheckInActivity
+                ? otherData?.isCheckInShowNextButton
+                  ? "Read a story"
+                  : null
+                : null
+            }
           />
-        )}
-      </div>
+          <CheckOutAffirmationActivity
+            identity={"tutor"}
+            listOfAffirmation={[checkOutData]}
+          />
+        </div>
+      )}
     </>
   );
 }
+
 export default function Affirmation({
   apiData,
   identity,
@@ -284,7 +529,7 @@ export default function Affirmation({
   handleDataTrack,
 }: any) {
   const [listOfAffirmation, setListOfAffirmation] = useState([]);
-  const [showStories, setShowStories] = useState();
+  const [checkOutData, setCheckOutData] = useState({});
   const dispatch = useDispatch();
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
@@ -315,7 +560,7 @@ export default function Affirmation({
       activity_data2 = activity_data?.filter(
         (item: any, i) => item?.category_id === id
       );
-      console.log(activity_data2);
+
       if (activity_data2?.length < 1) {
         setListOfAffirmation([...activity_data]);
         return;
@@ -335,11 +580,21 @@ export default function Affirmation({
     }
   };
   useEffect(() => {
-    console.log(apiData);
     if (activityType === CICO.checkIn) {
       fetchCheckInResponse();
     }
   }, [otherData?.isCheckForResponse]);
+  const fetchCheckOutResponse = () => {
+    let checkOutData = apiData?.student_activity_data || [];
+    checkOutData = checkOutData[0];
+
+    if (checkOutData) {
+      setCheckOutData(checkOutData);
+    }
+  };
+  useEffect(() => {
+    if (activityType === CICO.checkOut) fetchCheckOutResponse();
+  }, []);
   return (
     <>
       <div style={{ position: "relative" }}>
@@ -349,6 +604,7 @@ export default function Affirmation({
             listOfAffirmation={listOfAffirmation}
             activityType={activityType}
             handleDataTrack={handleDataTrack}
+            checkOutData={checkOutData}
           />
         ) : (
           <>
@@ -357,6 +613,7 @@ export default function Affirmation({
               listOfAffirmation={listOfAffirmation}
               activityType={activityType}
               handleDataTrack={handleDataTrack}
+              checkOutData={checkOutData}
             />
           </>
         )}

@@ -17,7 +17,8 @@ import Affirmation from "./Affirmation/Affirmation";
 import { RootState } from "../../../redux/store";
 import { cicoComponentLevelDataTrack } from "../../../redux/features/ComponentLevelDataReducer";
 import { useDispatch } from "react-redux";
-export default function MainCico() {
+import FeelingChart from "./FeelingChart/FeelingChart";
+function Cico() {
   const heightRef = useRef(null);
   const [currentHeight, setCurrentHeight] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -114,6 +115,13 @@ export default function MainCico() {
         "63438" || students[0]?.id || "",
         "217360"
       );
+      if (data.status) {
+        setApiData({ ...data });
+      } else {
+        setApiData({
+          msg: data?.message || "No activity assigned To this batch",
+        });
+      }
       setTimeout(() => {
         handleDataTrack({ key: CICO.checkOut, data: { apiData: data } });
       }, 1000);
@@ -141,6 +149,7 @@ export default function MainCico() {
       <div
         className={`${styles.mainPage} h-full w-full m-0`}
         style={{ margin: 0, padding: 0, width: "100%" }}
+        key={cico_type}
       >
         <div
           style={{
@@ -172,6 +181,16 @@ export default function MainCico() {
                   activityType={cico_type}
                   handleDataTrack={handleDataTrack}
                 />
+              ) : apiData?.name === "Feeling" ? (
+                <FeelingChart
+                  identity={identity}
+                  apiData={apiData}
+                  userId={userId}
+                  liveClassId={liveClassId}
+                  students={students}
+                  activityType={cico_type}
+                  handleDataTrack={handleDataTrack}
+                />
               ) : (
                 <h3>{apiData?.msg || ""}</h3>
               )}
@@ -179,6 +198,14 @@ export default function MainCico() {
           </div>
         </QuizPageLayout>
       </div>
+    </>
+  );
+}
+export default function MainCico() {
+  const { cico_type }: { cico_type: string } = useParams();
+  return (
+    <>
+      <Cico key={cico_type} />
     </>
   );
 }

@@ -19,7 +19,8 @@ export default function AffirmationSelection({
       {checkIn ? (
         affirmation?.map((item, i) => {
           return (
-            item && (
+            item &&
+            i < 2 && (
               <div
                 key={i}
                 onClick={() => handleClick(i)}

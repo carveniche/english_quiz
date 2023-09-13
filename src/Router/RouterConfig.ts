@@ -34,6 +34,7 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
+  
   {
     path: "/myscreen",
     key: ROUTERKEYCONST.myScreen,
@@ -132,6 +133,7 @@ const routerConfig: routerConfig[] = [
         hasChildren: false,
         component: FlagQuestionMenu,
       },
+      
       {
         key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
         name: "HomeWork",
@@ -141,7 +143,20 @@ const routerConfig: routerConfig[] = [
         hasChildren: false,
         component: HomeWork,
       },
+      
     ],
+    
+  },
+  {
+    path: CICO.path,
+    key: CICO.key,
+    exact: true,
+    component: MainCico,
+    name: "Cico",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
   },
 ];
 export default routerConfig;

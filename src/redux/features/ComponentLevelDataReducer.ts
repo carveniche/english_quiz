@@ -3,9 +3,11 @@ import { createSlice } from "@reduxjs/toolkit"
 export interface ComponentLevelData{
     mathzone:object;
     flaggedQuestion:object;
-    otherData:any;
+    otherData:otherData;
 }
-
+interface otherData{
+    [key:string]:string | number | object
+}
 const initialState={
     mathzone:{},
     flaggedQuestion :{},

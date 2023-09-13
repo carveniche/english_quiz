@@ -59,5 +59,5 @@ export default function VideoTrack({
         : ("cover" as const),
   };
 
-  return <Video ref={ref} style={style} />;
+  return <Video ref={ref} style={style} id="video" />;
 }
