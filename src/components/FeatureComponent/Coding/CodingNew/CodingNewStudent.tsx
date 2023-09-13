@@ -58,7 +58,6 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
     showScratchTeacher(liveClassId, userId)
       .then((res) => {
         if (res.data.status) {
-          console.log("res data activities", res.data.activities);
           setNewCodingData(res.data.activities);
         }
       })
@@ -70,7 +69,6 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
   const fetchThukableUrl = () => {
     getThunkableLinks(liveClassId)
       .then((res) => {
-        console.log("Response thunkable", res);
         setThunkableLink(res.data.url);
       })
       .catch((err) => {

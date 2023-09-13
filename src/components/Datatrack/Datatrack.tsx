@@ -14,7 +14,6 @@ import {
   deleteFromActiveTab,
 } from "../../redux/features/addActiveTabLink";
 import {
-  addCurrentSelectedScreen,
   addMuteAllParticipant,
   addVideoPlayState,
   addSpeedMathGameStartDetails,
@@ -68,7 +67,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           );
         }
       }
-      console.log(parseMessage);
+
       if (parseMessage?.value?.datatrackName === "ScreenShare") {
         dispatch(addScreenShareDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "Animations") {
@@ -202,7 +201,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     return () => {
       track.off("message", handleMessage);
     };
-  }, [track]);
+  }, [track, pathname]);
 
   return null; // This component does not return any HTML, so we will return 'null' instead.
 }

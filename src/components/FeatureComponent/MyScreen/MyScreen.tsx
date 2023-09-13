@@ -46,11 +46,14 @@ export default function MyScreen() {
             {speakerViewParticipants.map((participant) => {
               return (
                 participant.identity === "tutor" && (
-                  <Participant
-                    key={participant.sid}
-                    participant={participant}
-                    fromScreen="allOtherScreens"
-                  />
+                  <div key={participant.sid}>
+                    <Participant
+                      key={participant.sid}
+                      participant={participant}
+                      fromScreen="allOtherScreens"
+                      remoteParticipantIdentity={participant.identity}
+                    />
+                  </div>
                 )
               );
             })}

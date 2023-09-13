@@ -1,3 +1,4 @@
+import React from "react";
 import { Rnd } from "react-rnd";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import { Participant } from "../Participant/Participant";
@@ -8,6 +9,7 @@ import {
 } from "../../utils/participantIdentity";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
+import { excludeParticipant } from "../../utils/excludeParticipant";
 
 export default function FloatingParticipant(screen: any) {
   const [screenName, setScreenName] = useState("");
@@ -37,12 +39,22 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return (
+      return excludeParticipant.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : (
         <div className="max-h-[200px]" key={participant.sid}>
           <Participant
             key={participant.sid}
             participant={participant}
             fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
           />
           {!allExcludedParticipant({
             identity: participant.identity,
@@ -60,12 +72,22 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithoutTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return participant.identity !== "tutor" ? (
+      return excludeParticipant.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : participant.identity !== "tutor" ? (
         <div className="max-h-[200px]" key={participant.sid}>
           <Participant
             key={participant.sid}
             participant={participant}
             fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
           />
           {!allExcludedParticipant({
             identity: participant.identity,
@@ -77,9 +99,7 @@ export default function FloatingParticipant(screen: any) {
             />
           )}
         </div>
-      ) : (
-        <></>
-      );
+      ) : null;
     });
   };
 

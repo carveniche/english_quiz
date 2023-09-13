@@ -19,6 +19,7 @@ import { addToStore } from "../../redux/features/ConceptDetailsRedux";
 import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 import { addRemoteParticipantCount } from "../../redux/features/liveClassDetails";
 import { finalRemoteParticipantCount } from "../../utils/common";
+import { excludeParticipant } from "../../utils/excludeParticipant";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -131,8 +132,8 @@ export default function Room() {
             </Item>
 
             {speakerViewParticipants.map((participant) => {
-              return participant.identity === "tech" ? (
-                <React.Fragment>
+              return excludeParticipant.includes(participant.identity) ? (
+                <React.Fragment key={participant.sid}>
                   <Participant
                     key={participant.sid}
                     participant={participant}
