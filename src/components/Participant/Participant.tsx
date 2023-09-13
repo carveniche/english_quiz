@@ -13,6 +13,8 @@ interface ParticipantProps {
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
   fromScreen?: string;
+  localParticipantIdentity?: string;
+  remoteParticipantIdentity?: string;
 }
 
 export function Participant({
@@ -21,18 +23,23 @@ export function Participant({
   enableScreenShare,
   isLocalParticipant,
   fromScreen,
+  localParticipantIdentity,
+  remoteParticipantIdentity,
 }: ParticipantProps) {
   return (
     <ParticipantInfo
       participant={participant}
       isLocalParticipant={isLocalParticipant}
       screen={fromScreen}
+      remoteParticipantIdentity={remoteParticipantIdentity}
     >
       <ParticipantTracks
         participant={participant}
         videoOnly={videoOnly}
         enableScreenShare={enableScreenShare}
         isLocalParticipant={isLocalParticipant}
+        localParticipantIdentity={localParticipantIdentity}
+        remoteParticipantIdentity={remoteParticipantIdentity}
       />
     </ParticipantInfo>
   );

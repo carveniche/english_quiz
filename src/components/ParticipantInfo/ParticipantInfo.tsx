@@ -10,6 +10,7 @@ import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from "../../hooks/usePublications/usePublications";
 import useTrack from "../../hooks/useTrack/useTrack";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting";
+import { isTech } from "../../utils/participantIdentity";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,6 +123,7 @@ interface ParticipantInfoProps {
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
   screen?: string;
+  remoteParticipantIdentity?: string;
 }
 
 export default function ParticipantInfo({
@@ -129,6 +131,7 @@ export default function ParticipantInfo({
   isLocalParticipant,
   children,
   screen,
+  remoteParticipantIdentity,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
   const videoPublication = publications.find(
@@ -151,6 +154,9 @@ export default function ParticipantInfo({
       <div
         style={{
           position: screen === "allOtherScreens" ? "relative" : "absolute",
+          display: isTech({ identity: remoteParticipantIdentity || "" })
+            ? "none"
+            : "",
         }}
         className={classes.innerContainer}
       >

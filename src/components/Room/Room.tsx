@@ -1,3 +1,4 @@
+import React from "react";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import styled from "styled-components";
 import Participant from "../Participant/Participant";
@@ -17,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { addToStore } from "../../redux/features/ConceptDetailsRedux";
 import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 import { addRemoteParticipantCount } from "../../redux/features/liveClassDetails";
+import { finalRemoteParticipantCount } from "../../utils/common";
 interface remotePCountInterface {
   remotepcount: number;
 }
@@ -57,7 +59,7 @@ export default function Room() {
 
   const speakerViewParticipants = useSpeakerViewParticipants();
 
-  const remotePCount = speakerViewParticipants.length;
+  const remotePCount = finalRemoteParticipantCount(speakerViewParticipants);
 
   const [isAudioEnabled, toggleAudioEnabled] = useLocalAudioToggle();
 
@@ -119,15 +121,26 @@ export default function Room() {
                   />
                 </>
               )}
+
               <Participant
                 participant={localParticipant}
                 isLocalParticipant={true}
                 fromScreen={"allscreen"}
+                localParticipantIdentity={localParticipant.identity}
               />
             </Item>
 
             {speakerViewParticipants.map((participant) => {
-              return (
+              return participant.identity === "tech" ? (
+                <React.Fragment>
+                  <Participant
+                    key={participant.sid}
+                    participant={participant}
+                    fromScreen={"allscreen"}
+                    remoteParticipantIdentity={participant.identity}
+                  />
+                </React.Fragment>
+              ) : (
                 <Item remotepcount={remotePCount} key={participant.sid}>
                   {!allExcludedParticipant({
                     identity: participant.identity,
@@ -142,6 +155,7 @@ export default function Room() {
                     key={participant.sid}
                     participant={participant}
                     fromScreen={"allscreen"}
+                    remoteParticipantIdentity={participant.identity}
                   />
                 </Item>
               );

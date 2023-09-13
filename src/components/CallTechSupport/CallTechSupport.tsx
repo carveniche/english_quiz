@@ -34,7 +34,7 @@ export default function CallTechSupport() {
       setTimeout(() => {
         setConnectedFlag(false);
         setConnectingFlag(false);
-        setActiveLogo(!activeLogo);
+        setActiveLogo(false);
       }, 2000);
     }
   }, [techJoinedClass]);
@@ -50,7 +50,7 @@ export default function CallTechSupport() {
     } else {
       setBackgroundColor("bg-black");
     }
-    setActiveLogo(!activeLogo);
+    setActiveLogo(true);
     setConnectingFlag(true);
 
     try {
