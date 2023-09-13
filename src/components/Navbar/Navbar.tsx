@@ -178,6 +178,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
                 onMouseEnter={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
+                key={index}
               >
                 <div className={"w-48"} style={{ display: "block" }}>
                   <div className="flex gap-2">
@@ -235,12 +236,14 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 item={item}
                 index={index}
                 queryParams={queryParams}
+                key={`miscellaneous-${index}`}
               />
             ) : item.key === ROUTERKEYCONST.mathvideolesson ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
                 onMouseEnter={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
+                key={index}
               >
                 <div className={"w-48"} style={{ display: "block" }}>
                   <div className="flex gap-2">
@@ -268,6 +271,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
                 onMouseEnter={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
+                key={index}
               >
                 <div className={"w-48"} style={{ display: "block" }}>
                   <div className="flex gap-2">
@@ -308,6 +312,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                   }
                   className={"w-48"}
                   style={{ display: "block" }}
+                  key={index}
                 >
                   <div className="flex gap-2">
                     <TabIcon src={item.icon} />
