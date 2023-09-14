@@ -402,3 +402,9 @@ export const submitErrorLog = async (
         console.log("Error", error.message, "h3");
       }
     });
+
+export const submitStudentFeedbackForm = (obj: object) => {
+  return axios.get(baseURL + "/app_students/update_student_feedback", {
+    params: { ...obj },
+  });
+};

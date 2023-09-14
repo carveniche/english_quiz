@@ -8,14 +8,17 @@ import ActivityTimerEndButton from "../ActivityTimerEndButton";
 import Draggable from "react-draggable";
 import styles from "./feelingchart.module.css";
 import { dragdropPointCordinate } from "../../CommonFunction/dragdropPointCordinate";
-import { relative } from "path";
 import StudentActivityTimer from "../StudentActivityTimer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
-import { getStudentActivityResponse } from "../../../../api";
+import {
+  StudentActivityTeacherResponseSave,
+  getStudentActivityResponse,
+} from "../../../../api";
 import { CICO } from "../../../../constants";
 import { cicoComponentLevelDataTrack } from "../../../../redux/features/ComponentLevelDataReducer";
 import HtmlParser from "react-html-parser";
+import { Button } from "@mui/material";
 const RenderedFeelingOptions = ({
   isEnabled,
   handleStop,
@@ -175,8 +178,16 @@ const DisplayAllFeelings = ({
     </>
   );
 };
-const QuestionBox = ({ apiData, questionBox }) => {
-  const [currentIndex, setSelectedIndex] = useState(0);
+const QuestionBox = ({
+  apiData,
+  questionBox,
+  activityType,
+  count,
+  liveClassId,
+  userId,
+  students,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [checkInData, setCheckInData] = useState(
     questionBox.map((item: object) => ({ ...item }))
   );
@@ -185,6 +196,40 @@ const QuestionBox = ({ apiData, questionBox }) => {
     setCheckInData([...checkInData]);
     return "";
   };
+  const handleNextslide = () => {
+    handleSaveResponse(currentQuestionIndex);
+    setCurrentIndex(currentIndex - 1);
+  };
+  const handlePrevslide = async () => {
+    // handleSaveResponse(currentQuestionIndex);
+    setSaveButton(false);
+    setCurrentIndex(currentIndex - 1);
+  };
+  const handleSaveResponse = async (index) => {
+    let formData = new FormData();
+
+    let checkoutActivityCategoryId = categoryId;
+    if (CICO.checkOut === activityType)
+      checkoutActivityCategoryId =
+        checkInQuestionData[0]?.checkin_out_activity_category_id;
+    let checkin_ativity_id = apiData?.activity_id;
+    formData.append("student_id", students[0]?.id || "");
+    formData.append("teacher_id", userId);
+    formData.append("checkin_activity_id", checkin_ativity_id);
+    formData.append("live_class_id", liveClassId);
+    formData.append("duration", count);
+    formData.append(
+      "checkin_out_activity_category_id",
+      checkoutActivityCategoryId
+    );
+    formData.append("answer", checkInData[index]?.answer);
+    formData.append(
+      "checkin_out_activity_data_id",
+      checkInData[index]?.activity_data_id
+    );
+    await StudentActivityTeacherResponseSave(formData);
+  };
+
   return (
     <>
       <div className="flex flex-col gap-4 items-center">
@@ -208,11 +253,28 @@ const QuestionBox = ({ apiData, questionBox }) => {
             ></textarea>
           </div>
         </div>
+        <div className="flex gap-2 justify-center">
+          {currentIndex > 0 && (
+            <Button variant="contained" onClick={handlePrevslide}>
+              Prev
+            </Button>
+          )}
+          {currentIndex < checkInData.length - 1 && (
+            <Button variant="contained" onClick={handleNextslide}>
+              Next
+            </Button>
+          )}
+          {currentIndex === checkInData.length - 1 && (
+            <Button variant="contained" onClick={handleSaveResponse}>
+              Save
+            </Button>
+          )}
+        </div>
       </div>
     </>
   );
 };
-const StudentScreen = ({ apiData, identity }) => {
+const StudentScreen = ({ apiData, identity, students }) => {
   const instruction = StudentCheckInInstruction();
   const timerRef = useRef({ count: 0, id: 0 });
   const [feelingArray, setFeelingArray] = useState([]);
@@ -280,9 +342,19 @@ const StudentScreen = ({ apiData, identity }) => {
     </div>
   );
 };
-const TeacherScreen = ({ apiData, identity }) => {
+const TeacherScreen = ({
+  apiData,
+  identity,
+  handleDataTrack,
+  userId,
+  activityType,
+  liveClassId,
+  students,
+}) => {
   const instruction = TeacherCheckInInstruction();
   const timerRef = useRef();
+  const [checkInCategoryId, setCheckInCategoryId] = useState("");
+  const [checkOutCategoryId, setCheckOutCategoryId] = useState("0");
   const timerCountRef = useRef();
   const [feelingArray, setFeelingArray] = useState([]);
   const [questionInput, setQuestionInput] = useState([]);
@@ -293,6 +365,7 @@ const TeacherScreen = ({ apiData, identity }) => {
     setFeelingArray(apiData?.activity_data || []);
   }, []);
   useEffect(() => {
+    if (activityType === CICO.checkOut) return;
     if (!otherData?.isStudentCheckInActivitySaveResponse) return;
     let { activity_data } = apiData;
     activity_data = activity_data || [];
@@ -300,6 +373,9 @@ const TeacherScreen = ({ apiData, identity }) => {
       activity_data[otherData?.selectedCheckInIndex]?.story_question_data || []
     );
   }, [otherData?.isStudentCheckInActivitySaveResponse]);
+  useEffect(() => {
+    if (activityType === CICO.checkIn) return;
+  }, [otherData?.isStudentCheckOutActivitySaveResponse]);
   console.log(questionInput);
   return (
     <div>
@@ -320,6 +396,10 @@ const TeacherScreen = ({ apiData, identity }) => {
             questionBox={questionInput}
             apiData={apiData}
             count={timerCountRef.current?.count || 0}
+            userId={userId}
+            activityType={activityType}
+            liveClassId={liveClassId}
+            students={students}
           />
         </>
       ) : (
@@ -391,9 +471,21 @@ export default function FeelingChart({
   return (
     <>
       {identity === "tutor" ? (
-        <TeacherScreen apiData={apiData} identity={identity} />
+        <TeacherScreen
+          apiData={apiData}
+          identity={identity}
+          liveClassId={liveClassId}
+          activityType={activityType}
+          userId={userId}
+          handleDataTrack={handleDataTrack}
+          students={students}
+        />
       ) : (
-        <StudentScreen apiData={apiData} identity={identity} />
+        <StudentScreen
+          apiData={apiData}
+          identity={identity}
+          students={students}
+        />
       )}
     </>
   );
