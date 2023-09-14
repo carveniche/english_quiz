@@ -32,6 +32,10 @@ export default function ActiveTabMenu() {
     icon,
     extraParams,
   }: ActiveTabParams) => {
+    if (!isTutorTechBoth({ identity: String(role_name) })) {
+      return;
+    }
+
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
