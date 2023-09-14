@@ -33,6 +33,7 @@ interface liveClassDetailsTypes {
   speedMathPlayMode: string;
   speedMathScoreofAllParticipant: any;
   isRecordingEnabled: boolean;
+  isClassHasDisconnected:boolean
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -64,6 +65,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathPlayMode: "",
   speedMathScoreofAllParticipant: [],
   isRecordingEnabled: false,
+  isClassHasDisconnected:false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -138,9 +140,12 @@ export const liveClassDetailsSlice = createSlice({
     },
     startAndStopRecordingRecording: (state, action) => {
       const { payload } = action;
-      console.log("llll");
       state.isRecordingEnabled = payload;
     },
+    endRoomRequest:(state,action)=>{
+      const { payload } = action;
+      state.isClassHasDisconnected=payload
+    }
   },
 });
 
@@ -157,6 +162,7 @@ export const {
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
   startAndStopRecordingRecording,
+  endRoomRequest
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;
