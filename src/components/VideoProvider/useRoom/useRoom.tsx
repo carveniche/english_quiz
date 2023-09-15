@@ -10,7 +10,7 @@ import Video, {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { excludeParticipant } from "../../../utils/excludeParticipant";
+import { excludeParticipantTechSmParent } from "../../../utils/excludeParticipant";
 import { isParentOrSM, isTech } from "../../../utils/participantIdentity";
 
 // import { VideoRoomMonitor } from "@twilio/video-room-monitor";
@@ -38,28 +38,12 @@ export default function useRoom(
     (token: string) => {
       setIsConnecting(true);
 
-      // let filterLocalTracks: LocalAudioTrack[] = [];
-
-      // if (excludeParticipant.includes(String(role_name))) {
-      //   localTracks.map((item) => {
-      //     if (item.kind !== "video") {
-      //       filterLocalTracks.push(item as LocalAudioTrack);
-      //     }
-      //   });
-      // }
-
-      // let finalTracks;
-
-      // if (isTech({ identity: String(role_name) })) {
-      //   finalTracks = filterLocalTracks;
-      // } else {
-      //   finalTracks = localTracks;
-      // }
-
-      const filteredTracks = excludeParticipant.includes(String(role_name))
+      const filteredTracks = isTech({ identity: String(role_name) })
         ? (localTracks.filter(
             (item) => item.kind !== "video"
           ) as LocalAudioTrack[])
+        : isParentOrSM({ identity: String(role_name) })
+        ? []
         : localTracks;
 
       const tracksToConnect = isTech({ identity: String(role_name) })
@@ -67,8 +51,6 @@ export default function useRoom(
         : isParentOrSM({ identity: String(role_name) })
         ? []
         : [...filteredTracks, new LocalDataTrack()];
-
-      console.log("tracksToConnect", tracksToConnect);
 
       return Video.connect(token, {
         ...optionsRef.current,

@@ -1,5 +1,5 @@
 import { isPlainObject } from "is-plain-object";
-import { excludeParticipant } from "./excludeParticipant";
+import { excludeParticipantTechSmParent } from "./excludeParticipant";
 // Recursively removes any object keys with a value of undefined
 export default function removeUndefineds(obj) {
   if (!isPlainObject(obj)) return obj;
@@ -24,13 +24,17 @@ export const finalRemoteParticipantCount = (
 
   if (speakerViewParticipants.length > 0) {
     for (let i = 0; i < speakerViewParticipants.length; i++) {
-      if (!excludeParticipant.includes(speakerViewParticipants[i].identity)) {
+      if (
+        !excludeParticipantTechSmParent.includes(
+          speakerViewParticipants[i].identity
+        )
+      ) {
         count++;
       }
     }
   }
 
-  if (excludeParticipant.includes(localParticipantIdentity)) {
+  if (excludeParticipantTechSmParent.includes(localParticipantIdentity)) {
     return count - 1;
   }
 

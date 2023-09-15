@@ -6,7 +6,7 @@ import { finalRemoteParticipantCount } from "../../../utils/common";
 import { Participant } from "../../Participant/Participant";
 import ParticipantsAnimationBar from "../../ParticipantsAnimationBar/ParticipantsAnimationBar";
 import { allExcludedParticipant } from "../../../utils/participantIdentity";
-import { excludeParticipant } from "../../../utils/excludeParticipant";
+import { excludeParticipantTechSmParent } from "../../../utils/excludeParticipant";
 
 interface remotePCountInterface {
   remotepcount: number;
@@ -55,7 +55,7 @@ export default function AllScreen() {
 
   return (
     <ContainerAllScreen>
-      {!excludeParticipant.includes(localParticipant.identity) ? (
+      {!excludeParticipantTechSmParent.includes(localParticipant.identity) ? (
         <Item remotepcount={remotePCount} key={localParticipant.sid}>
           {!allExcludedParticipant({
             identity: localParticipant.identity,
@@ -78,7 +78,7 @@ export default function AllScreen() {
       ) : null}
 
       {speakerViewParticipants.map((participant) => {
-        return excludeParticipant.includes(participant.identity) ? (
+        return excludeParticipantTechSmParent.includes(participant.identity) ? (
           <React.Fragment key={participant.sid}>
             <Participant
               key={participant.sid}

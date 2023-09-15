@@ -9,7 +9,7 @@ import {
 } from "../../utils/participantIdentity";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
-import { excludeParticipant } from "../../utils/excludeParticipant";
+import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
 
 export default function FloatingParticipant(screen: any) {
   const [screenName, setScreenName] = useState("");
@@ -39,7 +39,7 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return excludeParticipant.includes(participant.identity) ? (
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
         <React.Fragment key={participant.sid}>
           <Participant
             key={participant.sid}
@@ -72,7 +72,7 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithoutTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return excludeParticipant.includes(participant.identity) ? (
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
         <React.Fragment key={participant.sid}>
           <Participant
             key={participant.sid}
