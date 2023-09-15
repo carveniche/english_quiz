@@ -26,8 +26,6 @@ export default function ParticipantTracks({
   enableScreenShare,
   videoPriority,
   isLocalParticipant,
-  localParticipantIdentity,
-  remoteParticipantIdentity,
 }: ParticipantTracksProps) {
   const publications = usePublications(participant);
 
@@ -60,8 +58,6 @@ export default function ParticipantTracks({
           videoOnly={videoOnly}
           videoPriority={videoPriority}
           enableScreenShare={enableScreenShare}
-          localParticipantIdentity={localParticipantIdentity}
-          remoteParticipantIdentity={remoteParticipantIdentity}
         />
       ))}
     </>

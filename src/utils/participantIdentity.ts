@@ -26,6 +26,19 @@ export function isTech({ identity }: IdentityObject) {
   }
 }
 
+export function isParentOrSM({ identity }: IdentityObject) {
+  if (
+    identity === "sm" ||
+    identity === "smmanger" ||
+    identity === "audit" ||
+    identity === "parent"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function isTutorTechBoth({ identity }: IdentityObject) {
   if (identity === "tutor" || identity === "tech") {
     return true;

@@ -23,7 +23,6 @@ export function Participant({
   enableScreenShare,
   isLocalParticipant,
   fromScreen,
-  localParticipantIdentity,
   remoteParticipantIdentity,
 }: ParticipantProps) {
   return (
@@ -38,8 +37,6 @@ export function Participant({
         videoOnly={videoOnly}
         enableScreenShare={enableScreenShare}
         isLocalParticipant={isLocalParticipant}
-        localParticipantIdentity={localParticipantIdentity}
-        remoteParticipantIdentity={remoteParticipantIdentity}
       />
     </ParticipantInfo>
   );

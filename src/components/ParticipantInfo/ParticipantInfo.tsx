@@ -11,6 +11,7 @@ import usePublications from "../../hooks/usePublications/usePublications";
 import useTrack from "../../hooks/useTrack/useTrack";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting";
 import { isTech } from "../../utils/participantIdentity";
+import { excludeParticipant } from "../../utils/excludeParticipant";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -154,7 +155,7 @@ export default function ParticipantInfo({
       <div
         style={{
           position: screen === "allOtherScreens" ? "relative" : "absolute",
-          display: isTech({ identity: remoteParticipantIdentity || "" })
+          display: excludeParticipant.includes(remoteParticipantIdentity || "")
             ? "none"
             : "",
         }}

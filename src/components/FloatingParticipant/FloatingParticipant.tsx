@@ -81,7 +81,7 @@ export default function FloatingParticipant(screen: any) {
             remoteParticipantIdentity={participant.identity}
           />
         </React.Fragment>
-      ) : participant.identity !== "tutor" ? (
+      ) : !isTutor({ identity: participant.identity }) ? (
         <div className="max-h-[200px]" key={participant.sid}>
           <Participant
             key={participant.sid}
@@ -110,6 +110,7 @@ export default function FloatingParticipant(screen: any) {
           participant={localParticipant}
           isLocalParticipant={true}
           fromScreen="allOtherScreens"
+          remoteParticipantIdentity={localParticipant.identity}
         />
         {!allExcludedParticipant({
           identity: localParticipant.identity,

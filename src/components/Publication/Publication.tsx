@@ -9,7 +9,6 @@ import {
   RemoteTrackPublication,
   Track,
 } from "twilio-video";
-import { isTech } from "../../utils/participantIdentity";
 
 interface PublicationProps {
   publication: LocalTrackPublication | RemoteTrackPublication;
@@ -18,7 +17,6 @@ interface PublicationProps {
   videoOnly?: boolean;
   videoPriority?: Track.Priority | null;
   enableScreenShare?: boolean;
-  localParticipantIdentity?: string;
   remoteParticipantIdentity?: string;
 }
 
@@ -28,7 +26,6 @@ export default function Publication({
   videoPriority,
   videoOnly,
   enableScreenShare,
-  remoteParticipantIdentity,
 }: PublicationProps) {
   const track = useTrack(publication);
 
@@ -40,13 +37,11 @@ export default function Publication({
   switch (track.kind) {
     case "video":
       return (
-        !isTech({ identity: remoteParticipantIdentity || "" }) && (
-          <VideoTrack
-            track={track as IVideoTrack}
-            priority={videoPriority}
-            isLocal={!track.name.includes("screen") && isLocalParticipant}
-          />
-        )
+        <VideoTrack
+          track={track as IVideoTrack}
+          priority={videoPriority}
+          isLocal={!track.name.includes("screen") && isLocalParticipant}
+        />
       );
     case "data":
       return videoOnly || enableScreenShare ? null : (

@@ -48,30 +48,34 @@ export default function AllScreen() {
 
   const speakerViewParticipants = useSpeakerViewParticipants();
 
-  const remotePCount = finalRemoteParticipantCount(speakerViewParticipants);
+  const remotePCount = finalRemoteParticipantCount(
+    speakerViewParticipants,
+    localParticipant.identity
+  );
 
   return (
     <ContainerAllScreen>
-      <Item remotepcount={remotePCount} key={localParticipant.sid}>
-        {!allExcludedParticipant({
-          identity: localParticipant.identity,
-        }) && (
-          <>
-            <ParticipantsAnimationBar
-              localParticipant={localParticipant}
-              participant={localParticipant}
-              screen={"allscreen"}
-            />
-          </>
-        )}
+      {!excludeParticipant.includes(localParticipant.identity) ? (
+        <Item remotepcount={remotePCount} key={localParticipant.sid}>
+          {!allExcludedParticipant({
+            identity: localParticipant.identity,
+          }) && (
+            <>
+              <ParticipantsAnimationBar
+                localParticipant={localParticipant}
+                participant={localParticipant}
+                screen={"allscreen"}
+              />
+            </>
+          )}
 
-        <Participant
-          participant={localParticipant}
-          isLocalParticipant={true}
-          fromScreen={"allscreen"}
-          localParticipantIdentity={localParticipant.identity}
-        />
-      </Item>
+          <Participant
+            participant={localParticipant}
+            isLocalParticipant={true}
+            fromScreen={"allscreen"}
+          />
+        </Item>
+      ) : null}
 
       {speakerViewParticipants.map((participant) => {
         return excludeParticipant.includes(participant.identity) ? (

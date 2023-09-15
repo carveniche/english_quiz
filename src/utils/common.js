@@ -16,7 +16,10 @@ export default function removeUndefineds(obj) {
   return target;
 }
 
-export const finalRemoteParticipantCount = (speakerViewParticipants) => {
+export const finalRemoteParticipantCount = (
+  speakerViewParticipants,
+  localParticipantIdentity
+) => {
   let count = 0;
 
   if (speakerViewParticipants.length > 0) {
@@ -26,5 +29,10 @@ export const finalRemoteParticipantCount = (speakerViewParticipants) => {
       }
     }
   }
+
+  if (excludeParticipant.includes(localParticipantIdentity)) {
+    return count - 1;
+  }
+
   return count;
 };

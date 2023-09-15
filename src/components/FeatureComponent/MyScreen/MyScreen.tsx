@@ -45,7 +45,7 @@ export default function MyScreen() {
           <>
             {speakerViewParticipants.map((participant) => {
               return (
-                participant.identity === "tutor" && (
+                isTutor({ identity: participant.identity }) && (
                   <div key={participant.sid}>
                     <Participant
                       key={participant.sid}

@@ -4,9 +4,14 @@ import Video, {
   ConnectOptions,
   LocalTrack,
   LocalDataTrack,
+  LocalAudioTrack,
   Room,
 } from "twilio-video";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { excludeParticipant } from "../../../utils/excludeParticipant";
+import { isParentOrSM, isTech } from "../../../utils/participantIdentity";
 
 // import { VideoRoomMonitor } from "@twilio/video-room-monitor";
 // @ts-ignore
@@ -19,6 +24,9 @@ export default function useRoom(
   const [room, setRoom] = useState<Room | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const optionsRef = useRef(options);
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
 
   useEffect(() => {
     // This allows the connect function to always access the most recent version of the options object. This allows us to
@@ -30,10 +38,41 @@ export default function useRoom(
     (token: string) => {
       setIsConnecting(true);
 
-      // return;
+      // let filterLocalTracks: LocalAudioTrack[] = [];
+
+      // if (excludeParticipant.includes(String(role_name))) {
+      //   localTracks.map((item) => {
+      //     if (item.kind !== "video") {
+      //       filterLocalTracks.push(item as LocalAudioTrack);
+      //     }
+      //   });
+      // }
+
+      // let finalTracks;
+
+      // if (isTech({ identity: String(role_name) })) {
+      //   finalTracks = filterLocalTracks;
+      // } else {
+      //   finalTracks = localTracks;
+      // }
+
+      const filteredTracks = excludeParticipant.includes(String(role_name))
+        ? (localTracks.filter(
+            (item) => item.kind !== "video"
+          ) as LocalAudioTrack[])
+        : localTracks;
+
+      const tracksToConnect = isTech({ identity: String(role_name) })
+        ? [...filteredTracks, new LocalDataTrack()]
+        : isParentOrSM({ identity: String(role_name) })
+        ? []
+        : [...filteredTracks, new LocalDataTrack()];
+
+      console.log("tracksToConnect", tracksToConnect);
+
       return Video.connect(token, {
         ...optionsRef.current,
-        tracks: [...localTracks, new LocalDataTrack()],
+        tracks: tracksToConnect,
         logLevel: "error",
       }).then(
         (newRoom) => {
