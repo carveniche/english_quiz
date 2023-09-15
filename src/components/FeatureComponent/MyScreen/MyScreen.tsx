@@ -39,7 +39,7 @@ export default function MyScreen() {
           <Participant
             participant={localParticipant}
             isLocalParticipant={true}
-            fromScreen="allOtherScreens"
+            fromScreen="myscreen"
           />
         ) : (
           <>
@@ -50,7 +50,7 @@ export default function MyScreen() {
                     <Participant
                       key={participant.sid}
                       participant={participant}
-                      fromScreen="allOtherScreens"
+                      fromScreen="myscreen"
                       remoteParticipantIdentity={participant.identity}
                     />
                   </div>

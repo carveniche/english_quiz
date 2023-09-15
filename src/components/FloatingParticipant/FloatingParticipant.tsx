@@ -49,7 +49,13 @@ export default function FloatingParticipant(screen: any) {
           />
         </React.Fragment>
       ) : (
-        <div className="max-h-[200px]" key={participant.sid}>
+        <div
+          className="max-h-[200px] max-w-[290px]"
+          style={{
+            marginTop: "10px",
+          }}
+          key={participant.sid}
+        >
           <Participant
             key={participant.sid}
             participant={participant}
@@ -62,7 +68,7 @@ export default function FloatingParticipant(screen: any) {
             <ParticipantsAnimationBar
               localParticipant={localParticipant}
               participant={participant}
-              screen={"myscreen"}
+              screen="myscreen"
             />
           )}
         </div>
@@ -82,7 +88,13 @@ export default function FloatingParticipant(screen: any) {
           />
         </React.Fragment>
       ) : !isTutor({ identity: participant.identity }) ? (
-        <div className="max-h-[200px]" key={participant.sid}>
+        <div
+          className="max-h-[200px] max-w-[290px]"
+          style={{
+            marginTop: "10px",
+          }}
+          key={participant.sid}
+        >
           <Participant
             key={participant.sid}
             participant={participant}
@@ -95,7 +107,7 @@ export default function FloatingParticipant(screen: any) {
             <ParticipantsAnimationBar
               localParticipant={localParticipant}
               participant={participant}
-              screen={"myscreen"}
+              screen="myscreen"
             />
           )}
         </div>
@@ -109,8 +121,8 @@ export default function FloatingParticipant(screen: any) {
         <Participant
           participant={localParticipant}
           isLocalParticipant={true}
-          fromScreen="allOtherScreens"
           remoteParticipantIdentity={localParticipant.identity}
+          fromScreen="allOtherScreens"
         />
         {!allExcludedParticipant({
           identity: localParticipant.identity,
@@ -118,7 +130,7 @@ export default function FloatingParticipant(screen: any) {
           <ParticipantsAnimationBar
             localParticipant={localParticipant}
             participant={localParticipant}
-            screen={"myscreen"}
+            screen="myscreen"
           />
         )}
       </div>

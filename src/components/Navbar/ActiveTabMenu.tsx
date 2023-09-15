@@ -25,14 +25,12 @@ export default function ActiveTabMenu() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const handleClick = ({
-    path,
-    key,
-    name,
-    icon,
-    extraParams,
-  }: ActiveTabParams) => {
+  const handleClick = (
+    { path, key, name, icon, extraParams }: ActiveTabParams,
+    event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
+  ) => {
     if (!isTutorTechBoth({ identity: String(role_name) })) {
+      event.preventDefault();
       return;
     }
 
@@ -90,14 +88,17 @@ export default function ActiveTabMenu() {
           <div>
             <NavLink
               to={`${item.path}?${getQueryParams()}`}
-              onClick={() =>
-                handleClick({
-                  path: item.path,
-                  key: item.key,
-                  name: item.name,
-                  icon: item.icon,
-                  extraParams: item.extraParams,
-                })
+              onClick={(event) =>
+                handleClick(
+                  {
+                    path: item.path,
+                    key: item.key,
+                    name: item.name,
+                    icon: item.icon,
+                    extraParams: item.extraParams,
+                  },
+                  event
+                )
               }
             >
               {item.name}

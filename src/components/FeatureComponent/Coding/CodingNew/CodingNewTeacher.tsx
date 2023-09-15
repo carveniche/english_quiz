@@ -102,7 +102,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     item: newCodingData,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData) => {
+    return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
           className={`flex w-full h-[80%] justify-center items-center border border-gray-200 rounded-full ${
@@ -110,6 +110,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
               ? activeProjectBgCss
               : unactiveProjectBgCss
           }`}
+          key={`scratch-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
             <a
@@ -137,7 +138,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     coding_activity_id: number,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData) => {
+    return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
           className={`flex w-full h-[80%] justify-center items-center border border-gray-200 rounded-full ${
@@ -145,6 +146,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
               ? activeProjectBgCss
               : unactiveProjectBgCss
           }`}
+          key={`python-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
             <a
@@ -219,9 +221,12 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
         </div>
       )}
       {newCodingData.length > 0 &&
-        newCodingData.map((item: newCodingData) => {
+        newCodingData.map((item: newCodingData, index) => {
           return (
-            <div className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded">
+            <div
+              className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded"
+              key={index}
+            >
               <div className="flex w-[10%] h-full justify-center items-center">
                 <div className="flex w-16 h-16 justify-center items-center bg-white border rounded-full">
                   <p className="text-speedMathTextColor font-semibold text-2xl">

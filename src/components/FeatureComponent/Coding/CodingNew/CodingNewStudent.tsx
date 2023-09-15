@@ -84,13 +84,14 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
     item: newCodingData,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData) => {
+    return item.students.map((item: studentSpecificData, index) => {
       return (
         <a
           href={`https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`}
           target="_blank"
           className="flex justify-center items-center"
           onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+          key={`scratch-${index}`}
         >
           <img className="flex w-[100%] h-[100%]" src={ScratchLogo} />
         </a>
@@ -103,13 +104,14 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
     coding_activity_id: number,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData) => {
+    return item.students.map((item: studentSpecificData, index) => {
       return (
         <a
           href={`https://www.python.begalileo.com/?user_id=${userId}&coding_activity_id=${coding_activity_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`}
           target="_blank"
           className="flex justify-center items-center"
           onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+          key={`python-${index}`}
         >
           <img className="flex w-[100%] h-[100%]" src={PythonLogo} />
         </a>
@@ -139,9 +141,12 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
         </div>
       )}
       {newCodingData.length > 0 &&
-        newCodingData.map((item: newCodingData) => {
+        newCodingData.map((item: newCodingData, index) => {
           return (
-            <div className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded">
+            <div
+              className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded"
+              key={index}
+            >
               <div className="flex w-[10%] h-full justify-center items-center">
                 <div className="flex w-16 h-16 justify-center items-center bg-white border rounded-full">
                   <p className="text-speedMathTextColor font-semibold text-2xl">
