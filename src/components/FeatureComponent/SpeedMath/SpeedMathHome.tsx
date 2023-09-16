@@ -13,7 +13,10 @@ import QuestionComponent from "./QuestionComponent";
 import ResultPage from "./ResultPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
-import { addSpeedMathGameStartDetails } from "../../../redux/features/liveClassDetails";
+import {
+  addSpeedMathGameStartDetails,
+  addSpeedMathScoreOfAllParticipant,
+} from "../../../redux/features/liveClassDetails";
 import GameInProgressTeacher from "./GameInProgressTeacher";
 
 export default function SpeedMath() {
@@ -63,6 +66,11 @@ export default function SpeedMath() {
     console.log("SpeedMathGameLevel", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
+    dispatch(
+      addSpeedMathScoreOfAllParticipant({
+        resetScore: true,
+      })
+    );
   }, [speedMathGameLevel]);
 
   useEffect(() => {

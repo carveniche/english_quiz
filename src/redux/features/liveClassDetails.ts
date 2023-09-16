@@ -111,11 +111,16 @@ export const liveClassDetailsSlice = createSlice({
     },
 
     addSpeedMathScoreOfAllParticipant: (state, action) => {
-      const { identity, userId, currentUserScoreSpeedMath } = action.payload;
+      const { identity, userId, currentUserScoreSpeedMath, resetScore } =
+        action.payload;
 
       let prevArr = state.speedMathScoreofAllParticipant;
 
-      if (prevArr.length === 0) {
+      if (resetScore) {
+        state.speedMathScoreofAllParticipant = [];
+      }
+
+      if (prevArr.length === 0 && !resetScore) {
         prevArr.push({
           userId,
           identity,
