@@ -12,13 +12,20 @@ import StudentActivityTimer from "../StudentActivityTimer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
 import {
+  StudentActivityResponseSave,
   StudentActivityTeacherResponseSave,
   getStudentActivityResponse,
+  submitErrorLog,
+  updateStatusofCicoActivity,
 } from "../../../../api";
 import { CICO } from "../../../../constants";
 import { cicoComponentLevelDataTrack } from "../../../../redux/features/ComponentLevelDataReducer";
 import HtmlParser from "react-html-parser";
 import { Button } from "@mui/material";
+import {
+  StudentCheckOutInstruction,
+  TeacherCheckOutInstruction,
+} from "./Instruction/CheckOutInstruction";
 const RenderedFeelingOptions = ({
   isEnabled,
   handleStop,
@@ -186,8 +193,10 @@ const QuestionBox = ({
   liveClassId,
   userId,
   students,
+  handleSaveResponse,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [enabledSaveButton, setEnabledSaveButton] = useState(true);
   const [checkInData, setCheckInData] = useState(
     questionBox.map((item: object) => ({ ...item }))
   );
@@ -197,37 +206,15 @@ const QuestionBox = ({
     return "";
   };
   const handleNextslide = () => {
-    handleSaveResponse(currentQuestionIndex);
-    setCurrentIndex(currentIndex - 1);
+    setEnabledSaveButton(true);
+    handleSaveResponse(currentIndex, checkInData[currentIndex]?.answer);
+
+    setCurrentIndex(currentIndex + 1);
   };
   const handlePrevslide = async () => {
     // handleSaveResponse(currentQuestionIndex);
-    setSaveButton(false);
+    setEnabledSaveButton(true);
     setCurrentIndex(currentIndex - 1);
-  };
-  const handleSaveResponse = async (index) => {
-    let formData = new FormData();
-
-    let checkoutActivityCategoryId = categoryId;
-    if (CICO.checkOut === activityType)
-      checkoutActivityCategoryId =
-        checkInQuestionData[0]?.checkin_out_activity_category_id;
-    let checkin_ativity_id = apiData?.activity_id;
-    formData.append("student_id", students[0]?.id || "");
-    formData.append("teacher_id", userId);
-    formData.append("checkin_activity_id", checkin_ativity_id);
-    formData.append("live_class_id", liveClassId);
-    formData.append("duration", count);
-    formData.append(
-      "checkin_out_activity_category_id",
-      checkoutActivityCategoryId
-    );
-    formData.append("answer", checkInData[index]?.answer);
-    formData.append(
-      "checkin_out_activity_data_id",
-      checkInData[index]?.activity_data_id
-    );
-    await StudentActivityTeacherResponseSave(formData);
   };
 
   return (
@@ -264,8 +251,17 @@ const QuestionBox = ({
               Next
             </Button>
           )}
-          {currentIndex === checkInData.length - 1 && (
-            <Button variant="contained" onClick={handleSaveResponse}>
+          {currentIndex === checkInData.length - 1 && enabledSaveButton && (
+            <Button
+              variant="contained"
+              onClick={() => {
+                setEnabledSaveButton(false);
+                handleSaveResponse(
+                  currentIndex,
+                  checkInData[currentIndex]?.answer
+                );
+              }}
+            >
               Save
             </Button>
           )}
@@ -274,19 +270,37 @@ const QuestionBox = ({
     </>
   );
 };
-const StudentScreen = ({ apiData, identity, students }) => {
-  const instruction = StudentCheckInInstruction();
+const StudentScreen = ({
+  apiData,
+  identity,
+  students,
+  handleDataTrack,
+  liveClassId,
+  userId,
+  activityType,
+  selectedCheckInResponse,
+}) => {
+  const instruction =
+    activityType === CICO.checkIn
+      ? StudentCheckInInstruction()
+      : StudentCheckOutInstruction();
   const timerRef = useRef({ count: 0, id: 0 });
   const [feelingArray, setFeelingArray] = useState([]);
   const [selectedCheckInImg, setCheckInSelectedImg] = useState("");
   const [selectedCheckInImgIndex, setSelectedCheckInImgIndex] = useState(-1);
+  const [selectedCheckOutImgIndex, setSelectedCheckOutImgIndex] = useState(-1);
   const [checkInDisplayImageKey, setCheckInDisplayKey] = useState(0);
   const [isCheckInResponseSaved, setIsCheckInResponseSave] = useState(false);
+  const dispatch = useDispatch();
+  const { otherData } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
+  );
   useEffect(() => {
     setFeelingArray(apiData?.activity_data || []);
   }, []);
   const dropRef = useRef();
   const handleCheckInStop = (e, i) => {
+    console.log(i);
     let elements = dropRef.current;
     let elementPosition = elements.getBoundingClientRect();
     let elemTop = elementPosition.top;
@@ -306,38 +320,206 @@ const StudentScreen = ({ apiData, identity, students }) => {
   };
   const handleCheckInSubmitResponse = () => {
     setIsCheckInResponseSave(true);
+    let obj: any = {
+      isStudentCheckInActivitySaveResponse: true,
+      selectedCheckInIndex: selectedCheckInImgIndex,
+    };
+    let formData = new FormData();
+    formData.append("student_id", userId);
+    formData.append("live_class_id", liveClassId);
+    formData.append("checkin_ativity_id", apiData?.activity_id);
+    formData.append(
+      "checkin_out_activity_category_id",
+      feelingArray[selectedCheckInImgIndex]?.category_id || ""
+    );
+    formData.append("duration", timerRef.current.count);
+    StudentActivityResponseSave(formData)
+      .then((res) => {
+        if (!res?.status) {
+          submitErrorLog(
+            userId,
+            liveClassId,
+            res?.message || "unable to save checkin response",
+            apiData.activity_id,
+            "0"
+          );
+        }
+        dispatch(cicoComponentLevelDataTrack(obj));
+        handleDataTrack({
+          data: {
+            isStudentCheckInActivitySaveResponse: true,
+            selectedCheckInIndex: selectedCheckInImgIndex,
+          },
+          key: CICO.checkIn,
+        });
+      })
+      .catch((e) => {
+        submitErrorLog(
+          userId,
+          liveClassId,
+          e?.message || "unable to save checkin response",
+          apiData.activity_id,
+          "0"
+        );
+      });
   };
+  const handleCheckOutSubmitResponse = () => {
+    let obj: any = {
+      isStudentCheckOutActivitySaveResponse: true,
+      selectedCheckOutIndex: selectedCheckInImgIndex,
+    };
+    dispatch(cicoComponentLevelDataTrack(obj));
+    let formData = new FormData();
+    formData.append("student_id", userId);
+    formData.append("live_class_id", liveClassId);
+    formData.append("checkin_ativity_id", apiData?.activity_id);
+    formData.append(
+      "checkin_out_activity_category_id",
+      feelingArray[selectedCheckInImgIndex]?.category_id || ""
+    );
+    formData.append("duration", timerRef.current.count);
+    StudentActivityResponseSave(formData)
+      .then((res) => {
+        if (!res?.status) {
+          submitErrorLog(
+            userId,
+            liveClassId,
+            res?.message || "unable to save checkin response",
+            apiData.activity_id,
+            "0"
+          );
+        }
+        handleDataTrack({
+          data: {
+            isStudentCheckOutActivitySaveResponse: true,
+            selectedCheckOutIndex: selectedCheckInImgIndex,
+          },
+          key: CICO.checkIn,
+        });
+      })
+      .catch((e) => {
+        submitErrorLog(
+          userId,
+          liveClassId,
+          e?.message || "unable to save checkin response",
+          apiData.activity_id,
+          "0"
+        );
+      });
+  };
+  useEffect(() => {
+    if (activityType === CICO.checkIn) {
+      if (otherData?.isStudentCheckInActivitySaveResponse) {
+        setCheckInSelectedImg(
+          apiData.activity_data[otherData?.selectedCheckInIndex]
+        );
+        setSelectedCheckInImgIndex(otherData?.selectedCheckInIndex);
+        setIsCheckInResponseSave(
+          otherData?.isStudentCheckInActivitySaveResponse
+        );
+      }
+    }
+  }, [
+    otherData?.isStudentCheckInActivitySaveResponse,
+    otherData?.selectedCheckInIndex,
+  ]);
   return (
     <div>
-      <StudentActivityTimer
-        instruction={
-          isCheckInResponseSaved ? "" : `${instruction?.instruction1}<br/>`
-        }
-        timerRef={timerRef}
-      />
-      {selectedCheckInImgIndex === -1 ? (
-        <DisplayAllFeelings
-          key={checkInDisplayImageKey}
-          feelingArray={feelingArray}
-          identity={identity}
-          handleSubmit={handleCheckInSubmitResponse}
-          handleStop={handleCheckInStop}
-          dropRef={dropRef}
-        />
-      ) : isCheckInResponseSaved ? (
+      {activityType === CICO.checkIn ? (
         <>
-          <EndAcitivityGif
-            gif1={selectedCheckInImg.gif_image}
-            gif2={selectedCheckInImg.gif_image}
+          <StudentActivityTimer
+            instruction={
+              isCheckInResponseSaved ? "" : `${instruction?.instruction1}<br/>`
+            }
+            timerRef={timerRef}
           />
+          {selectedCheckInImgIndex === -1 ? (
+            <DisplayAllFeelings
+              key={checkInDisplayImageKey}
+              feelingArray={feelingArray}
+              identity={identity}
+              handleSubmit={handleCheckInSubmitResponse}
+              handleStop={handleCheckInStop}
+              dropRef={dropRef}
+            />
+          ) : isCheckInResponseSaved ? (
+            <>
+              <EndAcitivityGif gif1={selectedCheckInImg.gif_image} gif2={""} />
+            </>
+          ) : (
+            <SelectedBox
+              identity={"student"}
+              selectedBox={selectedCheckInImg}
+              handleSubmit={handleCheckInSubmitResponse}
+              showSubmitButton={!isCheckInResponseSaved}
+            />
+          )}
         </>
       ) : (
-        <SelectedBox
-          identity={"student"}
-          selectedBox={selectedCheckInImg}
-          handleSubmit={handleCheckInSubmitResponse}
-          showSubmitButton={!isCheckInResponseSaved}
-        />
+        <>
+          <StudentActivityTimer
+            instruction={
+              otherData.isStudentCheckOutActivitySaveResponse
+                ? ""
+                : otherData?.hideNextButton
+                ? `${instruction.instruction2}<br/>${instruction.instruction3}`
+                : `${instruction?.instruction1}<br/>`
+            }
+            timerRef={timerRef}
+          />
+          {otherData.hideNextButton ||
+          otherData.isStudentCheckOutActivitySaveResponse ||
+          otherData.isEndCheckOutActivity ? (
+            <>
+              {selectedCheckInImgIndex === -1 ? (
+                <DisplayAllFeelings
+                  key={checkInDisplayImageKey}
+                  feelingArray={feelingArray}
+                  identity={identity}
+                  handleSubmit={handleCheckOutSubmitResponse}
+                  handleStop={handleCheckInStop}
+                  dropRef={dropRef}
+                />
+              ) : otherData?.isStudentCheckOutActivitySaveResponse ? (
+                <>
+                  {otherData.endCheckOutResponse ? (
+                    <EndAcitivityGif
+                      gif2={
+                        feelingArray[otherData?.selectedCheckOutIndex]
+                          ?.gif_image
+                      }
+                      gif1={selectedCheckInResponse?.gif_image}
+                    />
+                  ) : (
+                    <EndAcitivityGif
+                      gif1={
+                        feelingArray[otherData?.selectedCheckOutIndex]
+                          ?.gif_image
+                      }
+                      gif2=""
+                    />
+                  )}
+                </>
+              ) : (
+                <SelectedBox
+                  identity={"student"}
+                  selectedBox={selectedCheckInImg}
+                  handleSubmit={handleCheckOutSubmitResponse}
+                  showSubmitButton={!isCheckInResponseSaved}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <SelectedBox
+                identity={"student"}
+                selectedBox={selectedCheckInResponse}
+                handleSubmit={() => {}}
+                showSubmitButton={false}
+              />
+            </>
+          )}
+        </>
       )}
     </div>
   );
@@ -350,12 +532,17 @@ const TeacherScreen = ({
   activityType,
   liveClassId,
   students,
+  selectedCheckInResponse,
 }) => {
-  const instruction = TeacherCheckInInstruction();
+  const instruction =
+    activityType === CICO.checkIn
+      ? TeacherCheckInInstruction()
+      : TeacherCheckOutInstruction();
   const timerRef = useRef();
   const [checkInCategoryId, setCheckInCategoryId] = useState("");
   const [checkOutCategoryId, setCheckOutCategoryId] = useState("0");
   const timerCountRef = useRef();
+  const dispatch = useDispatch();
   const [feelingArray, setFeelingArray] = useState([]);
   const [questionInput, setQuestionInput] = useState([]);
   const { otherData } = useSelector(
@@ -375,35 +562,260 @@ const TeacherScreen = ({
   }, [otherData?.isStudentCheckInActivitySaveResponse]);
   useEffect(() => {
     if (activityType === CICO.checkIn) return;
+    if (!otherData?.isStudentCheckOutActivitySaveResponse) return;
+    let { activity_data } = apiData;
+    activity_data = activity_data || [];
+    setQuestionInput(
+      activity_data[otherData?.selectedCheckOutIndex]?.story_question_data || []
+    );
   }, [otherData?.isStudentCheckOutActivitySaveResponse]);
-  console.log(questionInput);
+  useEffect(() => {
+    if (activityType === CICO.checkIn) return;
+  }, [otherData?.isStudentCheckOutActivitySaveResponse]);
+  const handleSaveCheckInResponse = async (index, answer) => {
+    console.log(index, answer);
+    let categoryId = apiData?.activity_data || [];
+    categoryId = categoryId[otherData?.selectedCheckInIndex]?.category_id;
+    let formData = new FormData();
+    let checkoutActivityCategoryId = categoryId;
+    let checkin_ativity_id = apiData?.activity_id;
+    formData.append("student_id", students[0]?.id || "");
+    formData.append("teacher_id", userId);
+    formData.append("checkin_activity_id", checkin_ativity_id);
+    formData.append("live_class_id", liveClassId);
+    console.log(timerCountRef);
+    formData.append("duration", timerCountRef.current || 0);
+    formData.append(
+      "checkin_out_activity_category_id",
+      checkoutActivityCategoryId
+    );
+    formData.append("answer", answer);
+    formData.append(
+      "checkin_out_activity_data_id",
+      questionInput[index]?.activity_data_id
+    );
+    await StudentActivityTeacherResponseSave(formData);
+  };
+  const handleSaveCheckOutResponse = async (index, answer) => {
+    console.log(index, answer);
+    let categoryId = apiData?.activity_data || [];
+    categoryId = categoryId[otherData?.selectedCheckInIndex]?.category_id;
+    let formData = new FormData();
+    let checkoutActivityCategoryId = categoryId;
+    let checkin_ativity_id = apiData?.activity_id;
+    formData.append("student_id", students[0]?.id || "");
+    formData.append("teacher_id", userId);
+    formData.append("checkin_activity_id", checkin_ativity_id);
+    formData.append("live_class_id", liveClassId);
+    console.log(timerCountRef);
+    formData.append("duration", timerCountRef.current || 0);
+    formData.append(
+      "checkin_out_activity_category_id",
+      checkoutActivityCategoryId
+    );
+    formData.append("answer", answer);
+    formData.append(
+      "checkin_out_activity_data_id",
+      questionInput[index]?.activity_data_id
+    );
+    await StudentActivityTeacherResponseSave(formData);
+  };
+  const [endCheckInResponse, setEndCheckInResponse] = useState(false);
+  const [endCheckOutResponse, setEndCheckOutResponse] = useState(false);
+  const handleEndCheckInActivity = () => {
+    setEndCheckInResponse(true);
+    updateStatusofCicoActivity(
+      liveClassId,
+      apiData?.activity_id,
+      timerCountRef.current
+    )
+      .then((res) => {})
+      .catch((e) => {
+        setEndCheckInResponse(false);
+        submitErrorLog(
+          userId,
+          liveClassId,
+          e?.message || "unable to change checkIn response",
+          apiData.activity_id,
+          ""
+        );
+      });
+  };
+  const handleEndCheckOutActivity = () => {
+    setEndCheckOutResponse(true);
+    dispatch(cicoComponentLevelDataTrack({ endCheckOutResponse: true }));
+    updateStatusofCicoActivity(
+      liveClassId,
+      apiData?.activity_id,
+      timerCountRef.current
+    )
+      .then((res) => {
+        dispatch(cicoComponentLevelDataTrack({ endCheckOutResponse: true }));
+        handleDataTrack({
+          data: {
+            endCheckOutResponse: true,
+          },
+          key: CICO.checkOut,
+        });
+      })
+      .catch((e) => {
+        setEndCheckOutResponse(false);
+        submitErrorLog(
+          userId,
+          liveClassId,
+          e?.message || "unable to change checkIn response",
+          apiData.activity_id,
+          ""
+        );
+      });
+  };
+  const handleClickNext = () => {
+    dispatch(
+      cicoComponentLevelDataTrack({
+        hideNextButton: true,
+      })
+    );
+    handleDataTrack({
+      data: {
+        hideNextButton: true,
+      },
+      key: CICO.checkOut,
+    });
+  };
   return (
     <div>
-      <ActivityTimerEndButton
-        instruction={
-          otherData?.isStudentCheckInActivitySaveResponse
-            ? ""
-            : `${instruction?.instruction1}<br/><br/>${instruction?.instruction2}`
-        }
-        timerCountRef={timerCountRef}
-        timerRef={timerRef}
-      />
-      {otherData?.isStudentCheckInActivitySaveResponse ? (
+      {activityType === CICO.checkIn ? (
         <>
-          <EndAcitivityGif gif1={feelingArray[0]?.gif_image} gif2="" />
-          <QuestionBox
-            key={questionInput.length || 0}
-            questionBox={questionInput}
-            apiData={apiData}
-            count={timerCountRef.current?.count || 0}
-            userId={userId}
-            activityType={activityType}
-            liveClassId={liveClassId}
-            students={students}
+          <ActivityTimerEndButton
+            instruction={
+              otherData?.isStudentCheckInActivitySaveResponse
+                ? ""
+                : `${instruction?.instruction1}<br/><br/>${instruction?.instruction2}`
+            }
+            timerCountRef={timerCountRef}
+            timerRef={timerRef}
+            showEndButton={otherData?.isStudentCheckInActivitySaveResponse}
+            handleEndActivity={
+              endCheckInResponse ? () => {} : handleEndCheckInActivity
+            }
+            enabledEndButton={endCheckInResponse ? false : true}
           />
+          {otherData?.isStudentCheckInActivitySaveResponse ? (
+            <>
+              <EndAcitivityGif
+                gif1={feelingArray[otherData?.selectedCheckInIndex]?.gif_image}
+                gif2=""
+              />
+              {endCheckInResponse ? (
+                ""
+              ) : (
+                <QuestionBox
+                  key={questionInput.length || 0}
+                  questionBox={questionInput}
+                  apiData={apiData}
+                  count={timerCountRef.current || 0}
+                  userId={userId}
+                  activityType={activityType}
+                  liveClassId={liveClassId}
+                  students={students}
+                  handleSaveResponse={handleSaveCheckOutResponse}
+                />
+              )}
+            </>
+          ) : (
+            <DisplayAllFeelings
+              feelingArray={feelingArray}
+              identity={identity}
+            />
+          )}
         </>
       ) : (
-        <DisplayAllFeelings feelingArray={feelingArray} identity={identity} />
+        <>
+          <ActivityTimerEndButton
+            instruction={
+              otherData?.isStudentCheckOutActivitySaveResponse
+                ? ""
+                : otherData?.hideNextButton
+                ? `${instruction?.instruction2}<br/>${instruction?.instruction3}`
+                : `${instruction?.instruction1} ${
+                    selectedCheckInResponse?.name || ""
+                  }`
+            }
+            timerCountRef={timerCountRef}
+            timerRef={timerRef}
+            showEndButton={otherData?.isStudentCheckOutActivitySaveResponse}
+            handleEndActivity={
+              endCheckOutResponse ? () => {} : handleEndCheckOutActivity
+            }
+            enabledEndButton={endCheckOutResponse ? false : true}
+            showNextButton={
+              otherData?.isStudentCheckOutActivitySaveResponse
+                ? false
+                : otherData?.hideNextButton
+            }
+            text={
+              otherData?.isStudentCheckOutActivitySaveResponse
+                ? ""
+                : otherData?.hideNextButton
+                ? ""
+                : "Next"
+            }
+            handleClickNext={handleClickNext}
+          />
+          {otherData?.isStudentCheckOutActivitySaveResponse ? (
+            <>
+              {otherData.endCheckOutResponse ? (
+                <EndAcitivityGif
+                  gif2={
+                    feelingArray[otherData?.selectedCheckOutIndex]?.gif_image
+                  }
+                  gif1={selectedCheckInResponse?.gif_image}
+                />
+              ) : (
+                <EndAcitivityGif
+                  gif1={
+                    feelingArray[otherData?.selectedCheckOutIndex]?.gif_image
+                  }
+                  gif2=""
+                />
+              )}
+              {otherData?.endCheckOutResponse ? (
+                ""
+              ) : (
+                <QuestionBox
+                  key={questionInput.length || 0}
+                  questionBox={questionInput.map((item) => {
+                    let answer1 = { ...item.answer };
+                    return { ...item, answer: answer1.response, answer1 };
+                  })}
+                  apiData={apiData}
+                  count={timerCountRef.current || 0}
+                  userId={userId}
+                  activityType={activityType}
+                  liveClassId={liveClassId}
+                  students={students}
+                  handleSaveResponse={handleSaveCheckInResponse}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {otherData?.hideNextButton ? (
+                <DisplayAllFeelings
+                  feelingArray={feelingArray}
+                  identity={identity}
+                />
+              ) : (
+                <SelectedBox
+                  identity={"tutor"}
+                  selectedBox={selectedCheckInResponse}
+                  handleSubmit={() => {}}
+                  showSubmitButton={false}
+                />
+              )}
+            </>
+          )}
+        </>
       )}
     </div>
   );
@@ -424,6 +836,7 @@ export default function FeelingChart({
   );
   const [isCheckInResponseChecked, setIsCheckInResponseChecked] =
     useState(false);
+  const [checkInStudentResponse, setCheckInStudentResponse] = useState({});
   const dispatch = useDispatch();
   const findSelctedCheckInResponseData = (data) => {
     let checkin_activity_category_details = data?.checkin_responses || {};
@@ -452,7 +865,42 @@ export default function FeelingChart({
       }
     }
   };
-  const fetchCheckInResponse = async () => {
+  const findSelectedCheckOutResponseData = (data) => {
+    let checkin_activity_category_details = data?.checkin_responses || {};
+    checkin_activity_category_details =
+      checkin_activity_category_details?.student || [];
+    checkin_activity_category_details =
+      checkin_activity_category_details[0] || {};
+    checkin_activity_category_details =
+      checkin_activity_category_details?.checkin_activity_category_details ||
+      [];
+    checkin_activity_category_details =
+      checkin_activity_category_details[0] || {};
+    console.log(checkin_activity_category_details);
+    setCheckInStudentResponse(checkin_activity_category_details);
+    let checkOutResponse = data?.checkout_responses || {};
+    checkOutResponse = checkOutResponse?.student || [];
+    checkOutResponse = checkOutResponse[0] || {};
+    checkOutResponse =
+      checkOutResponse?.checkout_activity_category_details || [];
+    checkOutResponse = checkOutResponse[0] || {};
+    let id = checkOutResponse?.id || "";
+    let activity_data = apiData?.activity_data || [];
+    for (let i = 0; i < activity_data?.length; i++) {
+      if (activity_data[i]?.category_id === id) {
+        dispatch(
+          cicoComponentLevelDataTrack({
+            isStudentCheckOutActivitySaveResponse: true,
+            selectedCheckOutIndex: i,
+          })
+        );
+
+        setIsCheckInResponseChecked(true);
+        return;
+      }
+    }
+  };
+  const fetchCResponse = async () => {
     try {
       let id = userId;
       if (identity === "tutor") {
@@ -460,14 +908,19 @@ export default function FeelingChart({
       }
       const { data } = await getStudentActivityResponse(id, liveClassId);
       if (data.status) {
-        findSelctedCheckInResponseData(data);
+        if (activityType === CICO.checkIn) findSelctedCheckInResponseData(data);
+        else {
+          findSelectedCheckOutResponseData(data);
+        }
       }
     } catch (e) {}
   };
   useEffect(() => {
-    if (activityType === CICO.checkIn && !isCheckInResponseChecked)
-      fetchCheckInResponse();
-  }, [otherData?.isStudentCheckInActivitySaveResponse]);
+    if (!isCheckInResponseChecked) fetchCResponse();
+  }, [
+    otherData?.isStudentCheckInActivitySaveResponse,
+    otherData?.isStudentCheckOutActivitySaveResponse,
+  ]);
   return (
     <>
       {identity === "tutor" ? (
@@ -479,12 +932,18 @@ export default function FeelingChart({
           userId={userId}
           handleDataTrack={handleDataTrack}
           students={students}
+          selectedCheckInResponse={checkInStudentResponse}
         />
       ) : (
         <StudentScreen
           apiData={apiData}
           identity={identity}
           students={students}
+          handleDataTrack={handleDataTrack}
+          userId={userId}
+          liveClassId={liveClassId}
+          activityType={activityType}
+          selectedCheckInResponse={checkInStudentResponse}
         />
       )}
     </>

@@ -17,6 +17,8 @@ export default function ActivityTimerEndButton({
   isBadgesVisible,
   selectedItem,
   isShowCornerImage,
+  timerCountRef,
+  enabledEndButton,
 }: {
   currentTime: number;
   timerRef: any;
@@ -26,6 +28,9 @@ export default function ActivityTimerEndButton({
     timerRef.current = setInterval(() => {
       setCount(() => {
         let timer = Math.floor((Date.now() - currentTime) / 1000);
+        if (timerCountRef) {
+          timerCountRef.current = timer;
+        }
         return timer;
       });
     }, 1000);
@@ -64,7 +69,7 @@ export default function ActivityTimerEndButton({
           >
             <img
               src={`/static/media/Closedicon/${
-                false ? "close2" : "close1"
+                enabledEndButton ? "close1" : "close2"
               }.png`}
               style={{ width: 80 }}
             />

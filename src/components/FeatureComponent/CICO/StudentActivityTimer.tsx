@@ -14,12 +14,14 @@ export default function StudentActivityTimer({
   activityType,
   selectedItem,
   isBadgesVisible,
+  showEndButton,
 }: {
   currentTime: number;
   timerRef: any;
   instruction: string;
   handleSubmit: Function | null;
   isClosed: boolean;
+  showEndButton: boolean;
 }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -46,25 +48,27 @@ export default function StudentActivityTimer({
           />
         </div>
       )}
-      <div style={{ position: "absolute", right: 10 }}>
-        <button
-          style={{
-            marginLeft: 5,
-            padding: 5,
+      {showEndButton && (
+        <div style={{ position: "absolute", right: 10 }}>
+          <button
+            style={{
+              marginLeft: 5,
+              padding: 5,
 
-            color: "white",
-            borderRadius: 5,
-          }}
-          onClick={handleClick}
-        >
-          <img
-            src={`/static/media/Closedicon/${
-              isClosed ? "close2" : "close1"
-            }.png`}
-            style={{ width: 80 }}
-          />
-        </button>
-      </div>
+              color: "white",
+              borderRadius: 5,
+            }}
+            onClick={handleClick}
+          >
+            <img
+              src={`/static/media/Closedicon/${
+                isClosed ? "close2" : "close1"
+              }.png`}
+              style={{ width: 80 }}
+            />
+          </button>
+        </div>
+      )}
       <div
         style={{
           display: "flex",

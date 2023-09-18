@@ -25,6 +25,7 @@ import StudentFeedBackForm from "./components/FeedBackForms/StudentFeedbackForms
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import useVideoContext from "./hooks/useVideoContext/useVideoContext";
+import TeacherFeedbackFormStatus from "./components/FeedBackForms/TeacherFeedbackForm/TeacherFeedbackFormStatus";
 
 const Main = styled("main")(({ theme }: { theme: Theme }) => ({
   overflow: "hidden",
@@ -47,9 +48,9 @@ function JoinedScreen() {
     <Main>
       {isClassHasDisconnected &&
         (localParticipant?.identity === "tutor" ? (
-          <StudentFeedBackForm />
+          <TeacherFeedbackFormStatus />
         ) : (
-          <h1>Teacher Feedback Form</h1>
+          <StudentFeedBackForm />
         ))}
       {/* {pathname === "/" && <Navigate to={`/allScreen?${params}`} />} */}
       <Header />
