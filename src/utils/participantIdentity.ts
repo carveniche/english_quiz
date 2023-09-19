@@ -26,6 +26,14 @@ export function isTech({ identity }: IdentityObject) {
   }
 }
 
+export function isParent({ identity }: IdentityObject) {
+  if (identity === "parent") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function isParentOrSM({ identity }: IdentityObject) {
   if (
     identity === "sm" ||

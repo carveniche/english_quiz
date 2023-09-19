@@ -1,5 +1,8 @@
 import { isPlainObject } from "is-plain-object";
 import { excludeParticipantTechSmParent } from "./excludeParticipant";
+
+export const mapToArray = (map) => Array.from(map.values());
+
 // Recursively removes any object keys with a value of undefined
 export default function removeUndefineds(obj) {
   if (!isPlainObject(obj)) return obj;

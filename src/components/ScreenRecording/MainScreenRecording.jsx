@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import ScreenRecording from "./ScreenRecording";
-
-import { mapToArray } from "../../utils";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import "../../bootstrap.css";
 export default function MainScreenRecording() {

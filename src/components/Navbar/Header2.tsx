@@ -2,9 +2,10 @@ import ActiveTabMenu from "./ActiveTabMenu";
 import NestedMenu from "../MenuBar/NestedMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { isTutorTechBoth } from "../../utils/participantIdentity";
+import { isParent, isTutorTechBoth } from "../../utils/participantIdentity";
 import MuteAll from "../MuteAll/MuteAll";
 import TechJoinedClass from "../TechJoinedClass/TechJoinedClass";
+import ParentActionNavbar from "../ParentActionNavbar/ParentActionNavbar";
 
 export default function Header2() {
   const { role_name } = useSelector(
@@ -20,6 +21,12 @@ export default function Header2() {
           <NestedMenu />
           <ActiveTabMenu />
         </div>
+
+        {isParent({ identity: String(role_name) }) && (
+          <div className="justify-center content-center items-center p-5 pr-[10px]">
+            <ParentActionNavbar />
+          </div>
+        )}
 
         {isTutorTechBoth({ identity: String(role_name) }) && (
           <div className=" justify-center content-center items-center p-5 pr-[30px]">
