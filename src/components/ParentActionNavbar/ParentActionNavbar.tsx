@@ -2,9 +2,20 @@ import { useState } from "react";
 
 import EverythingOkayModel from "./EverthingOkayModel/EverythingOkayModel";
 import SuggestionCommentsModel from "./SuggestionCommentsModel/SuggestionCommentsModel";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { isStudentId } from "../../utils/participantIdentity";
 export default function ParentActionNavbar() {
   const [everythingOkayModel, setShowEverythingOkayModel] = useState(false);
   const [suggestionCommentsModel, setSuggestionCommentsModel] = useState(false);
+
+  const { liveClassId, userId } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
+
+  const { student_ids } = useSelector((state) => state.videoCallTokenData);
+  const student_id = Number(isStudentId({ identity: student_ids[0] }));
+
   const everythingOkayBtn = () => {
     setShowEverythingOkayModel(!everythingOkayModel);
   };
@@ -50,7 +61,12 @@ export default function ParentActionNavbar() {
       </div>
 
       {everythingOkayModel && (
-        <EverythingOkayModel handleClose={everythingOkayBtn} />
+        <EverythingOkayModel
+          liveClassId={liveClassId}
+          userId={userId}
+          student_id={student_id}
+          handleClose={everythingOkayBtn}
+        />
       )}
       {suggestionCommentsModel && <SuggestionCommentsModel />}
     </>

@@ -2,7 +2,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import Slider from "@mui/material/Slider";
+import { parentFeedbackApi } from "../../../api/index";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -15,10 +15,16 @@ const style = {
 };
 
 interface EverythingOkayModelProps {
+  liveClassId: number;
+  userId: number;
+  student_id: number;
   handleClose: () => void;
 }
 
 export default function EverythingOkayModel({
+  liveClassId,
+  userId,
+  student_id,
   handleClose,
 }: EverythingOkayModelProps) {
   const [ratingUsModelShow, setRatingUsModelShow] = useState(false);
@@ -45,7 +51,27 @@ export default function EverythingOkayModel({
     setFeedbackRatings(updatedFeedbackRatings);
   };
 
-  console.log("feedbackRatings", feedbackRatings);
+  const submitFeedback = async () => {
+    const bodyFormData = new FormData();
+    bodyFormData.append("live_class_id", String(liveClassId));
+    bodyFormData.append("user_id", String(userId));
+    bodyFormData.append("student_id", String(student_id));
+    bodyFormData.append("how_happy", String(feedbackRatings.how_happy));
+    bodyFormData.append("improvement", String(feedbackRatings.improvement));
+    bodyFormData.append(
+      "positive_feeling",
+      String(feedbackRatings.positive_feeling)
+    );
+
+    const response = await parentFeedbackApi(bodyFormData);
+
+    if (response.status) {
+      alert("Your Response has been Submited");
+      handleClose();
+    } else {
+      alert("Unable to send feeback at the moment, please try again later");
+    }
+  };
 
   return (
     <div>
@@ -149,18 +175,15 @@ export default function EverythingOkayModel({
                 </div>
               </div>
 
-              {/* <div className="flex justify-around flex-row items-center mt-5">
-              <Button onClick={rateUs} variant="contained" color="primary">
-                Rate Us
-              </Button>
-              <Button
-                onClick={leaveSession}
-                variant="contained"
-                color="primary"
-              >
-                Will Disconnect & Do later
-              </Button>
-            </div> */}
+              <div className="flex justify-center flex-row items-center mt-5">
+                <Button
+                  onClick={submitFeedback}
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit Feedback
+                </Button>
+              </div>
             </Box>
           </Modal>
         </div>

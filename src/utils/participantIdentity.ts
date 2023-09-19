@@ -10,6 +10,12 @@ export function isStudentName({ identity }: IdentityObject) {
   return studentName;
 }
 
+export function isStudentId({ identity }: IdentityObject) {
+  let studentName = identity?.split("-")[0];
+
+  return studentName;
+}
+
 export function isTutor({ identity }: IdentityObject) {
   if (identity === "tutor") {
     return true;

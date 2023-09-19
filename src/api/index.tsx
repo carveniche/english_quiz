@@ -3,7 +3,7 @@ import axios from "axios";
 export const baseURL2 = BaseUrl;
 export const baseURL = BaseUrl;
 export const imageUrl = "https://www.begalileo.com";
-export const videoCallToken = async (user: Number, live_class_id: Number) => {
+export const videoCallToken = async (user: number, live_class_id: number) => {
   return axios.get(BaseUrl + "app_students/video_call_token", {
     params: {
       user,
@@ -13,8 +13,8 @@ export const videoCallToken = async (user: Number, live_class_id: Number) => {
 };
 
 export const callTechSupport = async (
-  user_id: Number,
-  live_class_id: Number
+  user_id: number,
+  live_class_id: number
 ) => {
   return axios.get(BaseUrl + "app_students/create_tech_support", {
     params: {
@@ -24,7 +24,7 @@ export const callTechSupport = async (
   });
 };
 export const getLessonAndMathZoneConceptDetails = (prop: {
-  live_class_id: String;
+  live_class_id: string;
 }) => {
   return axios.get(BaseUrl + "app_students/concept_list", {
     params: {
@@ -33,44 +33,44 @@ export const getLessonAndMathZoneConceptDetails = (prop: {
   });
 };
 export const startPracticeMathzone = (params: {
-  live_class_id: Number;
-  sub_concept_id: Number;
-  tag_id: Number;
-  level: Number;
+  live_class_id: number;
+  sub_concept_id: number;
+  tag_id: number;
+  level: number;
 }) => {
   return axios.get(BaseUrl + "app_teachers/start_practice", {
     params: { ...params },
   });
 };
 export const handleUpdateNextQuestion = (params: {
-  live_class_id: Number;
-  sub_concept_id: Number;
-  tag_id: Number;
-  level: Number;
+  live_class_id: number;
+  sub_concept_id: number;
+  tag_id: number;
+  level: number;
 }) => {
   return axios.get(BaseUrl + "app_teachers/next_question", {
     params: { ...params },
   });
 };
 
-export const StudentResultMathZone = async (params: Object) => {
+export const StudentResultMathZone = async (params: object) => {
   return axios.get(BaseUrl + "app_teachers/result", {
     params: { ...params },
   });
 };
-export const getReviewResultData = async (params: Object) => {
+export const getReviewResultData = async (params: object) => {
   return axios(BaseUrl + "app_teachers/review_result", {
     params: { ...params },
   });
 };
 
-export const viewQuestionStatusApi = async (practiceId: Number) => {
+export const viewQuestionStatusApi = async (practiceId: number) => {
   return axios(
     `${BaseUrl}app_teachers/view_questions?live_class_practice_id=${practiceId}`
   );
 };
 
-export const StudentAnswerResponse = async (params: String, data: Object) => {
+export const StudentAnswerResponse = async (params: string, data: object) => {
   let config = {
     method: "post",
     url: `${BaseUrl}app_teachers/save_practice${params}`,
@@ -79,7 +79,7 @@ export const StudentAnswerResponse = async (params: String, data: Object) => {
   return axios(config);
 };
 
-export const getFlagQuestionConceptList = (liveClassID: String) => {
+export const getFlagQuestionConceptList = (liveClassID: string) => {
   return axios(
     `${BaseUrl}app_teachers/flagged_concepts?live_class_id=${liveClassID}`
   );
@@ -197,8 +197,8 @@ export const viewPrePostTestQuestionResponse = (params: object) => {
 };
 
 export const saveStudentPrePostTestResponse = async (
-  params: String,
-  data: Object
+  params: string,
+  data: object
 ) => {
   let config = {
     method: "post",
@@ -209,10 +209,10 @@ export const saveStudentPrePostTestResponse = async (
 };
 
 export const handleUpdateNextPrePostQuestion = (params: {
-  live_class_id: Number;
-  sub_concept_id: Number;
-  tag_id: Number;
-  level: Number;
+  live_class_id: number;
+  sub_concept_id: number;
+  tag_id: number;
+  level: number;
 }) => {
   return axios.get(
     BaseUrl + "app_teachers/skip_pre_post_test?pre_post_test_id",
@@ -222,7 +222,7 @@ export const handleUpdateNextPrePostQuestion = (params: {
   );
 };
 
-export const fetchCheckInData = (student_id: String, live_class_id: String) => {
+export const fetchCheckInData = (student_id: string, live_class_id: string) => {
   return axios.get(
     `${BaseUrl}live_class_checkinout_activities/checkin_activity`,
     {
@@ -235,8 +235,8 @@ export const fetchCheckInData = (student_id: String, live_class_id: String) => {
 };
 
 export const fetchCheckOutData = (
-  student_id: String,
-  live_class_id: String
+  student_id: string,
+  live_class_id: string
 ) => {
   return axios.get(
     `${BaseUrl}live_class_checkinout_activities/checkout_activity`,
@@ -443,4 +443,12 @@ export const techNotPresentApi = async (live_class_id: number) =>
     params: {
       live_class_id,
     },
+  });
+
+export const parentFeedbackApi = async (formData: object) =>
+  axios({
+    method: "post",
+    url: baseURL + "app_students/update_live_class_parent_feedback",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
   });
