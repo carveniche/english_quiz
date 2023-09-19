@@ -14,19 +14,19 @@ const style = {
   p: 4,
 };
 
-interface EverythingOkayModelProps {
+interface EverythingOkayModalProps {
   liveClassId: number;
   userId: number;
   student_id: number;
   handleClose: () => void;
 }
 
-export default function EverythingOkayModel({
+export default function EverythingOkayModal({
   liveClassId,
   userId,
   student_id,
   handleClose,
-}: EverythingOkayModelProps) {
+}: EverythingOkayModalProps) {
   const [ratingUsModelShow, setRatingUsModelShow] = useState(false);
   const [selectedSliderValue, setSelectedSliderValue] = useState(0);
   const [feedbackRatings, setFeedbackRatings] = useState({
@@ -63,13 +63,17 @@ export default function EverythingOkayModel({
       String(feedbackRatings.positive_feeling)
     );
 
-    const response = await parentFeedbackApi(bodyFormData);
+    try {
+      const response = await parentFeedbackApi(bodyFormData);
 
-    if (response.status) {
-      alert("Your Response has been Submited");
-      handleClose();
-    } else {
-      alert("Unable to send feeback at the moment, please try again later");
+      if (response.data.status) {
+        alert("Your Response has been Submitted");
+        handleClose();
+      } else {
+        alert("Unable to send feedback at the moment, please try again later");
+      }
+    } catch (error) {
+      console.error("An error occurred while sending feedback:", error);
     }
   };
 

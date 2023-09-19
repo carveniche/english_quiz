@@ -1,13 +1,15 @@
 import { useState } from "react";
 
-import EverythingOkayModel from "./EverthingOkayModel/EverythingOkayModel";
-import SuggestionCommentsModel from "./SuggestionCommentsModel/SuggestionCommentsModel";
+import EverythingOkayModal from "./EverthingOkayModal/EverythingOkayModal";
+import SuggestionCommentsModal from "./SuggestionCommentsModal/SuggestionCommentsModal";
+import RaiseAnAlarmModal from "./RaiseAnAlarmModal/RaiseAnAlarmModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { isStudentId } from "../../utils/participantIdentity";
 export default function ParentActionNavbar() {
-  const [everythingOkayModel, setShowEverythingOkayModel] = useState(false);
-  const [suggestionCommentsModel, setSuggestionCommentsModel] = useState(false);
+  const [everythingOkayModal, setShowEverythingOkayModal] = useState(false);
+  const [suggestionCommentsModal, setSuggestionCommentsModal] = useState(false);
+  const [raiseAlarmModal, setRaiseAlarmModal] = useState(false);
 
   const { liveClassId, userId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -17,15 +19,15 @@ export default function ParentActionNavbar() {
   const student_id = Number(isStudentId({ identity: student_ids[0] }));
 
   const everythingOkayBtn = () => {
-    setShowEverythingOkayModel(!everythingOkayModel);
+    setShowEverythingOkayModal(!everythingOkayModal);
   };
 
   const suggestionBtn = () => {
-    setSuggestionCommentsModel(!suggestionCommentsModel);
+    setSuggestionCommentsModal(!suggestionCommentsModal);
   };
 
   const raiseAlarmBtn = () => {
-    console.log("Raise An Alarm btn clicked");
+    setRaiseAlarmModal(!raiseAlarmModal);
   };
 
   return (
@@ -42,7 +44,7 @@ export default function ParentActionNavbar() {
         </div>
         <div>
           <button
-            className="bg-yellow-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
             type="button"
             onClick={suggestionBtn}
           >
@@ -51,7 +53,7 @@ export default function ParentActionNavbar() {
         </div>
         <div>
           <button
-            className="bg-red-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
             type="button"
             onClick={raiseAlarmBtn}
           >
@@ -60,15 +62,31 @@ export default function ParentActionNavbar() {
         </div>
       </div>
 
-      {everythingOkayModel && (
-        <EverythingOkayModel
+      {everythingOkayModal && (
+        <EverythingOkayModal
           liveClassId={liveClassId}
           userId={userId}
           student_id={student_id}
           handleClose={everythingOkayBtn}
         />
       )}
-      {suggestionCommentsModel && <SuggestionCommentsModel />}
+      {suggestionCommentsModal && (
+        <SuggestionCommentsModal
+          liveClassId={liveClassId}
+          userId={userId}
+          student_id={student_id}
+          handleClose={suggestionBtn}
+        />
+      )}
+
+      {raiseAlarmModal && (
+        <RaiseAnAlarmModal
+          liveClassId={liveClassId}
+          userId={userId}
+          student_id={student_id}
+          handleClose={raiseAlarmBtn}
+        />
+      )}
     </>
   );
 }

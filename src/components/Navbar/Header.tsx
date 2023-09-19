@@ -3,7 +3,13 @@ import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenSho
 import CallTechSupport from "../CallTechSupport/CallTechSupport";
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";
 import RecordingStartNotification from "../RecordingStartNotification/RecordingStartNotification";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { isParent } from "../../utils/participantIdentity";
 export default function Header() {
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
   return (
     <>
       {/* 
@@ -28,7 +34,9 @@ export default function Header() {
             <RecordingStartNotification />
             <CallTechSupport />
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
-            <ReportErrorScreenShot />
+            {!isParent({ identity: String(role_name) }) && (
+              <ReportErrorScreenShot />
+            )}
           </div>
         </div>
       </div>
