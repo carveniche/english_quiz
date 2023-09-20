@@ -5,10 +5,13 @@ import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAud
 import RecordingStartNotification from "../RecordingStartNotification/RecordingStartNotification";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { isParent } from "../../utils/participantIdentity";
+import { isParent, isTutor } from "../../utils/participantIdentity";
 export default function Header() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+  const { parentJoinedClass } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
   return (
     <>
@@ -20,9 +23,14 @@ export default function Header() {
 
       <ParticipantAudioTracks />
       <div className="bg-header-black-top flex min-h-[40px] w-full justify-between ">
-        <div className=" justify-center content-center p-4">
-          <BegalileoLogo />
-          <span className="text-BDBDBD p-4 mt-10">Coach: Ms.Styella</span>
+        <div className=" flex flex-row justify-center items-center content-center p-4">
+          <div>
+            <BegalileoLogo />
+            <span className="text-BDBDBD p-4 mt-10">Coach: Ms.Styella</span>
+          </div>
+          {parentJoinedClass && isTutor({ identity: String(role_name) }) && (
+            <div className="w-4 h-4 rounded-full bg-red-800 animate-ping"></div>
+          )}
         </div>
         <div className=" justify-center content-center p-4">
           <span className="text-BDBDBD p-4 mt-10">
