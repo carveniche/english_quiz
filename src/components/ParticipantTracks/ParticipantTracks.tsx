@@ -8,6 +8,8 @@ interface ParticipantTracksProps {
   enableScreenShare?: boolean;
   videoPriority?: Track.Priority | null;
   isLocalParticipant?: boolean;
+  localParticipantIdentity?: string;
+  remoteParticipantIdentity?: string;
 }
 
 /*

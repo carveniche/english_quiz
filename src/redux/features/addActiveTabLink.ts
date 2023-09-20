@@ -59,7 +59,10 @@ const activeTabReducer = createSlice({
         if (activeTabArray[index].path !== action.payload.path) {
           activeTabArray[index] = action.payload;
         }
-      } else if (action.payload.key === ROUTERKEYCONST.mathvideolesson||action.payload.key === CICO.key) {
+      } else if (
+        action.payload.key === ROUTERKEYCONST.mathvideolesson ||
+        action.payload.key === CICO.key
+      ) {
         activeTabArray[index] = action.payload;
       } else if (action.payload.key === ROUTERKEYCONST.speedmath) {
         activeTabArray[index] = action.payload;
@@ -88,7 +91,6 @@ const activeTabReducer = createSlice({
         ];
         currentTab = path;
       } else {
-        console.log(state.currentSelectedRouter);
         if (action.payload == state.currentSelectedKey) {
           currentTab = state.activeTabArray[activeTabArray.length - 1].path;
           currentSelectedKey =
@@ -104,7 +106,7 @@ const activeTabReducer = createSlice({
         }
         i++;
       }
-      console.log(currentTab);
+
       return {
         ...state,
         activeTabArray,

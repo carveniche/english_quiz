@@ -4,10 +4,7 @@ import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import handleResizeWidth from "../Mathzone/handleResizeWidth";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
-import {
-  allExcludedParticipants,
-  excludeParticipant,
-} from "../../../utils/excludeParticipant";
+import { allExcludedParticipants } from "../../../utils/excludeParticipant";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { CICO } from "../../../constants";

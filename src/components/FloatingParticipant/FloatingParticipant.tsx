@@ -1,3 +1,4 @@
+import React from "react";
 import { Rnd } from "react-rnd";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import { Participant } from "../Participant/Participant";
@@ -8,6 +9,7 @@ import {
 } from "../../utils/participantIdentity";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
+import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
 
 export default function FloatingParticipant(screen: any) {
   const [screenName, setScreenName] = useState("");
@@ -37,12 +39,28 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return (
-        <div className="max-h-[200px]" key={participant.sid}>
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
           <Participant
             key={participant.sid}
             participant={participant}
             fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : (
+        <div
+          className="max-h-[200px] max-w-[290px]"
+          style={{
+            marginTop: "10px",
+          }}
+          key={participant.sid}
+        >
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
           />
           {!allExcludedParticipant({
             identity: participant.identity,
@@ -50,7 +68,7 @@ export default function FloatingParticipant(screen: any) {
             <ParticipantsAnimationBar
               localParticipant={localParticipant}
               participant={participant}
-              screen={"myscreen"}
+              screen="myscreen"
             />
           )}
         </div>
@@ -60,12 +78,28 @@ export default function FloatingParticipant(screen: any) {
 
   const showViewWithoutTeacher = () => {
     return speakerViewParticipants.map((participant) => {
-      return participant.identity !== "tutor" ? (
-        <div className="max-h-[200px]" key={participant.sid}>
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
           <Participant
             key={participant.sid}
             participant={participant}
             fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : !isTutor({ identity: participant.identity }) ? (
+        <div
+          className="max-h-[200px] max-w-[290px]"
+          style={{
+            marginTop: "10px",
+          }}
+          key={participant.sid}
+        >
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
           />
           {!allExcludedParticipant({
             identity: participant.identity,
@@ -73,13 +107,11 @@ export default function FloatingParticipant(screen: any) {
             <ParticipantsAnimationBar
               localParticipant={localParticipant}
               participant={participant}
-              screen={"myscreen"}
+              screen="myscreen"
             />
           )}
         </div>
-      ) : (
-        <></>
-      );
+      ) : null;
     });
   };
 
@@ -89,6 +121,7 @@ export default function FloatingParticipant(screen: any) {
         <Participant
           participant={localParticipant}
           isLocalParticipant={true}
+          remoteParticipantIdentity={localParticipant.identity}
           fromScreen="allOtherScreens"
         />
         {!allExcludedParticipant({
@@ -97,7 +130,7 @@ export default function FloatingParticipant(screen: any) {
           <ParticipantsAnimationBar
             localParticipant={localParticipant}
             participant={localParticipant}
-            screen={"myscreen"}
+            screen="myscreen"
           />
         )}
       </div>

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CallTechSupportActiveLogo from "../Navbar/NavbarIcons/CallTechSupportActiveLogo";
 import CallTechSupportInActiveLogo from "../Navbar/NavbarIcons/CallTechSupportInActiveLogo";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { callTechSupport } from "../../api";
+import { callTechSupport, techNotPresentApi } from "../../api";
 
 export default function CallTechSupport() {
   const [backgroundColor, setBackgroundColor] = useState("bg-header-black");
@@ -16,21 +16,32 @@ export default function CallTechSupport() {
     (state: RootState) => state.liveClassDetails
   );
 
+  const timeoutIdRef = useRef<NodeJS.Timeout | undefined>();
+
+  const sendNotificationToTech = () => {
+    timeoutIdRef.current = setTimeout(() => {
+      if (!techJoinedClass) {
+        techNotPresentApi(liveClassId); //Tech Not joined to calling the api
+      }
+    }, 15000);
+  };
+
   useEffect(() => {
     if (techJoinedClass) {
       setConnectedFlag(true);
       setConnectingFlag(false);
+      clearTimeout(timeoutIdRef.current);
       setTimeout(() => {
         setConnectedFlag(false);
         setConnectingFlag(false);
-        setActiveLogo(!activeLogo);
+        setActiveLogo(false);
       }, 2000);
     }
   }, [techJoinedClass]);
 
   const requestTechSupport = async () => {
     if (techJoinedClass) {
-      console.log("Tech is already in the class");
+      alert("Tech Support has already joined the session");
       return;
     }
 
@@ -39,12 +50,14 @@ export default function CallTechSupport() {
     } else {
       setBackgroundColor("bg-black");
     }
-    setActiveLogo(!activeLogo);
+    setActiveLogo(true);
     setConnectingFlag(true);
 
     try {
       await callTechSupport(userId, liveClassId).then((response) => {
-        console.log("Response", response);
+        if (response.data.status) {
+          sendNotificationToTech();
+        }
       });
     } catch (error) {
       console.error("API request error:", error);

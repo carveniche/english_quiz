@@ -14,11 +14,11 @@ import {
   deleteFromActiveTab,
 } from "../../redux/features/addActiveTabLink";
 import {
-  addCurrentSelectedScreen,
   addMuteAllParticipant,
   addVideoPlayState,
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
+  addTechJoinedClass,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -42,8 +42,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-      // console.log("pathname", pathname);
-      // console.log("DataTrack Message", parseMessage);
+
+      console.log("Datatrack message received");
 
       if (
         pathname === parseMessage.pathName ||
@@ -69,7 +69,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           );
         }
       }
-      console.log(parseMessage);
+
       if (parseMessage?.value?.datatrackName === "ScreenShare") {
         dispatch(addScreenShareDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "Animations") {
@@ -143,6 +143,8 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             speedMathPlayMode: parseMessage?.value?.speedMathPlayMode,
           })
         );
+      } else if (parseMessage?.value?.datatrackName === "techJoinedClass") {
+        dispatch(addTechJoinedClass(true));
       } else if (
         parseMessage?.value?.datatrackName ===
         "updateSpeedMathScoreToOtherParticipant"
@@ -201,7 +203,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     return () => {
       track.off("message", handleMessage);
     };
-  }, [track]);
+  }, [track, pathname]);
 
   return null; // This component does not return any HTML, so we will return 'null' instead.
 }

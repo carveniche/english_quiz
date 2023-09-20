@@ -1,4 +1,4 @@
-export function getQueryParams(): String {
+export function getQueryParams(): string {
   let queryParams = new URLSearchParams(window.location.search).toString();
   return queryParams;
 }

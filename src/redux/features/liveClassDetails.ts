@@ -25,6 +25,7 @@ interface liveClassDetailsTypes {
   isKrispInstalled: boolean;
   roomToken: string;
   techJoinedClass: boolean;
+  parentJoinedClass: boolean;
   muteAllParticipant: boolean | undefined;
   videoPlayState: boolean;
   remoteParticipantCount: number;
@@ -57,6 +58,7 @@ const initialState: liveClassDetailsTypes = {
   isKrispInstalled: false,
   roomToken: "",
   techJoinedClass: false,
+  parentJoinedClass: false,
   muteAllParticipant: undefined,
   videoPlayState: false,
   remoteParticipantCount: 0,
@@ -92,6 +94,10 @@ export const liveClassDetailsSlice = createSlice({
     addTechJoinedClass: (state, action) => {
       state.techJoinedClass = action.payload;
     },
+
+    addParentJoinedClass: (state, action) => {
+      state.parentJoinedClass = action.payload;
+    },
     addMuteAllParticipant: (state, action) => {
       state.muteAllParticipant = action.payload;
     },
@@ -113,11 +119,16 @@ export const liveClassDetailsSlice = createSlice({
     },
 
     addSpeedMathScoreOfAllParticipant: (state, action) => {
-      const { identity, userId, currentUserScoreSpeedMath } = action.payload;
+      const { identity, userId, currentUserScoreSpeedMath, resetScore } =
+        action.payload;
 
       let prevArr = state.speedMathScoreofAllParticipant;
 
-      if (prevArr.length === 0) {
+      if (resetScore) {
+        state.speedMathScoreofAllParticipant = [];
+      }
+
+      if (prevArr.length === 0 && !resetScore) {
         prevArr.push({
           userId,
           identity,
@@ -156,6 +167,7 @@ export const {
   addCurrentSelectedScreen,
   addKrispInstalledEnabledDetails,
   addTechJoinedClass,
+  addParentJoinedClass,
   addMuteAllParticipant,
   addVideoPlayState,
   addRemoteParticipantCount,

@@ -14,6 +14,8 @@ interface ParticipantProps {
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
   fromScreen?: string;
+  localParticipantIdentity?: string;
+  remoteParticipantIdentity?: string;
 }
 
 export function Participant({
@@ -22,6 +24,7 @@ export function Participant({
   enableScreenShare,
   isLocalParticipant,
   fromScreen,
+  remoteParticipantIdentity,
 }: ParticipantProps) {
   let isStudent = !allExcludedParticipant({ identity: participant.identity });
   return (
@@ -29,6 +32,7 @@ export function Participant({
       participant={participant}
       isLocalParticipant={isLocalParticipant}
       screen={fromScreen}
+      remoteParticipantIdentity={remoteParticipantIdentity}
     >
       <div id={isStudent ? "videoStudentElement" : ""}>
         {" "}

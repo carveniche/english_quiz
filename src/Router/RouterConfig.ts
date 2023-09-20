@@ -16,8 +16,8 @@ interface routerConfig {
   key: string;
   exact: Boolean;
   component: React.ComponentType | null;
-  name: String;
-  icon: String;
+  name: string;
+  icon: string;
   hasChildren: Boolean | null;
   hasSubRoute: Boolean | null;
   subRoute: Object | null;
@@ -70,17 +70,7 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-  {
-    path: ROUTERKEYCONST.coding,
-    key: ROUTERKEYCONST.coding,
-    exact: true,
-    component: Coding,
-    name: "Coding",
-    icon: "/menu-icon/Whiteboard.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
+
   {
     path: `${ROUTERKEYCONST.mathzone}`,
     key: ROUTERKEYCONST.mathzone,
@@ -89,6 +79,18 @@ const routerConfig: routerConfig[] = [
     name: "Mathzone",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: true,
+    hasSubRoute: false,
+    subRoute: null,
+  },
+
+  {
+    path: ROUTERKEYCONST.coding,
+    key: ROUTERKEYCONST.coding,
+    exact: true,
+    component: Coding,
+    name: "Coding",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
   },

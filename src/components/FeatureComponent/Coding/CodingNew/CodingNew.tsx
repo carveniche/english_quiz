@@ -18,9 +18,9 @@ export default function CodingNew({ identity, env }: CodingNew) {
       </div>
       <div className="flex w-full h-full justify-center items-center">
         {isTutor({ identity: identity }) ? (
-          <CodingNewTeacher />
+          <CodingNewTeacher env={env} />
         ) : (
-          <CodingNewStudent />
+          <CodingNewStudent env={env} />
         )}
       </div>
     </div>

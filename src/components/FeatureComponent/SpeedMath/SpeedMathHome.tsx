@@ -8,12 +8,15 @@ import GameModeSelection from "./GameModeSelection";
 import { useEffect, useState } from "react";
 import { startSpeedMathGame } from "../../../api/index";
 import GameStartingTimer from "./GameStartingTimer";
-import { isTutor } from "../../../utils/participantIdentity";
+import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import QuestionComponent from "./QuestionComponent";
 import ResultPage from "./ResultPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
-import { addSpeedMathGameStartDetails } from "../../../redux/features/liveClassDetails";
+import {
+  addSpeedMathGameStartDetails,
+  addSpeedMathScoreOfAllParticipant,
+} from "../../../redux/features/liveClassDetails";
 import GameInProgressTeacher from "./GameInProgressTeacher";
 
 export default function SpeedMath() {
@@ -63,6 +66,11 @@ export default function SpeedMath() {
     console.log("SpeedMathGameLevel", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
+    dispatch(
+      addSpeedMathScoreOfAllParticipant({
+        resetScore: true,
+      })
+    );
   }, [speedMathGameLevel]);
 
   useEffect(() => {
@@ -225,7 +233,8 @@ export default function SpeedMath() {
           />
         </div>
         <div className="h-full w-full justify-center">
-          {componentNo === 1 && isTutor({ identity: String(role_name) }) ? (
+          {componentNo === 1 &&
+          isTutorTechBoth({ identity: String(role_name) }) ? (
             <GameModeSelection
               playMode={playMode}
               selectedPlayMode={selectedPlayMode}

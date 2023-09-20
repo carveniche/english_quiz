@@ -13,10 +13,7 @@ import { useSelector } from "react-redux";
 import { ViewStatusContext } from "./mathzone";
 import { handleUpdateNextQuestion, startPracticeMathzone } from "../../../api";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
-import {
-  allExcludedParticipants,
-  excludeParticipant,
-} from "../../../utils/excludeParticipant";
+import { allExcludedParticipants } from "../../../utils/excludeParticipant";
 import TeachersTitle from "./Teacher/TeachersTitle";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { isTutorTechBoth } from "../../../utils/participantIdentity";

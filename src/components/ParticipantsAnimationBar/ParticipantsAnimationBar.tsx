@@ -143,7 +143,9 @@ export default function ParticipantsAnimationBar({
             <button onClick={() => muteIconButtonClicked()}>
               <MicIconParticipantAnimationBar />
             </button>
-            <span className="text-white">{participant.identity}</span>
+            <span className="text-white">
+              {isStudentName({ identity: participant.identity })}
+            </span>
             <button
               disabled={!isTutorTechBoth({ identity: String(role_name) })}
               onClick={() =>

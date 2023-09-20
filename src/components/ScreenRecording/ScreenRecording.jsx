@@ -22,7 +22,7 @@ import { Row, Col, Modal, Container, Image } from "react-bootstrap";
 
 import moment from "moment-timezone";
 import screenPermissionImage from "../../assets/screenPermission.jpg";
-import { mapToArray } from "../../utils";
+import { mapToArray } from "../../utils/common";
 import { useDispatch } from "react-redux";
 import { startAndStopRecordingRecording } from "../../redux/features/liveClassDetails";
 

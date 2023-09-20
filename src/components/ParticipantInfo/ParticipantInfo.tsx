@@ -10,6 +10,11 @@ import useIsTrackSwitchedOff from "../../hooks/useIsTrackSwitchedOff/useIsTrackS
 import usePublications from "../../hooks/usePublications/usePublications";
 import useTrack from "../../hooks/useTrack/useTrack";
 import useParticipantIsReconnecting from "../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting";
+import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
+import {
+  isStudentName,
+  isTutorTechBoth,
+} from "../../utils/participantIdentity";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,6 +127,7 @@ interface ParticipantInfoProps {
   hideParticipant?: boolean;
   isDominantSpeaker?: boolean;
   screen?: string;
+  remoteParticipantIdentity?: string;
 }
 
 export default function ParticipantInfo({
@@ -129,6 +135,7 @@ export default function ParticipantInfo({
   isLocalParticipant,
   children,
   screen,
+  remoteParticipantIdentity,
 }: ParticipantInfoProps) {
   const publications = usePublications(participant);
   const videoPublication = publications.find(
@@ -151,6 +158,17 @@ export default function ParticipantInfo({
       <div
         style={{
           position: screen === "allOtherScreens" ? "relative" : "absolute",
+          display: excludeParticipantTechSmParent.includes(
+            remoteParticipantIdentity || ""
+          )
+            ? "none"
+            : "",
+
+          height: screen === "allOtherScreens" ? "150px" : "",
+          width: screen === "allOtherScreens" ? "200px" : "",
+          justifyContent: "center",
+          alignItems: "center",
+          border: screen === "allOtherScreens" ? "1px solid white" : "",
         }}
         className={classes.innerContainer}
       >
@@ -164,7 +182,10 @@ export default function ParticipantInfo({
                   className={classes.typography}
                   component="span"
                 >
-                  {participant.identity}
+                  {isTutorTechBoth({ identity: participant.identity })
+                    ? participant.identity
+                    : isStudentName({ identity: participant.identity })}
+
                   {isLocalParticipant && " (You)"}
                 </Typography>
               </div>

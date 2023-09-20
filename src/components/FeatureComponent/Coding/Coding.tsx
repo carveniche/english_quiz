@@ -3,15 +3,17 @@ import { useSelector } from "react-redux";
 import BaseUrl from "../../../api/ApiConfig";
 import CodingOld from "./CodingOld/CodingOld";
 import CodingNew from "./CodingNew/CodingNew";
+import { RootState } from "../../../redux/store";
 export default function Coding() {
   const [oldCodingApi, setOldCodingApi] = useState("");
-  const { liveClassId } = useSelector((state) => state.liveClassDetails);
+  const { liveClassId } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const { class_type, demo, show_new_codings, role_name, env } = useSelector(
     (state) => state.videoCallTokenData
   );
 
   useEffect(() => {
-    console.log("h1llo");
     let oldCodingUrl =
       BaseUrl + "online_classes/coding_links?live_class_id=" + liveClassId;
     setOldCodingApi(oldCodingUrl);

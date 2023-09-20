@@ -61,14 +61,12 @@ export default function MathVideoLesson() {
         videoRef.current.play();
         setVideoPlaying(true);
         if (isTutor({ identity: String(role_name) })) {
-          console.log("send datatrack from play video as identity is tutor");
           handleDataTrack(true);
         }
       } else if (action === "pause") {
         videoRef.current.pause();
         setVideoPlaying(false);
         if (isTutor({ identity: String(role_name) })) {
-          console.log("send datatrack from play video as identity is tutor");
           handleDataTrack(false);
         }
       }

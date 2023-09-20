@@ -17,6 +17,7 @@ interface PublicationProps {
   videoOnly?: boolean;
   videoPriority?: Track.Priority | null;
   enableScreenShare?: boolean;
+  remoteParticipantIdentity?: string;
 }
 
 export default function Publication({
@@ -32,6 +33,7 @@ export default function Publication({
 
   // Even though we only have one case here, let's keep this switch() in case
   // we even need to add a 'data' case for rendering DataTracks.
+
   switch (track.kind) {
     case "video":
       return (

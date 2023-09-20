@@ -1,4 +1,10 @@
-export const excludeParticipant = ["tech", "sm", "smmanger", "parent"];
+export const excludeParticipantTechSmParent = [
+  "tech",
+  "sm",
+  "smmanger",
+  "audit",
+  "parent",
+];
 export const allExcludedParticipants = [
   "tutor",
   "tech",

@@ -39,18 +39,21 @@ export default function MyScreen() {
           <Participant
             participant={localParticipant}
             isLocalParticipant={true}
-            fromScreen="allOtherScreens"
+            fromScreen="myscreen"
           />
         ) : (
           <>
             {speakerViewParticipants.map((participant) => {
               return (
-                participant.identity === "tutor" && (
-                  <Participant
-                    key={participant.sid}
-                    participant={participant}
-                    fromScreen="allOtherScreens"
-                  />
+                isTutor({ identity: participant.identity }) && (
+                  <div key={participant.sid}>
+                    <Participant
+                      key={participant.sid}
+                      participant={participant}
+                      fromScreen="myscreen"
+                      remoteParticipantIdentity={participant.identity}
+                    />
+                  </div>
                 )
               );
             })}
