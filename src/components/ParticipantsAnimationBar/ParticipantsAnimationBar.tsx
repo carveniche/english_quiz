@@ -9,6 +9,7 @@ import {
 } from "twilio-video";
 import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIconParticipantAnimationBar";
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
+import ScreenShareOnIcon from "./ParticipantAnimationBarIcons/ScreenShareOnIcon";
 
 import useParticipantsAnimationBarDatatracks from "./ParticipantsAnimationBarDatatracks";
 import { useEffect, useState } from "react";
@@ -30,7 +31,6 @@ interface ParticipantProps {
 }
 
 export default function ParticipantsAnimationBar({
-  localParticipant,
   participant,
   screen,
 }: ParticipantProps) {
@@ -211,7 +211,11 @@ export default function ParticipantsAnimationBar({
               }
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                <ScreenShareIcon />
+                {studentShareScreen ? (
+                  <ScreenShareOnIcon />
+                ) : (
+                  <ScreenShareIcon />
+                )}
               </div>
             </button>
           </div>
@@ -239,7 +243,11 @@ export default function ParticipantsAnimationBar({
                 }
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  <ScreenShareIcon />
+                  {studentShareScreen ? (
+                    <ScreenShareOnIcon />
+                  ) : (
+                    <ScreenShareIcon />
+                  )}
                 </div>
               </button>
             </div>
