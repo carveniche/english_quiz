@@ -143,7 +143,7 @@ export default function FloatingParticipant(screen: any) {
         zIndex: 10,
         position: "absolute",
         width: "110px",
-        right: 85,
+        right: 95,
       }}
     >
       <Rnd
@@ -152,14 +152,12 @@ export default function FloatingParticipant(screen: any) {
         }}
       >
         <>
-          <div className="flex flex-col min-w-[190px] mt-[15px] ">
-            {screenName !== "/myscreen"
-              ? showSelfParticipantView()
-              : screenName === "/myscreen" &&
-                !isTutor({ identity: localParticipant.identity }) &&
-                showSelfParticipantView()}
-            {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
-          </div>
+          {screenName !== "/myscreen"
+            ? showSelfParticipantView()
+            : screenName === "/myscreen" &&
+              !isTutor({ identity: localParticipant.identity }) &&
+              showSelfParticipantView()}
+          {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
         </>
       </Rnd>
     </div>
