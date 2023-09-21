@@ -10,18 +10,29 @@ import AllScreen from "../FeatureComponent/AllScreen/AllScreen";
 import RemoteParticipantCountAndLessonDataEffect from "../RemoteCountAndLessonDataEffect/RemoteParticipantCountAndLessonDataEffect";
 
 export default function Room() {
-  const { room, toggleScreenShare } = useVideoContext();
+  const { room, toggleScreenShare, isSharingScreen } = useVideoContext();
   const currentSelectedScreen = useSelector(
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
   const screenShareState = useSelector(
     (state: RootState) => state.dataTrackStore.ShreenShareTracks
   );
+
   useEffect(() => {
-    if (screenShareState.identity === room?.localParticipant.identity) {
-      toggleScreenShare();
+    if (isSharingScreen) {
+      console.log("returning from fn as isSharingScreen is already shared");
+      return;
+    } else {
+      if (
+        screenShareState.identity === room?.localParticipant.identity &&
+        !isSharingScreen &&
+        screenShareState.toggleFrom !== "CommonScreenShareButtonClicked"
+      ) {
+        console.log("inside else condition");
+        toggleScreenShare();
+      }
     }
-  }, [screenShareState.publishedState, !screenShareState.publishedState]);
+  }, [screenShareState, isSharingScreen]);
 
   console.log("room component mouting");
 
@@ -33,7 +44,7 @@ export default function Room() {
         {currentSelectedScreen === "/allscreen" ? (
           <AllScreen />
         ) : (
-          <div style={{ display: "none" }}>
+          <div style={{ display: "block" }}>
             <FloatingParticipant screen={currentSelectedScreen} />
           </div>
         )}

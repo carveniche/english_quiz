@@ -31,6 +31,7 @@ export default function useScreenShareToggle(
         datatrackName: "ScreenShare",
         publishedState: state,
         identity: room?.localParticipant.identity,
+        toggleFrom: "CommonScreenShareButtonClicked",
       },
     };
 
@@ -40,6 +41,7 @@ export default function useScreenShareToggle(
       addScreenShareDatatrack({
         publishedState: state,
         identity: room?.localParticipant.identity,
+        toggleFrom: "CommonScreenShareButtonClicked",
       })
     );
   };

@@ -28,6 +28,7 @@ interface dataTrackStore {
   ShreenShareTracks: {
     identity: string;
     publishedState: boolean;
+    toggleFrom?: string;
   };
   ChatMessages: MessageStructure[];
 }
@@ -43,6 +44,7 @@ const initialState: dataTrackStore = {
   ShreenShareTracks: {
     identity: "",
     publishedState: false,
+    toggleFrom: "",
   },
 
   ChatMessages: [],
@@ -103,10 +105,11 @@ export const dataTrackStoreSlice = createSlice({
     },
 
     addScreenShareDatatrack: (state, action) => {
-      const { identity, publishedState } = action.payload;
+      const { identity, publishedState, toggleFrom } = action.payload;
       let obj = {
         identity: identity,
-        publishedState: publishedState,
+        publishedState: publishedState || false,
+        toggleFrom: toggleFrom || "",
       };
       state.ShreenShareTracks = obj;
     },

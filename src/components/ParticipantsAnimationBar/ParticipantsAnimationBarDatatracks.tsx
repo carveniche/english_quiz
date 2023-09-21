@@ -21,6 +21,7 @@ export default function useParticipantsAnimationBarDatatracks() {
             datatrackName: "ScreenShare",
             publishedState: state,
             identity: identity,
+            toggleFrom: "RequestingScreenShare",
           },
         };
 
