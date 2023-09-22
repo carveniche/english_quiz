@@ -21,13 +21,14 @@ export default function useParticipantsAnimationBarDatatracks() {
             datatrackName: "ScreenShare",
             publishedState: state,
             identity: identity,
+            toggleFrom: "RequestingScreenShare",
           },
         };
 
         localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
       } else {
         let json = {
-          pathName: pathname,
+          pathName: pathname === "/" ? null : pathname,
           value: {
             datatrackName: "Animations",
             type: key,

@@ -34,8 +34,13 @@ export function Participant({
       screen={fromScreen}
       remoteParticipantIdentity={remoteParticipantIdentity}
     >
-      <div id={isStudent ? "videoStudentElement" : ""}>
-        {" "}
+      <div
+        style={{
+          width: "inherit",
+          height: "inherit",
+        }}
+        id={isStudent ? "videoStudentElement" : ""}
+      >
         <ParticipantTracks
           participant={participant}
           videoOnly={videoOnly}
