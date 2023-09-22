@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import {
   StudentActivityResponseSave,
+  baseURL,
   getStudentActivityResponse,
   submitErrorLog,
+  updateStatusofCicoActivity,
 } from "../../../../api";
 import { CICO } from "../../../../constants";
 import AffirmationSelection from "./AffirmationSelection";
@@ -26,7 +28,12 @@ import html2canvas from "html2canvas";
 import PreviewModal from "./PreviewModal";
 import LoadingIndicatorModal from "../LoadingIndicatorModal";
 import HtmlParser from "react-html-parser";
-const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
+import AudioAnaylyzer from "./AudioAnalyzer/AudioAnaylyzer";
+const CheckOutAffirmationActivity = ({
+  identity,
+  listOfAffirmation,
+  micRef,
+}) => {
   let newListOfAffirmation = listOfAffirmation.map((item) => ({
     ...item,
     image: item?.selected_checkin_path,
@@ -60,11 +67,13 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
   let instruction = TeacherCheckOutInstruction();
 
   const takeScreenShot = () => {
+    setLoading(true);
     setIndicatorText("Image is capturing...");
     let element = document.querySelector("#videoStudentElement");
-    setLoading(true);
+
     if (!element) {
       alert("Please wait for student joining");
+      setLoading(false);
       return;
     }
 
@@ -92,7 +101,7 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
     setRetake(true);
     setImg("");
   };
-
+  const dispatch = useDispatch();
   const takeScreenShot2 = (id: string) => {
     html2canvas(document.querySelector(id), {
       scale: 1,
@@ -101,7 +110,10 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
     })
       .then(async (canvas) => {
         var img = canvas.toDataURL("image/png");
-        console.log(img);
+        dispatch(
+          cicoComponentLevelDataTrack({ isCheckoutTeacherResponseSaved: true })
+        );
+        setShowPreview(false);
       })
       .catch((err) => {
         console.log("Screen shot failed", err);
@@ -111,7 +123,7 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
   const handleConfirm = () => {
     takeScreenShot2("#badgesWithImages");
   };
-  return !otherData?.checkInOutImageUrl ? (
+  return otherData?.checkInOutImageUrl ? (
     <>
       {identity === "tutor" ? (
         <div
@@ -122,7 +134,7 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
           <div style={{ textAlign: "center" }}>{instruction.instruction5}</div>
           <div style={{ textAlign: "center" }}>
             <img
-              src={newListOfAffirmation[0].image}
+              src={baseURL + otherData?.checkInOutImageUrl}
               style={{ maxWidth: 250 }}
             />
           </div>
@@ -138,7 +150,7 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
         >
           <div style={{ textAlign: "center" }}>
             <img
-              src={newListOfAffirmation[0].image}
+              src={baseURL + otherData?.checkInOutImageUrl}
               style={{ maxWidth: 250 }}
             />
           </div>
@@ -175,59 +187,61 @@ const CheckOutAffirmationActivity = ({ identity, listOfAffirmation }) => {
           affirmation={newListOfAffirmation}
           currentIndex={0}
           className={"container"}
-          checkIn={CICO.checkIn}
-          micRef={null}
+          checkIn={false}
+          micRef={micRef}
         />
       </div>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.1rem",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "1rem",
-        }}
-      >
+      {disableCount && (
         <div
           style={{
-            fontSize: "16px",
+            display: "flex",
+            gap: "0.1rem",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "1rem",
           }}
         >
-          {instruction?.instruction2}
-        </div>
-        <div style={{ fontSize: "16px" }}>{instruction?.instruction3}</div>
-        <button
-          onClick={takeScreenShot}
-          style={{
-            padding: 5,
+          <div
+            style={{
+              fontSize: "16px",
+            }}
+          >
+            {instruction?.instruction2}
+          </div>
+          <div style={{ fontSize: "16px" }}>{instruction?.instruction3}</div>
+          <button
+            onClick={takeScreenShot}
+            style={{
+              padding: 5,
 
-            color: "white",
-            borderRadius: 5,
-            display: "block",
-          }}
-        >
-          {retake ? (
-            <button
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                background: "yellowgreen",
-                fontWeight: "normal",
-                color: "black",
-              }}
-            >
-              Retake
-            </button>
-          ) : (
-            <img
-              src="/static/media/camera1.png"
-              style={{
-                width: "60px",
-              }}
-            />
-          )}
-        </button>
-      </div>
+              color: "white",
+              borderRadius: 5,
+              display: "block",
+            }}
+          >
+            {retake ? (
+              <button
+                style={{
+                  padding: 5,
+                  borderRadius: 10,
+                  background: "yellowgreen",
+                  fontWeight: "normal",
+                  color: "black",
+                }}
+              >
+                Retake
+              </button>
+            ) : (
+              <img
+                src="/static/media/camera1.png"
+                style={{
+                  width: "60px",
+                }}
+              />
+            )}
+          </button>
+        </div>
+      )}
     </>
   );
 };
@@ -270,6 +284,7 @@ function AffirmationStudentScreen({
   apiData,
   listOfAffirmation,
   activityType,
+  handleDataTrack,
 }) {
   const [currentSelectAffirmation, setCurrentSelectAffirmation] = useState(-1);
   const dispatch = useDispatch();
@@ -316,6 +331,12 @@ function AffirmationStudentScreen({
           isCheckForResponse: !otherData.isCheckForResponse,
         })
       );
+      handleDataTrack({
+        data: {
+          isCheckForResponse: !otherData.isCheckForResponse,
+        },
+        key: CICO.checkIn,
+      });
     } catch (e) {
       alert("something went wrong please try again letter");
       await submitErrorLog("", "", "", "", "0");
@@ -326,6 +347,7 @@ function AffirmationStudentScreen({
     <>
       <div>
         <StudentActivityTimer
+          showEndButton={true}
           isShowCornerImage={otherData?.isShowStories ? true : false}
           activityType={activityType}
           isBadgesVisible={otherData?.isShowStories ? true : false}
@@ -340,9 +362,9 @@ function AffirmationStudentScreen({
               : ""
           }
           handleSubmit={
-            otherData?.isCheckInActivity && otherData.isCheckInSaveResponse
-              ? handleSubmitCheckInResponse
-              : null
+            otherData.isCheckInSaveResponse
+              ? () => {}
+              : handleSubmitCheckInResponse
           }
           isClosed={otherData.isCheckInSaveResponse}
         />
@@ -376,8 +398,10 @@ function AffirmationTeacherScreen({
   activityType,
   handleDataTrack,
   checkOutData,
+  liveClassID,
+  userId,
+  micRef,
 }) {
-  console.log(checkOutData);
   const dispatch = useDispatch();
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
@@ -387,7 +411,6 @@ function AffirmationTeacherScreen({
     activityType === CICO.checkIn
       ? TeacherCheckInInstruction()
       : TeacherCheckOutInstruction();
-  console.log(instruction);
   const handleStopTiming = () => {
     clearInterval(timerRef.current);
   };
@@ -397,8 +420,25 @@ function AffirmationTeacherScreen({
     }
   }, [otherData?.isCheckInSaveResponse]);
   const timerRef = useRef();
+  const timerCountRef = useRef(0);
   let isCheckInActivity = CICO.checkIn === activityType;
-  const handleEndCheckInActivity = () => {};
+  const handleEndCheckInActivity = () => {
+    dispatch(
+      cicoComponentLevelDataTrack({ isTeacherEndCheckInActivity: true })
+    );
+    updateStatusofCicoActivity(
+      liveClassID,
+      apiData.activity_id,
+      timerCountRef.current
+    ).then((res) => {
+      if (res.status) {
+        handleDataTrack({
+          data: apiData,
+          isTeacherEndCheckInActivity: true,
+        });
+      }
+    });
+  };
   const handleCheckOutActivity = () => {};
   const handleClickNextBtn = () => {
     handleDataTrack({
@@ -418,12 +458,24 @@ function AffirmationTeacherScreen({
     };
     dispatch(cicoComponentLevelDataTrack(obj));
   };
+  const handleClickNextCheckOutBtn = () => {
+    handleDataTrack({
+      data: {
+        apiData,
+        isHideCheckOutButton: true,
+      },
+      key: CICO.checkIn,
+    });
+
+    dispatch(cicoComponentLevelDataTrack({ isHideCheckOutButton: true }));
+  };
   return (
     <>
       {isCheckInActivity ? (
         <div>
           <ActivityTimerEndButton
             isShowCornerImage={otherData?.isShowStories ? true : false}
+            timerCountRef={timerCountRef}
             activityType={activityType}
             isBadgesVisible={otherData?.isShowStories ? true : false}
             selectedItem={listOfAffirmation[0]}
@@ -436,6 +488,7 @@ function AffirmationTeacherScreen({
                   : `${instruction?.instruction1} <br/>${instruction?.instruction2}`
                 : ""
             }
+            enabledEndButton={!otherData.isTeacherEndCheckInActivity}
             showEndButton={
               isCheckInActivity
                 ? otherData?.isCheckInShowNextButton
@@ -451,11 +504,9 @@ function AffirmationTeacherScreen({
                 : false
             }
             handleEndActivity={
-              isCheckInActivity
-                ? !otherData.isCheckInShowNextButton
-                  ? handleEndCheckInActivity
-                  : () => {}
-                : handleCheckOutActivity
+              !otherData.isCheckInShowNextButton
+                ? handleEndCheckInActivity
+                : () => {}
             }
             handleClickNext={handleClickNextBtn}
             text={
@@ -485,34 +536,40 @@ function AffirmationTeacherScreen({
       ) : (
         <div>
           <ActivityTimerEndButton
-            isShowCornerImage={false}
+            isShowCornerImage={true}
             activityType={activityType}
-            isBadgesVisible={false}
-            selectedItem={listOfAffirmation[0]}
+            isBadgesVisible={true}
+            selectedItem={checkOutData}
             currentTime={Date.now()}
             timerRef={timerRef}
+            timerCountRef={timerCountRef}
+            enabledEndButton={!otherData.isEndCheckOutActivity}
+            handleClickNext={handleClickNextCheckOutBtn}
             instruction={
               otherData?.isCheckOutSaveResponse
+                ? ""
+                : otherData?.isHideCheckOutButton
                 ? ""
                 : `${instruction?.instruction1?.replace(
                     "{}",
                     checkOutData?.selected_checkin_name
                   )}`
             }
-            showEndButton={true}
-            showNextButton={false}
-            text={
-              isCheckInActivity
-                ? otherData?.isCheckInShowNextButton
-                  ? "Read a story"
-                  : null
-                : null
+            showEndButton={otherData?.isHideCheckOutButton ? true : false}
+            showNextButton={
+              otherData?.isEndCheckOutActivity
+                ? !otherData?.isHideCheckOutButton
+                : false
             }
+            text={!otherData?.isHideCheckOutButton ? "Next" : ""}
           />
-          <CheckOutAffirmationActivity
-            identity={"tutor"}
-            listOfAffirmation={[checkOutData]}
-          />
+          {otherData?.isHideCheckOutButton && (
+            <CheckOutAffirmationActivity
+              identity={"tutor"}
+              listOfAffirmation={[checkOutData]}
+              micRef={micRef}
+            />
+          )}
         </div>
       )}
     </>
@@ -536,6 +593,7 @@ export default function Affirmation({
   );
   const fetchCheckInResponse = async () => {
     let activity_data: [] = apiData?.activity_data || [];
+    console.log(activity_data);
     try {
       let student_id = students[0]?.id || "";
       if (!allExcludedParticipants.includes(identity)) student_id = userId;
@@ -584,8 +642,21 @@ export default function Affirmation({
       fetchCheckInResponse();
     }
   }, [otherData?.isCheckForResponse]);
-  const fetchCheckOutResponse = () => {
+  const fetchCheckOutResponse = async () => {
     let checkOutData = apiData?.student_activity_data || [];
+    let student_id = students[0]?.id || "";
+    if (!allExcludedParticipants.includes(identity)) student_id = userId;
+    const { data } = await getStudentActivityResponse(student_id, liveClassID);
+    let checkOutResponse = data?.checkout_responses?.teacher || [];
+    checkOutResponse = checkOutResponse[0]?.response || "";
+
+    dispatch(
+      cicoComponentLevelDataTrack({
+        isCheckoutTeacherResponseSaved: !checkOutResponse,
+        checkInOutImageUrl: checkOutResponse,
+      })
+    );
+
     checkOutData = checkOutData[0];
 
     if (checkOutData) {
@@ -594,9 +665,13 @@ export default function Affirmation({
   };
   useEffect(() => {
     if (activityType === CICO.checkOut) fetchCheckOutResponse();
-  }, []);
+  }, [otherData.isCheckoutTeacherResponseSaved]);
+  const [micRef, setMicRef] = useState(false);
   return (
     <>
+      {activityType === CICO.checkOut && (
+        <AudioAnaylyzer setMicRef={setMicRef} />
+      )}
       <div style={{ position: "relative" }}>
         {identity === "tutor" ? (
           <AffirmationTeacherScreen
@@ -605,6 +680,7 @@ export default function Affirmation({
             activityType={activityType}
             handleDataTrack={handleDataTrack}
             checkOutData={checkOutData}
+            micRef={micRef}
           />
         ) : (
           <>
@@ -614,6 +690,7 @@ export default function Affirmation({
               activityType={activityType}
               handleDataTrack={handleDataTrack}
               checkOutData={checkOutData}
+              micRef={micRef}
             />
           </>
         )}

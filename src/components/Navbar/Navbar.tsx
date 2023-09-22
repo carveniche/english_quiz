@@ -49,19 +49,19 @@ export default function Navbar({ onClick }: { onClick: Function }) {
 
     for (let i = 0; i < routerConfig.length; i++) {
       if (class_type === "math_coding") {
-        if (mathCoding_ClassType.includes(routerConfig[i].name)) {
+        if (mathCoding_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
       } else if (class_type === "coding") {
-        if (coding_ClassType.includes(routerConfig[i].name)) {
+        if (coding_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
       } else if (class_type === "math") {
-        if (math_ClassType.includes(routerConfig[i].name)) {
+        if (math_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
       } else {
-        if (old_ClassType.includes(routerConfig[i].name)) {
+        if (old_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
       }
