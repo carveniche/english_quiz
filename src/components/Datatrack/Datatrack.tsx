@@ -25,12 +25,14 @@ import {
   FLAGGEDQUESTIONKEY,
   HOMEWORKQUESTIONKEY,
   MATHZONEDATAKEY,
+  ROUTERKEYCONST,
 } from "../../constants";
 import {
   changeMathzoneData,
   cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
+  whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
@@ -156,6 +158,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             currentUserScoreSpeedMath:
               parseMessage?.value?.currentUserScoreSpeedMath,
           })
+        );
+      } else if (
+        parseMessage?.value?.datatrackName === ROUTERKEYCONST.whiteboard.key
+      ) {
+        dispatch(
+          whiteBoardComponentLevelDataTrack(
+            parseMessage?.value?.whiteBoardPoints || []
+          )
         );
       } else if (
         parseMessage?.value?.type ===

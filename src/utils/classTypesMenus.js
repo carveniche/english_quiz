@@ -1,6 +1,7 @@
 import { CICO, ROUTERKEYCONST } from "../constants";
 
 export const old_ClassType = [
+  ROUTERKEYCONST.whiteboard.key,
   ROUTERKEYCONST.allScreen,
   ROUTERKEYCONST.myScreen,
   ROUTERKEYCONST.lesson,
@@ -13,6 +14,7 @@ export const old_ClassType = [
 ];
 
 export const math_ClassType = [
+  ROUTERKEYCONST.whiteboard.key,
   ROUTERKEYCONST.allScreen,
   ROUTERKEYCONST.myScreen,
   ROUTERKEYCONST.lesson,
@@ -32,6 +34,7 @@ export const coding_ClassType = [
 ];
 
 export const mathCoding_ClassType = [
+  ROUTERKEYCONST.whiteboard.key,
   ROUTERKEYCONST.allScreen,
   ROUTERKEYCONST.myScreen,
   ROUTERKEYCONST.lesson,
