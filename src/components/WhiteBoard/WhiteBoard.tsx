@@ -2,12 +2,18 @@ import React, { useEffect, useId, useRef, useState } from "react";
 interface WhiteboardProps {
   callback: Function;
 }
-import { Stage, Layer, Star, Text, Line } from "react-konva";
+import { Stage, Layer, Star, Text, Line, Image } from "react-konva";
 import { ROUTERKEYCONST, WHITEBOARDSTANDARDSCREENSIZE } from "../../constants";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
+const arr = [
+  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
+  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
+  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/3.jpg",
+  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/4.jpg",
+  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/5.jpg",
+];
 export default function WhiteBoard() {
   const { room } = useVideoContext();
   const { whiteBoardData } = useSelector(
@@ -111,6 +117,10 @@ export default function WhiteBoard() {
     drawingRef.current = false;
   };
 
+  const handleMouseLeave = () => {
+    drawingRef.current = false;
+  };
+
   useEffect(() => {
     if (whiteBoardData?.count) {
       if (whiteBoardData?.whiteBoardsPoints) {
@@ -141,6 +151,7 @@ export default function WhiteBoard() {
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
           onMouseup={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
           onTouchStart={handleMouseDown}
           onTouchMove={handleMouseMove}
           onTouchEnd={handleMouseUp}
@@ -157,6 +168,15 @@ export default function WhiteBoard() {
           }}
         >
           <Layer>
+            <URLImage
+              width={WHITEBOARDSTANDARDSCREENSIZE.width}
+              height={WHITEBOARDSTANDARDSCREENSIZE.height}
+              x={0}
+              y={0}
+              image={arr[0]}
+            />
+          </Layer>
+          <Layer>
             {coordinates.map((line, i) => (
               <Line
                 key={i}
@@ -171,3 +191,30 @@ export default function WhiteBoard() {
     </div>
   );
 }
+
+const URLImage = (props) => {
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    loadImage();
+  }, []);
+  const loadImage = () => {
+    let image = new window.Image();
+    image.src = props.image;
+    image.onload = function () {
+      handleLoad(image);
+      console.log(image.width, image.height);
+    };
+  };
+  const handleLoad = (image) => {
+    setImage(image);
+  };
+  return (
+    <Image
+      x={props.x}
+      y={props.y}
+      width={props.width}
+      height={props.height}
+      image={image}
+    />
+  );
+};
