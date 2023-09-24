@@ -38,6 +38,7 @@ export default function StudentFeedbackForm2({
     "Whiteboard was not working",
     "Teacher left the class early",
     "Teacher was not friendly",
+    "Did not understand the lesson",
   ];
   const [loading, setLoading] = useState(false);
   const feedbackData = selectedValue?.id ? feedbackData1 : feedbackData2;
@@ -52,7 +53,7 @@ export default function StudentFeedbackForm2({
     setLoading(true);
     obj.comments = comments;
     await submitStudentFeedbackForm(obj);
-    window.location.reload();
+    // window.location.reload();
   };
   const handleChange = (i: number) => {
     if (!choices.includes(i)) {
@@ -73,7 +74,7 @@ export default function StudentFeedbackForm2({
           {loading ? (
             <h1>Loading...</h1>
           ) : (
-            <div className="flex items-center flex-col gap-6 items-center h-full">
+            <div className="flex items-center flex-col gap-6 h-full">
               <div
                 style={{
                   fontSize: 14,
