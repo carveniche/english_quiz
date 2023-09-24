@@ -30,7 +30,7 @@ export default function StudentsTitle({
       {isPrepostTest ? (
         <>
           <div
-            onClick={onClick}
+            onClick={() => onClick()}
             className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2"
           >
             Skip

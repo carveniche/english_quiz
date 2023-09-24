@@ -24,7 +24,7 @@ export default function Room() {
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />
       ) : (
-        <div style={{ display: "block" }}>
+        <div style={{ display: "none" }}>
           <FloatingParticipant screen={currentSelectedScreen} />
         </div>
       )}

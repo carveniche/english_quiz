@@ -300,6 +300,9 @@ const StudentQuizDisplay = ({
       // }, 500);
     }
   }, [hasAnswerSubmitted]);
+  if (!Object.keys(obj).length) {
+    return <></>;
+  }
   return (
     <>
       {!allExcludedParticipants.includes(identity) && (

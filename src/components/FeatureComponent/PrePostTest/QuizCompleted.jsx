@@ -19,9 +19,18 @@ export default function QuizCompleted({
           practiceId={liveClassPracticeId}
           reportsData={reportsData}
           student={student}
+          identity={"identity"}
         />
       ) : (
-        <></>
+        <>
+          <TeacherView
+            userId={userId}
+            practiceId={liveClassPracticeId}
+            reportsData={reportsData}
+            student={student}
+            identity={identity}
+          />
+        </>
       )}
     </>
   );
