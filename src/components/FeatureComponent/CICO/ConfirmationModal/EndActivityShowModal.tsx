@@ -9,7 +9,6 @@ export default function EndActivityShowModal({ handleComplete, handleClose }) {
     boxShadow: 24,
     p: 4,
     minWidth: 100,
-    width: "fit-content",
     height: "fit-content",
     margin: "10px auto",
     minHeight: 300,
