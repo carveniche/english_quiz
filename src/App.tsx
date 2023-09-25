@@ -18,7 +18,6 @@ import AllPageRoutes from "./Router/AllPageRoutes";
 
 import Header2 from "./components/Navbar/Header2";
 import Header from "./components/Navbar/Header";
-import { getQueryParams } from "./utils/getQueryParams";
 import { ChatProvider } from "./components/ChatProvider";
 import MainScreenRecording from "./components/ScreenRecording/MainScreenRecording";
 import StudentFeedBackForm from "./components/FeedBackForms/StudentFeedbackForms/StudentFeedBackForm";
@@ -27,13 +26,12 @@ import { RootState } from "./redux/store";
 import useVideoContext from "./hooks/useVideoContext/useVideoContext";
 import TeacherFeedbackFormStatus from "./components/FeedBackForms/TeacherFeedbackForm/TeacherFeedbackFormStatus";
 
+interface AppProps {
+  setError: React.Dispatch<React.SetStateAction<TwilioError | Error | null>>;
+}
+
 const Main = styled("main")(({ theme }: { theme: Theme }) => ({
   overflow: "hidden",
-  // paddingBottom: `${theme.footerHeight}px`, // Leave some space for the footer
-  // background: "black",
-  // [theme.breakpoints.down("sm")]: {
-  //   paddingBottom: `${theme.mobileFooterHeight + theme.mobileTopBarHeight}px`, // Leave some space for the mobile header and footer
-  // },
 }));
 
 const logger = Logger.getLogger("twilio-video");
@@ -68,7 +66,7 @@ function JoinedScreen() {
   );
 }
 export function VideoApp() {
-  const [error, setError] = useState<TwilioError | null>(null);
+  const [error, setError] = useState<TwilioError | Error | null>(null);
   const connectionOptions = useConnectionOptions();
 
   return (
@@ -76,20 +74,20 @@ export function VideoApp() {
       <ErrorDialog dismissError={() => setError(null)} error={error} />
       <BrowserRouter>
         <ChatProvider>
-          <App />
+          <App setError={setError} />
         </ChatProvider>
       </BrowserRouter>
     </VideoProvider>
   );
 }
 
-function App() {
+function App({ setError }: AppProps) {
   const roomState = useRoomState();
   return (
     <>
       {roomState === "disconnected" ? (
         <>
-          <PreJoinScreen />
+          <PreJoinScreen setError={setError} />
         </>
       ) : (
         <JoinedScreen />

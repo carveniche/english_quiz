@@ -158,7 +158,7 @@ export default function TeacherFeedbackFormStatus() {
     setDisabledField({ ...disabledField });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let isValidated = true;
     for (let key in childDetails) {
       if (!childDetails[key].value.trim() && key !== "grade") {
@@ -213,7 +213,8 @@ export default function TeacherFeedbackFormStatus() {
       paramsObj.live_class_id = liveClassId;
       paramsObj.demo_status = "Completed";
       setLoading(true);
-      submitStudentFeedbackForm(paramsObj);
+      await submitStudentFeedbackForm(paramsObj);
+      window.location.reload();
     }
   };
   const handleSubmitIncompleteClass = () => {

@@ -53,7 +53,7 @@ export default function StudentFeedbackForm2({
     setLoading(true);
     obj.comments = comments;
     await submitStudentFeedbackForm(obj);
-    // window.location.reload();
+    window.location.reload();
   };
   const handleChange = (i: number) => {
     if (!choices.includes(i)) {

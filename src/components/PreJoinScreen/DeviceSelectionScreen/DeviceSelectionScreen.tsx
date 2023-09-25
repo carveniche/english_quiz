@@ -25,6 +25,8 @@ import { useKrispToggle } from "../../../hooks/useKrispToggle/useKrispToggle";
 import SmallCheckIcon from "../../../icons/SmallCheckIcon";
 import InfoIconOutlined from "../../../icons/InfoIconOutlined";
 
+import { TwilioError } from "twilio-video";
+import { videoCallTokenErrorWhileJoining } from "../../../genericErrorConstant";
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
     marginBottom: "1em",
@@ -81,10 +83,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface DeviceSelectionScreenProps {
   name: string;
+  setError: React.Dispatch<React.SetStateAction<TwilioError | Error | null>>;
 }
 
 interface tokenParameters {
-  getVideoCallToken: (userId: Number, liveClassId: Number) => Promise<void>;
+  getVideoCallToken: (userId: number, liveClassId: number) => Promise<void>;
 }
 
 interface tokenData {
@@ -103,7 +106,7 @@ interface tokenData {
   status: boolean;
   student_ids: string[];
   students: string[];
-  teacher_id: Number;
+  teacher_id: number;
   teacher_name: string;
   time_zone: string;
   token: string;
@@ -113,6 +116,7 @@ interface tokenData {
 
 export default function DeviceSelectionScreen({
   name,
+  setError,
 }: DeviceSelectionScreenProps) {
   const classes = useStyles();
 
@@ -177,7 +181,10 @@ export default function DeviceSelectionScreen({
       let token = JSON.stringify(videoCallTokenData.token);
       videoConnect(JSON.parse(token));
     } else {
-      console.log("Something went wrong please try again later");
+      const error = new Error();
+      error.message = videoCallTokenErrorWhileJoining.errroMessage;
+      error.code = videoCallTokenErrorWhileJoining.errorDescription;
+      setError(error);
     }
   };
 
