@@ -22,7 +22,7 @@ import { isSupported } from "@twilio/video-processors";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import FlipCameraIcon from "../../../icons/FlipCameraIcon";
 import useFlipCameraToggle from "../../../hooks/useFlipCameraToggle/useFlipCameraToggle";
-// import { VideoRoomMonitor } from "@twilio/video-room-monitor";
+import { VideoRoomMonitor } from "@twilio/video-room-monitor";
 
 export const IconContainer = styled("div")({
   display: "flex",
@@ -111,10 +111,13 @@ export default function Menu(props: { buttonClassName?: string }) {
         )}
 
         <MenuItem
-        //   onClick={() => {
-        //     VideoRoomMonitor.toggleMonitor();
-        //     setMenuOpen(false);
-        //   }}
+          onClick={() => {
+            if (room !== null) {
+              VideoRoomMonitor.registerVideoRoom(room);
+              VideoRoomMonitor.toggleMonitor();
+              setMenuOpen(false);
+            }
+          }}
         >
           <IconContainer>
             <SearchIcon style={{ fill: "#707578", width: "0.9em" }} />

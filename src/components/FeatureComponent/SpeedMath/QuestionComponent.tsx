@@ -4,7 +4,8 @@ import CorrectMark from "./assets/images/Correct.svg";
 import ComputerPlay from "./ComputerPlay";
 import { Room } from "twilio-video";
 import { isStudentName } from "../../../utils/participantIdentity";
-import { iPadDevice } from "../../../utils/devices";
+import { iPadDevice, isIpadDeviceChrome } from "../../../utils/devices";
+
 interface QuestionComponentProps {
   room: Room | null;
   speedMathGameId: number;
@@ -231,7 +232,7 @@ export default function QuestionComponent({
             autoFocus
             placeholder="Answer and Enter"
             type="text"
-            inputMode={iPadDevice ? "none" : "numeric"}
+            inputMode={iPadDevice || isIpadDeviceChrome ? "none" : "numeric"}
             onChange={onUserInputChange}
             value={userInput}
             ref={textAnswerInput}
@@ -240,7 +241,7 @@ export default function QuestionComponent({
           />
         </div>
       </div>
-      {!iPadDevice ? (
+      {!iPadDevice || !isIpadDeviceChrome ? (
         <div className="flex w-full h-full justify-center items-center">
           <div className="flex flex-col w-[90%] h-full items-center">
             <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
