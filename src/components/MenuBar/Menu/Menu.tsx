@@ -23,6 +23,9 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import FlipCameraIcon from "../../../icons/FlipCameraIcon";
 import useFlipCameraToggle from "../../../hooks/useFlipCameraToggle/useFlipCameraToggle";
 import { VideoRoomMonitor } from "@twilio/video-room-monitor";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { isTech } from "../../../utils/participantIdentity";
 
 export const IconContainer = styled("div")({
   display: "flex",
@@ -48,6 +51,10 @@ export default function Menu(props: { buttonClassName?: string }) {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { flipCameraDisabled, toggleFacingMode, flipCameraSupported } =
     useFlipCameraToggle();
+
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
 
   return (
     <>
@@ -109,27 +116,28 @@ export default function Menu(props: { buttonClassName?: string }) {
             <Typography variant="body1">Flip Camera</Typography>
           </MenuItem>
         )}
+        {isTech({ identity: String(role_name) }) && (
+          <MenuItem
+            onClick={() => {
+              if (room !== null) {
+                VideoRoomMonitor.registerVideoRoom(room);
+                VideoRoomMonitor.toggleMonitor();
+                setMenuOpen(false);
+              }
+            }}
+          >
+            <IconContainer>
+              <SearchIcon style={{ fill: "#707578", width: "0.9em" }} />
+            </IconContainer>
+            <Typography variant="body1">Room Monitor</Typography>
+          </MenuItem>
+        )}
 
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
-            if (room !== null) {
-              VideoRoomMonitor.registerVideoRoom(room);
-              VideoRoomMonitor.toggleMonitor();
-              setMenuOpen(false);
-            }
+            setIsGalleryViewActive((isGallery) => !isGallery);
+            setMenuOpen(false);
           }}
-        >
-          <IconContainer>
-            <SearchIcon style={{ fill: "#707578", width: "0.9em" }} />
-          </IconContainer>
-          <Typography variant="body1">Room Monitor</Typography>
-        </MenuItem>
-
-        <MenuItem
-        //   onClick={() => {
-        //     setIsGalleryViewActive((isGallery) => !isGallery);
-        //     setMenuOpen(false);
-        //   }}
         >
           <IconContainer>
             {isGalleryViewActive ? (
@@ -143,7 +151,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <Typography variant="body1">
             {isGalleryViewActive ? "Speaker View" : "Gallery View"}
           </Typography>
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
