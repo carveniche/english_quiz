@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import { ViewStatusContext } from "../Mathzone/Mathzone";
+import { ViewStatusContext } from "../Mathzone/mathzone";
 import { dragdropPointCordinate } from "./dragdropPointCordinate";
 
 export function useScrollBar() {
