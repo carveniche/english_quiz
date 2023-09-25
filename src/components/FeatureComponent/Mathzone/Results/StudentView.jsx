@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import styled from "styled-components";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 import styles from "../component/OnlineQuiz.module.css";
 import { StudentResultMathZone } from "../../../../api";
 import ViewIncorrectQuestion from "./ViewIncorrectQuestion";
