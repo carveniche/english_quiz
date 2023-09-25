@@ -232,7 +232,9 @@ export default function QuestionComponent({
             autoFocus
             placeholder="Answer and Enter"
             type="text"
-            inputMode={iPadDevice || isIpadDeviceChrome ? "none" : "numeric"}
+            inputMode={
+              iPadDevice ? "none" : isIpadDeviceChrome ? "none" : "numeric"
+            }
             onChange={onUserInputChange}
             value={userInput}
             ref={textAnswerInput}
@@ -241,7 +243,7 @@ export default function QuestionComponent({
           />
         </div>
       </div>
-      {!iPadDevice || !isIpadDeviceChrome ? (
+      {!iPadDevice && !isIpadDeviceChrome ? (
         <div className="flex w-full h-full justify-center items-center">
           <div className="flex flex-col w-[90%] h-full items-center">
             <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
