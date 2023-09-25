@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./affirmation.module.css";
+import styles from "./Affirmation.module.css";
 
 export default function AffirmationSelection({
   affirmation,
@@ -8,7 +8,7 @@ export default function AffirmationSelection({
   className,
   identity = "tutor",
   checkIn,
-  micRef
+  micRef,
 }) {
   const handleClick = (i) => {
     typeof onClick === "function" && onClick(i);
@@ -16,45 +16,55 @@ export default function AffirmationSelection({
 
   return (
     <div className={styles[className]}>
-      {checkIn?affirmation?.map((item, i) => {
-        return (
-          item && (
-            <div
-              key={i}
-              onClick={() => handleClick(i)}
-              style={{
-                backgroundColor:
-                  i === currentIndex || affirmation?.length === 1
-                    ? "black"
-                    : "initial",
-                borderColor: "black",
-                width: "310px",
-                height: "310px",
-                borderRadius: "50%",
-                padding: 0,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                
-                <img
-                  src={item?.image}//item?.image
-                  alt={item?.name}
-                  style={{ width: "300px", height: "300px", display: "block" }}
-                />
+      {checkIn ? (
+        affirmation?.map((item, i) => {
+          return (
+            item && (
+              <div
+                key={i}
+                onClick={() => handleClick(i)}
+                style={{
+                  backgroundColor:
+                    i === currentIndex || affirmation?.length === 1
+                      ? "black"
+                      : "initial",
+                  borderColor: "black",
+                  width: "310px",
+                  height: "310px",
+                  borderRadius: "50%",
+                  padding: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <img
+                    src={item?.image} //item?.image
+                    alt={item?.name}
+                    style={{
+                      width: "300px",
+                      height: "300px",
+                      display: "block",
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          )
-        );
-      }):<AffirmationSelectionCheckout item={affirmation[0]} i={0} micRef={micRef}/>}
+            )
+          );
+        })
+      ) : (
+        <AffirmationSelectionCheckout
+          item={affirmation[0]}
+          i={0}
+          micRef={micRef}
+        />
+      )}
     </div>
   );
 }
 
-const AffirmationSelectionCheckout = ({ item, i,micRef }) => {
-
+const AffirmationSelectionCheckout = ({ item, i, micRef }) => {
   return (
     <>
       <div
@@ -67,14 +77,14 @@ const AffirmationSelectionCheckout = ({ item, i,micRef }) => {
           justifyContent: "center",
           alignItems: "center",
           position: "relative",
-          border:0,
+          border: 0,
         }}
       >
         <div
           style={{
-           background:"#b9c2fc",
+            background: "#b9c2fc",
             borderColor: "black",
-          
+
             width: "281px",
             height: "281px",
             borderRadius: "50%",
@@ -84,18 +94,16 @@ const AffirmationSelectionCheckout = ({ item, i,micRef }) => {
             alignItems: "center",
             position: "absolute",
           }}
-          className={micRef?styles.animation:""}
+          className={micRef ? styles.animation : ""}
         ></div>
         <div>
-         
           <img
-            src={item?.image}// need to replace by this item?.image
+            src={item?.image} // need to replace by this item?.image
             style={{
               width: "300px",
               height: "300px",
               display: "block",
               position: "relative",
-             
             }}
             alt={item?.name}
           />
@@ -104,4 +112,3 @@ const AffirmationSelectionCheckout = ({ item, i,micRef }) => {
     </>
   );
 };
-

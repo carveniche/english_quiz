@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./affirmation.module.css";
+import styles from "./Affirmation.module.css";
 
 export default function AffirmationSelection({
   affirmation,

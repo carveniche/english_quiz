@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./affirmation.module.css";
+import styles from "./Affirmation.module.css";
 // const arr=[
 //     "/static/media/badgesgif/1.",
 //     "/static/media/badges/2.png",
@@ -11,9 +11,13 @@ import styles from "./affirmation.module.css";
 
 // ]
 
-export default function AffirmationBadges({ checkIn, selectedItem,visibility }) {
+export default function AffirmationBadges({
+  checkIn,
+  selectedItem,
+  visibility,
+}) {
   return (
-    <div style={{visibility}}>
+    <div style={{ visibility }}>
       <img
         src={checkIn ? selectedItem?.image : selectedItem?.gif_image} //technically gif_image
         style={{
@@ -28,12 +32,10 @@ export default function AffirmationBadges({ checkIn, selectedItem,visibility }) 
 }
 
 export function AffirmationBadges2({ bottom, item }) {
-  const [state,setState]=useState(Date.now())
+  const [state, setState] = useState(Date.now());
   const [image, setImage] = useState(item?.image);
   useEffect(() => {
-    if(item?.image)
-    setImage(item?.image)
-   
+    if (item?.image) setImage(item?.image);
   }, [item?.image]);
   return (
     <div
@@ -48,22 +50,23 @@ export function AffirmationBadges2({ bottom, item }) {
         bottom: 0,
       }}
     >
-     {image&& <img
-     crossOrigin=""
-     
-        src={image+"?dummy="+state}
-        alt={item?.name}
-        style={{
-          height: "160px",
-          minHeight: "160px",
-          maxHeight: "160px",
-          minWidth: "160px",
-          width: "160px",
-          maxWidth: "160px",
+      {image && (
+        <img
+          crossOrigin=""
+          src={image + "?dummy=" + state}
+          alt={item?.name}
+          style={{
+            height: "160px",
+            minHeight: "160px",
+            maxHeight: "160px",
+            minWidth: "160px",
+            width: "160px",
+            maxWidth: "160px",
 
-          objectFit: "fill",
-        }}
-      />}
+            objectFit: "fill",
+          }}
+        />
+      )}
     </div>
   );
 }
