@@ -176,7 +176,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             return item.key === ROUTERKEYCONST.mathzone ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -204,7 +204,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             ) : item.key === CICO.key ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -241,7 +241,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             ) : item.key === ROUTERKEYCONST.mathvideolesson ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -269,7 +269,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             ) : item.key === ROUTERKEYCONST.speedmath ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -297,7 +297,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
               <li
                 key={index}
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
               >
                 <NavLink
                   to={`${item.path}?${queryParams}`}

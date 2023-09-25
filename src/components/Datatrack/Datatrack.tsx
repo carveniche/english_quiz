@@ -43,7 +43,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
 
-      console.log("Datatrack message received");
+      console.log("Datatrack message received", parseMessage);
 
       if (
         pathname === parseMessage.pathName ||

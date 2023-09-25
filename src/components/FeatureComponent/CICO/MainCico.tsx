@@ -112,6 +112,7 @@ function Cico() {
         "63438" || students[0]?.id || "",
         "217360"
       );
+      dispatch(cicoComponentLevelDataTrack(apiData));
       if (data.status) {
         setApiData({ ...data });
       } else {
@@ -157,17 +158,41 @@ function Cico() {
           }}
           ref={heightRef}
         ></div>
-        <QuizPageLayout key={1} height={currentHeight}>
+        <QuizPageLayout key={"1"} height={currentHeight}>
           <div
             style={{
               position: "relative",
               margin: "0 auto",
               width: "calc(100% - 160px)",
-              maxHeight: `calc(100% - ${true ? 0 : 58}px)`,
-              minHeight: `calc(100% - ${true ? 0 : 58}px)`,
+              maxHeight: `calc(100% - ${false ? 0 : 18}px)`,
+              minHeight: `calc(100% - ${false ? 0 : 18}px)`,
             }}
           >
-            <QuizWhitePage>
+            {apiData?.name === "Affirmation" ? (
+              <div
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "indigo",
+                }}
+              >
+                CICO:&nbsp;&nbsp; Self-Affirmation
+              </div>
+            ) : apiData?.name === "Feeling" ? (
+              <div
+                style={{
+                  marginTop: "0.4rem",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "indigo",
+                }}
+              >
+                CICO:&nbsp;&nbsp; Feeling-Chart
+              </div>
+            ) : (
+              ""
+            )}
+            <QuizWhitePage key={apiData?.activity_id}>
               {apiData?.name === "Affirmation" ? (
                 <Affirmation
                   apiData={apiData}

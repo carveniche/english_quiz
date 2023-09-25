@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Card, Modal, Stack } from "@mui/material";
 import React, { useState } from "react";
 import "../index.css";
 import StudentFeedbackForm2 from "./StudentFeedbackForm2";
@@ -37,8 +37,9 @@ export default function StudentFeedBackForm() {
       id: 0,
     },
   ];
-  const handleChange = (e: Event) => {
-    setValue(e.target?.value || 0);
+  const handleChange = (i: number) => {
+    console.log("calling");
+    setValue(i);
   };
 
   const handleDone = () => {
@@ -85,28 +86,50 @@ export default function StudentFeedBackForm() {
               className="flex flex-col gap-4"
               style={{ width: "100%", margin: "auto" }}
             >
-              <div style={{ width: "fit-content", margin: "auto" }}>
-                <img
-                  src={feedbackMeter[value].img}
-                  alt={feedbackMeter[value].text}
-                  style={{ maxWidth: "100%" }}
-                />
-              </div>
-              <div style={{ width: "fit-content", margin: "auto" }}>
-                <p style={{ fontSize: 20, color: "rgb(103, 105, 113)" }}>
-                  {feedbackMeter[value].text}
-                </p>
-              </div>
+              <Stack
+                direction="row"
+                flexWrap={"wrap"}
+                gap={2}
+                justifyContent={"center"}
+              >
+                {feedbackMeter.map((item, i) => (
+                  <div
+                    style={{
+                      minWidth: "calc(50% - 2rem)",
+                      height: "inherit",
+                    }}
+                    key={i}
+                    onClick={() => handleChange(i)}
+                  >
+                    <Card
+                      sx={{
+                        minWidth: "100%",
+                        height: "100%",
+                        padding: 3,
+                      }}
+                      style={{
+                        background:
+                          value === i
+                            ? "linear-gradient(90deg, #3e74ff, #3e46ff)"
+                            : "initial",
+                      }}
+                    >
+                      <img src={item.img} style={{ margin: "auto" }} />
+                      <p
+                        style={{
+                          fontSize: 20,
+                          color: value === i ? "#fff" : "rgb(103, 105, 113)",
+                        }}
+                        className="text-center mt-4"
+                      >
+                        {item.text}
+                      </p>
+                    </Card>
+                  </div>
+                ))}
+              </Stack>
             </div>
-            <div style={{ width: "80%", margin: "auto" }}>
-              <input
-                type="range"
-                className="range-slider__range"
-                max={2}
-                value={value}
-                onChange={handleChange}
-              />
-            </div>
+
             <div>
               <Button variant="contained" onClick={handleDone}>
                 Done
@@ -117,4 +140,24 @@ export default function StudentFeedBackForm() {
       </Modal>
     </>
   );
+}
+
+{
+  /* <div
+className="flex flex-col gap-4"
+style={{ width: "100%", margin: "auto" }}
+>
+<div style={{ width: "fit-content", margin: "auto" }}>
+  <img
+    src={feedbackMeter[value].img}
+    alt={feedbackMeter[value].text}
+    style={{ maxWidth: "100%" }}
+  />
+</div>
+<div style={{ width: "fit-content", margin: "auto" }}>
+  <p style={{ fontSize: 20, color: "rgb(103, 105, 113)" }}>
+    {feedbackMeter[value].text}
+  </p>
+</div>
+</div> */
 }

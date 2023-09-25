@@ -6,9 +6,6 @@ import React, {
   useRef,
 } from "react";
 import AWS from "aws-sdk";
-import { useCookies } from "react-cookie";
-import { Button, Form } from "react-bootstrap";
-
 import {
   recordingUpdateToServer,
   doCreateLiveClassRecordings,
@@ -18,14 +15,12 @@ import {
   checkRecordingStatus,
 } from "../../api";
 import { submitErrorLog } from "../../api";
-import { Row, Col, Modal, Container, Image } from "react-bootstrap";
-
 import moment from "moment-timezone";
-import screenPermissionImage from "../../assets/screenPermission.jpg";
 import { mapToArray } from "../../utils/common";
 import { useDispatch } from "react-redux";
 import { startAndStopRecordingRecording } from "../../redux/features/liveClassDetails";
-
+import RecordingStepModal from "./Modal/RecordingStepModal";
+import RecordingPermissionModal from "./Modal/RecordingPermissionModal";
 var stream;
 var recorder;
 
@@ -133,12 +128,10 @@ const ScreenRecording = forwardRef((props, ref) => {
   const [isUploading, setIsUploading] = useState("None");
   const localParticipantAudioChangeRef = useRef(null);
   const [isRecordingDone, setIsRecordingDone] = useState(false);
-  const [cookies, setCookie] = useCookies(["recordings"]);
   const recordingRef = useRef(false);
   const finalPartRef = useRef(false);
   const isFinalPartUploaded = useRef(false);
   const [completeExecuted, setCompleteExecuted] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
   const [showteacherRecordingPopup, setShowTeacherRecordingPopUp] =
     useState(false);
   const [uploadQueue, setUploadQueue] = useState(0);
@@ -453,27 +446,6 @@ const ScreenRecording = forwardRef((props, ref) => {
     });
 
     return;
-
-    if (cookies._UPLOAD_STATUS == "LOCAL") {
-      console.log("Resume Recording");
-
-      checkRecordingList(cookies._FILE_KEY, cookies._UPLOAD_ID);
-    } else {
-      console.log("Start New Recording");
-      multipartCreateResult = await s3
-        .createMultipartUpload({
-          Bucket: bucketName,
-          Key: fileKey,
-          ACL: "public-read",
-          ContentType: "video/webm",
-          StorageClass: "STANDARD",
-        })
-        .promise();
-
-      multipartUploadId = multipartCreateResult.UploadId;
-      multiPartFileKey = fileKey;
-      initalizeRecording();
-    }
   }
 
   async function updateUploadIdToServer() {
@@ -795,13 +767,6 @@ const ScreenRecording = forwardRef((props, ref) => {
     //  clearInterval(recordingIntervalID)
   }
 
-  function storeBackUpCookies() {
-    setCookie(_FILE_KEY, multiPartFileKey, { path: "/" });
-    setCookie(_UPLOAD_STATUS, "LOCAL", { path: "/" });
-    setCookie(_UPLOAD_ID, multipartUploadId, { path: "/" });
-    setCookie(_UPLOAD_PART_ARRAY, uploadPartResults, { path: "/" });
-  }
-
   function uploadToStorage(s3) {
     chunkCount++;
     let actucalChunksValue = chunkCount;
@@ -842,7 +807,6 @@ const ScreenRecording = forwardRef((props, ref) => {
           ETag: value,
         });
         doPartUploadingStatus(recordingID, actucalChunksValue, value);
-        // storeBackUpCookies();
 
         console.log("Recorder button", status.toString());
         console.log("IS Uploading", isUploading);
@@ -998,70 +962,18 @@ const ScreenRecording = forwardRef((props, ref) => {
   return (
     <>
       {recordingStepsModal && (
-        <Modal
-          className="bootstrap"
-          show={recordingStepsModal}
-          //onHide={() => setShowTeacherRecordingPopUp(false)}
-        >
-          <Modal.Body style={{ padding: "40px", border: "1px solid #E2E4EE" }}>
-            <Row>
-              <Col md={12} className="text-center">
-                <h4
-                  style={{ color: "#233584", fontWeight: "normal" }}
-                  className="text-center"
-                >
-                  We need Audio Permission as well to capture screen Recording,
-                  Please follow the steps mentioned below to give Audio
-                  Permission
-                </h4>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md={12} className="text-center">
-                <Image
-                  style={{ width: "500px", height: "420px" }}
-                  src={screenPermissionImage}
-                />
-              </Col>
-            </Row>
-            <Button
-              //onClick={() => setShowTeacherRecordingPopUp(false)}
-              onClick={() => startRecording()}
-              className="primary-button"
-              style={{ margin: "auto", display: "block", marginTop: "1rem" }}
-            >
-              Okay
-            </Button>
-          </Modal.Body>
-        </Modal>
+        <RecordingStepModal
+          recordingStepsModal={recordingStepsModal}
+          startRecording={startRecording}
+          setShowTeacherRecordingPopUp={setShowTeacherRecordingPopUp}
+        />
       )}
-      <Modal
-        show={showteacherRecordingPopup}
-        //onHide={() => setShowTeacherRecordingPopUp(false)}
-        className="bootstrap"
-      >
-        <Modal.Body>
-          <Container>
-            {recordingSlogan ? (
-              <h3>
-                We need the Recording Permission to Continue the Session, Please
-                give Screen Share Permission to Start Recording
-              </h3>
-            ) : (
-              <h3>Please start the Recording</h3>
-            )}
-          </Container>
-          <Button
-            //onClick={() => setShowTeacherRecordingPopUp(false)}
-            onClick={() => startRecording()}
-            className="primary-button"
-            style={{ margin: "auto", display: "block", marginTop: "1rem" }}
-          >
-            Okay
-          </Button>
-        </Modal.Body>
-      </Modal>
+      <RecordingPermissionModal
+        showteacherRecordingPopup={showteacherRecordingPopup}
+        setShowTeacherRecordingPopUp={setShowTeacherRecordingPopUp}
+        recordingSlogan={recordingSlogan}
+        startRecording={startRecording}
+      />
     </>
   );
 });

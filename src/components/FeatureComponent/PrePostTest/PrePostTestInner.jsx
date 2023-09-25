@@ -26,6 +26,7 @@ import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import QuizCompleted from "./QuizCompleted";
 import TeachersTitle from "./Teacher/TeachersTitle";
+import SkippedQuestionModal from "./Modal/SkippedQuestionModal";
 export default function PrePostTestInner() {
   const [showSkippedQuestionReviewModal, setShowSkippedQuestionReviewModal] =
     useState(false);
@@ -109,7 +110,7 @@ export default function PrePostTestInner() {
       setLoading(false);
       setObj({ ...data });
       setPracticeId(data?.pre_post_test_id || "");
-      handleDataTrack({ data }, identity);
+      handleDataTrack({ data }, localParticipant);
     }
   };
   const handleNextQuestion = async (skipped_review, pre_post_test_id) => {
@@ -121,7 +122,7 @@ export default function PrePostTestInner() {
     if (data?.status) {
       setObj({ ...data });
       setLoading(false);
-      // handleDataTrack({ data }, identity);
+      handleDataTrack({ data }, localParticipant);
       setKey(key + 1);
     }
   };
@@ -142,7 +143,7 @@ export default function PrePostTestInner() {
     );
   }, []);
   React.useEffect(() => {
-    if (localParticipant !== "tutor") checkStudentData(mathzone);
+    if (localParticipant === "tutor") checkStudentData(mathzone);
   }, [JSON.stringify(mathzone)]);
   const checkStudentData = () => {
     if (mathzone?.status) {
@@ -184,6 +185,7 @@ export default function PrePostTestInner() {
   ) => {
     if (isUpdatedQuestion) {
       setObj({ ...data });
+      handleDataTrack({ data }, localParticipant);
       setKey(key + 1);
       return;
     }
@@ -217,16 +219,15 @@ export default function PrePostTestInner() {
     } else handleNextQuestion(skipped_review, practiceId);
     setShowSkippedQuestionReviewModal(false);
   };
+  const handleCloseModal = (value) => {
+    handleCheckSkippedQuestion(value ? "true" : "false");
+    setShowSkippedQuestionReviewModal(false);
+  };
   return (
     <>
-      {showSkippedQuestionReviewModal &&
-        (() => {
-          let y = confirm("Do you want to visit skipped question?");
-
-          handleCheckSkippedQuestion(y ? "true" : "false");
-
-          return "";
-        })()}
+      {showSkippedQuestionReviewModal && localParticipant !== "tutor" && (
+        <SkippedQuestionModal checkSkippedQuestion={handleCloseModal} />
+      )}
       {!loading ? (
         <div
           className={`${styles.mainPage} h-full w-full m-0`}

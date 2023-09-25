@@ -26,6 +26,7 @@ import {
   StudentCheckOutInstruction,
   TeacherCheckOutInstruction,
 } from "./Instruction/CheckOutInstruction";
+import EndActivityShowModal from "../ConfirmationModal/EndActivityShowModal";
 const RenderedFeelingOptions = ({
   isEnabled,
   handleStop,
@@ -545,6 +546,7 @@ const TeacherScreen = ({
   const dispatch = useDispatch();
   const [feelingArray, setFeelingArray] = useState([]);
   const [questionInput, setQuestionInput] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
@@ -624,6 +626,7 @@ const TeacherScreen = ({
   const [endCheckOutResponse, setEndCheckOutResponse] = useState(false);
   const handleEndCheckInActivity = () => {
     setEndCheckInResponse(true);
+    setShowModal(false);
     updateStatusofCicoActivity(
       liveClassId,
       apiData?.activity_id,
@@ -643,6 +646,7 @@ const TeacherScreen = ({
   };
   const handleEndCheckOutActivity = () => {
     setEndCheckOutResponse(true);
+    setShowModal(false);
     dispatch(cicoComponentLevelDataTrack({ endCheckOutResponse: true }));
     updateStatusofCicoActivity(
       liveClassId,
@@ -682,8 +686,29 @@ const TeacherScreen = ({
       key: CICO.checkOut,
     });
   };
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+  const handleStopTiming = () => clearInterval(timerRef.current);
+  useEffect(() => {
+    if (CICO.checkIn && endCheckInResponse) {
+      handleStopTiming();
+    } else if (CICO.checkIn && otherData?.endCheckOutResponse) {
+      handleStopTiming();
+    }
+  }, [endCheckInResponse, otherData?.endCheckOutResponse]);
   return (
     <div>
+      {showModal && (
+        <EndActivityShowModal
+          handleClose={() => setShowModal(false)}
+          handleComplete={
+            activityType === CICO.checkIn
+              ? handleEndCheckInActivity
+              : handleEndCheckOutActivity
+          }
+        />
+      )}
       {activityType === CICO.checkIn ? (
         <>
           <ActivityTimerEndButton
@@ -695,9 +720,7 @@ const TeacherScreen = ({
             timerCountRef={timerCountRef}
             timerRef={timerRef}
             showEndButton={otherData?.isStudentCheckInActivitySaveResponse}
-            handleEndActivity={
-              endCheckInResponse ? () => {} : handleEndCheckInActivity
-            }
+            handleEndActivity={endCheckInResponse ? () => {} : handleShowModal}
             enabledEndButton={endCheckInResponse ? false : true}
           />
           {otherData?.isStudentCheckInActivitySaveResponse ? (
@@ -744,9 +767,7 @@ const TeacherScreen = ({
             timerCountRef={timerCountRef}
             timerRef={timerRef}
             showEndButton={otherData?.isStudentCheckOutActivitySaveResponse}
-            handleEndActivity={
-              endCheckOutResponse ? () => {} : handleEndCheckOutActivity
-            }
+            handleEndActivity={endCheckOutResponse ? () => {} : handleShowModal}
             enabledEndButton={endCheckOutResponse ? false : true}
             showNextButton={
               otherData?.isStudentCheckOutActivitySaveResponse
