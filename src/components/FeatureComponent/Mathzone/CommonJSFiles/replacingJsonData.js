@@ -115,7 +115,7 @@ export default function replaceJsonData(data) {
 
   if (typeof question_text == "object") {
     try {
-      question_text.choice_type = "selectchoice";
+      // question_text.choice_type = "selectchoice";
       question_text = JSON.stringify(question_text);
     } catch (e) {
       console.log("error");
