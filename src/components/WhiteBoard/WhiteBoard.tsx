@@ -66,12 +66,12 @@ export default function WhiteBoard() {
     }
     actualHeight = containerHeight;
     scaleRef.current = {
-      scaleX: actualWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
-      scaleY: actualHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
+      scaleX: containerWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
+      scaleY: containerHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
     };
     canvasCalculatedDimension.current = {
-      height: actualHeight,
-      width: actualWidth,
+      height: containerHeight,
+      width: containerWidth,
     };
     setScaled(true);
   };
@@ -157,8 +157,8 @@ export default function WhiteBoard() {
           onTouchEnd={handleMouseUp}
           className="border-black border"
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
-          height={WHITEBOARDSTANDARDSCREENSIZE.height * scaleRef.current.scaleY}
-          width={WHITEBOARDSTANDARDSCREENSIZE.width * scaleRef.current.scaleX}
+          height={canvasCalculatedDimension.current.height}
+          width={canvasCalculatedDimension.current.width}
           style={{
             width: "fit-content",
             height: "fit-content",
@@ -169,11 +169,12 @@ export default function WhiteBoard() {
         >
           <Layer>
             <URLImage
-              width={WHITEBOARDSTANDARDSCREENSIZE.width}
-              height={WHITEBOARDSTANDARDSCREENSIZE.height}
+              width={canvasCalculatedDimension.current.width}
+              height={canvasCalculatedDimension.current.height}
               x={0}
               y={0}
-              image={arr[0]}
+              image={arr[1]}
+              scaleRef={scaleRef}
             />
           </Layer>
           <Layer>
@@ -194,6 +195,10 @@ export default function WhiteBoard() {
 
 const URLImage = (props) => {
   const [image, setImage] = useState(null);
+  const imageDimension = useRef({
+    width: props.width,
+    height: props.height,
+  });
   useEffect(() => {
     loadImage();
   }, []);
@@ -201,8 +206,18 @@ const URLImage = (props) => {
     let image = new window.Image();
     image.src = props.image;
     image.onload = function () {
-      handleLoad(image);
+      console.log(props.width);
+      let width = props.width;
+      console.log(width);
+      let imageWidthHeightRatio = image.height / image.width;
+      let height = width * imageWidthHeightRatio;
+      imageDimension.current = {
+        width: width,
+        height: height,
+      };
+      console.log(imageDimension);
       console.log(image.width, image.height);
+      window.handleLoad = () => handleLoad(image);
     };
   };
   const handleLoad = (image) => {
@@ -212,8 +227,8 @@ const URLImage = (props) => {
     <Image
       x={props.x}
       y={props.y}
-      width={props.width}
-      height={props.height}
+      width={imageDimension.current.width}
+      height={imageDimension.current.height}
       image={image}
     />
   );
