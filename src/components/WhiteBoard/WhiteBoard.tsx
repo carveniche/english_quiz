@@ -22,11 +22,14 @@ export default function WhiteBoard() {
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
+  const { identity } = room?.localParticipant;
+  console.log(identity);
   const scaleRef = useRef({
     scaleX: 1,
     scaleY: 1,
   });
   const [isScaled, setScaled] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false);
   const canvasCalculatedDimension = useRef({
     height: WHITEBOARDSTANDARDSCREENSIZE.height,
     width: WHITEBOARDSTANDARDSCREENSIZE.width,
@@ -65,14 +68,18 @@ export default function WhiteBoard() {
       actualHeight = containerHeight;
     }
     actualHeight = containerHeight;
-    scaleRef.current = {
-      scaleX: containerWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
-      scaleY: containerHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
-    };
+    // scaleRef.current = {
+    //   scaleX: containerWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
+    //   scaleY: containerHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
+    // };
     canvasCalculatedDimension.current = {
       height: containerHeight,
       width: containerWidth,
     };
+    // scaleRef.current = {
+    //   scaleX: 1,
+    //   scaleY: 1,
+    // };
     setScaled(true);
   };
   const drawLine = (lastLines) => {
@@ -92,11 +99,16 @@ export default function WhiteBoard() {
         position.y / scaleRef.current.scaleY,
       ],
     };
+    // const penStructure = {
+    //   id: `${userId}_${currentIdRef.current}`,
+    //   stroke: 5,
+    //   color: "black",
+    //   points: [position.x, position.y],
+    // };
     currentIdRef.current = currentIdRef.current + 1;
     coordinates.push(penStructure);
     setCoordinates([...coordinates]);
   };
-
   const handleMouseMove = (e) => {
     if (!drawingRef.current) {
       return;
@@ -106,6 +118,7 @@ export default function WhiteBoard() {
       positionMove.x / scaleRef.current.scaleX,
       positionMove.y / scaleRef.current.scaleY,
     ];
+    // let temp = [positionMove.x, positionMove.y];
     let lastLines = coordinates.pop();
     // let lastLines = coordinates[coordinates.length - 1];
     lastLines.points = lastLines.points.concat([...temp]);
@@ -133,6 +146,10 @@ export default function WhiteBoard() {
   useEffect(() => {
     handleScale();
   }, []);
+  const handleUpdate = () => {
+    console.log(handleUpdate);
+  };
+
   return (
     <div className="w-full h-full p-1">
       <button
@@ -142,12 +159,15 @@ export default function WhiteBoard() {
       >
         Clear
       </button>
+
       <div
         className="w-full  border-red-500 border overflow-hidden"
         style={{ height: "calc(100% - 20px)" }}
         ref={whiteBoardContainerRef}
+        key={`${scaleRef.current.scaleX}-${scaleRef.current.scaleY}`}
       >
         <Stage
+          key={`${scaleRef.current.scaleX}-${scaleRef.current.scaleY}`}
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
           onMouseup={handleMouseUp}
@@ -156,7 +176,6 @@ export default function WhiteBoard() {
           onTouchMove={handleMouseMove}
           onTouchEnd={handleMouseUp}
           className="border-black border"
-          scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
           height={canvasCalculatedDimension.current.height}
           width={canvasCalculatedDimension.current.width}
           style={{
@@ -173,15 +192,19 @@ export default function WhiteBoard() {
               height={canvasCalculatedDimension.current.height}
               x={0}
               y={0}
-              image={arr[1]}
+              image={"/pdf/whiteboard/01_III_MAT0101_page-0024.jpg"}
               scaleRef={scaleRef}
+              setScaled={setForceUpdate}
+              identity={identity}
             />
-          </Layer>
-          <Layer>
             {coordinates.map((line, i) => (
               <Line
                 key={i}
-                points={line?.points}
+                points={line?.points.map((item, i) =>
+                  i % 2
+                    ? item * scaleRef.current.scaleY
+                    : item * scaleRef.current.scaleX
+                )}
                 stroke={line?.color}
                 strokeWidth={line?.stroke}
               />
@@ -195,6 +218,7 @@ export default function WhiteBoard() {
 
 const URLImage = (props) => {
   const [image, setImage] = useState(null);
+  const { scaleRef, setScaled, identity } = props;
   const imageDimension = useRef({
     width: props.width,
     height: props.height,
@@ -206,29 +230,35 @@ const URLImage = (props) => {
     let image = new window.Image();
     image.src = props.image;
     image.onload = function () {
-      console.log(props.width);
-      let width = props.width;
-      console.log(width);
-      let imageWidthHeightRatio = image.height / image.width;
-      let height = width * imageWidthHeightRatio;
+      let height = 400;
+      if (identity === "tutor") height = props.height;
+      let imageWidthHeightRatio = image.width / image.height;
+      let width = height * imageWidthHeightRatio;
+
       imageDimension.current = {
         width: width,
         height: height,
       };
-      console.log(imageDimension);
-      console.log(image.width, image.height);
-      window.handleLoad = () => handleLoad(image);
+      handleLoad(image);
     };
   };
   const handleLoad = (image) => {
+    scaleRef.current = {
+      scaleX: imageDimension.current.width,
+      scaleY: imageDimension.current.height,
+    };
+
     setImage(image);
   };
+  useEffect(() => {
+    if (image) setScaled((prev) => !prev);
+  }, [image?.width]);
   return (
     <Image
       x={props.x}
       y={props.y}
-      width={imageDimension.current.width}
-      height={imageDimension.current.height}
+      width={imageDimension.current?.width}
+      height={imageDimension.current?.height}
       image={image}
     />
   );
