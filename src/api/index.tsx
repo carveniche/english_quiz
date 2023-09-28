@@ -454,3 +454,11 @@ export const parentFeedbackApi = async (formData: object) =>
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const createLiveClassTicket = async (formData: object) =>
+  axios({
+    method: "post",
+    url: baseURL + "app_students/create_live_class_ticket",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });

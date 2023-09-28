@@ -43,6 +43,7 @@ export default function MathzoneNavbar({
       setCurrentSelectedTag(index);
     }
   };
+
   return (
     <>
       {
@@ -63,7 +64,11 @@ export default function MathzoneNavbar({
             .filter((videos) => videos.video !== "")
             .map((videos, index) => {
               if (videos.video.length === 0) {
-                return;
+                return (
+                  <li className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center">
+                    No Videos present
+                  </li>
+                );
               }
 
               return (

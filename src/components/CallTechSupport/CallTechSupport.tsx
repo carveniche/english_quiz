@@ -17,13 +17,14 @@ export default function CallTechSupport() {
   );
 
   const timeoutIdRef = useRef<NodeJS.Timeout | undefined>();
+  const techSupportBtnClicked = useRef(false);
 
   const sendNotificationToTech = () => {
     timeoutIdRef.current = setTimeout(() => {
       if (!techJoinedClass) {
         techNotPresentApi(liveClassId); //Tech Not joined to calling the api
       }
-    }, 15000);
+    }, 300000);
   };
 
   useEffect(() => {
@@ -45,22 +46,29 @@ export default function CallTechSupport() {
       return;
     }
 
-    if (activeLogo) {
-      setBackgroundColor("bg-header-black");
-    } else {
-      setBackgroundColor("bg-black");
-    }
-    setActiveLogo(true);
-    setConnectingFlag(true);
-
     try {
       await callTechSupport(userId, liveClassId).then((response) => {
         if (response.data.status) {
           sendNotificationToTech();
+        } else {
+          techSupportBtnClicked.current = true;
+          alert(
+            "You have already request Tech Support Please wait for TechSupport to Join"
+          );
         }
       });
     } catch (error) {
       console.error("API request error:", error);
+    }
+
+    if (!techSupportBtnClicked.current) {
+      if (activeLogo) {
+        setBackgroundColor("bg-header-black");
+      } else {
+        setBackgroundColor("bg-black");
+      }
+      setActiveLogo(true);
+      setConnectingFlag(true);
     }
   };
 

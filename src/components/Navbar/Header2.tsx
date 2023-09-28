@@ -9,7 +9,7 @@ import ParentActionNavbar from "../ParentActionNavbar/ParentActionNavbar";
 import ParentJoinedClass from "../ParentJoinedClass/ParentJoinedClass";
 
 export default function Header2() {
-  const { role_name } = useSelector(
+  const { role_name, group_class } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
 
@@ -32,7 +32,7 @@ export default function Header2() {
           </div>
         )}
 
-        {isTutorTechBoth({ identity: String(role_name) }) && (
+        {isTutorTechBoth({ identity: String(role_name) }) && group_class && (
           <div className=" justify-center content-center items-center p-5 pr-[30px]">
             <MuteAll />
           </div>
