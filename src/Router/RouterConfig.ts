@@ -152,7 +152,7 @@ const routerConfig: routerConfig[] = [
     key: CICO.key,
     exact: true,
     component: MainCico,
-    name: "Cico",
+    name: "CICO",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: false,

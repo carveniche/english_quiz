@@ -384,7 +384,7 @@ function AffirmationStudentScreen({
     formData.append("duration", `${timerRef.current.count}`);
     formData.append(
       "checkin_out_activity_category_id",
-      listOfAffirmation[val].activity_data_id
+      listOfAffirmation[val].category_id
     );
     try {
       const { data } = await StudentActivityResponseSave(formData);
@@ -512,17 +512,17 @@ function AffirmationTeacherScreen({
   activityType,
   handleDataTrack,
   checkOutData,
-  liveClassID,
   userId,
   micRef,
   students,
+  liveClassId,
 }) {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
-
+  let liveClassID = liveClassId;
   let instruction =
     activityType === CICO.checkIn
       ? TeacherCheckInInstruction()
@@ -615,6 +615,7 @@ function AffirmationTeacherScreen({
   const handleShowModal = () => {
     setShowModal(true);
   };
+  console.log(liveClassID);
   return (
     <>
       {showModal && (
@@ -849,6 +850,7 @@ export default function Affirmation({
       clearTimeout(id);
     };
   }, [otherData?.showCheckOutAnimation]);
+  console.log(liveClassID);
   return (
     <>
       {otherData?.showCheckInAnimation && (
