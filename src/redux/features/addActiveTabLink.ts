@@ -2,17 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CICO, MAXIMUMACTIVETAB, ROUTERKEYCONST } from "../../constants";
 import defaultRouter from "../../Router/defaultRouter";
 export interface ActiveTabParams {
-  path: String;
-  key: String;
-  name: String;
-  icon: String;
-  extraParams?: Object;
+  path: string;
+  key: string;
+  name: string;
+  icon: string;
+  extraParams?: object;
 }
 export interface activeTabStateReducer {
   activeTabArray: ActiveTabParams[];
-  currentSelectedRouter: String;
+  currentSelectedRouter: string;
   currentSelectedIndex: number;
-  currentSelectedKey: String;
+  currentSelectedKey: string;
 }
 
 const initialState: activeTabStateReducer = {
@@ -68,14 +68,14 @@ const activeTabReducer = createSlice({
         activeTabArray[index] = action.payload;
       }
     },
-    deleteFromActiveTab: (state, action: PayloadAction<String>) => {
+    deleteFromActiveTab: (state, action: PayloadAction<string>) => {
       let { activeTabArray } = state;
       // const navigate=useNavigate()
 
       activeTabArray = activeTabArray.filter((item) => {
         return item.key !== action.payload;
       });
-      let currentTab: String = state.currentSelectedRouter;
+      let currentTab: string = state.currentSelectedRouter;
       let currentSelectedKey = state.currentSelectedKey;
 
       if (!activeTabArray.length) {
