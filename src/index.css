@@ -7,6 +7,10 @@
   font-family: "Montserrat";
 }
 
+body {
+  overflow: hidden;
+}
+
 svg {
   display: inline;
 }
@@ -35,6 +39,7 @@ svg {
   height: calc(100% - 86px - 101.28px);
 
   flex-direction: row-reverse;
+  position: relative;
 }
 
 .sampleoneanimation {

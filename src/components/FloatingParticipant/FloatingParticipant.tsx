@@ -11,7 +11,15 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
 import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
 
-export default function FloatingParticipant(screen: any) {
+interface FloatingParticipantProps {
+  screen: any;
+  parentRef: React.RefObject<HTMLDivElement>;
+}
+
+export default function FloatingParticipant({
+  screen,
+  parentRef,
+}: FloatingParticipantProps) {
   const [screenName, setScreenName] = useState("");
   const [showTeacherView, setShowTeacherView] = useState(false);
   const { room } = useVideoContext();
@@ -21,7 +29,7 @@ export default function FloatingParticipant(screen: any) {
 
   useEffect(() => {
     if (screen) {
-      setScreenName(screen.screen);
+      setScreenName(screen);
     }
   }, [screen]);
 
@@ -50,7 +58,7 @@ export default function FloatingParticipant(screen: any) {
         </React.Fragment>
       ) : (
         <div
-          className="max-h-[200px] max-w-[290px]"
+          className="relative max-h-[200px] max-w-[290px]"
           style={{
             marginTop: "10px",
           }}
@@ -89,7 +97,7 @@ export default function FloatingParticipant(screen: any) {
         </React.Fragment>
       ) : !isTutor({ identity: participant.identity }) ? (
         <div
-          className="max-h-[200px] max-w-[290px]"
+          className="relative max-h-[200px] max-w-[290px]"
           style={{
             marginTop: "10px",
           }}
@@ -117,7 +125,7 @@ export default function FloatingParticipant(screen: any) {
 
   const showSelfParticipantView = () => {
     return (
-      <div className="max-h-[200px] max-w-[290px]">
+      <div className="relative max-h-[200px] max-w-[290px]">
         <Participant
           participant={localParticipant}
           isLocalParticipant={true}
@@ -140,17 +148,14 @@ export default function FloatingParticipant(screen: any) {
   return (
     <div
       style={{
-        zIndex: 10,
         position: "absolute",
-        width: "110px",
-        right: 95,
+        right: 0,
+        zIndex: 999,
+        width: 200,
+        height: "fit-content",
       }}
     >
-      <Rnd
-        style={{
-          position: "static",
-        }}
-      >
+      <Rnd bounds={parentRef.current || ""}>
         <>
           {screenName !== "/myscreen"
             ? showSelfParticipantView()

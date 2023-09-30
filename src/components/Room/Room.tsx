@@ -7,7 +7,11 @@ import AllScreen from "../FeatureComponent/AllScreen/AllScreen";
 import RemoteParticipantCountAndLessonDataEffect from "../RemoteCountAndLessonDataEffect/RemoteParticipantCountAndLessonDataEffect";
 import ScreenShareEffect from "../ScreenShareEffect/ScreenShareEffect";
 
-export default function Room() {
+interface RoomProps {
+  parentRef: React.RefObject<HTMLDivElement>;
+}
+
+export default function Room({ parentRef }: RoomProps) {
   const currentSelectedScreen = useSelector(
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
@@ -24,9 +28,10 @@ export default function Room() {
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />
       ) : (
-        <div style={{ display: "block" }}>
-          <FloatingParticipant screen={currentSelectedScreen} />
-        </div>
+        <FloatingParticipant
+          screen={currentSelectedScreen}
+          parentRef={parentRef}
+        />
       )}
 
       {/* 

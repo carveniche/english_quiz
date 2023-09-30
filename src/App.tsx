@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { VideoProvider } from "./components/VideoProvider";
 import MenuBar from "./components/MenuBar/MenuBar";
 import PreJoinScreen from "./components/PreJoinScreen/PreJoinScreen";
@@ -37,6 +37,7 @@ const Main = styled("main")(({ theme }: { theme: Theme }) => ({
 const logger = Logger.getLogger("twilio-video");
 logger.setLevel("SILENT");
 function JoinedScreen() {
+  const parentRef = useRef<HTMLDivElement | null>(null);
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
   const { isClassHasDisconnected } = useSelector(
@@ -56,8 +57,8 @@ function JoinedScreen() {
 
       <ReconnectingNotification />
       <MobileTopMenuBar />
-      <div className="section-component-layout">
-        <Room />
+      <div className="section-component-layout" ref={parentRef}>
+        <Room parentRef={parentRef} />
         <MainScreenRecording />
         <AllPageRoutes />
       </div>
