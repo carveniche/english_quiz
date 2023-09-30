@@ -23,7 +23,7 @@ export default function ToggleAudioButton(props: {
   const { localTracks } = useVideoContext();
   const hasAudioTrack = localTracks.some((track) => track.kind === "audio");
 
-  const { muteAllParticipant } = useSelector(
+  const { muteAllParticipant, muteIndividualParticipant } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
   const { role_name } = useSelector(
@@ -33,6 +33,26 @@ export default function ToggleAudioButton(props: {
   useEffect(() => {
     muteUnmuteToggle();
   }, [muteAllParticipant]);
+
+  useEffect(() => {
+    if (muteIndividualParticipant.length > 0) {
+      muteIndividualParticipantFn();
+    }
+  }, [muteIndividualParticipant]);
+
+  const muteIndividualParticipantFn = () => {
+    for (let i = 0; i < muteIndividualParticipant.length; i++) {
+      if (
+        muteIndividualParticipant[i].identity === role_name &&
+        muteIndividualParticipant[i].muteStatus
+      ) {
+        muteAudioEnable();
+        break;
+      } else {
+        unMuteAudioEnable();
+      }
+    }
+  };
 
   const muteUnmuteToggle = () => {
     if (muteAllParticipant === undefined) {

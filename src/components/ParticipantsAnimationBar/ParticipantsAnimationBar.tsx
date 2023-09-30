@@ -7,7 +7,8 @@ import {
   Participant as IParticipant,
   LocalParticipant as ILocalParticipant,
 } from "twilio-video";
-import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIconParticipantAnimationBar";
+import MuteIcon from "./ParticipantAnimationBarIcons/MuteIcon";
+import UnMuteIcon from "./ParticipantAnimationBarIcons/UnMuteIcon";
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
 import ScreenShareOnIcon from "./ParticipantAnimationBarIcons/ScreenShareOnIcon";
 
@@ -60,6 +61,7 @@ export default function ParticipantsAnimationBar({
     useState<string>("");
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
+  const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
 
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
@@ -70,6 +72,10 @@ export default function ParticipantsAnimationBar({
 
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+
+  const { muteIndividualParticipant } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
 
   const animationButtonClicked = (identity: string, key: string) => {
@@ -111,7 +117,13 @@ export default function ParticipantsAnimationBar({
   };
 
   const muteIconButtonClicked = (identity: string) => {
-    console.log("participant identity to mute", identity);
+    if (!muteParticipant) {
+      handleKeyClick(identity, "MuteParticipant", true);
+      setMuteParticipant(true);
+    } else {
+      handleKeyClick(identity, "MuteParticipant", false);
+      setMuteParticipant(false);
+    }
   };
 
   useEffect(() => {
@@ -138,6 +150,29 @@ export default function ParticipantsAnimationBar({
     }
   }, [animationDataTracks.animationTrackIdentityAndType.count]);
 
+  useEffect(() => {
+    if (
+      muteIndividualParticipant.length > 0 &&
+      !isTutorTechBoth({ identity: String(role_name) })
+    ) {
+      muteIndividualParticipantFn();
+    }
+  }, [muteIndividualParticipant]);
+
+  const muteIndividualParticipantFn = () => {
+    for (let i = 0; i < muteIndividualParticipant.length; i++) {
+      if (
+        muteIndividualParticipant[i].identity === role_name &&
+        muteIndividualParticipant[i].muteStatus
+      ) {
+        setMuteParticipant(true);
+        break;
+      } else {
+        setMuteParticipant(false);
+      }
+    }
+  };
+
   const showCountOfAnimation = () => {
     animationDataTracks?.students?.map((item) => {
       if (item.identity === participant.identity) {
@@ -163,7 +198,7 @@ export default function ParticipantsAnimationBar({
               disabled={!isTutorTechBoth({ identity: String(role_name) })}
               onClick={() => muteIconButtonClicked(participant.identity)}
             >
-              <MicIconParticipantAnimationBar />
+              {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
             </button>
             <span className="text-white">
               {isStudentName({ identity: participant.identity })}
@@ -244,7 +279,7 @@ export default function ParticipantsAnimationBar({
         </div>
       ) : (
         <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[60px]">
-          <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[30px]">
+          <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[40px]">
             <div className="flex flex-row justify-evenly">
               <div className="flex justify-center mb-3">
                 <NetworkQualityLevel participant={participant} />
@@ -253,7 +288,7 @@ export default function ParticipantsAnimationBar({
                 disabled={!isTutorTechBoth({ identity: String(role_name) })}
                 onClick={() => muteIconButtonClicked(participant.identity)}
               >
-                <MicIconParticipantAnimationBar />
+                {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
               </button>
 
               <span className="text-white">
@@ -277,8 +312,8 @@ export default function ParticipantsAnimationBar({
               </button>
             </div>
           </div>
-          <div className="flex bg-black w-full h-[30px]">
-            <div className=" flex mt-1">
+          <div className="flex bg-black w-full h-[30px] mt-2 mb-4">
+            <div className=" flex mt-1 h-full">
               <button
                 disabled={!isTutorTechBoth({ identity: String(role_name) })}
                 onClick={() =>

@@ -1,4 +1,4 @@
-export default function MicIconParticipantAnimationBar() {
+export default function MuteIcon() {
   return (
     <svg
       width="20"

@@ -19,6 +19,7 @@ import {
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
   addTechJoinedClass,
+  addMuteIndividualParticipant,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -78,6 +79,13 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
         dispatch(addMuteAllParticipant(parseMessage.value.muteState));
+      } else if (parseMessage.value.datatrackName === "MuteParticipant") {
+        dispatch(
+          addMuteIndividualParticipant({
+            identity: parseMessage.value.identity,
+            muteStatus: parseMessage.value.muteStatus,
+          })
+        );
       } else if (
         parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
       ) {

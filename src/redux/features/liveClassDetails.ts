@@ -35,6 +35,7 @@ interface liveClassDetailsTypes {
   speedMathScoreofAllParticipant: any;
   isRecordingEnabled: boolean;
   isClassHasDisconnected: boolean;
+  muteIndividualParticipant: any;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -68,6 +69,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathScoreofAllParticipant: [],
   isRecordingEnabled: false,
   isClassHasDisconnected: false,
+  muteIndividualParticipant: [],
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -157,6 +159,31 @@ export const liveClassDetailsSlice = createSlice({
       const { payload } = action;
       state.isClassHasDisconnected = payload;
     },
+
+    addMuteIndividualParticipant: (state, action) => {
+      const { identity, muteStatus } = action.payload;
+
+      let prevArr = state.muteIndividualParticipant;
+
+      if (prevArr.length === 0) {
+        prevArr.push({
+          identity,
+          muteStatus,
+        });
+      } else {
+        for (let i = 0; i < prevArr.length; i++) {
+          if (prevArr[i]?.identity === identity) {
+            prevArr[i].muteStatus = muteStatus;
+            break;
+          } else {
+            prevArr.push({
+              identity,
+              muteStatus,
+            });
+          }
+        }
+      }
+    },
   },
 });
 
@@ -175,6 +202,7 @@ export const {
   addSpeedMathScoreOfAllParticipant,
   startAndStopRecordingRecording,
   endRoomRequest,
+  addMuteIndividualParticipant,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

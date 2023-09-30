@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addAnimationDatatrack } from "../../redux/features/dataTrackStore";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { addMuteIndividualParticipant } from "../../redux/features/liveClassDetails";
 export default function useParticipantsAnimationBarDatatracks() {
   const { room } = useVideoContext();
   const { pathname } = useLocation();
@@ -30,6 +31,23 @@ export default function useParticipantsAnimationBarDatatracks() {
       };
 
       localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    } else if (key === "MuteParticipant") {
+      let DataTrackObj = {
+        pathName: pathname === "/" ? null : pathname,
+        value: {
+          datatrackName: "MuteParticipant",
+          muteStatus: state,
+          identity: identity,
+        },
+      };
+
+      localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+      dispatch(
+        addMuteIndividualParticipant({
+          identity: identity,
+          muteStatus: state,
+        })
+      );
     } else {
       let json = {
         pathName: pathname === "/" ? null : pathname,
