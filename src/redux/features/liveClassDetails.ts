@@ -161,7 +161,7 @@ export const liveClassDetailsSlice = createSlice({
     },
 
     addMuteIndividualParticipant: (state, action) => {
-      const { identity, muteStatus } = action.payload;
+      const { identity, muteStatus, fromScreen } = action.payload;
 
       let prevArr = state.muteIndividualParticipant;
 
@@ -169,16 +169,19 @@ export const liveClassDetailsSlice = createSlice({
         prevArr.push({
           identity,
           muteStatus,
+          fromScreen,
         });
       } else {
         for (let i = 0; i < prevArr.length; i++) {
           if (prevArr[i]?.identity === identity) {
             prevArr[i].muteStatus = muteStatus;
+            prevArr[i].fromScreen = fromScreen;
             break;
           } else {
             prevArr.push({
               identity,
               muteStatus,
+              fromScreen,
             });
           }
         }

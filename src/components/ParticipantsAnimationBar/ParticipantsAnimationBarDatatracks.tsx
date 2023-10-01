@@ -38,6 +38,7 @@ export default function useParticipantsAnimationBarDatatracks() {
           datatrackName: "MuteParticipant",
           muteStatus: state,
           identity: identity,
+          fromScreen: "TeacherMutedParticipant",
         },
       };
 

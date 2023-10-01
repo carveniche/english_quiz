@@ -84,6 +84,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           addMuteIndividualParticipant({
             identity: parseMessage.value.identity,
             muteStatus: parseMessage.value.muteStatus,
+            fromScreen: parseMessage.value.fromScreen,
           })
         );
       } else if (
