@@ -172,18 +172,23 @@ export const liveClassDetailsSlice = createSlice({
           fromScreen,
         });
       } else {
+        let identityNotFound = true;
+
         for (let i = 0; i < prevArr.length; i++) {
           if (prevArr[i]?.identity === identity) {
             prevArr[i].muteStatus = muteStatus;
             prevArr[i].fromScreen = fromScreen;
+            identityNotFound = false;
             break;
-          } else {
-            prevArr.push({
-              identity,
-              muteStatus,
-              fromScreen,
-            });
           }
+        }
+
+        if (identityNotFound) {
+          prevArr.push({
+            identity,
+            muteStatus,
+            fromScreen,
+          });
         }
       }
     },

@@ -31,6 +31,11 @@ interface ParticipantProps {
   screen?: String;
 }
 
+interface MuteParticipantDetailsProps {
+  identity: string;
+  muteStatus: boolean;
+}
+
 export default function ParticipantsAnimationBar({
   participant,
   screen,
@@ -62,6 +67,7 @@ export default function ParticipantsAnimationBar({
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
+  const [mutedParticipantsDetails, setMutedParticipantsDetails] = useState([]);
 
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
@@ -150,29 +156,6 @@ export default function ParticipantsAnimationBar({
     }
   }, [animationDataTracks.animationTrackIdentityAndType.count]);
 
-  useEffect(() => {
-    if (
-      muteIndividualParticipant.length > 0 &&
-      !isTutorTechBoth({ identity: String(role_name) })
-    ) {
-      muteIndividualParticipantFn();
-    }
-  }, [muteIndividualParticipant]);
-
-  const muteIndividualParticipantFn = () => {
-    for (let i = 0; i < muteIndividualParticipant.length; i++) {
-      if (
-        muteIndividualParticipant[i].identity === role_name &&
-        muteIndividualParticipant[i].muteStatus
-      ) {
-        setMuteParticipant(true);
-        break;
-      } else {
-        setMuteParticipant(false);
-      }
-    }
-  };
-
   const showCountOfAnimation = () => {
     animationDataTracks?.students?.map((item) => {
       if (item.identity === participant.identity) {
@@ -194,12 +177,32 @@ export default function ParticipantsAnimationBar({
             <div className="flex justify-center mb-3">
               <NetworkQualityLevel participant={participant} />
             </div>
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() => muteIconButtonClicked(participant.identity)}
-            >
-              {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
-            </button>
+            {muteIndividualParticipant.length > 0 ? (
+              muteIndividualParticipant?.map((item) => {
+                return (
+                  <button
+                    disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                    onClick={() => muteIconButtonClicked(participant.identity)}
+                  >
+                    {item.identity === participant.identity ? (
+                      item.muteStatus ? (
+                        <UnMuteIcon />
+                      ) : (
+                        <MuteIcon />
+                      )
+                    ) : null}
+                  </button>
+                );
+              })
+            ) : (
+              <button
+                disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                onClick={() => muteIconButtonClicked(participant.identity)}
+              >
+                {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+              </button>
+            )}
+
             <span className="text-white">
               {isStudentName({ identity: participant.identity })}
             </span>

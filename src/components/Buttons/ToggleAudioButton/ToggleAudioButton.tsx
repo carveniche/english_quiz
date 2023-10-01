@@ -47,7 +47,6 @@ export default function ToggleAudioButton(props: {
   }, [isAudioEnabled, roomState]);
 
   const sendMuteStatusToAllParticipants = () => {
-    console.log("called 2nd");
     const muteStatus = !isAudioEnabled ? true : false;
 
     if (room && !isTutorTechBoth({ identity: String(role_name) })) {
@@ -90,6 +89,14 @@ export default function ToggleAudioButton(props: {
     }
   }, [muteIndividualParticipant]);
 
+  const toggleTeacherMutedState = () => {
+    setTeacherMutedParticipant(true);
+
+    setTimeout(() => {
+      setTeacherMutedParticipant(false);
+    }, 500);
+  };
+
   const muteIndividualParticipantFn = () => {
     for (let i = 0; i < muteIndividualParticipant.length; i++) {
       if (
@@ -101,14 +108,12 @@ export default function ToggleAudioButton(props: {
           muteIndividualParticipant[i].muteStatus
         ) {
           muteAudioEnable();
-          setTeacherMutedParticipant(true);
+          toggleTeacherMutedState();
           break;
         } else {
           unMuteAudioEnable();
-          setTeacherMutedParticipant(true);
+          toggleTeacherMutedState();
         }
-      } else {
-        console.log("returning from ToggleAudioButton ");
       }
     }
   };
