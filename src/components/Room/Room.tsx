@@ -28,10 +28,12 @@ export default function Room({ parentRef }: RoomProps) {
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />
       ) : (
-        <FloatingParticipant
-          screen={currentSelectedScreen}
-          parentRef={parentRef}
-        />
+        <div style={{ display: "block" }}>
+          <FloatingParticipant
+            screen={currentSelectedScreen}
+            parentRef={parentRef}
+          />
+        </div>
       )}
 
       {/* 

@@ -31,6 +31,7 @@ export default function SpeedMath() {
   const [gameUserScore, setGameUserScore] = useState(0);
   const [showSpeedMathSummaryBoard, setShowSpeedMathSummaryBoard] =
     useState(false);
+  const [speedMathScoreBoard, setFinalSpeedMathScoreBoard] = useState([]);
 
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
@@ -207,6 +208,11 @@ export default function SpeedMath() {
     }
   };
 
+  const getFinalResult = (score: []) => {
+    setFinalSpeedMathScoreBoard(score);
+    setShowSpeedMathSummaryBoard(false);
+  };
+
   return (
     <div
       style={{
@@ -230,6 +236,7 @@ export default function SpeedMath() {
             startQuestionTimer={startQuestionTimer}
             questionTimerEndedCallback={questionTimerEndedCallback}
             showSpeedMathSummaryBoard={showSpeedMathSummaryBoard}
+            speedMathScoreBoard={speedMathScoreBoard}
           />
         </div>
         <div className="h-full w-full justify-center">
@@ -255,6 +262,7 @@ export default function SpeedMath() {
               playerId={userId}
               gameId={speedMathGameId}
               playMode={playMode}
+              getFinalResult={getFinalResult}
             />
           )}
         </div>

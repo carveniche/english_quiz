@@ -102,7 +102,6 @@ export default function ToggleAudioButton(props: {
       if (
         muteIndividualParticipant[i].fromScreen === "TeacherMutedParticipant"
       ) {
-        console.log("Inside if now we can toggle Audio Btn");
         if (
           muteIndividualParticipant[i].identity === role_name &&
           muteIndividualParticipant[i].muteStatus

@@ -287,12 +287,35 @@ export default function ParticipantsAnimationBar({
               <div className="flex justify-center mb-3">
                 <NetworkQualityLevel participant={participant} />
               </div>
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() => muteIconButtonClicked(participant.identity)}
-              >
-                {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
-              </button>
+              {muteIndividualParticipant.length > 0 ? (
+                muteIndividualParticipant?.map((item) => {
+                  return (
+                    <button
+                      disabled={
+                        !isTutorTechBoth({ identity: String(role_name) })
+                      }
+                      onClick={() =>
+                        muteIconButtonClicked(participant.identity)
+                      }
+                    >
+                      {item.identity === participant.identity ? (
+                        item.muteStatus ? (
+                          <UnMuteIcon />
+                        ) : (
+                          <MuteIcon />
+                        )
+                      ) : null}
+                    </button>
+                  );
+                })
+              ) : (
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() => muteIconButtonClicked(participant.identity)}
+                >
+                  {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+                </button>
+              )}
 
               <span className="text-white">
                 {isStudentName({ identity: participant.identity })}
