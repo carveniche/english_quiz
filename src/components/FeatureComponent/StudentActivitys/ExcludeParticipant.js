@@ -1,1 +1,0 @@
-export const excludeParticipant=['tech','tutor','parent',"liveadmin","sm","audit","smmanager"]
