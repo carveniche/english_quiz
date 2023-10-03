@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function UserCursor({ remtoeArray }) {
+export default function UserCursor({ remtoeArray, scaleRef }) {
   return (
     <>
       {remtoeArray?.map((item, key) =>
@@ -15,8 +15,8 @@ export default function UserCursor({ remtoeArray }) {
               <div
                 style={{
                   position: "absolute",
-                  top: top,
-                  left: left,
+                  top: top * scaleRef.current.scaleY,
+                  left: left * scaleRef.current.scaleX,
                 }}
               >
                 <img src="/static/cursor.png" />

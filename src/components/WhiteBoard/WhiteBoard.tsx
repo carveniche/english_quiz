@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteboardToolbar";
+const TEXTAREAWIDTH = 250;
+const TEXTAREAHEIGHT = 150;
 export default function WhiteBoard() {
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
@@ -23,7 +25,13 @@ export default function WhiteBoard() {
     scaleY: 1,
   });
   const [isScaled, setScaled] = useState(false);
-  const [selectedPen, setSelectedPen] = useState("freeDrawing");
+  const [selectedPen, setSelectedPen] = useState("FreeDrawing");
+  const [textInput, setTextInput] = useState({
+    showInputBox: false,
+    x: 0,
+    y: 0,
+    value: "",
+  });
   const remoteArrayRef = useRef([]);
   const [remoteArray, setRemoteArray] = useState([]);
   const canvasCalculatedDimension = useRef({
@@ -110,25 +118,7 @@ export default function WhiteBoard() {
     lastLines.identity = userId;
     lastLines.isDrawing = true;
   };
-  const handleMouseDown = (e) => {
-    clearInterval(ref.current);
-    drawingRef.current = true;
 
-    const position = e.target.getStage().getPointerPosition();
-    const penStructure = {
-      id: `${userId}_${currentIdRef.current}`,
-      stroke: 5,
-      color: "black",
-      points: [
-        position.x / scaleRef.current.scaleX,
-        position.y / scaleRef.current.scaleY,
-      ],
-    };
-
-    currentIdRef.current = currentIdRef.current + 1;
-    coordinates.push(penStructure);
-    setCoordinates([...coordinates]);
-  };
   const drawStraightLine = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
     let temp = [
@@ -166,12 +156,57 @@ export default function WhiteBoard() {
     coordinates2.isDrawing = true;
     handleDataTrack(coordinates2);
   };
+  const getTextBoxPosition = (e) => {
+    const position = e.target.getStage().getPointerPosition();
+    console.log(position);
+    let x = position.x + TEXTAREAWIDTH;
+    let y = position.y + TEXTAREAHEIGHT;
+    if (x > canvasCalculatedDimension.current.width) {
+      x = position.x - TEXTAREAWIDTH;
+    } else {
+      x = position.x;
+    }
+    if (y > canvasCalculatedDimension.current.height) {
+      y = position.y - TEXTAREAHEIGHT;
+    } else {
+      y = position.y;
+    }
+    let inputText = {
+      x: x,
+      y: y,
+      showInputBox: true,
+      value: "",
+    };
+    setTextInput({ ...inputText });
+  };
+  const handleMouseDown = (e) => {
+    if (selectedPen === "Text") {
+      getTextBoxPosition(e);
+      return;
+    }
+    clearInterval(ref.current);
+    drawingRef.current = true;
+
+    const position = e.target.getStage().getPointerPosition();
+    const penStructure = {
+      id: `${userId}_${currentIdRef.current}`,
+      stroke: 5,
+      color: "black",
+      points: [
+        position.x / scaleRef.current.scaleX,
+        position.y / scaleRef.current.scaleY,
+      ],
+    };
+
+    currentIdRef.current = currentIdRef.current + 1;
+    coordinates.push(penStructure);
+    setCoordinates([...coordinates]);
+  };
   const handleMouseMove = (e) => {
-    console.log(selectedPen);
     if (!drawingRef.current) {
       return;
     }
-    if (selectedPen === "freeDrawing") {
+    if (selectedPen === "FreeDrawing") {
       freeDrawing(e);
     } else if (selectedPen === "Line") {
       drawStraightLine(e);
@@ -206,19 +241,52 @@ export default function WhiteBoard() {
   useEffect(() => {
     handleScale();
   }, []);
+
   const handleToolBarSelect = (id: number) => {
-    console.log(id);
     switch (id) {
       case 1:
         setSelectedPen("Line");
         break;
       case 2:
-        setSelectedPen("freeDrawing");
+        setSelectedPen("FreeDrawing");
         break;
       case 3:
         setCoordinates([]);
         setRemoteArray([]);
         break;
+      case 4:
+        setSelectedPen("Text");
+    }
+  };
+  const handleTextArea = (e) => {
+    let { value } = e.target;
+    textInput.value = value;
+    setTextInput({ ...textInput });
+  };
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      let data = {
+        points: [textInput.x, textInput.y],
+        value: textInput.value,
+        type: "text",
+        id: `${userId}_${currentIdRef.current}`,
+      };
+      coordinates.push(data);
+      setCoordinates([...coordinates]);
+      setTextInput({
+        x: 0,
+        y: 0,
+        showInputBox: false,
+        value: "",
+      });
+      let coordinates2 = {
+        coordinates: data,
+      };
+      coordinates2.cursorPoints = [];
+      coordinates2.identity = userId;
+      coordinates2.isDrawing = false;
+      handleDataTrack(coordinates2);
+      currentIdRef.current = currentIdRef.current + 1;
     }
   };
   return (
@@ -229,7 +297,24 @@ export default function WhiteBoard() {
         style={{ height: "calc(100% - 20px)", position: "relative" }}
         ref={whiteBoardContainerRef}
       >
-        <UserCursor remtoeArray={remoteArray} />
+        <>
+          {textInput?.showInputBox && (
+            <textarea
+              className={`absolute z-10 border-black border`}
+              style={{
+                top: textInput.y,
+                left: textInput.x,
+                width: TEXTAREAWIDTH,
+                height: TEXTAREAHEIGHT,
+              }}
+              value={textInput.value}
+              onChange={handleTextArea}
+              onKeyDown={handleKeyDown}
+              autoFocus
+            />
+          )}
+        </>
+        <UserCursor remtoeArray={remoteArray} scaleRef={scaleRef} />
         <Stage
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
@@ -251,7 +336,7 @@ export default function WhiteBoard() {
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
         >
-          {isScaled && (
+          {isScaled && false && (
             <Layer>
               <UrlImage
                 x={0}
@@ -263,22 +348,40 @@ export default function WhiteBoard() {
             </Layer>
           )}
           <Layer>
-            {coordinates.map((line, i) => (
-              <Line
-                key={i}
-                points={line?.points}
-                stroke={line?.color}
-                strokeWidth={line?.stroke}
-              />
-            ))}
-            {remoteArray?.map(({ coordinates }, key) =>
-              coordinates?.map((line) => (
+            {coordinates.map((line, i) =>
+              line?.type === "text" ? (
+                <Text
+                  text={line?.value}
+                  x={line?.points[0]}
+                  y={line?.points[1]}
+                  fontSize={30}
+                />
+              ) : (
                 <Line
-                  points={line?.points || []}
-                  stroke={line.color}
+                  key={i}
+                  points={line?.points}
+                  stroke={line?.color}
                   strokeWidth={line?.stroke}
-                ></Line>
-              ))
+                />
+              )
+            )}
+            {remoteArray?.map(({ coordinates }, key) =>
+              coordinates?.map((line) =>
+                line?.type === "text" ? (
+                  <Text
+                    text={line?.value}
+                    x={line?.points[0]}
+                    y={line?.points[1]}
+                    fontSize={30}
+                  />
+                ) : (
+                  <Line
+                    points={line?.points || []}
+                    stroke={line.color}
+                    strokeWidth={line?.stroke}
+                  ></Line>
+                )
+              )
             )}
           </Layer>
         </Stage>

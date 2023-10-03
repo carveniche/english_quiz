@@ -12,6 +12,7 @@ const toolBar = [
     id: 3,
     name: "Clear",
   },
+  { id: 4, name: "Text" },
 ];
 export default function WhiteboardToolbar({ handleClick }) {
   return (
