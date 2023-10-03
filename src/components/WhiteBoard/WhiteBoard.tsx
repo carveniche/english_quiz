@@ -7,6 +7,7 @@ import { ROUTERKEYCONST, WHITEBOARDSTANDARDSCREENSIZE } from "../../constants";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import UserCursor from "./UserCursor";
 const arr = [
   "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
   "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
@@ -36,10 +37,9 @@ export default function WhiteBoard() {
   });
   const whiteBoardContainerRef = useRef();
   const currentIdRef = useRef(0);
-  const constantDelay = 1000;
+  const constantDelay = 10;
   const timerRef = useRef(0);
   const handleDataTrack = (points) => {
-    console.log(Date.now() - timerRef.current);
     if (Date.now() - timerRef.current <= constantDelay) return;
     timerRef.current = Date.now();
 
@@ -110,13 +110,12 @@ export default function WhiteBoard() {
 
     restParticipant.push(findParticipant);
     remoteArrayRef.current = restParticipant;
-    // if (true) setRemoteArray([...remoteArrayRef.current]);
-    // lastLines.identity = userId;
-    // lastLines.isDrawing = true;
+    if (true) setRemoteArray([...remoteArrayRef.current]);
+    lastLines.identity = userId;
+    lastLines.isDrawing = true;
   };
   const handleMouseDown = (e) => {
     clearInterval(ref.current);
-    console.log("down");
     drawingRef.current = true;
 
     const position = e.target.getStage().getPointerPosition();
@@ -130,35 +129,16 @@ export default function WhiteBoard() {
       ],
     };
 
-    if (localParticipant?.identity !== "tutor") {
-      ref.current = setInterval(() => {
-        handleMouseMove(e);
-      }, 10);
-    }
     currentIdRef.current = currentIdRef.current + 1;
     coordinates.push(penStructure);
     setCoordinates([...coordinates]);
   };
 
   const handleMouseMove = (e) => {
-    let positionMove = {};
-    if (localParticipant?.identity !== "tutor") {
-      let x = Math.floor(
-        (Math.random() * canvasCalculatedDimension.current.width) / 2
-      );
-      let y = Math.floor(
-        Math.random() * canvasCalculatedDimension.current.height
-      );
-      positionMove = {
-        x,
-        y,
-      };
-    } else {
-      positionMove = e.target.getStage().getPointerPosition();
-    }
-    if (!drawingRef.current && localParticipant?.identity === "tutor") {
+    if (!drawingRef.current) {
       return;
     }
+    let positionMove = e.target.getStage().getPointerPosition();
     let temp = [
       positionMove.x / scaleRef.current.scaleX,
       positionMove.y / scaleRef.current.scaleY,
@@ -178,7 +158,6 @@ export default function WhiteBoard() {
 
   const handleMouseUp = (e) => {
     drawingRef.current = false;
-    console.log("leaved");
     handleDataTrack({
       identity: userId,
       isDrawing: false,
@@ -187,7 +166,6 @@ export default function WhiteBoard() {
 
   const handleMouseLeave = () => {
     drawingRef.current = false;
-    console.log("leaved");
     handleDataTrack({
       identity: userId,
       isDrawing: false,
@@ -206,7 +184,6 @@ export default function WhiteBoard() {
   useEffect(() => {
     handleScale();
   }, []);
-
   return (
     <div className="w-full h-full p-1">
       <button
@@ -222,6 +199,7 @@ export default function WhiteBoard() {
         style={{ height: "calc(100% - 20px)", position: "relative" }}
         ref={whiteBoardContainerRef}
       >
+        <UserCursor remtoeArray={remoteArray} />
         <Stage
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
@@ -252,6 +230,15 @@ export default function WhiteBoard() {
                 strokeWidth={line?.stroke}
               />
             ))}
+            {remoteArray?.map(({ coordinates }, key) =>
+              coordinates?.map((line) => (
+                <Line
+                  points={line?.points || []}
+                  stroke={line.color}
+                  strokeWidth={line?.stroke}
+                ></Line>
+              ))
+            )}
           </Layer>
         </Stage>
       </div>
