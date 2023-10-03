@@ -48,6 +48,7 @@ svg {
   position: absolute;
   z-index: 999;
 }
-#quizWhitePage input {
+#quizWhitePage input,
+#quizWhitePage select {
   border: 1px solid black;
 }

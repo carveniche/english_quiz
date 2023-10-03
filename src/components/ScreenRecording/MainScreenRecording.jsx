@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import ScreenRecording from "./ScreenRecording";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
-import "../../bootstrap.css";
 import { isTutor } from "../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 export default function MainScreenRecording() {

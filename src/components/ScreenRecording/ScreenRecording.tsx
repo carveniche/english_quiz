@@ -139,8 +139,6 @@ const ScreenRecording = forwardRef((props, ref) => {
   const [time, setTime] = useState(0);
 
   const [running, setRunning] = useState(false);
-  const [teacherGiveRecordingPermission, setTeacherGiveTeacherPermission] =
-    useState(true);
   const [recordingSlogan, setSlogan] = useState(false);
 
   const [recordingStepsModal, setRecordingStepsModal] = useState(false);
