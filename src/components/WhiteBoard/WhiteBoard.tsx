@@ -8,13 +8,7 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
-const arr = [
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/3.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/4.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/5.jpg",
-];
+import WhiteboardToolbar from "./WhiteboardToolbar";
 export default function WhiteBoard() {
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
@@ -29,6 +23,7 @@ export default function WhiteBoard() {
     scaleY: 1,
   });
   const [isScaled, setScaled] = useState(false);
+  const [selectedPen, setSelectedPen] = useState("freeDrawing");
   const remoteArrayRef = useRef([]);
   const [remoteArray, setRemoteArray] = useState([]);
   const canvasCalculatedDimension = useRef({
@@ -82,6 +77,7 @@ export default function WhiteBoard() {
       height: containerHeight,
       width: containerWidth,
     };
+
     setScaled(true);
   };
   const drawLine = (lastLines) => {
@@ -133,11 +129,26 @@ export default function WhiteBoard() {
     coordinates.push(penStructure);
     setCoordinates([...coordinates]);
   };
+  const drawStraightLine = (e) => {
+    let positionMove = e.target.getStage().getPointerPosition();
+    let temp = [
+      positionMove.x / scaleRef.current.scaleX,
+      positionMove.y / scaleRef.current.scaleY,
+    ];
 
-  const handleMouseMove = (e) => {
-    if (!drawingRef.current) {
-      return;
-    }
+    let lastLines = coordinates.pop();
+    // let lastLines = coordinates[coordinates.length - 1];
+    lastLines.points = [lastLines.points[0], lastLines.points[1], ...temp];
+    drawLine(lastLines);
+    let coordinates2 = {
+      coordinates: lastLines,
+    };
+    coordinates2.cursorPoints = [...temp];
+    coordinates2.identity = userId;
+    coordinates2.isDrawing = true;
+    handleDataTrack(coordinates2);
+  };
+  const freeDrawing = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
     let temp = [
       positionMove.x / scaleRef.current.scaleX,
@@ -154,6 +165,17 @@ export default function WhiteBoard() {
     coordinates2.identity = userId;
     coordinates2.isDrawing = true;
     handleDataTrack(coordinates2);
+  };
+  const handleMouseMove = (e) => {
+    console.log(selectedPen);
+    if (!drawingRef.current) {
+      return;
+    }
+    if (selectedPen === "freeDrawing") {
+      freeDrawing(e);
+    } else if (selectedPen === "Line") {
+      drawStraightLine(e);
+    }
   };
 
   const handleMouseUp = (e) => {
@@ -184,16 +206,24 @@ export default function WhiteBoard() {
   useEffect(() => {
     handleScale();
   }, []);
+  const handleToolBarSelect = (id: number) => {
+    console.log(id);
+    switch (id) {
+      case 1:
+        setSelectedPen("Line");
+        break;
+      case 2:
+        setSelectedPen("freeDrawing");
+        break;
+      case 3:
+        setCoordinates([]);
+        setRemoteArray([]);
+        break;
+    }
+  };
   return (
     <div className="w-full h-full p-1">
-      <button
-        onClick={() => {
-          setCoordinates([]);
-          setRemoteArray([]);
-        }}
-      >
-        Clear
-      </button>
+      <WhiteboardToolbar handleClick={handleToolBarSelect} />
       <div
         className="w-full  border-red-500 border overflow-hidden"
         style={{ height: "calc(100% - 20px)", position: "relative" }}
@@ -209,7 +239,6 @@ export default function WhiteBoard() {
           onTouchMove={handleMouseMove}
           onTouchEnd={handleMouseUp}
           className="border-black border"
-          scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
           height={canvasCalculatedDimension.current.height}
           width={canvasCalculatedDimension.current.width}
           style={{
@@ -220,7 +249,19 @@ export default function WhiteBoard() {
             overflow: "hidden",
             position: "relative",
           }}
+          scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
         >
+          {isScaled && (
+            <Layer>
+              <UrlImage
+                x={0}
+                width={canvasCalculatedDimension.current.width}
+                height={canvasCalculatedDimension.current.height}
+                src={"/static/whiteboard/GRAPH_PAPER.png"}
+                scaleRef={scaleRef}
+              />
+            </Layer>
+          )}
           <Layer>
             {coordinates.map((line, i) => (
               <Line
@@ -245,3 +286,31 @@ export default function WhiteBoard() {
     </div>
   );
 }
+
+const UrlImage = (props: {
+  width: number;
+  height: number;
+  x: number;
+  src: string;
+}) => {
+  const { width, height, x, src, scaleRef } = props;
+  const [image, setImage] = useState("");
+  const handleLoad = () => {
+    let image = new window.Image();
+    image.src = src;
+    image.onload = function () {
+      setImage(image);
+    };
+  };
+  useEffect(() => {
+    handleLoad();
+  }, [width, height]);
+  return (
+    <Image
+      x={x}
+      width={width / scaleRef.current.scaleX}
+      height={height / scaleRef.current.scaleY}
+      image={image}
+    />
+  );
+};
