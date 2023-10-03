@@ -159,10 +159,7 @@ export default function useBackgroundSettings(
       }
       removeProcessor();
 
-      videoTrack.addProcessor(processor, {
-        inputFrameBufferType: "video",
-        outputFrameBufferContextType: "webgl2",
-      });
+      videoTrack.addProcessor(processor);
     },
     [videoTrack, removeProcessor]
   );
