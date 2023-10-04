@@ -21,7 +21,7 @@ const initialState: activeTabStateReducer = {
       path: defaultRouter.path,
       key: defaultRouter.key,
       name: defaultRouter.name,
-      icon: defaultRouter.icon,//icon image
+      icon: defaultRouter.icon,
       extraParams: {},
     },
   ],
