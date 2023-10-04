@@ -3,6 +3,7 @@ import SpeedMathLevelNoBg from "./assets/images/SM-Level-Yellow.svg";
 import SpeedMathSpatio from "./assets/images/Spatio.svg";
 import QuestionTimer from "./QuestionTimer";
 import SpeedMathSummaryBoard from "./assets/images/Speedmath-summary.svg";
+import SpeedMathScoreBoard from "./SpeedMathScoreBoard";
 
 interface HeaderBarProps {
   speedMathGameLevel: number;
@@ -10,6 +11,7 @@ interface HeaderBarProps {
   startQuestionTimer: boolean;
   questionTimerEndedCallback: () => void;
   showSpeedMathSummaryBoard: boolean;
+  speedMathScoreBoard: object[];
 }
 
 export default function HeaderBar({
@@ -18,6 +20,7 @@ export default function HeaderBar({
   startQuestionTimer,
   questionTimerEndedCallback,
   showSpeedMathSummaryBoard,
+  speedMathScoreBoard,
 }: HeaderBarProps) {
   return (
     <div className="flex flex-row justify-between items-center">
@@ -51,7 +54,7 @@ export default function HeaderBar({
           </h1>
         </div>
       </div>
-      <div className="flex flex-row w-full h-full justify-center">
+      <div className="flex flex-row w-full h-full justify-center items-center">
         {startQuestionTimer && (
           <QuestionTimer
             duration={60}
@@ -59,6 +62,12 @@ export default function HeaderBar({
           />
         )}
         {showSpeedMathSummaryBoard && <img src={SpeedMathSummaryBoard} />}
+        {speedMathScoreBoard?.response_data?.length > 0 && (
+          <SpeedMathScoreBoard
+            speedMathScoreBoard={speedMathScoreBoard}
+            playMode={playMode}
+          />
+        )}
       </div>
       <div className="flex flex-row w-full h-full justify-end ">
         <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />

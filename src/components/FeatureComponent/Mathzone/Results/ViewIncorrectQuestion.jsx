@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "../component/OnlineQuiz.module.css";
 import { TeacherQuizDisplay } from "../MainOnlineQuiz/MainOnlineQuizPage";
 import { useContext } from "react";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 import { useRef } from "react";
 import { getReviewResultData } from "../../../../api";
 import TeacherViewEachResponseEnd from "../component/ScoreUpdate/Teacher/TeacherViewResEnd/TeacherViewEachResponseEnd";

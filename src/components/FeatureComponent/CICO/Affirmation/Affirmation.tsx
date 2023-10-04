@@ -29,10 +29,19 @@ import PreviewModal from "./PreviewModal";
 import LoadingIndicatorModal from "../LoadingIndicatorModal";
 import HtmlParser from "react-html-parser";
 import AudioAnaylyzer from "./AudioAnalyzer/AudioAnaylyzer";
+import EndActivityShowModal from "../ConfirmationModal/EndActivityShowModal";
+import b64toBlob from "../b64toBlob";
+import BalloonLottie from "../../../LottieTransformation/BalloonLottie";
 const CheckOutAffirmationActivity = ({
   identity,
   listOfAffirmation,
   micRef,
+  handleDataTrack,
+  userId,
+  liveClassId,
+  student,
+  timerCountRef,
+  apiData,
 }) => {
   let newListOfAffirmation = listOfAffirmation.map((item) => ({
     ...item,
@@ -103,6 +112,7 @@ const CheckOutAffirmationActivity = ({
   };
   const dispatch = useDispatch();
   const takeScreenShot2 = (id: string) => {
+    setShowPreview(false);
     html2canvas(document.querySelector(id), {
       scale: 1,
       useCORS: true,
@@ -110,10 +120,46 @@ const CheckOutAffirmationActivity = ({
     })
       .then(async (canvas) => {
         var img = canvas.toDataURL("image/png");
-        dispatch(
-          cicoComponentLevelDataTrack({ isCheckoutTeacherResponseSaved: true })
-        );
-        setShowPreview(false);
+
+        handleDataTrack({
+          data: {
+            isCheckoutTeacherResponseSaved: true,
+            isHideCheckOutButton: true,
+          },
+          key: CICO.checkOut,
+        });
+        let formData = new FormData();
+        let blob = b64toBlob(img.split(";base64,")[1], "image/png");
+        formData.append("student_id", student[0].id);
+        formData.append("teacher_id", userId);
+        formData.append("checkin_activity_id", apiData?.activity_id);
+        formData.append("live_class_id", liveClassId);
+        formData.append("duration", timerCountRef.current);
+        formData.append("response", blob, "image.png");
+        StudentActivityResponseSave(formData)
+          .then((res) => {
+            dispatch(
+              cicoComponentLevelDataTrack({
+                isCheckoutTeacherResponseSaved: true,
+              })
+            );
+            handleDataTrack({
+              data: {
+                isCheckoutTeacherResponseSaved: true,
+                isHideCheckOutButton: true,
+              },
+              key: CICO.checkOut,
+            });
+          })
+          .catch((e) => {
+            submitErrorLog(
+              userId,
+              liveClassId,
+              e?.message || `not able to saved teacher response ${apiData?.id}`,
+              apiData?.id,
+              "0"
+            );
+          });
       })
       .catch((err) => {
         console.log("Screen shot failed", err);
@@ -123,6 +169,14 @@ const CheckOutAffirmationActivity = ({
   const handleConfirm = () => {
     takeScreenShot2("#badgesWithImages");
   };
+  if (otherData.isEndCheckOutActivity)
+    return (
+      <>
+        <h1 style={{ clear: "both", textAlign: "center" }}>
+          Activity is Completed
+        </h1>
+      </>
+    );
   return otherData?.checkInOutImageUrl ? (
     <>
       {identity === "tutor" ? (
@@ -144,10 +198,7 @@ const CheckOutAffirmationActivity = ({
           </div>
         </div>
       ) : (
-        <div
-          className="flex flex flex-col items-center"
-          style={{ gap: "0.5rem" }}
-        >
+        <div className="flex flex-col items-center" style={{ gap: "0.5rem" }}>
           <div style={{ textAlign: "center" }}>
             <img
               src={baseURL + otherData?.checkInOutImageUrl}
@@ -201,45 +252,51 @@ const CheckOutAffirmationActivity = ({
             marginTop: "1rem",
           }}
         >
-          <div
-            style={{
-              fontSize: "16px",
-            }}
-          >
-            {instruction?.instruction2}
-          </div>
-          <div style={{ fontSize: "16px" }}>{instruction?.instruction3}</div>
-          <button
-            onClick={takeScreenShot}
-            style={{
-              padding: 5,
-
-              color: "white",
-              borderRadius: 5,
-              display: "block",
-            }}
-          >
-            {retake ? (
-              <button
+          {identity === "tutor" && (
+            <>
+              <div
                 style={{
-                  padding: 5,
-                  borderRadius: 10,
-                  background: "yellowgreen",
-                  fontWeight: "normal",
-                  color: "black",
+                  fontSize: "16px",
                 }}
               >
-                Retake
-              </button>
-            ) : (
-              <img
-                src="/static/media/camera1.png"
+                {instruction?.instruction2}
+              </div>
+              <div style={{ fontSize: "16px" }}>
+                {instruction?.instruction3}
+              </div>
+              <button
+                onClick={takeScreenShot}
                 style={{
-                  width: "60px",
+                  padding: 5,
+
+                  color: "white",
+                  borderRadius: 5,
+                  display: "block",
                 }}
-              />
-            )}
-          </button>
+              >
+                {retake ? (
+                  <button
+                    style={{
+                      padding: 5,
+                      borderRadius: 10,
+                      background: "yellowgreen",
+                      fontWeight: "normal",
+                      color: "black",
+                    }}
+                  >
+                    Retake
+                  </button>
+                ) : (
+                  <img
+                    src="/static/media/camera1.png"
+                    style={{
+                      width: "60px",
+                    }}
+                  />
+                )}
+              </button>
+            </>
+          )}
         </div>
       )}
     </>
@@ -285,6 +342,10 @@ function AffirmationStudentScreen({
   listOfAffirmation,
   activityType,
   handleDataTrack,
+  checkOutData,
+  micRef,
+  userId,
+  liveClassId,
 }) {
   const [currentSelectAffirmation, setCurrentSelectAffirmation] = useState(-1);
   const dispatch = useDispatch();
@@ -317,11 +378,14 @@ function AffirmationStudentScreen({
     }
     isResponseSavedRef.current = true;
     let formData = new FormData();
-    formData.append("student_id", "");
-    formData.append("checkin_ativity_id", "");
-    formData.append("live_class_id", "");
+    formData.append("student_id", userId);
+    formData.append("checkin_ativity_id", apiData.activity_id);
+    formData.append("live_class_id", liveClassId);
     formData.append("duration", `${timerRef.current.count}`);
-    formData.append("checkin_out_activity_category_id", "");
+    formData.append(
+      "checkin_out_activity_category_id",
+      listOfAffirmation[val].category_id
+    );
     try {
       const { data } = await StudentActivityResponseSave(formData);
       if (!data.status) await submitErrorLog("", "", "", "", "0");
@@ -329,6 +393,7 @@ function AffirmationStudentScreen({
       dispatch(
         cicoComponentLevelDataTrack({
           isCheckForResponse: !otherData.isCheckForResponse,
+          showCheckInAnimation: true,
         })
       );
       handleDataTrack({
@@ -346,47 +411,96 @@ function AffirmationStudentScreen({
   return (
     <>
       <div>
-        <StudentActivityTimer
-          showEndButton={true}
-          isShowCornerImage={otherData?.isShowStories ? true : false}
-          activityType={activityType}
-          isBadgesVisible={otherData?.isShowStories ? true : false}
-          selectedItem={listOfAffirmation[0]}
-          currentTime={Date.now()}
-          timerRef={timerRef}
-          instruction={
-            activityType == CICO.checkIn
-              ? otherData?.isCheckInSaveResponse
-                ? ""
-                : `${instruction?.instruction1}`
-              : ""
-          }
-          handleSubmit={
-            otherData.isCheckInSaveResponse
-              ? () => {}
-              : handleSubmitCheckInResponse
-          }
-          isClosed={otherData.isCheckInSaveResponse}
-        />
-        {otherData?.isShowStories ? (
-          <StoriesToShow
-            identity={"student"}
-            handleDataTrack={() => {}}
-            apiData={listOfAffirmation}
-          />
+        {activityType === CICO.checkIn ? (
+          <>
+            <StudentActivityTimer
+              showEndButton={true}
+              isShowCornerImage={otherData?.isShowStories ? true : false}
+              activityType={activityType}
+              isBadgesVisible={otherData?.isShowStories ? true : false}
+              selectedItem={listOfAffirmation[0]}
+              currentTime={Date.now()}
+              timerRef={timerRef}
+              instruction={
+                activityType == CICO.checkIn
+                  ? otherData?.isCheckInSaveResponse
+                    ? ""
+                    : `${instruction?.instruction1}`
+                  : ""
+              }
+              handleSubmit={
+                otherData.isCheckInSaveResponse
+                  ? () => {}
+                  : handleSubmitCheckInResponse
+              }
+              isClosed={otherData.isCheckInSaveResponse}
+            />
+            {otherData?.isShowStories ? (
+              <StoriesToShow
+                identity={"student"}
+                handleDataTrack={() => {}}
+                apiData={listOfAffirmation}
+              />
+            ) : (
+              <AffirmationSelection
+                affirmation={listOfAffirmation}
+                currentIndex={currentSelectAffirmation}
+                className={"container"}
+                checkIn={CICO.checkIn}
+                micRef={null}
+                onClick={
+                  activityType === CICO.checkIn &&
+                  !otherData?.isCheckInSaveResponse
+                    ? handleAffirmationSelect
+                    : null
+                }
+              />
+            )}
+          </>
         ) : (
-          <AffirmationSelection
-            affirmation={listOfAffirmation}
-            currentIndex={currentSelectAffirmation}
-            className={"container"}
-            checkIn={CICO.checkIn}
-            micRef={null}
-            onClick={
-              activityType === CICO.checkIn && !otherData?.isCheckInSaveResponse
-                ? handleAffirmationSelect
-                : null
-            }
-          />
+          <>
+            <StudentActivityTimer
+              showEndButton={false}
+              isShowCornerImage={true}
+              activityType={activityType}
+              isBadgesVisible={true}
+              selectedItem={checkOutData}
+              currentTime={Date.now()}
+              timerRef={timerRef}
+              instruction={
+                otherData?.isCheckoutTeacherResponseSaved
+                  ? ""
+                  : `${instruction?.instruction1}`
+              }
+              handleSubmit={() => {}}
+              isClosed={false}
+            />
+            {otherData?.isHideCheckOutButton ? (
+              <CheckOutAffirmationActivity
+                identity={"student"}
+                listOfAffirmation={[checkOutData]}
+                micRef={micRef}
+                handleDataTrack={handleDataTrack}
+                userId={userId}
+                liveClassId={liveClassId}
+              />
+            ) : (
+              <AffirmationSelection
+                affirmation={[
+                  {
+                    ...checkOutData,
+                    name: checkOutData.selected_checkin_name,
+                    image: checkOutData.selected_checkin_path,
+                  },
+                ]}
+                currentIndex={0}
+                className={"container"}
+                checkIn={false}
+                micRef={null}
+                onClick={null}
+              />
+            )}
+          </>
         )}
       </div>
     </>
@@ -398,15 +512,17 @@ function AffirmationTeacherScreen({
   activityType,
   handleDataTrack,
   checkOutData,
-  liveClassID,
   userId,
   micRef,
+  students,
+  liveClassId,
 }) {
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
-
+  let liveClassID = liveClassId;
   let instruction =
     activityType === CICO.checkIn
       ? TeacherCheckInInstruction()
@@ -415,16 +531,28 @@ function AffirmationTeacherScreen({
     clearInterval(timerRef.current);
   };
   useEffect(() => {
-    if (otherData?.isCheckInSaveResponse && activityType === CICO.checkIn) {
+    if (
+      otherData?.isTeacherEndCheckInActivity &&
+      activityType === CICO.checkIn
+    ) {
       handleStopTiming();
     }
-  }, [otherData?.isCheckInSaveResponse]);
+  }, [otherData?.isTeacherEndCheckInActivity]);
+  useEffect(() => {
+    if (otherData?.isEndCheckOutActivity && activityType === CICO.checkOut) {
+      handleStopTiming();
+    }
+  }, [otherData?.isEndCheckOutActivity]);
   const timerRef = useRef();
   const timerCountRef = useRef(0);
   let isCheckInActivity = CICO.checkIn === activityType;
   const handleEndCheckInActivity = () => {
+    setShowModal(false);
     dispatch(
-      cicoComponentLevelDataTrack({ isTeacherEndCheckInActivity: true })
+      cicoComponentLevelDataTrack({
+        isTeacherEndCheckInActivity: true,
+        showCheckOutAnimation: true,
+      })
     );
     updateStatusofCicoActivity(
       liveClassID,
@@ -435,11 +563,22 @@ function AffirmationTeacherScreen({
         handleDataTrack({
           data: apiData,
           isTeacherEndCheckInActivity: true,
+          showCheckOutAnimation: true,
         });
       }
     });
   };
-  const handleCheckOutActivity = () => {};
+  const handleCheckOutActivity = () => {
+    if (otherData.isEndCheckOutActivity) return;
+    clearInterval(timerRef.current);
+    dispatch(cicoComponentLevelDataTrack({ isEndCheckOutActivity: true }));
+
+    updateStatusofCicoActivity(
+      liveClassID,
+      apiData.activity_id,
+      timerCountRef.current
+    );
+  };
   const handleClickNextBtn = () => {
     handleDataTrack({
       data: {
@@ -469,8 +608,26 @@ function AffirmationTeacherScreen({
 
     dispatch(cicoComponentLevelDataTrack({ isHideCheckOutButton: true }));
   };
+  const handleEndCheckOutActivity = () => {
+    setShowModal(false);
+    handleCheckOutActivity();
+  };
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+  console.log(liveClassID);
   return (
     <>
+      {showModal && (
+        <EndActivityShowModal
+          handleClose={() => setShowModal(false)}
+          handleComplete={
+            activityType === CICO.checkOut
+              ? handleEndCheckOutActivity
+              : handleEndCheckInActivity
+          }
+        />
+      )}
       {isCheckInActivity ? (
         <div>
           <ActivityTimerEndButton
@@ -504,9 +661,7 @@ function AffirmationTeacherScreen({
                 : false
             }
             handleEndActivity={
-              !otherData.isCheckInShowNextButton
-                ? handleEndCheckInActivity
-                : () => {}
+              !otherData.isCheckInShowNextButton ? handleShowModal : () => {}
             }
             handleClickNext={handleClickNextBtn}
             text={
@@ -562,12 +717,21 @@ function AffirmationTeacherScreen({
                 : false
             }
             text={!otherData?.isHideCheckOutButton ? "Next" : ""}
+            handleEndActivity={
+              otherData?.isHideCheckOutButton ? handleShowModal : () => {}
+            }
           />
           {otherData?.isHideCheckOutButton && (
             <CheckOutAffirmationActivity
               identity={"tutor"}
               listOfAffirmation={[checkOutData]}
               micRef={micRef}
+              handleDataTrack={handleDataTrack}
+              userId={userId}
+              liveClassId={liveClassID}
+              apiData={apiData}
+              timerCountRef={timerCountRef}
+              student={students}
             />
           )}
         </div>
@@ -593,7 +757,6 @@ export default function Affirmation({
   );
   const fetchCheckInResponse = async () => {
     let activity_data: [] = apiData?.activity_data || [];
-    console.log(activity_data);
     try {
       let student_id = students[0]?.id || "";
       if (!allExcludedParticipants.includes(identity)) student_id = userId;
@@ -644,15 +807,15 @@ export default function Affirmation({
   }, [otherData?.isCheckForResponse]);
   const fetchCheckOutResponse = async () => {
     let checkOutData = apiData?.student_activity_data || [];
+    console.log(apiData);
     let student_id = students[0]?.id || "";
     if (!allExcludedParticipants.includes(identity)) student_id = userId;
     const { data } = await getStudentActivityResponse(student_id, liveClassID);
     let checkOutResponse = data?.checkout_responses?.teacher || [];
     checkOutResponse = checkOutResponse[0]?.response || "";
-
     dispatch(
       cicoComponentLevelDataTrack({
-        isCheckoutTeacherResponseSaved: !checkOutResponse,
+        isCheckoutTeacherResponseSaved: Boolean(checkOutResponse),
         checkInOutImageUrl: checkOutResponse,
       })
     );
@@ -667,8 +830,35 @@ export default function Affirmation({
     if (activityType === CICO.checkOut) fetchCheckOutResponse();
   }, [otherData.isCheckoutTeacherResponseSaved]);
   const [micRef, setMicRef] = useState(false);
+  useEffect(() => {
+    let id = "";
+    if (otherData?.showCheckInAnimation) {
+      id = setTimeout(() => {
+        dispatch(cicoComponentLevelDataTrack({ showCheckInAnimation: false }));
+      }, 5000);
+    }
+    return () => clearTimeout(id);
+  }, [otherData?.showCheckInAnimation]);
+  useEffect(() => {
+    let id = "";
+    if (otherData?.showCheckOutAnimation) {
+      id = setTimeout(() => {
+        dispatch(cicoComponentLevelDataTrack({ showCheckOutAnimation: false }));
+      }, 5000);
+    }
+    return () => {
+      clearTimeout(id);
+    };
+  }, [otherData?.showCheckOutAnimation]);
+  console.log(liveClassID);
   return (
     <>
+      {otherData?.showCheckInAnimation && (
+        <BalloonLottie mission={false} applyStyles={true} />
+      )}
+      {otherData?.showCheckOutAnimation && (
+        <BalloonLottie mission={true} applyStyles={true} />
+      )}
       {activityType === CICO.checkOut && (
         <AudioAnaylyzer setMicRef={setMicRef} />
       )}
@@ -681,6 +871,9 @@ export default function Affirmation({
             handleDataTrack={handleDataTrack}
             checkOutData={checkOutData}
             micRef={micRef}
+            userId={userId}
+            liveClassId={liveClassID}
+            students={students}
           />
         ) : (
           <>
@@ -691,6 +884,8 @@ export default function Affirmation({
               handleDataTrack={handleDataTrack}
               checkOutData={checkOutData}
               micRef={micRef}
+              userId={userId}
+              liveClassId={liveClassID}
             />
           </>
         )}

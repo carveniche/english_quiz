@@ -3,6 +3,7 @@ import ReportErrorLogo from "../Navbar/NavbarIcons/ReportErrorLogo";
 
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
+import { createLiveClassTicket } from "../../api";
 
 export default function ReportErrorScreenShot() {
   const [screenShotProgress, setScreenShotProgress] = useState(false);
@@ -11,7 +12,29 @@ export default function ReportErrorScreenShot() {
     (state: RootState) => state.liveClassDetails
   );
 
+  const currentSelectedScreen = useSelector(
+    (state: RootState) => state.activeTabReducer.currentSelectedRouter
+  );
+
   const canvas = useRef(null);
+
+  const getCurrentScreenName = (path: string) => {
+    let screenName = "";
+
+    switch (path) {
+      case "/allscreen":
+        screenName = "All Screen";
+        break;
+      case "/myscreen":
+        screenName = "My Screen";
+        break;
+      case "/speedmath":
+        screenName = "Speed Math";
+        break;
+    }
+
+    return screenName;
+  };
 
   const reportErrorSS = () => {
     if (screenShotProgress) {
@@ -51,11 +74,29 @@ export default function ReportErrorScreenShot() {
     }, 500);
   };
 
-  const uploadScreenShotToServer = (blob: Blob) => {
+  const uploadScreenShotToServer = async (blob: Blob) => {
+    let screenName = getCurrentScreenName(String(currentSelectedScreen));
     const bodyFormData = new FormData();
     bodyFormData.append("live_class_id", String(liveClassId));
     bodyFormData.append("user_id", String(userId));
     bodyFormData.append("screenshot", blob, "image.png");
+    bodyFormData.append("from_page", screenName);
+
+    try {
+      const response = await createLiveClassTicket(bodyFormData);
+
+      if (response.data.status) {
+        alert("Your error has been reported");
+      } else {
+        alert(
+          "Unable to send screen shot : " +
+            response.data.message +
+            " Please try again"
+        );
+      }
+    } catch (error) {
+      console.error("An error occurred while sending feedback:", error);
+    }
 
     setScreenShotProgress(false);
   };

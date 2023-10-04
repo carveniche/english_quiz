@@ -10,7 +10,7 @@ export const old_ClassType = [
   ROUTERKEYCONST.mathzone,
   ROUTERKEYCONST.coding,
   CICO.key,
-  ROUTERKEYCONST.miscellaneous,
+  ROUTERKEYCONST.miscellaneous.key,
 ];
 
 export const math_ClassType = [
@@ -22,7 +22,7 @@ export const math_ClassType = [
   ROUTERKEYCONST.speedmath,
   ROUTERKEYCONST.mathzone,
   CICO.key,
-  ROUTERKEYCONST.miscellaneous,
+  ROUTERKEYCONST.miscellaneous.key,
 ];
 
 export const coding_ClassType = [
@@ -30,7 +30,7 @@ export const coding_ClassType = [
   ROUTERKEYCONST.myScreen,
   ROUTERKEYCONST.coding,
   CICO.key,
-  ROUTERKEYCONST.miscellaneous,
+  ROUTERKEYCONST.miscellaneous.key,
 ];
 
 export const mathCoding_ClassType = [
@@ -43,5 +43,5 @@ export const mathCoding_ClassType = [
   ROUTERKEYCONST.mathzone,
   ROUTERKEYCONST.coding,
   CICO.key,
-  ROUTERKEYCONST.miscellaneous,
+  ROUTERKEYCONST.miscellaneous.key,
 ];

@@ -11,8 +11,13 @@ import {
 } from "../../redux/features/liveClassDetails";
 import { Navigate, useLocation } from "react-router";
 import { getQueryParams } from "../../utils/getQueryParams";
+import { TwilioError } from "twilio-video";
 
-export default function PreJoinScreen() {
+interface PreJoinScreenProps {
+  setError: React.Dispatch<React.SetStateAction<TwilioError | Error | null>>;
+}
+
+export default function PreJoinScreen({ setError }: PreJoinScreenProps) {
   //   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
   const [mediaError, setMediaError] = useState<Error>();
@@ -36,6 +41,7 @@ export default function PreJoinScreen() {
 
     if (!mediaError) {
       getAudioAndVideoTracks().catch((error) => {
+        console.log("media error", error);
         setMediaError(error);
       });
     }
@@ -45,7 +51,7 @@ export default function PreJoinScreen() {
     <IntroContainer>
       {pathname !== "/" && <Navigate to={`/?${params}`} />}
       <MediaErrorSnackbar error={mediaError} />
-      <DeviceSelectionScreen name="" />
+      <DeviceSelectionScreen name="" setError={setError} />
     </IntroContainer>
   );
 }

@@ -33,6 +33,7 @@ export default function TeacherFeedbackFormStatus() {
   const videoCallTokenData = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
+  const { demo } = videoCallTokenData;
   const { liveClassId, userId } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
@@ -158,7 +159,7 @@ export default function TeacherFeedbackFormStatus() {
     setDisabledField({ ...disabledField });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let isValidated = true;
     for (let key in childDetails) {
       if (!childDetails[key].value.trim() && key !== "grade") {
@@ -211,9 +212,11 @@ export default function TeacherFeedbackFormStatus() {
       // formData.append("live_class_id", `${liveClassId}`);
       paramsObj.user_id = userId;
       paramsObj.live_class_id = liveClassId;
-      paramsObj.demo_status = "Completed";
+      if (demo) paramsObj.demo_status = "Completed";
       setLoading(true);
-      submitStudentFeedbackForm(paramsObj);
+      await submitStudentFeedbackForm(paramsObj);
+      window.close();
+      window.location.href = "https://www.begalileo.com/online_teachers";
     }
   };
   const handleSubmitIncompleteClass = () => {
@@ -261,157 +264,182 @@ export default function TeacherFeedbackFormStatus() {
                   Teacher Feedback
                 </h3>
               </div>
-              <hr />
-              <div>
-                <h3 style={{ textAlign: "center" }}>Demo Status</h3>
-              </div>
+              {demo && (
+                <>
+                  <hr />
+                  <div>
+                    <h3 style={{ textAlign: "center" }}>Demo Status</h3>
+                  </div>
+                </>
+              )}
               {loading ? (
                 <h3 style={{ fontSize: 18, textAlign: "center" }}>
                   Loading...
                 </h3>
               ) : (
                 <>
-                  <div>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      defaultValue={demoStatus}
-                      name="radio-buttons-group"
-                      style={{
-                        flexDirection: "row",
-                        width: "fit-content",
-                        margin: "auto",
-                      }}
-                      onChange={(e) => setDemoStatus(e.target.value)}
-                    >
-                      <FormControlLabel
-                        value="completed"
-                        control={<Radio />}
-                        label="Completed"
-                      />
-                      <FormControlLabel
-                        value="incompleted"
-                        control={<Radio />}
-                        label="In Completed"
-                      />
-                    </RadioGroup>
-                  </div>
-                  {demoStatus && (
-                    <div className="flex gap-2 flex-wrap justify-between">
-                      <div className="flex flex-col justify-center gap-2">
-                        <div>
-                          <label>Child's Name</label>
-                          <Button
-                            sx={{
-                              paddingLeft: 4,
-                              minWidth: 20,
-                              boxSizing: "content-box",
-                            }}
-                            disabled={!disabledField["name"]}
-                            onClick={() => handleEnabledDisabledBtn("name")}
-                          >
-                            <img src="/menu-icon/Whiteboard.svg" />
-                          </Button>
-                        </div>
-                        <div>
-                          <TextField
-                            type="text"
-                            required={true}
-                            variant="outlined"
-                            disabled={disabledField["name"]}
-                            name="name"
-                            value={childDetails.name.value}
-                            onChange={handleChange}
-                          />
-                        </div>
-                        {childDetails.name.showError && (
-                          <p
-                            className="feedback_error_msg"
-                            style={{ color: "red" }}
-                          >
-                            {childDetails.name.errorMsg}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex flex-col justify-center gap-2">
-                        <div>
-                          <label>Child's Gender</label>
-                          <Button
-                            style={{
-                              paddingLeft: 4,
-                              minWidth: 20,
-                              boxSizing: "content-box",
-                            }}
-                            disabled={!disabledField["gender"]}
-                            onClick={() => handleEnabledDisabledBtn("gender")}
-                          >
-                            <img src="/menu-icon/Whiteboard.svg" />
-                          </Button>
-                        </div>
-                        <Box sx={{ minWidth: 220 }}>
-                          <FormControl fullWidth>
-                            <InputLabel
-                              id="demo-simple-select-label"
-                              style={{ minWidth: 220 }}
-                              disabled={disabledField["name"]}
-                            >
-                              Gender
-                            </InputLabel>
-                            <Select
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                              label="Gender"
-                              required={true}
-                              value={childDetails.gender.value}
-                              disabled={disabledField["gender"]}
-                              name="gender"
-                              onChange={handleChange}
-                            >
-                              <MenuItem value={"boy"}>Boy</MenuItem>
-                              <MenuItem value={"girl"}>Girl</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Box>
-                        {childDetails.gender.showError && (
-                          <p
-                            className="feedback_error_msg"
-                            style={{ color: "red" }}
-                          >
-                            {childDetails.gender.errorMsg}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex flex-col justify-center gap-2">
-                        <div>
-                          <label>Child's Grade</label>
-                        </div>
-                        <Box sx={{ minWidth: 220 }}>
-                          <FormControl fullWidth>
-                            <TextField
-                              type="text"
-                              variant="outlined"
-                              label="Grade"
-                              disabled={disabledField["grade"]}
-                              name="grade"
-                              onChange={handleChange}
-                              value={childDetails.grade.value}
-                            />
-                          </FormControl>
-                        </Box>
-                        {childDetails.grade.showError && (
-                          <p
-                            className="feedback_error_msg"
-                            style={{ color: "red" }}
-                          >
-                            {childDetails.grade.errorMsg}
-                          </p>
-                        )}
-                      </div>
+                  {demo && (
+                    <div>
+                      <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue={demoStatus}
+                        name="radio-buttons-group"
+                        style={{
+                          flexDirection: "row",
+                          width: "fit-content",
+                          margin: "auto",
+                        }}
+                        onChange={(e) => setDemoStatus(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value="completed"
+                          control={<Radio />}
+                          label="Completed"
+                        />
+                        <FormControlLabel
+                          value="incompleted"
+                          control={<Radio />}
+                          label="In Completed"
+                        />
+                      </RadioGroup>
                     </div>
                   )}
-                  {demoStatus === "completed" ? (
+                  {demoStatus ||
+                    (!demo && (
+                      <div className="flex gap-2 flex-wrap justify-between">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33 }}
+                        >
+                          <div style={{ width: "100%" }}>
+                            <label>Child's Name</label>
+                            <Button
+                              sx={{
+                                minWidth: 20,
+                                boxSizing: "content-box",
+                              }}
+                              disabled={!disabledField["name"]}
+                              onClick={() => handleEnabledDisabledBtn("name")}
+                            >
+                              <img src="/menu-icon/Whiteboard.svg" />
+                            </Button>
+                          </div>
+                          <div>
+                            <TextField
+                              type="text"
+                              required={true}
+                              variant="outlined"
+                              disabled={disabledField["name"]}
+                              name="name"
+                              value={childDetails.name.value}
+                              onChange={handleChange}
+                              sx={{ width: "100%" }}
+                            />
+                          </div>
+                          {childDetails.name.showError && (
+                            <p
+                              className="feedback_error_msg"
+                              style={{ color: "red" }}
+                            >
+                              {childDetails.name.errorMsg}
+                            </p>
+                          )}
+                        </div>
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33 }}
+                        >
+                          <div>
+                            <label>Child's Gender</label>
+                            <Button
+                              style={{
+                                paddingLeft: 4,
+                                minWidth: 20,
+                                boxSizing: "content-box",
+                              }}
+                              disabled={!disabledField["gender"]}
+                              onClick={() => handleEnabledDisabledBtn("gender")}
+                            >
+                              <img src="/menu-icon/Whiteboard.svg" />
+                            </Button>
+                          </div>
+                          <Box sx={{ minWidth: 220 }}>
+                            <FormControl fullWidth>
+                              <InputLabel
+                                id="demo-simple-select-label"
+                                style={{ minWidth: 220 }}
+                                disabled={disabledField["name"]}
+                              >
+                                Gender
+                              </InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Gender"
+                                required={true}
+                                value={childDetails.gender.value}
+                                disabled={disabledField["gender"]}
+                                name="gender"
+                                onChange={handleChange}
+                              >
+                                <MenuItem value={"boy"}>Boy</MenuItem>
+                                <MenuItem value={"girl"}>Girl</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Box>
+                          {childDetails.gender.showError && (
+                            <p
+                              className="feedback_error_msg"
+                              style={{ color: "red" }}
+                            >
+                              {childDetails.gender.errorMsg}
+                            </p>
+                          )}
+                        </div>
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33 }}
+                        >
+                          <div
+                            style={{
+                              minHeight: 32,
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <label>Child's Grade</label>
+                          </div>
+                          <Box sx={{ minWidth: 220 }}>
+                            <FormControl fullWidth>
+                              <TextField
+                                type="text"
+                                variant="outlined"
+                                label="Grade"
+                                disabled={disabledField["grade"]}
+                                name="grade"
+                                onChange={handleChange}
+                                value={childDetails.grade.value}
+                              />
+                            </FormControl>
+                          </Box>
+                          {childDetails.grade.showError && (
+                            <p
+                              className="feedback_error_msg"
+                              style={{ color: "red" }}
+                            >
+                              {childDetails.grade.errorMsg}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  {demoStatus === "completed" || !demo ? (
                     <>
                       <div className="flex gap-2 flex-wrap justify-between">
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33 }}
+                        >
                           <div>
                             <label>Learning Style</label>
                           </div>
@@ -447,7 +475,10 @@ export default function TeacherFeedbackFormStatus() {
                             </p>
                           )}
                         </div>
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2 "
+                          style={{ flex: 0.33 }}
+                        >
                           <div>
                             <label>Communication</label>
                           </div>
@@ -482,7 +513,10 @@ export default function TeacherFeedbackFormStatus() {
                             </p>
                           )}
                         </div>
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33 }}
+                        >
                           <div>
                             <label>Conceptual Knowledge</label>
                           </div>
@@ -519,7 +553,10 @@ export default function TeacherFeedbackFormStatus() {
                         </div>
                       </div>
                       <div className="flex gap-2 flex-wrap justify-between">
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33, maxWidth: "33%" }}
+                        >
                           <div>
                             <label>Feature most liked by the child</label>
                           </div>
@@ -554,7 +591,10 @@ export default function TeacherFeedbackFormStatus() {
                             </p>
                           )}
                         </div>
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33, maxWidth: "33%" }}
+                        >
                           <div>
                             <label>In class behaviour</label>
                           </div>
@@ -589,7 +629,10 @@ export default function TeacherFeedbackFormStatus() {
                             </p>
                           )}
                         </div>
-                        <div className="flex flex-col justify-center gap-2">
+                        <div
+                          className="flex flex-col justify-center gap-2"
+                          style={{ flex: 0.33, maxWidth: "33%" }}
+                        >
                           <div>
                             <label>Child’s current math level</label>
                           </div>

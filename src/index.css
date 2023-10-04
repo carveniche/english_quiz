@@ -9,6 +9,10 @@ body {
   font-family: "Montserrat";
 }
 
+body {
+  overflow: hidden;
+}
+
 svg {
   display: inline;
 }
@@ -34,9 +38,10 @@ svg {
 }
 
 .section-component-layout {
-  height: calc(100% - 86px - 101.28px);
+  height: calc(100% - 60px - 107.28px);
 
   flex-direction: row-reverse;
+  position: relative;
 }
 
 .sampleoneanimation {
@@ -45,6 +50,7 @@ svg {
   position: absolute;
   z-index: 999;
 }
-#quizWhitePage input {
+#quizWhitePage input,
+#quizWhitePage select {
   border: 1px solid black;
 }

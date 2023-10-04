@@ -5,14 +5,15 @@ import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAud
 import RecordingStartNotification from "../RecordingStartNotification/RecordingStartNotification";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { isParent, isTutor } from "../../utils/participantIdentity";
+import { isParent, isTech, isTutor } from "../../utils/participantIdentity";
 export default function Header() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { parentJoinedClass } = useSelector(
+  const { parentJoinedClass, techJoinedClass } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
+
   return (
     <>
       {/* 
@@ -32,14 +33,19 @@ export default function Header() {
             <div className="w-4 h-4 rounded-full bg-red-800 animate-ping"></div>
           )}
         </div>
-        <div className=" justify-center content-center p-4">
+        <div className="  justify-center content-center p-4">
           <span className="text-BDBDBD p-4 mt-10">
             Class 2, Div A, Live class with Aashish
           </span>
         </div>
         <div className=" justify-center content-center items-center p-4 pr-[30px]">
-          <div className="flex flex-row justify-between min-w-[180px]">
+          <div className="flex flex-row justify-between min-w-[180px] gap-2">
             <RecordingStartNotification />
+            {techJoinedClass && !isTech({ identity: String(role_name) }) && (
+              <div className="flex justify-center items-center bg-green-500 p-1 rounded">
+                <span className="text-white">Tech Joined...</span>
+              </div>
+            )}
             <CallTechSupport />
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
             {!isParent({ identity: String(role_name) }) && (

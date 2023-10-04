@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Rnd } from "react-rnd";
 import useScreenShareParticipant from "../../hooks/useScreenShareParticipant/useScreenShareParticipant";
-import { Participant } from "../Participant/Participant";
+import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 export default function ScreenShareDraggable() {
-  const [width, setWidth] = useState<string>("300px");
-  const [height, setHeight] = useState<string>("300px");
+  const [width, setWidth] = useState<string>("600px");
+  const [height, setHeight] = useState<string>("400px");
   const [xPosition, setXPosition] = useState<number>(0);
   const [yPosition, setYPosition] = useState<number>(0);
 
@@ -28,7 +28,7 @@ export default function ScreenShareDraggable() {
             setYPosition(position.y);
           }}
         >
-          <Participant
+          <ParticipantTracks
             participant={screenShareParticipant}
             enableScreenShare={true}
           />
@@ -42,9 +42,9 @@ const ScreenShareStyles = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  border: "1px solid #ddd",
+  border: "1px solid white",
   background: "#f0f0f0",
-  zIndex: "1",
+  zIndex: "11",
   width: "400px",
   height: "400px",
 };

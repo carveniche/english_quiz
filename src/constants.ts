@@ -67,3 +67,4 @@ export const WHITEBOARDSTANDARDSCREENSIZE={
   width:1500,
   height:500
 }
+export const MENUBARHEIGHT = 60;

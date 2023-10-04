@@ -34,7 +34,8 @@ interface liveClassDetailsTypes {
   speedMathPlayMode: string;
   speedMathScoreofAllParticipant: any;
   isRecordingEnabled: boolean;
-  isClassHasDisconnected:boolean
+  isClassHasDisconnected: boolean;
+  muteIndividualParticipant: any;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -67,7 +68,8 @@ const initialState: liveClassDetailsTypes = {
   speedMathPlayMode: "",
   speedMathScoreofAllParticipant: [],
   isRecordingEnabled: false,
-  isClassHasDisconnected:false,
+  isClassHasDisconnected: false,
+  muteIndividualParticipant: [],
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -135,17 +137,20 @@ export const liveClassDetailsSlice = createSlice({
           currentUserScoreSpeedMath,
         });
       } else {
+        let identityNotFound = true;
         for (let i = 0; i < prevArr.length; i++) {
           if (prevArr[i]?.userId === userId) {
             prevArr[i].currentUserScoreSpeedMath = currentUserScoreSpeedMath;
+            identityNotFound = false;
             break;
-          } else {
-            prevArr.push({
-              userId,
-              identity,
-              currentUserScoreSpeedMath,
-            });
           }
+        }
+        if (identityNotFound) {
+          prevArr.push({
+            userId,
+            identity,
+            currentUserScoreSpeedMath,
+          });
         }
       }
     },
@@ -153,10 +158,43 @@ export const liveClassDetailsSlice = createSlice({
       const { payload } = action;
       state.isRecordingEnabled = payload;
     },
-    endRoomRequest:(state,action)=>{
+    endRoomRequest: (state, action) => {
       const { payload } = action;
-      state.isClassHasDisconnected=payload
-    }
+      state.isClassHasDisconnected = payload;
+    },
+
+    addMuteIndividualParticipant: (state, action) => {
+      const { identity, muteStatus, fromScreen } = action.payload;
+
+      let prevArr = state.muteIndividualParticipant;
+
+      if (prevArr.length === 0) {
+        prevArr.push({
+          identity,
+          muteStatus,
+          fromScreen,
+        });
+      } else {
+        let identityNotFound = true;
+
+        for (let i = 0; i < prevArr.length; i++) {
+          if (prevArr[i]?.identity === identity) {
+            prevArr[i].muteStatus = muteStatus;
+            prevArr[i].fromScreen = fromScreen;
+            identityNotFound = false;
+            break;
+          }
+        }
+
+        if (identityNotFound) {
+          prevArr.push({
+            identity,
+            muteStatus,
+            fromScreen,
+          });
+        }
+      }
+    },
   },
 });
 
@@ -174,7 +212,8 @@ export const {
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
   startAndStopRecordingRecording,
-  endRoomRequest
+  endRoomRequest,
+  addMuteIndividualParticipant,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

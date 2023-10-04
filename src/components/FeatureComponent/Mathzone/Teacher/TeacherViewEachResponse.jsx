@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import styles from "../component/OnlineQuiz.module.css";
-import { ViewStatusContext } from "../Mathzone";
+import { ViewStatusContext } from "../mathzone";
 import HtmlParser from "react-html-parser";
 import MyAnswer from "../component/AnswerFolder/myAnswer";
 export default function TeacherViewEachResponse({

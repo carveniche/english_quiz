@@ -46,7 +46,7 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-  
+
   {
     path: "/myscreen",
     key: ROUTERKEYCONST.myScreen,
@@ -64,8 +64,8 @@ const routerConfig: routerConfig[] = [
     key: ROUTERKEYCONST.mathvideolesson,
     exact: true,
     component: MathVideoLesson,
-    name: "Play Video",
-    icon: "/menu-icon/Whiteboard.svg",
+    name: "Math videos",
+    icon: "/menu-icon/MathVideoLessons.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
@@ -77,7 +77,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: SpeedMath,
     name: "Speed Math",
-    icon: "/menu-icon/Whiteboard.svg",
+    icon: "/menu-icon/SpeedMathIcon.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
@@ -89,7 +89,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Mathzone,
     name: "Mathzone",
-    icon: "/menu-icon/Whiteboard.svg",
+    icon: "/menu-icon/MathQuiz.svg",
     hasChildren: true,
     hasSubRoute: false,
     subRoute: null,
@@ -101,7 +101,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Coding,
     name: "Coding",
-    icon: "/menu-icon/Whiteboard.svg",
+    icon: "/menu-icon/CodingIcon.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
@@ -112,7 +112,7 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: Lesson,
     name: "Lesson",
-    icon: "/menu-icon/Whiteboard.svg",
+    icon: "/menu-icon/MathLessons.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
@@ -136,7 +136,7 @@ const routerConfig: routerConfig[] = [
         hasChildren: false,
         component: FlagQuestionMenu,
       },
-      
+
       {
         key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
         name: "HomeWork",
@@ -146,16 +146,14 @@ const routerConfig: routerConfig[] = [
         hasChildren: false,
         component: HomeWork,
       },
-      
     ],
-    
   },
   {
     path: CICO.path,
     key: CICO.key,
     exact: true,
     component: MainCico,
-    name: "Cico",
+    name: "CICO",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: false,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import TabIcon from "./TabIcon";
 import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
@@ -28,6 +28,7 @@ export default function MathzoneNavbar({
 }: props) {
   const [currentSelectedTopic, setCurrentSelectedTopic] = useState(-1);
   const [currentSelectedTag, setCurrentSelectedTag] = useState(-1);
+  const [mathVideosPresent, setMathVideosPresent] = useState(false);
   const handleSelectTopic = (index: number) => {
     if (index === currentSelectedTopic) {
       setCurrentSelectedTopic(-1);
@@ -43,14 +44,31 @@ export default function MathzoneNavbar({
       setCurrentSelectedTag(index);
     }
   };
+
+  const checkVideosPresentOrNot = () => {
+    const check = allConceptsDetails?.conceptDetails.filter(
+      (videos) => videos.video.length > 0
+    );
+
+    if (check.length > 0) {
+      setMathVideosPresent(true);
+    } else {
+      setMathVideosPresent(false);
+    }
+  };
+
+  useEffect(() => {
+    checkVideosPresentOrNot();
+  }, []);
+
   return (
     <>
-      {
+      {mathVideosPresent ? (
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center -right-px
-          `}
+         transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center -right-px
+         `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
               elementPosition * calcWidth
@@ -136,7 +154,25 @@ export default function MathzoneNavbar({
               );
             })}
         </ul>
-      }
+      ) : (
+        <ul
+          onMouseLeave={() => handleOpenSubMenu(-1)}
+          className={`bg-header-black text-white transform absolute scale-
+         transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center -right-px
+         `}
+          style={{
+            maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
+              elementPosition * calcWidth
+            }px)`,
+            overflowX: "hidden",
+            overflowY: "auto",
+          }}
+        >
+          <li className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center">
+            No Videos Present
+          </li>
+        </ul>
+      )}
     </>
   );
 }

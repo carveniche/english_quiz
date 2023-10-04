@@ -18,6 +18,7 @@ function ErrorDialog({
   error,
 }: PropsWithChildren<ErrorDialogProps>) {
   const { message, code } = error || {};
+
   const enhancedMessage = enhanceMessage(message, code);
 
   return (
@@ -30,9 +31,14 @@ function ErrorDialog({
       <DialogTitle>ERROR</DialogTitle>
       <DialogContent>
         <DialogContentText>{enhancedMessage}</DialogContentText>
-        {Boolean(code) && (
+        {Boolean(code) && typeof code !== "string" && (
           <pre>
             <code>Error Code: {code}</code>
+          </pre>
+        )}
+        {String(code) && typeof code !== "number" && (
+          <pre>
+            <code>Error : {code}</code>
           </pre>
         )}
       </DialogContent>

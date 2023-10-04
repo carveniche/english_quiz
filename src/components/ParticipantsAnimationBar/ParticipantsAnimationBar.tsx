@@ -7,12 +7,13 @@ import {
   Participant as IParticipant,
   LocalParticipant as ILocalParticipant,
 } from "twilio-video";
-import MicIconParticipantAnimationBar from "./ParticipantAnimationBarIcons/MicIconParticipantAnimationBar";
+import MuteIcon from "./ParticipantAnimationBarIcons/MuteIcon";
+import UnMuteIcon from "./ParticipantAnimationBarIcons/UnMuteIcon";
 import ScreenShareIcon from "./ParticipantAnimationBarIcons/ScreenShareIcon";
 import ScreenShareOnIcon from "./ParticipantAnimationBarIcons/ScreenShareOnIcon";
 
 import useParticipantsAnimationBarDatatracks from "./ParticipantsAnimationBarDatatracks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
@@ -28,6 +29,11 @@ interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
   screen?: String;
+}
+
+interface MuteParticipantDetailsProps {
+  identity: string;
+  muteStatus: boolean;
 }
 
 export default function ParticipantsAnimationBar({
@@ -60,6 +66,11 @@ export default function ParticipantsAnimationBar({
     useState<string>("");
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
+  const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
+  const [mutedParticipantsDetails, setMutedParticipantsDetails] = useState([]);
+
+  const animationStarted = useRef(false);
+  const screenShareRef = useRef(false);
 
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
@@ -69,7 +80,14 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.videoCallTokenData
   );
 
+  const { muteIndividualParticipant } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
+
   const animationButtonClicked = (identity: string, key: string) => {
+    if (animationStarted.current) {
+      return;
+    }
     setAnimationParticipantIdentity(identity);
     setAnimationParticipantType(key);
     handleKeyClick(identity, key);
@@ -78,13 +96,24 @@ export default function ParticipantsAnimationBar({
 
   const handleAnimationTiming = () => {
     setStartAnimation(true);
+    animationStarted.current = true;
     setTimeout(() => {
       setStartAnimation(false);
       dispatch(disabledAnimation(false));
+      animationStarted.current = false;
     }, 2500);
   };
 
   const screenShareButtonClicked = (identity: string, key: string) => {
+    if (screenShareRef.current) {
+      return;
+    }
+
+    screenShareRef.current = true;
+    setTimeout(() => {
+      screenShareRef.current = false;
+    }, 2500);
+
     setStundentShareScreen(!studentShareScreen);
     if (!studentShareScreen) {
       handleKeyClick(identity, key, true);
@@ -93,7 +122,15 @@ export default function ParticipantsAnimationBar({
     }
   };
 
-  const muteIconButtonClicked = () => {};
+  const muteIconButtonClicked = (identity: string) => {
+    if (!muteParticipant) {
+      handleKeyClick(identity, "MuteParticipant", true);
+      setMuteParticipant(true);
+    } else {
+      handleKeyClick(identity, "MuteParticipant", false);
+      setMuteParticipant(false);
+    }
+  };
 
   useEffect(() => {
     if (animationDataTracks.animationTrackIdentityAndType.count === 0) {
@@ -140,9 +177,32 @@ export default function ParticipantsAnimationBar({
             <div className="flex justify-center mb-3">
               <NetworkQualityLevel participant={participant} />
             </div>
-            <button onClick={() => muteIconButtonClicked()}>
-              <MicIconParticipantAnimationBar />
-            </button>
+            {muteIndividualParticipant.length > 0 ? (
+              muteIndividualParticipant?.map((item) => {
+                return (
+                  <button
+                    disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                    onClick={() => muteIconButtonClicked(participant.identity)}
+                  >
+                    {item.identity === participant.identity ? (
+                      item.muteStatus ? (
+                        <UnMuteIcon />
+                      ) : (
+                        <MuteIcon />
+                      )
+                    ) : null}
+                  </button>
+                );
+              })
+            ) : (
+              <button
+                disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                onClick={() => muteIconButtonClicked(participant.identity)}
+              >
+                {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+              </button>
+            )}
+
             <span className="text-white">
               {isStudentName({ identity: participant.identity })}
             </span>
@@ -203,7 +263,7 @@ export default function ParticipantsAnimationBar({
               </div>
             </button>
           </div>
-          <div className="flex gap-2 z-10">
+          <div className="flex gap-2 z-10" title="ScreenShare">
             <button
               disabled={!isTutorTechBoth({ identity: String(role_name) })}
               onClick={() =>
@@ -221,21 +281,47 @@ export default function ParticipantsAnimationBar({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[60px]">
+        <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[70px]">
           <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[30px]">
             <div className="flex flex-row justify-evenly">
-              <div className="flex justify-center mb-3">
+              <div className="flex justify-center mb-3 items-start">
                 <NetworkQualityLevel participant={participant} />
               </div>
-              <button onClick={() => muteIconButtonClicked()}>
-                <MicIconParticipantAnimationBar />
-              </button>
+              {muteIndividualParticipant.length > 0 ? (
+                muteIndividualParticipant?.map((item) => {
+                  return (
+                    <button
+                      disabled={
+                        !isTutorTechBoth({ identity: String(role_name) })
+                      }
+                      onClick={() =>
+                        muteIconButtonClicked(participant.identity)
+                      }
+                    >
+                      {item.identity === participant.identity ? (
+                        item.muteStatus ? (
+                          <UnMuteIcon />
+                        ) : (
+                          <MuteIcon />
+                        )
+                      ) : null}
+                    </button>
+                  );
+                })
+              ) : (
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() => muteIconButtonClicked(participant.identity)}
+                >
+                  {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+                </button>
+              )}
 
-              <span className="text-white">
+              <span className="flex text-white items-center text-center">
                 {isStudentName({ identity: participant.identity })}
               </span>
             </div>
-            <div className="flex gap-2 z-10 mr-1">
+            <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
               <button
                 disabled={!isTutorTechBoth({ identity: String(role_name) })}
                 onClick={() =>
@@ -252,8 +338,8 @@ export default function ParticipantsAnimationBar({
               </button>
             </div>
           </div>
-          <div className="flex bg-black w-full h-[30px]">
-            <div className=" flex mt-1">
+          <div className="flex bg-black w-full h-[40px] justify-center items-center">
+            <div className=" flex mt-1 h-full justify-center items-center">
               <button
                 disabled={!isTutorTechBoth({ identity: String(role_name) })}
                 onClick={() =>

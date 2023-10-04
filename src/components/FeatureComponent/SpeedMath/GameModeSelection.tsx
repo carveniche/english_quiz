@@ -90,8 +90,25 @@ export default function GameModeSelection({
                     </div>
                   );
                 })
-              : multipleUserModeOfPlay.map((item) => {
-                  return <div key={item.id}>{item.name}</div>;
+              : multipleUserModeOfPlay.map((obj) => {
+                  return (
+                    <div key={obj.id}>
+                      <input
+                        id={obj.id}
+                        name={obj.name}
+                        type="radio"
+                        checked={obj.value === playMode}
+                        onChange={selectedPlayMode}
+                        value={obj.value}
+                      />
+                      <label
+                        className="text-speedMathTextColor text-xl"
+                        htmlFor={obj.id}
+                      >
+                        {obj.label}
+                      </label>
+                    </div>
+                  );
                 })}
           </div>
           <div className="flex h-2/5 w-full justify-center items-center">

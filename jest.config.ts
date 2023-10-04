@@ -1,7 +1,10 @@
 export default {
   preset: "ts-jest",
   testEnvironment: "node",
-  testMatch: ["<rootDir>/src/**/**/*.test.tsx"],
+  testMatch: [
+    "<rootDir>/src/**/**/*.test.tsx",
+    "<rootDir>/src/components/FeatureComponent/**/_tests_/*.test.tsx",
+  ],
   testPathIgnorePatterns: ["/node_modules/"],
   coverageDirectory: "./coverage",
   coveragePathIgnorePatterns: [

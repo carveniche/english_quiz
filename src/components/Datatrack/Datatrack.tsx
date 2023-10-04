@@ -19,6 +19,7 @@ import {
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
   addTechJoinedClass,
+  addMuteIndividualParticipant,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -45,7 +46,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
 
-      console.log("Datatrack message received");
+      console.log("Datatrack message received", parseMessage);
 
       if (
         pathname === parseMessage.pathName ||
@@ -80,6 +81,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(addChatMessageDataTrack(parseMessage.value.messageArray));
       } else if (parseMessage.value.datatrackName === "MuteAllToggle") {
         dispatch(addMuteAllParticipant(parseMessage.value.muteState));
+      } else if (parseMessage.value.datatrackName === "MuteParticipant") {
+        dispatch(
+          addMuteIndividualParticipant({
+            identity: parseMessage.value.identity,
+            muteStatus: parseMessage.value.muteStatus,
+            fromScreen: parseMessage.value.fromScreen,
+          })
+        );
       } else if (
         parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
       ) {
@@ -198,14 +207,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             extraParams: parseMessage?.value?.activeTabData?.path || "",
           })
         );
-        if (parseMessage?.value?.behaviour === "old_data_flow")
-          typeof window.oldDataTrack === "function" &&
-            window.oldDataTrack(parseMessage?.value?.cicoData || "");
-        else {
-          dispatch(
-            cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
-          );
-        }
+
+        dispatch(
+          cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
+        );
       }
     };
 

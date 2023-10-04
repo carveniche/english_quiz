@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import TabIcon from "./TabIcon";
 import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
+import todayClassIcon from "./NavbarIcons/todayClassIconGreen.png";
 interface props {
   allConceptsDetails: allConceptsDetails;
   item: ActiveTabParams;
@@ -20,7 +21,6 @@ export default function MathzoneNavbar({
   queryParams,
   calcWidth,
   elementPosition,
-  currentSelectedMenuIndex,
   handleOpenSubMenu,
 }: props) {
   const [currentSelectedTopic, setCurrentSelectedTopic] = useState(-1);
@@ -70,7 +70,25 @@ export default function MathzoneNavbar({
                 >
                   <div className={"w-48"} style={{ display: "block" }}>
                     <div className="flex gap-2">
-                      <div> {math?.name}</div>
+                      <div>
+                        {math?.today_class ? (
+                          <div className="flex">
+                            {math?.name}
+                            <img
+                              style={{
+                                width: "40px",
+                                margin: "auto",
+                                marginLeft: "5px",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                              src={todayClassIcon}
+                            />
+                          </div>
+                        ) : (
+                          math?.name
+                        )}
+                      </div>
                     </div>
                   </div>
                   <TabIcon
@@ -95,7 +113,25 @@ export default function MathzoneNavbar({
                             >
                               <div style={{ display: "block" }}>
                                 <div className="flex gap-2">
-                                  <div> {tag?.name}</div>
+                                  <div>
+                                    {tag?.today_class ? (
+                                      <div className="flex">
+                                        {tag?.name}
+                                        <img
+                                          style={{
+                                            width: "40px",
+                                            margin: "auto",
+                                            marginLeft: "5px",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                          src={todayClassIcon}
+                                        />
+                                      </div>
+                                    ) : (
+                                      tag?.name
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                               <TabIcon

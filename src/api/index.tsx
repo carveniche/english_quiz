@@ -214,12 +214,9 @@ export const handleUpdateNextPrePostQuestion = (params: {
   tag_id: number;
   level: number;
 }) => {
-  return axios.get(
-    BaseUrl + "app_teachers/skip_pre_post_test?pre_post_test_id",
-    {
-      params: { ...params },
-    }
-  );
+  return axios.get(BaseUrl + "app_teachers/skip_pre_post_test", {
+    params: { ...params },
+  });
 };
 
 export const fetchCheckInData = (student_id: string, live_class_id: string) => {
@@ -454,6 +451,14 @@ export const parentFeedbackApi = async (formData: object) =>
   axios({
     method: "post",
     url: baseURL + "app_students/update_live_class_parent_feedback",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+export const createLiveClassTicket = async (formData: object) =>
+  axios({
+    method: "post",
+    url: baseURL + "app_students/create_live_class_ticket",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });

@@ -11,6 +11,7 @@ export default function TeacherView({
   userId,
   reportsData,
   student,
+  identity,
 }) {
   useEffect(() => {
     handleCloseReviewResultStatus();
@@ -21,8 +22,10 @@ export default function TeacherView({
     setCurrentUserId("");
   };
   const handleOpenResponse = (id: string) => {
-    setExcerciseId(id);
-    handleOpenReviewResultStatus(student);
+    if (identity == "tutor") {
+      setExcerciseId(id);
+      handleOpenReviewResultStatus(student);
+    }
   };
   const [lastData, setLastData] = useState({});
   const [currentUserId, setCurrentUserId] = useState("");

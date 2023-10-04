@@ -11,6 +11,7 @@ import ToggleAudioButton from "../Buttons/ToggleAudioButton/ToggleAudioButton";
 import ToggleVideoButton from "../Buttons/ToggleVideoButton/ToggleVideoButton";
 import ToggleScreenShareButton from "../Buttons/ToggleScreenShareButton/ToggleScreenShareButton";
 import ToggleChatButton from "../Buttons/ToggleChatButton/ToggleChatButton";
+import { MENUBARHEIGHT } from "../../constants";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      height: `${theme.footerHeight}px`,
+      height: `${MENUBARHEIGHT}px`,
       position: "fixed",
       display: "flex",
       padding: "0 1.43em",
@@ -71,7 +72,7 @@ export default function MenuBar() {
 
   return (
     <>
-      {isSharingScreen && (
+      {/* {isSharingScreen && (
         <Grid
           container
           justifyContent="center"
@@ -81,7 +82,7 @@ export default function MenuBar() {
           <Typography variant="h6">You are sharing your screen</Typography>
           <Button onClick={() => toggleScreenShare()}>Stop Sharing</Button>
         </Grid>
-      )}
+      )} */}
       <footer className={classes.container}>
         <Grid container justifyContent="space-around" alignItems="center">
           <Hidden smDown>

@@ -22,6 +22,10 @@ export default function StudentActivityTimer({
   handleSubmit: Function | null;
   isClosed: boolean;
   showEndButton: boolean;
+  isShowCornerImage: boolean | undefined;
+  activityType: string | undefined;
+  selectedItem: object;
+  isBadgesVisible: boolean | undefined;
 }) {
   const [count, setCount] = useState(0);
   useEffect(() => {

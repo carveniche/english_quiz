@@ -176,7 +176,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             return item.key === ROUTERKEYCONST.mathzone ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -204,7 +204,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             ) : item.key === CICO.key ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -230,18 +230,36 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 )}
               </li>
             ) : item.key === ROUTERKEYCONST.miscellaneous.key ? (
-              <MiscelleneousNavbar
-                handleClick={handleClick}
-                handleOpenSubMenu={handleOpenSubMenu}
-                item={item}
-                index={index}
-                queryParams={queryParams}
-                key={`miscellaneous-${index}`}
-              />
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onClick={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+                key={index}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <MiscelleneousNavbar
+                    handleClick={handleClick}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    item={item}
+                    index={index}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    key={`miscellaneous-${index}`}
+                  />
+                )}
+              </li>
             ) : item.key === ROUTERKEYCONST.mathvideolesson ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -269,7 +287,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             ) : item.key === ROUTERKEYCONST.speedmath ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
                 style={{ cursor: "pointer" }}
                 key={index}
               >
@@ -297,7 +315,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
               <li
                 key={index}
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2"
-                onMouseEnter={() => handleOpenSubMenu(index)}
+                onClick={() => handleOpenSubMenu(index)}
               >
                 <NavLink
                   to={`${item.path}?${queryParams}`}
