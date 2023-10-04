@@ -60,7 +60,11 @@ export default function FloatingParticipant({
         <div
           className="relative max-h-[200px] max-w-[290px]"
           style={{
-            marginTop: "10px",
+            marginTop: isTutor({ identity: participant.identity })
+              ? "15px"
+              : isTutor({ identity: localParticipant.identity })
+              ? "15px"
+              : "0px",
           }}
           key={participant.sid}
         >
@@ -99,7 +103,7 @@ export default function FloatingParticipant({
         <div
           className="relative max-h-[200px] max-w-[290px]"
           style={{
-            marginTop: "10px",
+            marginTop: "15px",
           }}
           key={participant.sid}
         >
