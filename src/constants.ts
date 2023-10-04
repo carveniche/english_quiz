@@ -59,3 +59,5 @@ export const CICO = {
   checkIn: "checkIn",
   checkOut: "checkOut",
 };
+
+export const MENUBARHEIGHT = 60;

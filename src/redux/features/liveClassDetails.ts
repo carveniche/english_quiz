@@ -137,17 +137,20 @@ export const liveClassDetailsSlice = createSlice({
           currentUserScoreSpeedMath,
         });
       } else {
+        let identityNotFound = true;
         for (let i = 0; i < prevArr.length; i++) {
           if (prevArr[i]?.userId === userId) {
             prevArr[i].currentUserScoreSpeedMath = currentUserScoreSpeedMath;
+            identityNotFound = false;
             break;
-          } else {
-            prevArr.push({
-              userId,
-              identity,
-              currentUserScoreSpeedMath,
-            });
           }
+        }
+        if (identityNotFound) {
+          prevArr.push({
+            userId,
+            identity,
+            currentUserScoreSpeedMath,
+          });
         }
       }
     },
