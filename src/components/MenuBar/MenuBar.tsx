@@ -87,10 +87,10 @@ export default function MenuBar() {
         <Grid container justifyContent="space-around" alignItems="center">
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
-              <Typography variant="body1">
-                {room!.name} | {participants.length + 1} participant
-                {participants.length ? "s" : ""}
-              </Typography>
+              {/* <Typography variant="body1"> */}
+              {/* {room!.name} | {participants.length + 1} participant
+                {participants.length ? "s" : ""} */}
+              {/* </Typography> */}
             </Grid>
           </Hidden>
           <Grid item>

@@ -25,6 +25,7 @@ import _isEqual from "lodash/isEqual";
 import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePaticipantBar";
 import { useDispatch } from "react-redux";
 import { disabledAnimation } from "../../redux/features/dataTrackStore";
+import { Tooltip } from "@material-ui/core";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -263,21 +264,23 @@ export default function ParticipantsAnimationBar({
               </div>
             </button>
           </div>
-          <div className="flex gap-2 z-10" title="ScreenShare">
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() =>
-                screenShareButtonClicked(participant.identity, "ScreenShare")
-              }
-            >
-              <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                {studentShareScreen ? (
-                  <ScreenShareOnIcon />
-                ) : (
-                  <ScreenShareIcon />
-                )}
-              </div>
-            </button>
+          <div className="flex gap-2 z-10">
+            <Tooltip title="ScreenShare" arrow placement="top">
+              <button
+                disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                onClick={() =>
+                  screenShareButtonClicked(participant.identity, "ScreenShare")
+                }
+              >
+                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                  {studentShareScreen ? (
+                    <ScreenShareOnIcon />
+                  ) : (
+                    <ScreenShareIcon />
+                  )}
+                </div>
+              </button>
+            </Tooltip>
           </div>
         </div>
       ) : (
@@ -322,20 +325,25 @@ export default function ParticipantsAnimationBar({
               </span>
             </div>
             <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  screenShareButtonClicked(participant.identity, "ScreenShare")
-                }
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  {studentShareScreen ? (
-                    <ScreenShareOnIcon />
-                  ) : (
-                    <ScreenShareIcon />
-                  )}
-                </div>
-              </button>
+              <Tooltip title="ScreenShare" arrow placement="top">
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    screenShareButtonClicked(
+                      participant.identity,
+                      "ScreenShare"
+                    )
+                  }
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    {studentShareScreen ? (
+                      <ScreenShareOnIcon />
+                    ) : (
+                      <ScreenShareIcon />
+                    )}
+                  </div>
+                </button>
+              </Tooltip>
             </div>
           </div>
           <div className="flex bg-black w-full h-[40px] justify-center items-center">
