@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexWrap: "wrap",
     padding: "5px",
     overflowY: "auto",
+    cursor: "pointer",
   },
 }));
 

@@ -155,7 +155,7 @@ export default function FloatingParticipant({
         height: "fit-content",
       }}
     >
-      <Rnd bounds={parentRef.current || ""}>
+      <Rnd bounds={parentRef.current || ""} enableResizing={false}>
         <>
           {screenName !== "/myscreen"
             ? showSelfParticipantView()
