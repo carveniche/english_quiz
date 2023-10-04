@@ -53,7 +53,8 @@ export default function StudentFeedbackForm2({
     setLoading(true);
     obj.comments = comments;
     await submitStudentFeedbackForm(obj);
-    window.location.reload();
+    window.close();
+    window.location.href = "https://www.begalileo.com/student/activity";
   };
   const handleChange = (i: number) => {
     if (!choices.includes(i)) {
