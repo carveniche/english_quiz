@@ -67,6 +67,9 @@ const activeTabReducer = createSlice({
       } else if (action.payload.key === ROUTERKEYCONST.speedmath) {
         activeTabArray[index] = action.payload;
       }
+      else if(action.payload.key===ROUTERKEYCONST.miscellaneous.key){
+        activeTabArray[index] = action.payload;
+      }
     },
     deleteFromActiveTab: (state, action: PayloadAction<string>) => {
       let { activeTabArray } = state;
