@@ -33,7 +33,7 @@ export default function WhiteBoard() {
     value: "",
   });
   const remoteArrayRef = useRef([]);
-  const [remoteArray, setRemoteArray] = useState([]);
+  const [remoteState, setRemoteState] = useState(false);
   const canvasCalculatedDimension = useRef({
     height: WHITEBOARDSTANDARDSCREENSIZE.height,
     width: WHITEBOARDSTANDARDSCREENSIZE.width,
@@ -60,7 +60,8 @@ export default function WhiteBoard() {
 
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
-  let [coordinates, setCoordinates] = useState([]);
+  const [localState, setLocalState] = useState(false);
+  let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
   const handleScale = () => {
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
@@ -89,13 +90,15 @@ export default function WhiteBoard() {
     setScaled(true);
   };
   const drawLine = (lastLines) => {
-    coordinates = coordinates.filter((item) => item.id != lastLines.id);
-    coordinates.push(lastLines);
-    setCoordinates([...coordinates]);
+    coordinatesRef.current = coordinatesRef.current.filter(
+      (item) => item.id != lastLines.id
+    );
+    coordinatesRef.current.push(lastLines);
+    setLocalState((prev) => !prev);
   };
   let ref = useRef();
   const remoteDrawLine = (lastLines) => {
-    let findParticipant = remoteArray.filter(
+    let findParticipant = remoteArrayRef.current.filter(
       ({ identity }) => identity === lastLines.identity
     );
     findParticipant = findParticipant[0] || {};
@@ -108,13 +111,13 @@ export default function WhiteBoard() {
     );
     if (lastLines?.coordinates) coordinates.push(lastLines?.coordinates);
     findParticipant.coordinates = coordinates;
-    let restParticipant = remoteArray.filter(
+    let restParticipant = remoteArrayRef.current.filter(
       ({ identity }) => identity != lastLines.identity
     );
 
     restParticipant.push(findParticipant);
     remoteArrayRef.current = restParticipant;
-    if (true) setRemoteArray([...remoteArrayRef.current]);
+    if (true) setRemoteState((prev) => !prev);
     lastLines.identity = userId;
     lastLines.isDrawing = true;
   };
@@ -126,8 +129,8 @@ export default function WhiteBoard() {
       positionMove.y / scaleRef.current.scaleY,
     ];
 
-    let lastLines = coordinates.pop();
-    // let lastLines = coordinates[coordinates.length - 1];
+    let lastLines = coordinatesRef.current.pop();
+
     lastLines.points = [lastLines.points[0], lastLines.points[1], ...temp];
     drawLine(lastLines);
     let coordinates2 = {
@@ -144,7 +147,7 @@ export default function WhiteBoard() {
       positionMove.x / scaleRef.current.scaleX,
       positionMove.y / scaleRef.current.scaleY,
     ];
-    let lastLines = coordinates.pop();
+    let lastLines = coordinatesRef.current.pop();
     // let lastLines = coordinates[coordinates.length - 1];
     lastLines.points = lastLines.points.concat([...temp]);
     drawLine(lastLines);
@@ -158,7 +161,6 @@ export default function WhiteBoard() {
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
-    console.log(position);
     let x = position.x + TEXTAREAWIDTH;
     let y = position.y + TEXTAREAHEIGHT;
     if (x > canvasCalculatedDimension.current.width) {
@@ -199,8 +201,8 @@ export default function WhiteBoard() {
     };
 
     currentIdRef.current = currentIdRef.current + 1;
-    coordinates.push(penStructure);
-    setCoordinates([...coordinates]);
+    coordinatesRef.current.push(penStructure);
+    setLocalState((prev) => !prev);
   };
   const handleMouseMove = (e) => {
     if (!drawingRef.current) {
@@ -251,8 +253,9 @@ export default function WhiteBoard() {
         setSelectedPen("FreeDrawing");
         break;
       case 3:
-        setCoordinates([]);
-        setRemoteArray([]);
+        coordinatesRef.current = [];
+        remoteArrayRef.current = [];
+        setLocalState((prev) => !prev);
         break;
       case 4:
         setSelectedPen("Text");
@@ -271,8 +274,8 @@ export default function WhiteBoard() {
         type: "text",
         id: `${userId}_${currentIdRef.current}`,
       };
-      coordinates.push(data);
-      setCoordinates([...coordinates]);
+      coordinatesRef.current.push(data);
+      setLocalState((prev) => !prev);
       setTextInput({
         x: 0,
         y: 0,
@@ -314,7 +317,7 @@ export default function WhiteBoard() {
             />
           )}
         </>
-        <UserCursor remtoeArray={remoteArray} scaleRef={scaleRef} />
+        <UserCursor remtoeArray={remoteArrayRef.current} scaleRef={scaleRef} />
         <Stage
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
@@ -333,6 +336,7 @@ export default function WhiteBoard() {
             maxHeight: "fit-content",
             overflow: "hidden",
             position: "relative",
+            cursor: "url(/static/cursor.png) 1 16, auto",
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
         >
@@ -348,7 +352,7 @@ export default function WhiteBoard() {
             </Layer>
           )}
           <Layer>
-            {coordinates.map((line, i) =>
+            {coordinatesRef.current?.map((line, i) =>
               line?.type === "text" ? (
                 <Text
                   text={line?.value}
@@ -365,7 +369,7 @@ export default function WhiteBoard() {
                 />
               )
             )}
-            {remoteArray?.map(({ coordinates }, key) =>
+            {remoteArrayRef.current?.map(({ coordinates }, key) =>
               coordinates?.map((line) =>
                 line?.type === "text" ? (
                   <Text
