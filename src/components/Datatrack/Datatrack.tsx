@@ -129,6 +129,16 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             extraParams: parseMessage.extraParams || {},
           })
         );
+      } else if (parseMessage?.value?.datatrackName === "MathLesson") {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage.pathName,
+            key: parseMessage.key,
+            icon: parseMessage.icon,
+            name: parseMessage.name,
+            extraParams: parseMessage.extraParams || {},
+          })
+        );
       } else if (parseMessage?.value?.datatrackName === "PlayVideoState") {
         dispatch(
           addVideoPlayState({

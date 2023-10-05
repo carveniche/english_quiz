@@ -58,6 +58,17 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
+  {
+    path: ROUTERKEYCONST.lesson,
+    key: ROUTERKEYCONST.lesson,
+    exact: true,
+    component: Lesson,
+    name: "Math Lesson",
+    icon: "/menu-icon/MathLessons.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
 
   {
     path: "/mathvideolesson",
@@ -106,17 +117,7 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-  {
-    path: ROUTERKEYCONST.lesson,
-    key: ROUTERKEYCONST.lesson,
-    exact: true,
-    component: Lesson,
-    name: "Lesson",
-    icon: "/menu-icon/MathLessons.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
+
   {
     path: "/miscellenous",
     component: null,
