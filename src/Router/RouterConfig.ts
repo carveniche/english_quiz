@@ -1,4 +1,3 @@
-import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
 import Coding from "../components/FeatureComponent/Coding/Coding";
 import Lesson from "../components/FeatureComponent/Lesson/Lesson";
 import Mathzone from "../components/FeatureComponent/Mathzone/mathzone";
@@ -11,6 +10,8 @@ import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQu
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
+import WhiteBoard from "../components/WhiteBoard/WhiteBoard";
+import WhiteboardImageRenerer from "../components/WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRenerer";
 interface routerConfig {
   path: string;
   key: string;
@@ -23,6 +24,17 @@ interface routerConfig {
   subRoute: Object | null;
 }
 const routerConfig: routerConfig[] = [
+  {
+    path:ROUTERKEYCONST.whiteboard.path,
+    key:ROUTERKEYCONST.whiteboard.key,
+    name:"Whiteboard",
+    component:WhiteBoard,
+    exact:true,
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
   {
     path: defaultRouter.path,
     key: defaultRouter.key,
@@ -42,6 +54,17 @@ const routerConfig: routerConfig[] = [
     component: MyScreen,
     name: "My Screen",
     icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
+  {
+    path: ROUTERKEYCONST.lesson,
+    key: ROUTERKEYCONST.lesson,
+    exact: true,
+    component: Lesson,
+    name: "Math Lesson",
+    icon: "/menu-icon/MathLessons.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
@@ -94,28 +117,7 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-  {
-    path: ROUTERKEYCONST.whiteboard,
-    key: ROUTERKEYCONST.whiteboard,
-    exact: true,
-    component: Whiteboard,
-    name: "Whiteboard",
-    icon: "/menu-icon/Whiteboard.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-  {
-    path: ROUTERKEYCONST.lesson,
-    key: ROUTERKEYCONST.lesson,
-    exact: true,
-    component: Lesson,
-    name: "Lesson",
-    icon: "/menu-icon/MathLessons.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
+
   {
     path: "/miscellenous",
     component: null,
@@ -157,6 +159,6 @@ const routerConfig: routerConfig[] = [
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
-  },
+  }
 ];
 export default routerConfig;

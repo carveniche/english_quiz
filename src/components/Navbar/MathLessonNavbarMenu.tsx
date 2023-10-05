@@ -9,17 +9,17 @@ import { ROUTERKEYCONST } from "../../constants";
 interface props {
   allConceptsDetails: allConceptsDetails;
   item: ActiveTabParams;
-  handleClickMathVideoLesson: Function;
+  handleClickMathLesson: Function;
   queryParams: String;
   calcWidth: number;
   elementPosition: number;
   currentSelectedMenuIndex: number;
   handleOpenSubMenu: Function;
 }
-export default function MathVideoNavbarMenu({
+export default function MathLessonNavbarMenu({
   allConceptsDetails,
   item,
-  handleClickMathVideoLesson,
+  handleClickMathLesson,
   queryParams,
   calcWidth,
   elementPosition,
@@ -28,7 +28,7 @@ export default function MathVideoNavbarMenu({
 }: props) {
   const [currentSelectedTopic, setCurrentSelectedTopic] = useState(-1);
   const [currentSelectedTag, setCurrentSelectedTag] = useState(-1);
-  const [mathVideosPresent, setMathVideosPresent] = useState(false);
+  const [mathLessonPresent, setMathLessonPresent] = useState(false);
   const handleSelectTopic = (index: number) => {
     if (index === currentSelectedTopic) {
       setCurrentSelectedTopic(-1);
@@ -47,13 +47,13 @@ export default function MathVideoNavbarMenu({
 
   const checkVideosPresentOrNot = () => {
     const check = allConceptsDetails?.conceptDetails.filter(
-      (videos) => videos.video.length > 0
+      ({ pdfs }) => pdfs.length > 0
     );
 
     if (check.length > 0) {
-      setMathVideosPresent(true);
+      setMathLessonPresent(true);
     } else {
-      setMathVideosPresent(false);
+      setMathLessonPresent(false);
     }
   };
 
@@ -63,7 +63,7 @@ export default function MathVideoNavbarMenu({
 
   return (
     <>
-      {mathVideosPresent ? (
+      {mathLessonPresent ? (
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
@@ -78,9 +78,9 @@ export default function MathVideoNavbarMenu({
           }}
         >
           {allConceptsDetails?.conceptDetails
-            .filter((videos) => videos.video !== "")
-            .map((videos, index) => {
-              if (videos.video.length === 0) {
+            .filter((pdf) => pdf.pdfs !== "")
+            .map((pdf, index) => {
+              if (pdf.pdfs.length === 0) {
                 return;
               }
 
@@ -96,7 +96,7 @@ export default function MathVideoNavbarMenu({
                   >
                     <div className={"w-48"} style={{ display: "block" }}>
                       <div className="flex gap-2">
-                        <div> {videos?.name}</div>
+                        <div> {pdf?.name}</div>
                       </div>
                     </div>
                     <TabIcon
@@ -108,7 +108,7 @@ export default function MathVideoNavbarMenu({
 
                   {currentSelectedTopic === index && (
                     <div className="w-full">
-                      {videos.video.map((tag, tagIndex) =>
+                      {pdf.pdfs.map((tag, tagIndex) =>
                         tag.name ? (
                           <div
                             className="py-3 pl-2"
@@ -123,22 +123,22 @@ export default function MathVideoNavbarMenu({
                                 <div className="flex gap-2">
                                   <NavLink
                                     key={tagIndex}
-                                    to={`/mathvideolesson?${queryParams}`}
+                                    to={`${item.key}?${queryParams}`}
                                     onClick={() =>
-                                      handleClickMathVideoLesson({
-                                        path: ROUTERKEYCONST.mathvideolesson,
-                                        key: ROUTERKEYCONST.mathvideolesson,
-                                        name: "Play Video",
+                                      handleClickMathLesson({
+                                        path: ROUTERKEYCONST.lesson,
+                                        key: ROUTERKEYCONST.lesson,
+                                        name: "Math Lesson",
                                         icon: item.icon,
                                         extraParams: {
-                                          videoUrl: tag.url,
+                                          imageUrl: tag.images,
                                         },
                                       })
                                     }
                                     className={"w-48"}
                                     style={{ display: "block" }}
                                   >
-                                    {tag?.name}
+                                    {tag?.name + " " + tag?.type}
                                   </NavLink>
                                 </div>
                               </div>

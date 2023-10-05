@@ -11,7 +11,8 @@ interface otherData{
 const initialState={
     mathzone:{},
     flaggedQuestion :{},
-    otherData:{}
+    otherData:{},
+    whiteBoardData:{}
 }
 
 const ComponentLevelDataReducer=createSlice({
@@ -44,8 +45,14 @@ const ComponentLevelDataReducer=createSlice({
                 state.otherData[key]=payload[key]
             }
 
+        },
+        whiteBoardComponentLevelDataTrack:(state:any,action:any)=>{
+            const {payload}=action
+        
+            state.whiteBoardData.whiteBoardsPoints=payload
+            state.whiteBoardData.count=Number(state.whiteBoardData.count+1)||1
         }
     }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer

@@ -22,9 +22,12 @@ export const ROUTERKEYCONST = {
   mathvideolesson: "/mathvideolesson",
   speedmath: "/speedmath",
   coding: "/coding",
-  whiteboard: "/whiteboard",
   lesson: "/lesson",
   mathzone: "/mathzone",
+  whiteboard:{
+    key:"whiteboard",
+    path:"/whiteboard"
+  },
   miscellaneous: {
     key: "miscellaneous",
     subRoute: {
@@ -60,4 +63,8 @@ export const CICO = {
   checkOut: "checkOut",
 };
 
+export const WHITEBOARDSTANDARDSCREENSIZE={
+  width:1500,
+  height:500
+}
 export const MENUBARHEIGHT = 60;
