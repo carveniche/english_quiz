@@ -48,7 +48,7 @@ export default function ActiveTabMenu() {
       icon,
       extraParams,
       value: {
-        type: null,
+        type: "addFromActiveTab",
         identity: null,
       },
     };

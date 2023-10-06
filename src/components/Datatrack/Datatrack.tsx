@@ -25,14 +25,17 @@ import {
   CICO,
   FLAGGEDQUESTIONKEY,
   HOMEWORKQUESTIONKEY,
+  LESSON,
   MATHZONEDATAKEY,
   ROUTERKEYCONST,
 } from "../../constants";
 import {
   changeMathzoneData,
   cicoComponentLevelDataTrack,
+  currentLessonPdfIndexUpdate,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
+  lessonWhiteboardComponentLevelDataTrack,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -59,7 +62,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         if (parseMessage.value.type === "deleteFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(deleteFromActiveTab(parseMessage.pathName));
-        } else {
+        } else if (parseMessage.value.type === "addFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(
             addToActiveTab({
@@ -186,6 +189,18 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             parseMessage?.value?.whiteBoardPoints || []
           )
         );
+      } else if (
+        parseMessage?.value?.datatrackName === LESSON.LessonDataTrack
+      ) {
+        dispatch(
+          lessonWhiteboardComponentLevelDataTrack(
+            parseMessage?.value?.whiteBoardPoints || {}
+          )
+        );
+      } else if (
+        parseMessage?.value?.datatrackName === LESSON.LessonIndexChange
+      ) {
+        dispatch(currentLessonPdfIndexUpdate(parseMessage?.value?.index || {}));
       } else if (
         parseMessage?.value?.type ===
         HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack

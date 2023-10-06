@@ -175,8 +175,9 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       name,
       icon,
       extraParams,
+
       value: {
-        type: null,
+        type: "addFromActiveTab",
         identity: null,
       },
     };
