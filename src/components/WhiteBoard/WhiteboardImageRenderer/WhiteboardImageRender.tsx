@@ -205,16 +205,18 @@ export default function WhiteboardImageRender({
                 />
               ))}
               {remoteArrayRef.current?.map(({ coordinates }, key) =>
-                coordinates?.map((line) =>
+                coordinates?.map((line, index) =>
                   line?.type === "text" ? (
                     <Text
                       text={line?.value}
                       x={line?.points[0]}
                       y={line?.points[1]}
                       fontSize={30}
+                      key={`key${key}-cell${index}`}
                     />
                   ) : (
                     <Line
+                      key={`key${key}-cell${index}`}
                       points={line?.points.map((item, i) =>
                         i % 2
                           ? item * currentLoadedImage.height

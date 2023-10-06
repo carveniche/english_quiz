@@ -28,14 +28,14 @@ import {
   LESSON,
   MATHZONEDATAKEY,
   ROUTERKEYCONST,
+  WHITEBOARD,
 } from "../../constants";
 import {
   changeMathzoneData,
+  changePdfIndex,
   cicoComponentLevelDataTrack,
-  currentLessonPdfIndexUpdate,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
-  lessonWhiteboardComponentLevelDataTrack,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -48,8 +48,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-
-      console.log("Datatrack message received", parseMessage);
 
       if (
         pathname === parseMessage.pathName ||
@@ -190,17 +188,11 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           )
         );
       } else if (
-        parseMessage?.value?.datatrackName === LESSON.LessonDataTrack
+        parseMessage?.value?.datatrackName === WHITEBOARD.whiteBoardData
       ) {
-        dispatch(
-          lessonWhiteboardComponentLevelDataTrack(
-            parseMessage?.value?.whiteBoardPoints || {}
-          )
-        );
-      } else if (
-        parseMessage?.value?.datatrackName === LESSON.LessonIndexChange
-      ) {
-        dispatch(currentLessonPdfIndexUpdate(parseMessage?.value?.index || {}));
+        dispatch(whiteBoardComponentLevelDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === WHITEBOARD.pdfIndex) {
+        dispatch(changePdfIndex(parseMessage?.value || {}));
       } else if (
         parseMessage?.value?.type ===
         HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack

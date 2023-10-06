@@ -29,10 +29,15 @@ const initialState={
     flaggedQuestion :{},
     otherData:{},
     whiteBoardData:{},
-    currentLessonIndex:0,
-    remoteLessonDataWhiteBoardData:{},
-    lessonWhiteBoardData:[],
-    lessonWhiteBoardCounts:0,
+   allWhiteBoardRelatedData:{
+
+    lessonWhiteBoardData:{
+    currentIndex:0,
+    remoteWhiteBoardData:{},
+    whiteBoardData:[],
+    whiteBoardCounts:0,
+    }
+   }
 }
 
 const ComponentLevelDataReducer=createSlice({
@@ -66,32 +71,33 @@ const ComponentLevelDataReducer=createSlice({
             }
 
         },
+        // whiteBoardComponentLevelDataTrack:(state:any,action:any)=>{
+        //     const {payload}=action
+        
+        //     state.whiteBoardData.whiteBoardsPoints=payload
+        //     state.whiteBoardData.count=Number(state.whiteBoardData.count+1)||1
+        // },
         whiteBoardComponentLevelDataTrack:(state:any,action:any)=>{
             const {payload}=action
-        
-            state.whiteBoardData.whiteBoardsPoints=payload
-            state.whiteBoardData.count=Number(state.whiteBoardData.count+1)||1
-        },
-        lessonWhiteboardComponentLevelDataTrack:(state:any,action:any)=>{
-            const {payload}=action
-           state.remoteLessonDataWhiteBoardData=payload
-           state.lessonWhiteBoardCounts+=1
+           state.allWhiteBoardRelatedData[payload.dataTrackKey].remoteWhiteBoardData=payload.whiteBoardData
+           state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts+=1
     },
-    currentLessonPdfIndexUpdate:(state:any,action:any)=>{
+    changePdfIndex:(state:any,action:any)=>{
         const {payload}=action
-        state.currentLessonIndex=Number(payload)||0
-        state.lessonWhiteBoardCounts=0
+        state.allWhiteBoardRelatedData[payload.dataTrackKey].currentIndex=Number(payload.index)||0
+        state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts=0
 
     },
-    saveAllLessonWhiteBoardData:(state:any,action:any)=>{
+    saveAllWhiteBoardData:(state:any,action:any)=>{
         const {payload}=action
-        const {index,whiteBoardData}=payload
-        let {lessonWhiteBoardData} = state
-        lessonWhiteBoardData[payload.index]=payload.whiteBoardData
-        state.remoteLessonDataWhiteBoardData={}
-        state.lessonWhiteBoardCounts=0
+        const {dataTrackKey}=payload
+        let {whiteBoardData} = state.allWhiteBoardRelatedData[dataTrackKey]||[]
+        whiteBoardData[payload.index]=payload.whiteBoardData
+        whiteBoardData[payload.index].remoteWhiteBoardData={}
+        state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts=0
+        state.allWhiteBoardRelatedData[dataTrackKey].whiteBoardData=whiteBoardData
     }
 }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,lessonWhiteboardComponentLevelDataTrack,saveAllLessonWhiteBoardData,currentLessonPdfIndexUpdate}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,saveAllWhiteBoardData,changePdfIndex}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer

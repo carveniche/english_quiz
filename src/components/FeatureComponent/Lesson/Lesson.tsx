@@ -2,15 +2,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import WhiteboardImageRender from "../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { LESSON, ROUTERKEYCONST } from "../../../constants";
-import { useEffect, useRef, useState } from "react";
+import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
+import { isTutorTechBoth } from "../../../utils/participantIdentity";
 import {
-  currentLessonPdfIndexUpdate,
-  lessonWhiteboardComponentLevelDataTrack,
-  saveAllLessonWhiteBoardData,
+  changePdfIndex,
+  saveAllWhiteBoardData,
 } from "../../../redux/features/ComponentLevelDataReducer";
-import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 
 export default function Lesson() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
@@ -23,12 +22,11 @@ export default function Lesson() {
   ];
 
   const dispatch = useDispatch();
-  const {
-    remoteLessonDataWhiteBoardData,
-    lessonWhiteBoardCounts,
-    lessonWhiteBoardData,
-    currentLessonIndex,
-  } = useSelector((state: RootState) => state.ComponentLevelDataReducer);
+  const { allWhiteBoardRelatedData } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
+  );
+  let whiteBoardData =
+    allWhiteBoardRelatedData[LESSON.lessonWhiteBoardData] || {};
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -38,15 +36,16 @@ export default function Lesson() {
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const { imageUrl } = extraParams || [];
   const handleDataTrack = (coordinates) => {
-    coordinates.index = currentLessonIndex;
+    coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
     let DataTrackObj = {
       pathName: ROUTERKEYCONST.lesson,
       key: ROUTERKEYCONST.lesson,
       value: {
         identity: userId,
-        datatrackName: LESSON.LessonDataTrack,
-        whiteBoardPoints: coordinates,
+        datatrackName: WHITEBOARD.whiteBoardData,
+        whiteBoardData: coordinates,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
@@ -54,20 +53,26 @@ export default function Lesson() {
 
   const handlePdfChange = (val: number) => {
     if (
-      currentLessonIndex + val < imageUrl.length &&
-      currentLessonIndex + val >= 0
+      whiteBoardData.currentIndex + val < imageUrl.length &&
+      whiteBoardData.currentIndex + val >= 0
     ) {
       let DataTrackObj = {
         pathName: ROUTERKEYCONST.lesson,
         key: ROUTERKEYCONST.lesson,
         value: {
-          datatrackName: LESSON.LessonIndexChange,
-          index: currentLessonIndex + val,
+          datatrackName: WHITEBOARD.pdfIndex,
+          index: whiteBoardData.currentIndex + val,
+          dataTrackKey: LESSON.lessonWhiteBoardData,
         },
       };
 
       localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
-      dispatch(currentLessonPdfIndexUpdate(currentLessonIndex + val));
+      dispatch(
+        changePdfIndex({
+          index: whiteBoardData.currentIndex + val,
+          dataTrackKey: LESSON.lessonWhiteBoardData,
+        })
+      );
     }
   };
   const handleUpdateLocalAndRemoteData = (localArray, remoteArray) => {
@@ -82,9 +87,10 @@ export default function Lesson() {
     });
     arr.push(coordinates);
     dispatch(
-      saveAllLessonWhiteBoardData({
-        index: currentLessonIndex,
+      saveAllWhiteBoardData({
+        index: whiteBoardData.currentIndex,
         whiteBoardData: arr,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
       })
     );
   };
@@ -109,13 +115,15 @@ export default function Lesson() {
         </div>
       )}
       <WhiteboardImageRender
-        images={imageUrl[currentLessonIndex]}
-        whiteBoardData={lessonWhiteBoardData[currentLessonIndex] || []}
-        currentIncomingLines={remoteLessonDataWhiteBoardData}
+        images={imageUrl[whiteBoardData.currentIndex]}
+        whiteBoardData={
+          whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
+        }
+        currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
         handleDataTrack={handleDataTrack}
         handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
-        count={lessonWhiteBoardCounts}
-        key={currentLessonIndex}
+        count={whiteBoardData.whiteBoardCounts}
+        key={whiteBoardData.currentIndex}
       />
     </>
   );

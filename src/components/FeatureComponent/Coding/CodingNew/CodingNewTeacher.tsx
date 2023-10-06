@@ -210,6 +210,10 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     );
   };
 
+  const openScratchLesson = (item: []) => {
+    console.log("item", item);
+  };
+
   return (
     <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded">
       {newCodingData.length === 0 && (
@@ -240,9 +244,14 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 )}
               </div>
               <div className="flex w-[10%] h-full justify-center items-center">
-                <a className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                <a
+                  onClick={() => openScratchLesson(item.lesson_data.pdfs)}
+                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                >
                   <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.lesson_data.name ? "View Lesson" : "No Lesson"}
+                    {item.lesson_data.pdfs.length > 0
+                      ? "View Lesson"
+                      : "No Lesson"}
                   </p>
                 </a>
               </div>

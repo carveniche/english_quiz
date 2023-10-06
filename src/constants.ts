@@ -70,5 +70,10 @@ export const WHITEBOARDSTANDARDSCREENSIZE={
 export const MENUBARHEIGHT = 60;
 export const LESSON={
 LessonDataTrack:"LessonDataTrack",
-LessonIndexChange:"LessonIndexChange"
+LessonIndexChange:"LessonIndexChange",
+lessonWhiteBoardData:"lessonWhiteBoardData"
+}
+export const WHITEBOARD={
+  whiteBoardData:"whiteBoardData",
+  pdfIndex:"pdfIndex"
 }
