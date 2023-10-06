@@ -11,6 +11,10 @@ import {
   storeCodingLogNewCurriculam,
 } from "../../../../api";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
+import { ROUTERKEYCONST } from "../../../../constants";
+import { openClosedScratchWhiteBoard } from "../../../../redux/features/ComponentLevelDataReducer";
 
 const activeProjectBgCss = "bg-gradient-to-r from-[#3bd7b1] to-[#a4ec9e]";
 const unactiveProjectBgCss = "bg-gradient-to-r from-[#eb3349] to-[#f45c43]";
@@ -47,7 +51,11 @@ interface studentSpecificData {
 export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   const [thunkableLink, setThunkableLink] = useState("");
   const [newCodingData, setNewCodingData] = useState([]);
-
+  const dispatch = useDispatch();
+  const { room } = useVideoContext();
+  const [localDataTrackPublication] = [
+    ...room!.localParticipant.dataTracks.values(),
+  ];
   const { userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
@@ -211,7 +219,18 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   };
 
   const openScratchLesson = (item: []) => {
-    console.log("item", item);
+    let DataTrackObj = {
+      pathName: ROUTERKEYCONST.coding,
+      key: ROUTERKEYCONST.coding,
+      value: {
+        status: true,
+        datatrackName: "openCloseScratchWhiteBoard",
+        images: item,
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    dispatch(openClosedScratchWhiteBoard({ status: true, images: item }));
+    // openCloseScratchWhiteBoard
   };
 
   return (

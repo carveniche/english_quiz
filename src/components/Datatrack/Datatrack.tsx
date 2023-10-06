@@ -36,6 +36,7 @@ import {
   cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
+  openClosedScratchWhiteBoard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -228,6 +229,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(
           cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
         );
+      } else if (
+        parseMessage?.value?.datatrackName === "openCloseScratchWhiteBoard"
+      ) {
+        dispatch(openClosedScratchWhiteBoard(parseMessage?.value || {}));
       }
     };
 

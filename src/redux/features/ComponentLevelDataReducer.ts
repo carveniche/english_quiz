@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { SCRATCHLESSON } from "../../constants";
 
 
 interface localLessonWhiteboardProps{
@@ -29,6 +30,8 @@ const initialState={
     flaggedQuestion :{},
     otherData:{},
     whiteBoardData:{},
+    isScratchOpenStatus:false,
+    scratchPdfsImages:[],
    allWhiteBoardRelatedData:{
 
     lessonWhiteBoardData:{
@@ -36,7 +39,15 @@ const initialState={
     remoteWhiteBoardData:{},
     whiteBoardData:[],
     whiteBoardCounts:0,
+    },
+
+    [SCRATCHLESSON.scratchWhiteBoardData]:{
+    currentIndex:0,
+    remoteWhiteBoardData:{},
+    whiteBoardData:[],
+    whiteBoardCounts:0,
     }
+    
    }
 }
 
@@ -96,8 +107,12 @@ const ComponentLevelDataReducer=createSlice({
         whiteBoardData[payload.index].remoteWhiteBoardData={}
         state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts=0
         state.allWhiteBoardRelatedData[dataTrackKey].whiteBoardData=whiteBoardData
-    }
+    },
+    openClosedScratchWhiteBoard:(state,action)=>{
+        state.isScratchOpenStatus=action.payload.status
+        state.scratchPdfsImages=action.payload.images||[]
+      }
 }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,saveAllWhiteBoardData,changePdfIndex}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,saveAllWhiteBoardData,changePdfIndex,openClosedScratchWhiteBoard}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer

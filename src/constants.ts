@@ -77,3 +77,6 @@ export const WHITEBOARD={
   whiteBoardData:"whiteBoardData",
   pdfIndex:"pdfIndex"
 }
+export const SCRATCHLESSON={
+  scratchWhiteBoardData:"scratchWhiteBoardData"
+}
