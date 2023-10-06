@@ -11,12 +11,22 @@ import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteboardToolbar";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
-export default function WhiteBoard() {
+export default function WhiteBoard({
+  whiteBoardData,
+  handleDataTrack,
+  count = 0,
+  handleUpdateLocalAndRemoteData,
+  currentIncomingLines,
+}: {
+  images: string;
+  whiteBoardData: object;
+  handleDataTrack: Function | undefined;
+  count: number | undefined;
+  handleUpdateLocalAndRemoteData: Function | undefined;
+  currentIncomingLines: object;
+}) {
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
-  const { whiteBoardData } = useSelector(
-    (state: RootState) => state.ComponentLevelDataReducer
-  );
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -32,8 +42,10 @@ export default function WhiteBoard() {
     y: 0,
     value: "",
   });
-  const remoteArrayRef = useRef([]);
-  const [remoteState, setRemoteState] = useState(false);
+  const remoteArrayRef = useRef(
+    JSON.parse(JSON.stringify(whiteBoardData)) || []
+  );
+  const [_remoteState, setRemoteState] = useState(false);
   const canvasCalculatedDimension = useRef({
     height: WHITEBOARDSTANDARDSCREENSIZE.height,
     width: WHITEBOARDSTANDARDSCREENSIZE.width,
@@ -42,25 +54,7 @@ export default function WhiteBoard() {
   const currentIdRef = useRef(0);
   const constantDelay = 10;
   const timerRef = useRef(0);
-  const handleDataTrack = (points) => {
-    if (Date.now() - timerRef.current <= constantDelay) return;
-    timerRef.current = Date.now();
-
-    const [localDataTrackPublication] = [
-      ...room!.localParticipant.dataTracks.values(),
-    ];
-    let DataTrackObj = {
-      pathName: ROUTERKEYCONST.whiteboard.path,
-      key: ROUTERKEYCONST.whiteboard.key,
-      value: {
-        datatrackName: ROUTERKEYCONST.whiteboard.key,
-        whiteBoardPoints: points,
-      },
-    };
-
-    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
-  };
-  const [localState, setLocalState] = useState(false);
+  const [_localState, setLocalState] = useState(false);
   let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
   const handleScale = () => {
@@ -137,9 +131,8 @@ export default function WhiteBoard() {
       coordinates: lastLines,
     };
     coordinates2.cursorPoints = [...temp];
-    coordinates2.identity = userId;
     coordinates2.isDrawing = true;
-    handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
   };
   const freeDrawing = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
@@ -155,9 +148,8 @@ export default function WhiteBoard() {
       coordinates: lastLines,
     };
     coordinates2.cursorPoints = [...temp];
-    coordinates2.identity = userId;
     coordinates2.isDrawing = true;
-    handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
@@ -217,29 +209,37 @@ export default function WhiteBoard() {
 
   const handleMouseUp = (e) => {
     drawingRef.current = false;
-    handleDataTrack({
-      identity: userId,
-      isDrawing: false,
-    });
+    typeof handleDataTrack === "function" &&
+      handleDataTrack({
+        identity: userId,
+        isDrawing: false,
+      });
   };
 
   const handleMouseLeave = () => {
     drawingRef.current = false;
-    handleDataTrack({
-      identity: userId,
-      isDrawing: false,
-    });
+    typeof handleDataTrack === "function" &&
+      handleDataTrack({
+        identity: userId,
+        isDrawing: false,
+      });
   };
-
   useEffect(() => {
-    if (whiteBoardData?.count) {
-      if (whiteBoardData?.whiteBoardsPoints) {
+    if (count) {
+      if (currentIncomingLines) {
         //1 // 2
-        let temp = JSON.stringify(whiteBoardData?.whiteBoardsPoints);
+        let temp = JSON.stringify(currentIncomingLines);
         remoteDrawLine(JSON.parse(temp) || {});
       }
     }
-  }, [whiteBoardData?.count]);
+    return () => {
+      typeof handleUpdateLocalAndRemoteData === "function" &&
+        handleUpdateLocalAndRemoteData(
+          JSON.parse(JSON.stringify(coordinatesRef.current)),
+          JSON.parse(JSON.stringify(remoteArrayRef.current))
+        );
+    };
+  }, [count]);
   useEffect(() => {
     handleScale();
   }, []);
@@ -288,7 +288,7 @@ export default function WhiteBoard() {
       coordinates2.cursorPoints = [];
       coordinates2.identity = userId;
       coordinates2.isDrawing = false;
-      handleDataTrack(coordinates2);
+      typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
@@ -337,6 +337,7 @@ export default function WhiteBoard() {
             overflow: "hidden",
             position: "relative",
             cursor: "url(/static/cursor.png) 1 16, auto",
+            backgroundColor: "transparent",
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
         >
