@@ -3,7 +3,13 @@ import Colorbar from "./JSON/ColorPicker.json";
 import PenStroke from "./JSON/PenStroke.json";
 import { useState } from "react";
 
-export default function WhiteboardToolbar({ handleClick }) {
+export default function WhiteboardToolbar({
+  handleClick,
+  closeToolbarPopup,
+}: {
+  handleClick: Function;
+  closeToolbarPopup: boolean;
+}) {
   const [id, setId] = useState(0);
   const [key, setKey] = useState("");
   const [isPopoverVisible, setPopoverVisible] = useState(false);
@@ -90,7 +96,7 @@ export default function WhiteboardToolbar({ handleClick }) {
         ))}
       </div>
 
-      {isPopoverVisible && (
+      {isPopoverVisible && !closeToolbarPopup && (
         <div className="flex w-[90px] flex-wrap absolute flex-row bg-white p-4 gap-4 shadow-md">
           {id === 1 &&
             Colorbar.map((item) => {

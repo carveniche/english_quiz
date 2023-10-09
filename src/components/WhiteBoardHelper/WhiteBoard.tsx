@@ -49,6 +49,7 @@ export default function WhiteBoard({
   });
   const [colorCode, setColorCode] = useState("#000000");
   const [strokeWidth, setStrokeWidth] = useState(1);
+  const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
   const remoteArrayRef = useRef(
     JSON.parse(JSON.stringify(whiteBoardData)) || []
   );
@@ -181,6 +182,7 @@ export default function WhiteBoard({
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
+    setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
       return;
@@ -217,6 +219,7 @@ export default function WhiteBoard({
   };
 
   const handleMouseUp = (e) => {
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
       handleDataTrack({
@@ -226,6 +229,7 @@ export default function WhiteBoard({
   };
 
   const handleMouseLeave = () => {
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
       handleDataTrack({
@@ -325,9 +329,13 @@ export default function WhiteBoard({
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
+
   return (
     <div className="w-full h-full p-1">
-      <WhiteboardToolbar handleClick={handleToolBarSelect} />
+      <WhiteboardToolbar
+        handleClick={handleToolBarSelect}
+        closeToolbarPopup={closeToolbarPopup}
+      />
       <div
         className="w-full  border-red-500 border overflow-hidden"
         style={{
