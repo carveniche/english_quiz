@@ -373,36 +373,6 @@ export function RenderingQuizPage({
   );
   return (
     <>
-      <>
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            zIndex: 1,
-            left: 0,
-            background: "black",
-            opacity: 0.5,
-            width: "100%",
-            height: "100%",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            zIndex: 2,
-            top: 0,
-            width: "100%",
-            height: "100%",
-            left: 0,
-          }}
-        >
-          <HelperWhiteBoard
-            dataTrackKey={MATHZONEDATAKEY.mathzoneWhiteBoardData}
-            pathName={currentSelectedRouter}
-            key={currentSelectedKey}
-          />
-        </div>
-      </>
       {identity === "tutor" ? (
         <>
           <ValidationContextProvider>
