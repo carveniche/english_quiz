@@ -39,6 +39,10 @@ export const ROUTERKEYCONST = {
         keys: "/flagQuestion",
         route: "/flagQuestion",
       },
+      uploadResources: {
+        keys: "/uploadResources",
+        route: "/uploadResources",
+      },
     },
   },
 };

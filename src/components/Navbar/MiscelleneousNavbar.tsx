@@ -1,8 +1,7 @@
-import React from "react";
+import { useState } from "react";
 import TabIcon from "./TabIcon";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
-import { NavLink } from "react-router-dom";
-import { ROUTERKEYCONST } from "../../constants";
+
 interface MiscelleneousNavbarInterface {
   index: number;
   handleOpenSubMenu: Function;
@@ -21,6 +20,7 @@ export default function MiscelleneousNavbar({
   elementPosition,
   calcWidth,
 }: MiscelleneousNavbarInterface) {
+  const [open, setOpen] = useState(false);
   return (
     <>
       {item?.hasSubRoute ? (
@@ -47,24 +47,41 @@ export default function MiscelleneousNavbar({
                   className="flex gap-2 relative item-center "
                   style={{ cursor: "pointer" }}
                 >
-                  <div
-                    className={"w-48"}
-                    style={{ display: "block" }}
-                    onClick={() =>
-                      handleClick({
-                        path: `${item.path}${subRouteItem.key}`,
-                        key: item.key,
-                        name: `${item.name}:${subRouteItem.name} `,
-                        icon: item.icon,
-                        extraParams: {},
-                      })
-                    }
-                  >
-                    <div className="flex gap-2">
+                  <div className={"w-48"} style={{ display: "block" }}>
+                    <div
+                      className="flex gap-2"
+                      onClick={() => setOpen((prev) => !prev)}
+                    >
                       <div> {subRouteItem?.name}</div>
+                      {subRouteItem.hasChildren && (
+                        <TabIcon
+                          src={`/menu-icon/chevron_${open ? "up" : "down"}.svg`}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
+                {subRouteItem.hasChildren && open && (
+                  <div className="py-3 pl-2">
+                    {subRouteItem?.subRoute.map((subRouteInner, index) => (
+                      <div>
+                        <div
+                          onClick={() =>
+                            handleClick({
+                              path: `${item.path}${subRouteItem.key}`,
+                              key: item.key,
+                              name: `${item.name}:${subRouteItem.name} `,
+                              icon: item.icon,
+                              extraParams: {},
+                            })
+                          }
+                        >
+                          {subRouteInner?.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </li>
             );
           })}
