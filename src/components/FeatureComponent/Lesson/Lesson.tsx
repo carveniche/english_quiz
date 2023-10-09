@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import WhiteboardImageRender from "../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
+import WhiteboardImageRender from "../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
 import { useRef } from "react";

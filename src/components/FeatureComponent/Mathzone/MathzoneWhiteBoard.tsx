@@ -1,11 +1,12 @@
 import { MATHZONEDATAKEY } from "../../../constants";
-import HelperWhiteBoard from "../../WhiteBoard/HelperWhiteBoard";
+
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import { openClosedMathzoneWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { isTutorTechBoth } from "../../../utils/participantIdentity";
+import HelperWhiteBoard from "../../WhiteBoardHelper/HelperWhiteBoard";
 
 export default function MathzoneWhiteBoard({
   currentSelectedRouter,

@@ -23,7 +23,6 @@ import OnlineQuizPagination from "./Teacher/OnlineQuizPagination";
 import StudentsTitle from "./Student/StudentsTitle";
 import handleResizeWidth from "./handleResizeWidth";
 import ViewQuestionAtMiddle from "./Teacher/ViewQuestionAtMiddle";
-import HelperWhiteBoard from "../../WhiteBoard/HelperWhiteBoard";
 import MathzoneWhiteBoard from "./MathzoneWhiteBoard";
 export default function MathzoneInner() {
   const [loading, setLoading] = useState(true);

@@ -12,7 +12,7 @@ import {
   SCRATCHLESSON,
   WHITEBOARD,
 } from "../../../../constants";
-import WhiteboardImageRender from "../../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
+import WhiteboardImageRender from "../../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
 
 export default function ScratchWhiteBoard({
   pdfImages,

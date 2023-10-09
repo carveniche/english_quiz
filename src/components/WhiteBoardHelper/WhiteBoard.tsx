@@ -8,9 +8,12 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
-import WhiteboardToolbar from "./WhiteboardToolbar";
+import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
+const eraserCursor =
+  "url('WhiteBoardToolbarAssets/Toolbar/Eraser.svg') 2 30, auto";
+const penCursor = "url(/static/cursor.png) 1 16, auto";
 export default function WhiteBoard({
   whiteBoardData,
   handleDataTrack,
@@ -36,12 +39,17 @@ export default function WhiteBoard({
   });
   const [isScaled, setScaled] = useState(false);
   const [selectedPen, setSelectedPen] = useState("FreeDrawing");
+  const [eraserSelect, setEraserSelect] = useState(false);
+  const [cursor, setCursor] = useState(penCursor);
   const [textInput, setTextInput] = useState({
     showInputBox: false,
     x: 0,
     y: 0,
     value: "",
   });
+  const [colorCode, setColorCode] = useState("#000000");
+  const [strokeWidth, setStrokeWidth] = useState(1);
+  const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
   const remoteArrayRef = useRef(
     JSON.parse(JSON.stringify(whiteBoardData)) || []
   );
@@ -174,6 +182,7 @@ export default function WhiteBoard({
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
+    setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
       return;
@@ -184,8 +193,9 @@ export default function WhiteBoard({
     const position = e.target.getStage().getPointerPosition();
     const penStructure = {
       id: `${userId}_${currentIdRef.current}`,
-      stroke: 5,
-      color: "black",
+      stroke: strokeWidth,
+      color: colorCode,
+      eraser: eraserSelect,
       points: [
         position.x / scaleRef.current.scaleX,
         position.y / scaleRef.current.scaleY,
@@ -200,6 +210,7 @@ export default function WhiteBoard({
     if (!drawingRef.current) {
       return;
     }
+
     if (selectedPen === "FreeDrawing") {
       freeDrawing(e);
     } else if (selectedPen === "Line") {
@@ -208,6 +219,7 @@ export default function WhiteBoard({
   };
 
   const handleMouseUp = (e) => {
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
       handleDataTrack({
@@ -217,6 +229,7 @@ export default function WhiteBoard({
   };
 
   const handleMouseLeave = () => {
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
       handleDataTrack({
@@ -244,21 +257,45 @@ export default function WhiteBoard({
     handleScale();
   }, []);
 
-  const handleToolBarSelect = (id: number) => {
-    switch (id) {
+  const handleToolBarSelect = (json: {
+    id: number;
+    value: any;
+    key: string;
+  }) => {
+    console.log("json", json);
+    switch (json.id) {
       case 1:
-        setSelectedPen("Line");
+        setColorCode(json.value);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 2:
-        setSelectedPen("FreeDrawing");
+        setStrokeWidth(json.value);
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 3:
         coordinatesRef.current = [];
         remoteArrayRef.current = [];
         setLocalState((prev) => !prev);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 4:
-        setSelectedPen("Text");
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
+        break;
+      case 5:
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
+        break;
+      case 6:
+        setEraserSelect(true);
+        setCursor(eraserCursor);
+        break;
     }
   };
   const handleTextArea = (e) => {
@@ -292,12 +329,22 @@ export default function WhiteBoard({
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
+
+  console.log("remoteArrayRef", remoteArrayRef);
+
   return (
     <div className="w-full h-full p-1">
-      <WhiteboardToolbar handleClick={handleToolBarSelect} />
+      <WhiteboardToolbar
+        handleClick={handleToolBarSelect}
+        closeToolbarPopup={closeToolbarPopup}
+      />
       <div
         className="w-full  border-red-500 border overflow-hidden"
-        style={{ height: "calc(100% - 20px)", position: "relative" }}
+        style={{
+          height: "calc(100% - 20px)",
+          position: "relative",
+          cursor: cursor,
+        }}
         ref={whiteBoardContainerRef}
       >
         <>
@@ -317,7 +364,11 @@ export default function WhiteBoard({
             />
           )}
         </>
-        <UserCursor remtoeArray={remoteArrayRef.current} scaleRef={scaleRef} />
+        <UserCursor
+          remtoeArray={remoteArrayRef.current}
+          scaleRef={scaleRef}
+          cursor={cursor}
+        />
         <Stage
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
@@ -336,7 +387,8 @@ export default function WhiteBoard({
             maxHeight: "fit-content",
             overflow: "hidden",
             position: "relative",
-            cursor: "url(/static/cursor.png) 1 16, auto",
+            //url(/static/cursor.png) 1 16, auto
+            cursor: cursor,
             backgroundColor: "transparent",
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
@@ -352,6 +404,7 @@ export default function WhiteBoard({
               />
             </Layer>
           )}
+
           <Layer>
             {coordinatesRef.current?.map((line, i) =>
               line?.type === "text" ? (
@@ -367,6 +420,9 @@ export default function WhiteBoard({
                   points={line?.points}
                   stroke={line?.color}
                   strokeWidth={line?.stroke}
+                  globalCompositeOperation={
+                    line.eraser ? "destination-out" : "source-over"
+                  }
                 />
               )
             )}
@@ -384,6 +440,9 @@ export default function WhiteBoard({
                     points={line?.points || []}
                     stroke={line.color}
                     strokeWidth={line?.stroke}
+                    globalCompositeOperation={
+                      line.eraser ? "destination-out" : "source-over"
+                    }
                   ></Line>
                 )
               )
