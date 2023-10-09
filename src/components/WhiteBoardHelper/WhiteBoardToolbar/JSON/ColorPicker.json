@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "name": "Black",
+    "image": "WhiteBoardToolbarAssets/Colors/Black.svg",
+    "code": "#000000",
+    "active": false
+  },
+  {
+    "id": "2",
+    "name": "Red",
+    "image": "WhiteBoardToolbarAssets/Colors/Red.svg",
+    "code": "#FF533A",
+    "active": false
+  },
+  {
+    "id": "3",
+    "name": "Green",
+    "image": "WhiteBoardToolbarAssets/Colors/Green.svg",
+    "code": "#6BC25C",
+    "active": false
+  },
+  {
+    "id": "4",
+    "name": "Blue",
+    "image": "WhiteBoardToolbarAssets/Colors/Blue.svg",
+    "code": "#419AFD",
+    "active": false
+  },
+  {
+    "id": "5",
+    "name": "Yellow",
+    "image": "WhiteBoardToolbarAssets/Colors/Yellow.svg",
+    "code": "#FFC73C",
+    "active": false
+  },
+  {
+    "id": "6",
+    "name": "Purple",
+    "image": "WhiteBoardToolbarAssets/Colors/Purple.svg",
+    "code": "#AE38D0",
+    "active": false
+  },
+  {
+    "id": "7",
+    "name": "Rose",
+    "image": "WhiteBoardToolbarAssets/Colors/Pink.svg",
+    "code": "#DD3A67",
+    "active": false
+  },
+  {
+    "id": "8",
+    "name": "Brown",
+    "image": "WhiteBoardToolbarAssets/Colors/Brown.svg",
+    "code": "#745749",
+    "active": false
+  }
+]

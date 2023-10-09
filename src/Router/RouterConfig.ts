@@ -10,7 +10,8 @@ import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQu
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
-import WhiteBoard from "../components/WhiteBoard/WhiteBoard";
+
+import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
 interface routerConfig {
   path: string;
   key: string;
@@ -24,11 +25,11 @@ interface routerConfig {
 }
 const routerConfig: routerConfig[] = [
   {
-    path:ROUTERKEYCONST.whiteboard.path,
-    key:ROUTERKEYCONST.whiteboard.key,
-    name:"Whiteboard",
-    component:WhiteBoard,
-    exact:true,
+    path: ROUTERKEYCONST.whiteboard.path,
+    key: ROUTERKEYCONST.whiteboard.key,
+    name: "Whiteboard",
+    component: Whiteboard,
+    exact: true,
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: false,
@@ -158,6 +159,6 @@ const routerConfig: routerConfig[] = [
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
-  }
+  },
 ];
 export default routerConfig;

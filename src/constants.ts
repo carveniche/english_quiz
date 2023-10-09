@@ -24,9 +24,9 @@ export const ROUTERKEYCONST = {
   coding: "/coding",
   lesson: "/lesson",
   mathzone: "/mathzone",
-  whiteboard:{
-    key:"whiteboard",
-    path:"/whiteboard"
+  whiteboard: {
+    key: "whiteboard",
+    path: "/whiteboard",
   },
   miscellaneous: {
     key: "miscellaneous",
@@ -44,7 +44,11 @@ export const ROUTERKEYCONST = {
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
-  mathzoneWhiteBoardData:"mathzoneWhiteBoardData"
+  mathzoneWhiteBoardData: "mathzoneWhiteBoardData",
+};
+
+export const MAINWHITEBOARD = {
+  mainWhiteBoardData: "mainWhiteBoardData",
 };
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",
@@ -64,20 +68,20 @@ export const CICO = {
   checkOut: "checkOut",
 };
 
-export const WHITEBOARDSTANDARDSCREENSIZE={
-  width:1500,
-  height:500
-}
+export const WHITEBOARDSTANDARDSCREENSIZE = {
+  width: 1500,
+  height: 500,
+};
 export const MENUBARHEIGHT = 60;
-export const LESSON={
-LessonDataTrack:"LessonDataTrack",
-LessonIndexChange:"LessonIndexChange",
-lessonWhiteBoardData:"lessonWhiteBoardData"
-}
-export const WHITEBOARD={
-  whiteBoardData:"whiteBoardData",
-  pdfIndex:"pdfIndex"
-}
-export const SCRATCHLESSON={
-  scratchWhiteBoardData:"scratchWhiteBoardData"
-}
+export const LESSON = {
+  LessonDataTrack: "LessonDataTrack",
+  LessonIndexChange: "LessonIndexChange",
+  lessonWhiteBoardData: "lessonWhiteBoardData",
+};
+export const WHITEBOARD = {
+  whiteBoardData: "whiteBoardData",
+  pdfIndex: "pdfIndex",
+};
+export const SCRATCHLESSON = {
+  scratchWhiteBoardData: "scratchWhiteBoardData",
+};

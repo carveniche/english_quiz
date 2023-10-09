@@ -1,6 +1,4 @@
-import React from "react";
-
-export default function UserCursor({ remtoeArray, scaleRef }) {
+export default function UserCursor({ remtoeArray, scaleRef, cursor }) {
   return (
     <>
       {remtoeArray?.map((item, key) =>
@@ -19,7 +17,7 @@ export default function UserCursor({ remtoeArray, scaleRef }) {
                   left: left * scaleRef.current.scaleX,
                 }}
               >
-                <img src="/static/cursor.png" />
+                <img src={cursor} />
                 {item?.identity}
               </div>
             );
