@@ -1,59 +1,65 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-interface WhiteboardProps {
-  callback: Function;
-}
-import { Stage, Layer, Line, Image } from "react-konva";
-import {
-  ROUTERKEYCONST,
-  WHITEBOARDSTANDARDSCREENSIZE,
-} from "../../../constants";
-import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { Stage, Layer, Line, Image, Text } from "react-konva";
+import { WHITEBOARDSTANDARDSCREENSIZE } from "../../../constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { handleLoadImage } from "./LoadImage";
-const arr = [
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/3.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/4.jpg",
-  "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/5.jpg",
-];
-export default function WhiteboardImageRenerer() {
-  const { room } = useVideoContext();
-  const { whiteBoardData } = useSelector(
-    (state: RootState) => state.ComponentLevelDataReducer
-  );
+export default function WhiteboardImageRender({
+  images,
+  whiteBoardData,
+  handleDataTrack,
+  count = 0,
+  handleUpdateLocalAndRemoteData,
+  currentIncomingLines,
+}: {
+  images: string;
+  whiteBoardData: object;
+  handleDataTrack: Function | undefined;
+  count: number | undefined;
+  handleUpdateLocalAndRemoteData: Function | undefined;
+  currentIncomingLines: object;
+}) {
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
   const [currentLoadedImage, setCurrentLoadedImage] = useState("");
-  const canvasCalculatedDimension = useRef({
-    height: WHITEBOARDSTANDARDSCREENSIZE.height,
-    width: WHITEBOARDSTANDARDSCREENSIZE.width,
-  });
+  const remoteArrayRef = useRef(JSON.parse(JSON.stringify(whiteBoardData)));
+  const [_remoteState, setRemoteState] = useState(false);
+  const [_localState, setLocalState] = useState(false);
+  let coordinatesRef = useRef([]);
   const whiteBoardContainerRef = useRef();
   const currentIdRef = useRef(0);
-  const handleDataTrack = (points) => {
-    const [localDataTrackPublication] = [
-      ...room!.localParticipant.dataTracks.values(),
-    ];
-    let DataTrackObj = {
-      pathName: ROUTERKEYCONST.whiteboard.path,
-      key: ROUTERKEYCONST.whiteboard.key,
-      value: {
-        datatrackName: ROUTERKEYCONST.whiteboard.key,
-        whiteBoardPoints: points,
-      },
-    };
-
-    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
-  };
-  let [coordinates, setCoordinates] = useState([]);
   const drawingRef = useRef(false);
+  const remoteDrawLine = (lastLines) => {
+    let findParticipant = remoteArrayRef.current.filter(
+      ({ identity }) => identity === lastLines.identity
+    );
+    findParticipant = findParticipant[0] || {};
+    findParticipant.identity = lastLines.identity;
+    findParticipant.cursorPoints = lastLines?.cursorPoints || [];
+    findParticipant.isDrawing = lastLines.isDrawing;
+    let coordinates = findParticipant?.coordinates || [];
+    coordinates = coordinates.filter(
+      (item) => item.id != lastLines?.coordinates?.id
+    );
+    if (lastLines?.coordinates) coordinates.push(lastLines?.coordinates);
+    findParticipant.coordinates = coordinates;
+    let restParticipant = remoteArrayRef.current.filter(
+      ({ identity }) => identity != lastLines.identity
+    );
+
+    restParticipant.push(findParticipant);
+    remoteArrayRef.current = restParticipant;
+    if (true) setRemoteState((prev) => !prev);
+    lastLines.identity = userId;
+    lastLines.isDrawing = true;
+  };
   const drawLine = (lastLines) => {
-    coordinates = coordinates.filter((item) => item.id != lastLines.id);
-    coordinates.push(lastLines);
-    setCoordinates([...coordinates]);
+    coordinatesRef.current = coordinatesRef.current.filter(
+      (item) => item.id != lastLines.id
+    );
+    coordinatesRef.current.push(lastLines);
+    setLocalState((prev) => !prev);
   };
   const handleMouseDown = (e) => {
     drawingRef.current = true;
@@ -67,9 +73,9 @@ export default function WhiteboardImageRenerer() {
         position.y / currentLoadedImage.height,
       ],
     };
-    currentIdRef.current = currentIdRef.current + 1;
-    coordinates.push(penStructure);
-    setCoordinates([...coordinates]);
+    currentIdRef.current += 1;
+    coordinatesRef.current.push({ ...penStructure });
+    setLocalState((prev) => !prev);
   };
   const handleMouseMove = (e) => {
     if (!drawingRef.current) {
@@ -81,11 +87,16 @@ export default function WhiteboardImageRenerer() {
       position.y / currentLoadedImage.height,
     ];
     // let temp = [positionMove.x, positionMove.y];
-    let lastLines = coordinates.pop();
+    let lastLines = coordinatesRef.current.pop();
     // let lastLines = coordinates[coordinates.length - 1];
     lastLines.points = lastLines.points.concat([...temp]);
     drawLine(lastLines);
-    handleDataTrack(lastLines);
+    let coordinates2 = {
+      coordinates: lastLines,
+    };
+    coordinates2.isDrawing = true;
+    coordinates2.cursorPoints = [...temp];
+    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
   };
 
   const handleMouseUp = (e) => {
@@ -97,14 +108,21 @@ export default function WhiteboardImageRenerer() {
   };
 
   useEffect(() => {
-    if (whiteBoardData?.count) {
-      if (whiteBoardData?.whiteBoardsPoints) {
+    if (count) {
+      if (currentIncomingLines) {
         //1 // 2
-        let temp = JSON.stringify(whiteBoardData?.whiteBoardsPoints);
-        drawLine(JSON.parse(temp) || {});
+        let temp = JSON.stringify(currentIncomingLines);
+        remoteDrawLine(JSON.parse(temp) || {});
       }
     }
-  }, [whiteBoardData?.count]);
+    return () => {
+      typeof handleUpdateLocalAndRemoteData === "function" &&
+        handleUpdateLocalAndRemoteData(
+          JSON.parse(JSON.stringify(coordinatesRef.current)),
+          JSON.parse(JSON.stringify(remoteArrayRef.current))
+        );
+    };
+  }, [count]);
   useEffect(() => {
     // handleScale();
   }, []);
@@ -128,21 +146,12 @@ export default function WhiteboardImageRenerer() {
     }
   };
   useEffect(() => {
-    handleLoadImage(
-      "/pdf/whiteboard/01_III_MAT0101_page-0024.jpg",
-      handleAfterImageLoaded
-    );
-  }, []);
+    if (images) handleLoadImage(images, handleAfterImageLoaded);
+  }, [images]);
 
   return (
     <div className="w-full h-full p-1">
-      <button
-        onClick={() => {
-          setCoordinates([]);
-        }}
-      >
-        Clear
-      </button>
+      <button onClick={() => {}}>Clear</button>
 
       <div
         className="w-ful border overflow-hidden"
@@ -183,7 +192,7 @@ export default function WhiteboardImageRenerer() {
               </Layer>
             )}
             <Layer>
-              {coordinates.map((line, i) => (
+              {coordinatesRef.current.map((line, i) => (
                 <Line
                   key={i}
                   points={line?.points.map((item, i) =>
@@ -195,6 +204,30 @@ export default function WhiteboardImageRenerer() {
                   strokeWidth={line?.stroke}
                 />
               ))}
+              {remoteArrayRef.current?.map(({ coordinates }, key) =>
+                coordinates?.map((line, index) =>
+                  line?.type === "text" ? (
+                    <Text
+                      text={line?.value}
+                      x={line?.points[0]}
+                      y={line?.points[1]}
+                      fontSize={30}
+                      key={`key${key}-cell${index}`}
+                    />
+                  ) : (
+                    <Line
+                      key={`key${key}-cell${index}`}
+                      points={line?.points.map((item, i) =>
+                        i % 2
+                          ? item * currentLoadedImage.height
+                          : item * currentLoadedImage.width
+                      )}
+                      stroke={line.color}
+                      strokeWidth={line?.stroke}
+                    ></Line>
+                  )
+                )
+              )}
             </Layer>
           </Stage>
         )}

@@ -11,7 +11,6 @@ import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
 import WhiteBoard from "../components/WhiteBoard/WhiteBoard";
-import WhiteboardImageRenerer from "../components/WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRenerer";
 interface routerConfig {
   path: string;
   key: string;

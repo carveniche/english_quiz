@@ -1,21 +1,24 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import WhiteboardImageRender from "../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
-import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { isTutorTechBoth } from "../../../utils/participantIdentity";
 import {
   changePdfIndex,
   saveAllWhiteBoardData,
-} from "../../../redux/features/ComponentLevelDataReducer";
+} from "../../../../redux/features/ComponentLevelDataReducer";
+import { isTutorTechBoth } from "../../../../utils/participantIdentity";
+import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
+import { RootState } from "../../../../redux/store";
+import {
+  ROUTERKEYCONST,
+  SCRATCHLESSON,
+  WHITEBOARD,
+} from "../../../../constants";
+import WhiteboardImageRender from "../../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
 
-export default function Lesson() {
-  const { activeTabArray, currentSelectedIndex } = useSelector(
-    (state: RootState) => state.activeTabReducer
-  );
-  const whiteBoardRef = useRef([]);
+export default function ScratchWhiteBoard({
+  pdfImages,
+}: {
+  pdfImages: object;
+}) {
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -26,26 +29,25 @@ export default function Lesson() {
     (state: RootState) => state.ComponentLevelDataReducer
   );
   let whiteBoardData =
-    allWhiteBoardRelatedData[LESSON.lessonWhiteBoardData] || {};
+    allWhiteBoardRelatedData[SCRATCHLESSON.scratchWhiteBoardData] || {};
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
-  const { imageUrl } = extraParams || [];
+  const imageUrl = pdfImages || [];
   const handleDataTrack = (coordinates) => {
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
     let DataTrackObj = {
-      pathName: ROUTERKEYCONST.lesson,
-      key: ROUTERKEYCONST.lesson,
+      pathName: ROUTERKEYCONST.coding,
+      key: ROUTERKEYCONST.coding,
       value: {
         identity: userId,
         datatrackName: WHITEBOARD.whiteBoardData,
         whiteBoardData: coordinates,
-        dataTrackKey: LESSON.lessonWhiteBoardData,
+        dataTrackKey: SCRATCHLESSON.scratchWhiteBoardData,
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
@@ -62,7 +64,7 @@ export default function Lesson() {
         value: {
           datatrackName: WHITEBOARD.pdfIndex,
           index: whiteBoardData.currentIndex + val,
-          dataTrackKey: LESSON.lessonWhiteBoardData,
+          dataTrackKey: SCRATCHLESSON.scratchWhiteBoardData,
         },
       };
 
@@ -70,7 +72,7 @@ export default function Lesson() {
       dispatch(
         changePdfIndex({
           index: whiteBoardData.currentIndex + val,
-          dataTrackKey: LESSON.lessonWhiteBoardData,
+          dataTrackKey: SCRATCHLESSON.scratchWhiteBoardData,
         })
       );
     }
@@ -90,7 +92,7 @@ export default function Lesson() {
       saveAllWhiteBoardData({
         index: whiteBoardData.currentIndex,
         whiteBoardData: arr,
-        dataTrackKey: LESSON.lessonWhiteBoardData,
+        dataTrackKey: SCRATCHLESSON.scratchWhiteBoardData,
       })
     );
   };

@@ -16,6 +16,9 @@ import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
 import "../component/mathzone.css";
+import HelperWhiteBoard from "../../../WhiteBoard/HelperWhiteBoard";
+import { MATHZONEDATAKEY } from "../../../../constants";
+import { useSelector } from "react-redux";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
@@ -365,9 +368,41 @@ export function RenderingQuizPage({
   if (obj?.question_data && obj?.question_data[0]?.operation) {
     obj = replaceJsonData({ ...obj });
   }
-
+  const { currentSelectedRouter, currentSelectedKey } = useSelector(
+    (state) => state.activeTabReducer
+  );
   return (
     <>
+      <>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            zIndex: 1,
+            left: 0,
+            background: "black",
+            opacity: 0.5,
+            width: "100%",
+            height: "100%",
+          }}
+        ></div>
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 2,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            left: 0,
+          }}
+        >
+          <HelperWhiteBoard
+            dataTrackKey={MATHZONEDATAKEY.mathzoneWhiteBoardData}
+            pathName={currentSelectedRouter}
+            key={currentSelectedKey}
+          />
+        </div>
+      </>
       {identity === "tutor" ? (
         <>
           <ValidationContextProvider>

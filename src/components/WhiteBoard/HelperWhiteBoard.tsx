@@ -1,21 +1,23 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import WhiteboardImageRender from "../../WhiteBoard/WhiteboardImageRenderer/WhiteboardImageRender";
-import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { isTutorTechBoth } from "../../../utils/participantIdentity";
-import {
-  changePdfIndex,
-  saveAllWhiteBoardData,
-} from "../../../redux/features/ComponentLevelDataReducer";
+import { RootState } from "../../redux/store";
+import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import { WHITEBOARD } from "../../constants";
+import { saveAllWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
+import WhiteBoard from "./WhiteBoard";
 
-export default function Lesson() {
+export default function HelperWhiteBoard({
+  dataTrackKey,
+  pathName,
+  key,
+}: {
+  dataTrackKey: string;
+  pathName: string;
+  key: string;
+}) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
-  const whiteBoardRef = useRef([]);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -25,8 +27,7 @@ export default function Lesson() {
   const { allWhiteBoardRelatedData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
-  let whiteBoardData =
-    allWhiteBoardRelatedData[LESSON.lessonWhiteBoardData] || {};
+  let whiteBoardData = allWhiteBoardRelatedData[dataTrackKey] || {};
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -34,47 +35,22 @@ export default function Lesson() {
     (state: RootState) => state.videoCallTokenData
   );
   const { extraParams } = activeTabArray[currentSelectedIndex];
-  const { imageUrl } = extraParams || [];
   const handleDataTrack = (coordinates) => {
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
     let DataTrackObj = {
-      pathName: ROUTERKEYCONST.lesson,
-      key: ROUTERKEYCONST.lesson,
+      pathName: pathName,
+      key: key,
       value: {
         identity: userId,
         datatrackName: WHITEBOARD.whiteBoardData,
         whiteBoardData: coordinates,
-        dataTrackKey: LESSON.lessonWhiteBoardData,
+        dataTrackKey: dataTrackKey,
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handlePdfChange = (val: number) => {
-    if (
-      whiteBoardData.currentIndex + val < imageUrl.length &&
-      whiteBoardData.currentIndex + val >= 0
-    ) {
-      let DataTrackObj = {
-        pathName: ROUTERKEYCONST.lesson,
-        key: ROUTERKEYCONST.lesson,
-        value: {
-          datatrackName: WHITEBOARD.pdfIndex,
-          index: whiteBoardData.currentIndex + val,
-          dataTrackKey: LESSON.lessonWhiteBoardData,
-        },
-      };
-
-      localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
-      dispatch(
-        changePdfIndex({
-          index: whiteBoardData.currentIndex + val,
-          dataTrackKey: LESSON.lessonWhiteBoardData,
-        })
-      );
-    }
-  };
   const handleUpdateLocalAndRemoteData = (localArray, remoteArray) => {
     let coordinates = {
       coordinates: localArray,
@@ -90,32 +66,14 @@ export default function Lesson() {
       saveAllWhiteBoardData({
         index: whiteBoardData.currentIndex,
         whiteBoardData: arr,
-        dataTrackKey: LESSON.lessonWhiteBoardData,
+        dataTrackKey: dataTrackKey,
       })
     );
   };
   return (
     <>
-      {isTutorTechBoth({ identity: String(role_name) }) && (
-        <div>
-          <button
-            onClick={() => {
-              handlePdfChange(-1);
-            }}
-          >
-            Prev
-          </button>
-          <button
-            onClick={() => {
-              handlePdfChange(1);
-            }}
-          >
-            Next
-          </button>
-        </div>
-      )}
-      <WhiteboardImageRender
-        images={imageUrl[whiteBoardData.currentIndex]}
+      <WhiteBoard
+        images={""}
         whiteBoardData={
           whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
         }

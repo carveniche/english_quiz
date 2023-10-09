@@ -44,6 +44,7 @@ export const ROUTERKEYCONST = {
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
+  mathzoneWhiteBoardData:"mathzoneWhiteBoardData"
 };
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",
@@ -68,3 +69,15 @@ export const WHITEBOARDSTANDARDSCREENSIZE={
   height:500
 }
 export const MENUBARHEIGHT = 60;
+export const LESSON={
+LessonDataTrack:"LessonDataTrack",
+LessonIndexChange:"LessonIndexChange",
+lessonWhiteBoardData:"lessonWhiteBoardData"
+}
+export const WHITEBOARD={
+  whiteBoardData:"whiteBoardData",
+  pdfIndex:"pdfIndex"
+}
+export const SCRATCHLESSON={
+  scratchWhiteBoardData:"scratchWhiteBoardData"
+}
