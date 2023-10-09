@@ -268,7 +268,8 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                   className="text-blue-500 hover:text-blue-700 cursor-pointer"
                 >
                   <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.lesson_data.pdfs.length > 0
+                    {item.lesson_data.length > 0 &&
+                    item.lesson_data.pdfs.length > 0
                       ? "View Lesson"
                       : "No Lesson"}
                   </p>

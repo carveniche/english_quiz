@@ -1,10 +1,6 @@
-import React, { useEffect, useId, useRef, useState } from "react";
-interface WhiteboardProps {
-  callback: Function;
-}
-import { Stage, Layer, Star, Text, Line, Image } from "react-konva";
-import { ROUTERKEYCONST, WHITEBOARDSTANDARDSCREENSIZE } from "../../constants";
-import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import { useEffect, useRef, useState } from "react";
+import { Stage, Layer, Text, Line, Image } from "react-konva";
+import { WHITEBOARDSTANDARDSCREENSIZE } from "../../constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
@@ -28,8 +24,6 @@ export default function WhiteBoard({
   handleUpdateLocalAndRemoteData: Function | undefined;
   currentIncomingLines: object;
 }) {
-  const { room } = useVideoContext();
-  const localParticipant = room?.localParticipant;
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -60,8 +54,6 @@ export default function WhiteBoard({
   });
   const whiteBoardContainerRef = useRef();
   const currentIdRef = useRef(0);
-  const constantDelay = 10;
-  const timerRef = useRef(0);
   const [_localState, setLocalState] = useState(false);
   let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
@@ -219,7 +211,6 @@ export default function WhiteBoard({
   };
 
   const handleMouseUp = (e) => {
-    setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
       handleDataTrack({
@@ -240,7 +231,6 @@ export default function WhiteBoard({
   useEffect(() => {
     if (count) {
       if (currentIncomingLines) {
-        //1 // 2
         let temp = JSON.stringify(currentIncomingLines);
         remoteDrawLine(JSON.parse(temp) || {});
       }
@@ -329,8 +319,6 @@ export default function WhiteBoard({
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
-
-  console.log("remoteArrayRef", remoteArrayRef);
 
   return (
     <div className="w-full h-full p-1">
