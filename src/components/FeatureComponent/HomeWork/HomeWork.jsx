@@ -242,6 +242,8 @@ export default function HomeWork() {
             <FlagQuestionContextProvider>
               <DisplayHomeWorkQuestion
                 setShowQuestion={handleSetShowQuestion}
+                currentSelectedKey={currentSelectedKey}
+                currentSelectedRouter={currentSelectedRouter}
                 questionData={questionData}
                 homeWorkStudentId={
                   identity === "tutor" ? selectedStudentId : selectedStudentId

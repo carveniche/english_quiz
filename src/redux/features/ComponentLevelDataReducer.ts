@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { MATHZONEDATAKEY, SCRATCHLESSON } from "../../constants";
+import { MATHZONEDATAKEY, MISCELLANEOUS, SCRATCHLESSON } from "../../constants";
 
 
 interface localLessonWhiteboardProps{
@@ -19,7 +19,8 @@ export interface ComponentLevelData{
     remoteLessonDataWhiteBoardData:object;
     localLessonDataWhiteBoardData:localLessonWhiteboardProps;
     lessonWhiteBoardCount:number;
-    lessonWhiteBoardData:remoteLessonDataWhiteBoardDataProps[]
+    lessonWhiteBoardData:remoteLessonDataWhiteBoardDataProps[],
+    isMathZoneWhiteBoard:boolean
     
 }
 interface otherData{
@@ -27,6 +28,7 @@ interface otherData{
 }
 const initialState={
     mathzone:{},
+    isMathZoneWhiteBoard:false,
     flaggedQuestion :{},
     otherData:{},
     whiteBoardData:{},
@@ -48,6 +50,12 @@ const initialState={
     whiteBoardCounts:0,
     },
     [MATHZONEDATAKEY.mathzoneWhiteBoardData]:{
+    currentIndex:0,
+    remoteWhiteBoardData:{},
+    whiteBoardData:[],
+    whiteBoardCounts:0,
+    },
+    [MISCELLANEOUS.miscellaneousDataWhiteBoard]:{
     currentIndex:0,
     remoteWhiteBoardData:{},
     whiteBoardData:[],
@@ -117,8 +125,12 @@ const ComponentLevelDataReducer=createSlice({
     openClosedScratchWhiteBoard:(state,action)=>{
         state.isScratchOpenStatus=action.payload.status
         state.scratchPdfsImages=action.payload.images||[]
+      },
+      openClosedMathzoneWhiteBoard:(state,action)=>{
+        console.log(action.payload)
+      state.isMathZoneWhiteBoard=action.payload
       }
 }
 })
-export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,saveAllWhiteBoardData,changePdfIndex,openClosedScratchWhiteBoard}=ComponentLevelDataReducer.actions
+export const {changeMathzoneData,flagQuestionDetailsStore,homeWorkQuestionDataTrack,cicoComponentLevelDataTrack,whiteBoardComponentLevelDataTrack,saveAllWhiteBoardData,changePdfIndex,openClosedScratchWhiteBoard,openClosedMathzoneWhiteBoard}=ComponentLevelDataReducer.actions
 export default ComponentLevelDataReducer.reducer

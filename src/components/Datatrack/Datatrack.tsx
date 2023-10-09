@@ -36,6 +36,7 @@ import {
   cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
+  openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
@@ -104,6 +105,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
         dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.openClosedWhiteBoard
+      ) {
+        dispatch(
+          openClosedMathzoneWhiteBoard(
+            parseMessage.value.isMathZoneWhiteBoard || false
+          )
+        );
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {

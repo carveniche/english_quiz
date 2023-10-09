@@ -12,6 +12,8 @@ import FlagQuestionPagination from "../FlagQuestion/FlagQuestionPagination/FlagQ
 import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import TeacherViewEachResponseEnd from "../Mathzone/Results/Teacher/TeacherViewEachResponseEnd";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
+import MathzoneWhiteBoard from "../Mathzone/MathzoneWhiteBoard";
+import { MISCELLANEOUS } from "../../../constants";
 const StaticQuestionRender = ({ obj }) => {
   const { handleUpdateStudentAnswerResponse, setIsProgressBarVisible } =
     useContext(ValidationContext);
@@ -111,6 +113,8 @@ export default function DisplayHomeWorkQuestion({
   updatestateforchild,
   reference,
   handleFlagQuestionChange,
+  currentSelectedRouter,
+  currentSelectedKey,
 }) {
   const {
     updateTotalQuestionReview,
@@ -209,8 +213,14 @@ export default function DisplayHomeWorkQuestion({
           updatestateforchild={updatestateforchild}
           ref={reference}
           identity={identity}
-          height={50}
+          height={0}
         >
+          <MathzoneWhiteBoard
+            currentSelectedRouter={currentSelectedRouter}
+            currentSelectedKey={currentSelectedKey}
+            dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
+          />
+
           {identity === "tutor" && (
             <Button>
               <button onClick={() => setShowQuestion(false)}>Close</button>

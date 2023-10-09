@@ -10,8 +10,13 @@ import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import { TeacherQuizDisplay } from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
 import handleResizeWidth from "../Mathzone/handleResizeWidth";
+import MathzoneWhiteBoard from "../Mathzone/MathzoneWhiteBoard";
+import { MISCELLANEOUS } from "../../../constants";
+import { useSelector } from "react-redux";
 
 const FlagQuestionViewer = (props) => {
+  const { currentSelectedRouter, currentSelectedKey, activeTabArray } =
+    useSelector((state) => state.activeTabReducer);
   const [data, setData] = useState([]);
   const heightRef = useRef();
   const [currentHeight, setCurrentHeight] = useState(0);
@@ -190,6 +195,11 @@ const FlagQuestionViewer = (props) => {
           )}
         </div>
         <QuizPageLayout height={currentHeight}>
+          <MathzoneWhiteBoard
+            dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
+            currentSelectedKey={currentSelectedKey}
+            currentSelectedRouter={currentSelectedRouter}
+          />
           <div
             style={{
               position: "relative",
