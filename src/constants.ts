@@ -44,6 +44,7 @@ export const ROUTERKEYCONST = {
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
+  mathzoneWhiteBoardData:"mathzoneWhiteBoardData"
 };
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",

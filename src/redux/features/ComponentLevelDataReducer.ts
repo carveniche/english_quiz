@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { SCRATCHLESSON } from "../../constants";
+import { MATHZONEDATAKEY, SCRATCHLESSON } from "../../constants";
 
 
 interface localLessonWhiteboardProps{
@@ -42,6 +42,12 @@ const initialState={
     },
 
     [SCRATCHLESSON.scratchWhiteBoardData]:{
+    currentIndex:0,
+    remoteWhiteBoardData:{},
+    whiteBoardData:[],
+    whiteBoardCounts:0,
+    },
+    [MATHZONEDATAKEY.mathzoneWhiteBoardData]:{
     currentIndex:0,
     remoteWhiteBoardData:{},
     whiteBoardData:[],
