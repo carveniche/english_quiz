@@ -79,6 +79,42 @@ const ComponentLevelDataReducer = createSlice({
     changeMathzoneData: (state: ComponentLevelData, action: any) => {
       state.mathzone = action.payload || {};
     },
+    flagQuestionDetailsStore: (state: ComponentLevelData, action: any) => {
+      const { payload } = action;
+
+      if (payload?.isFetchAgain) {
+        payload.currentFetchTime = Number(
+          !(state?.flaggedQuestion?.currentFetchTime || "")
+        );
+      }
+      state.flaggedQuestion = payload || {};
+    },
+    homeWorkQuestionDataTrack: (state: ComponentLevelData, action: any) => {
+      const { payload } = action;
+      state.otherData = payload || {};
+    },
+    cicoComponentLevelDataTrack: (state: ComponentLevelData, action: any) => {
+      const { payload } = action;
+      console.log(payload);
+      for (let key in payload) {
+        state.otherData[key] = payload[key];
+      }
+    },
+    whiteBoardComponentLevelDataTrack: (state: any, action: any) => {
+      const { payload } = action;
+      state.allWhiteBoardRelatedData[
+        payload.dataTrackKey
+      ].remoteWhiteBoardData = payload.whiteBoardData;
+      state.allWhiteBoardRelatedData[
+        payload.dataTrackKey
+      ].whiteBoardCounts += 1;
+    },
+    changePdfIndex: (state: any, action: any) => {
+      const { payload } = action;
+      state.allWhiteBoardRelatedData[payload.dataTrackKey].currentIndex =
+        Number(payload.index) || 0;
+      state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts = 0;
+    },
     saveAllWhiteBoardData: (state: any, action: any) => {
       const { payload } = action;
       const { dataTrackKey } = payload;
