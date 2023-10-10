@@ -22,6 +22,7 @@ export default function ActivityWhiteBoard({
   currentIncomingLines,
   images,
   whiteBoardRef,
+  isWritingDisabled,
 }: {
   images: [];
   whiteBoardData: object;
@@ -29,6 +30,7 @@ export default function ActivityWhiteBoard({
   count: number | undefined;
   handleUpdateLocalAndRemoteData: Function | undefined;
   currentIncomingLines: object;
+  isWritingDisabled: boolean | undefined | null;
 }) {
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
@@ -183,6 +185,7 @@ export default function ActivityWhiteBoard({
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
+    if (isWritingDisabled) return;
     setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
@@ -208,6 +211,7 @@ export default function ActivityWhiteBoard({
     setLocalState((prev) => !prev);
   };
   const handleMouseMove = (e) => {
+    if (isWritingDisabled) return;
     if (!drawingRef.current) {
       return;
     }
@@ -220,6 +224,7 @@ export default function ActivityWhiteBoard({
   };
 
   const handleMouseUp = (e) => {
+    if (isWritingDisabled) return;
     setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
@@ -230,6 +235,7 @@ export default function ActivityWhiteBoard({
   };
 
   const handleMouseLeave = () => {
+    if (isWritingDisabled) return;
     setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
@@ -331,16 +337,17 @@ export default function ActivityWhiteBoard({
   };
   return (
     <div className="w-full h-full p-1">
-      <WhiteboardToolbar
-        handleClick={handleToolBarSelect}
-        closeToolbarPopup={closeToolbarPopup}
-      />
+      {!isWritingDisabled && (
+        <WhiteboardToolbar
+          handleClick={handleToolBarSelect}
+          closeToolbarPopup={closeToolbarPopup}
+        />
+      )}
       <div
         className="w-full"
         style={{
           height: "calc(100% - 20px)",
           position: "relative",
-          cursor: cursor,
         }}
         ref={whiteBoardContainerRef}
       >
@@ -383,6 +390,7 @@ export default function ActivityWhiteBoard({
             position: "relative",
             //url(/static/cursor.png) 1 16, auto
             cursor: cursor,
+            pointerEvents: isWritingDisabled ? "none" : "initial",
             backgroundColor: "transparent",
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}

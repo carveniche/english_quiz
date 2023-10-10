@@ -14,12 +14,14 @@ export default function HelperWhiteBoard({
   isCico,
   images,
   whiteBoardRef,
+  isWritingDisabled,
 }: {
   dataTrackKey: string;
   pathName: string;
   key: string;
   isCico: boolean | undefined | null;
   images: [];
+  isWritingDisabled: boolean | undefined | null;
 }) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -90,6 +92,7 @@ export default function HelperWhiteBoard({
           count={whiteBoardData.whiteBoardCounts}
           key={whiteBoardData.currentIndex}
           whiteBoardRef={whiteBoardRef}
+          isWritingDisabled={isWritingDisabled}
         />
       ) : (
         <WhiteBoard

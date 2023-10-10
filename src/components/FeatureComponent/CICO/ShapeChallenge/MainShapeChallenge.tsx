@@ -91,7 +91,6 @@ const StudentScreen = ({
   userId,
   liveClassId,
 }) => {
-  const dispatch = useDispatch();
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
@@ -197,6 +196,9 @@ const StudentScreen = ({
                     dataTrackKey={
                       SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard
                     }
+                    isWritingDisabled={
+                      otherData?.endCheckInResponse || savedAnswerRef.current
+                    }
                     isCico={true}
                     images={
                       apiData?.activity_data?.map((item) => item.image) || []
@@ -249,8 +251,9 @@ const StudentScreen = ({
                     <div className="w-full" style={{ height: `calc(100%)` }}>
                       <HelperWhiteBoard
                         dataTrackKey={
-                          SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard
+                          SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard
                         }
+                        isWritingDisabled={true}
                         isCico={true}
                         images={
                           apiData?.activity_data?.map((item) => item.image) ||
@@ -433,6 +436,7 @@ const TeacherScreen = ({
                       dataTrackKey={
                         SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard
                       }
+                      isWritingDisabled={true}
                       isCico={true}
                       images={
                         apiData?.activity_data?.map((item) => item.image) || []
@@ -493,8 +497,9 @@ const TeacherScreen = ({
                           }}
                         >
                           <HelperWhiteBoard
+                            isWritingDisabled={otherData?.endCheckOutResponse}
                             dataTrackKey={
-                              SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard
+                              SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard
                             }
                             isCico={true}
                             images={
@@ -546,20 +551,22 @@ export default function MainShapeChallenge({
 }) {
   const [checkInImg, setCheckInImg] = useState("");
   const [checkOutImg, setCheckOutImg] = useState("");
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { otherData } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
   const fetchResponse = async () => {
-    if (CICO.checkIn && checkInImg) return;
-    else if (CICO.checkOut && checkOutImg) return;
-    let liveClassID = "";
-    let student_id = "";
-    if (identity === "tutor") student_id = "";
+    if (CICO.checkIn === activityType && checkInImg) return;
+    else if (CICO.checkOut === activityType && checkOutImg) return;
+    let liveClassID = liveClassId;
+    let student_id = userId;
+    if (identity === "tutor") student_id = students[0]?.id || "";
     let { data } = await getStudentActivityResponse(student_id, liveClassID);
     if (data.status) {
       let img = data?.checkin_responses?.student[0]?.response || "";
       let img2 = data?.checkout_responses?.teacher[0]?.response || "";
+      console.log({ img2 });
       setCheckInImg(img);
       setCheckOutImg(img2);
       if (img) {
@@ -577,8 +584,10 @@ export default function MainShapeChallenge({
         );
       }
     }
+    setLoading(false);
   };
   useEffect(() => {
+    console.log("working", otherData?.endCheckOutResponse);
     fetchResponse();
   }, [otherData?.endCheckOutResponse]);
   useEffect(() => {
@@ -606,50 +615,66 @@ export default function MainShapeChallenge({
 
   return (
     <>
-      <div className="w-full h-full relative">
-        {otherData?.endCheckOutResponse && otherData?.isHideNextButton && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "-40px",
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
-            }}
-          >
-            <img
-              src="/static/media/GifImages/character.gif"
-              style={{ maxHeight: "100%", width: 400, display: "block" }}
+      {loading ? (
+        <>
+          <h1>Loading....</h1>
+        </>
+      ) : (
+          CICO.checkOut === activityType ? (checkInImg ? true : false) : true
+        ) ? (
+        <div className="w-full h-full relative">
+          {otherData?.endCheckOutResponse && otherData?.isHideNextButton && (
+            <div
+              style={{
+                position: "absolute",
+                bottom: "-40px",
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <img
+                src="/static/media/GifImages/character.gif"
+                style={{ maxHeight: "100%", width: 400, display: "block" }}
+              />
+            </div>
+          )}
+          {otherData?.showAnimation && <BalloonLottie />}
+          {isTutor({ identity: identity }) ? (
+            <TeacherScreen
+              activityType={activityType}
+              apiData={apiData}
+              checkInImg={checkInImg}
+              checkOutImg={checkOutImg}
+              handleDataTrack={handleDataTrack}
+              tutorName={teacher_name}
+              studentName={studentName}
+              liveClassId={liveClassId}
+              userId={userId}
+              students={students}
             />
-          </div>
-        )}
-        {otherData?.showAnimation && <BalloonLottie />}
-        {isTutor({ identity: identity }) ? (
-          <TeacherScreen
-            activityType={activityType}
-            apiData={apiData}
-            checkInImg={checkInImg}
-            checkOutImg={checkOutImg}
-            handleDataTrack={handleDataTrack}
-            tutorName={teacher_name}
-            studentName={studentName}
-            liveClassId={liveClassId}
-            userId={userId}
-            students={students}
-          />
-        ) : (
-          <StudentScreen
-            activityType={activityType}
-            apiData={apiData}
-            checkInImg={checkInImg}
-            checkOutImg={checkOutImg}
-            tutorName={teacher_name}
-            studentName={studentName}
-            liveClassId={liveClassId}
-            userId={userId}
-          />
-        )}
-      </div>
+          ) : (
+            <StudentScreen
+              activityType={activityType}
+              apiData={apiData}
+              checkInImg={checkInImg}
+              checkOutImg={checkOutImg}
+              tutorName={teacher_name}
+              studentName={studentName}
+              liveClassId={liveClassId}
+              userId={userId}
+            />
+          )}
+        </div>
+      ) : (
+        <div style={{ width: "95%", margin: "auto" }}>
+          <h1>
+            Look like you did'nt submit checkin response, without submitting
+            check-in response you cannot go checkout activity so please complete
+            checkin activity first.
+          </h1>
+        </div>
+      )}
     </>
   );
 }

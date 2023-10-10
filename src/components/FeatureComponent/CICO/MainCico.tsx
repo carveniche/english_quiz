@@ -190,6 +190,17 @@ function Cico() {
               >
                 CICO:&nbsp;&nbsp; Feeling-Chart
               </div>
+            ) : apiData?.name === "Shape" ? (
+              <div
+                style={{
+                  marginTop: "0.4rem",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "indigo",
+                }}
+              >
+                CICO:&nbsp;&nbsp; Shape-Challenge
+              </div>
             ) : (
               ""
             )}

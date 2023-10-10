@@ -76,6 +76,13 @@ const initialState = {
       whiteBoardData: [],
       whiteBoardCounts: 0,
     },
+    
+    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: {
+      currentIndex: 0,
+      remoteWhiteBoardData: {},
+      whiteBoardData: [],
+      whiteBoardCounts: 0,
+    },
   },
 };
 
