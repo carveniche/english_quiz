@@ -93,3 +93,10 @@ export const SCRATCHLESSON = {
 export const MISCELLANEOUS = {
   miscellaneousDataWhiteBoard: "miscellaneousDataWhiteBoard",
 };
+
+export const IFRAMENEWCODING = {
+  path: "/iframeCoding",
+  key: "iframeCoding",
+  name: "CodingNew",
+  icon: "/menu-icon/CodingIcon.svg",
+};

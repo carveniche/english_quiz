@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes, useLocation } from "react-router";
 import { getQueryParams } from "../utils/getQueryParams";
 import routerConfig from "./RouterConfig";
-import { CICO, ROUTERKEYCONST } from "../constants";
+import { CICO, IFRAMENEWCODING, ROUTERKEYCONST } from "../constants";
+import CodingNewIframe from "../components/FeatureComponent/Coding/CodingNew/CodingNewIframe";
 export default function AllPageRoutes() {
   const params = getQueryParams();
   const { pathname } = useLocation();
@@ -38,6 +39,11 @@ export default function AllPageRoutes() {
             ></Route>
           )
         )}
+        <Route
+          path={IFRAMENEWCODING.path}
+          Component={CodingNewIframe}
+          key={IFRAMENEWCODING.key}
+        ></Route>
       </Routes>
     </>
   );
