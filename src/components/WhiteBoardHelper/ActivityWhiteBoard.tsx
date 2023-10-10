@@ -397,15 +397,22 @@ export default function ActivityWhiteBoard({
           ref={whiteBoardRef ? whiteBoardRef : null}
         >
           <Layer>
-            {images.map((src, index) => {
+            {images.map((src, i) => {
+              let row = i % 3;
+              let col = Math.floor(i / 3);
+              let width = 150;
+              let height = 150;
+              let xAxis = (WHITEBOARDSTANDARDSCREENSIZE.width - 450 - 120) / 2;
+              let x0 = xAxis + (width + 60) * row;
+              let yAxis = 60 + (height + 60) * col;
               return (
                 <UrlImage
-                  key={index}
+                  key={i}
                   src={src}
                   width={150}
                   height={150}
-                  x={index ? index * 25 + 150 : 0}
-                  y={0}
+                  x={x0}
+                  y={yAxis}
                 />
               );
             })}
@@ -464,6 +471,7 @@ const UrlImage = (props: {
   height: number;
   x: number;
   src: string;
+  y: number;
 }) => {
   const { width, height, x, src, y } = props;
   const [image, setImage] = useState("");
