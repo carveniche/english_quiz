@@ -2,15 +2,32 @@ import ActiveTabMenu from "./ActiveTabMenu";
 import NestedMenu from "../MenuBar/NestedMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { isParent, isTutorTechBoth } from "../../utils/participantIdentity";
+import {
+  isParent,
+  isTutor,
+  isTutorTechBoth,
+} from "../../utils/participantIdentity";
 import MuteAll from "../MuteAll/MuteAll";
 import TechJoinedClass from "../TechJoinedClass/TechJoinedClass";
 import ParentActionNavbar from "../ParentActionNavbar/ParentActionNavbar";
 import ParentJoinedClass from "../ParentJoinedClass/ParentJoinedClass";
 
+import ReplayIcon from "@mui/icons-material/Replay";
+import { useDispatch } from "react-redux";
+import { refreshNewCodingTeacher } from "../../redux/features/liveClassDetails";
+
 export default function Header2() {
+  const dispatch = useDispatch();
   const { role_name, group_class } = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+
+  const { currentSelectedKey } = useSelector(
+    (state: RootState) => state.activeTabReducer
+  );
+
+  const { refreshNewCodingIframe } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
 
   return (
@@ -37,6 +54,23 @@ export default function Header2() {
             <MuteAll />
           </div>
         )}
+
+        {isTutor({ identity: String(role_name) }) &&
+          currentSelectedKey === "iframeCoding" && (
+            <div className=" justify-center content-center items-center p-5 pr-[30px]">
+              <button
+                onClick={() => {
+                  dispatch(refreshNewCodingTeacher(!refreshNewCodingIframe));
+                }}
+              >
+                <ReplayIcon
+                  style={{
+                    color: "white",
+                  }}
+                />
+              </button>
+            </div>
+          )}
       </div>
     </>
   );

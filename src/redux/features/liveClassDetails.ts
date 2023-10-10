@@ -36,6 +36,7 @@ interface liveClassDetailsTypes {
   isRecordingEnabled: boolean;
   isClassHasDisconnected: boolean;
   muteIndividualParticipant: any;
+  refreshNewCodingIframe: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -70,6 +71,7 @@ const initialState: liveClassDetailsTypes = {
   isRecordingEnabled: false,
   isClassHasDisconnected: false,
   muteIndividualParticipant: [],
+  refreshNewCodingIframe: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -195,6 +197,10 @@ export const liveClassDetailsSlice = createSlice({
         }
       }
     },
+
+    refreshNewCodingTeacher: (state, action) => {
+      state.refreshNewCodingIframe = action.payload;
+    },
   },
 });
 
@@ -214,6 +220,7 @@ export const {
   startAndStopRecordingRecording,
   endRoomRequest,
   addMuteIndividualParticipant,
+  refreshNewCodingTeacher,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;
