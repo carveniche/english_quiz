@@ -15,6 +15,7 @@ import { RootState } from "../../../redux/store";
 import { cicoComponentLevelDataTrack } from "../../../redux/features/ComponentLevelDataReducer";
 import { useDispatch } from "react-redux";
 import FeelingChart from "./FeelingChart/FeelingChart";
+import MainShapeChallenge from "./ShapeChallenge/MainShapeChallenge";
 function Cico() {
   const heightRef = useRef(null);
   const [currentHeight, setCurrentHeight] = useState(0);
@@ -89,8 +90,8 @@ function Cico() {
     if (type === CICO.checkIn) {
       try {
         let { data } = await fetchCheckInData(
-          "63438" || students[0]?.id || "",
-          "217360"
+          students[0]?.id || "",
+          liveClassId
         );
         setTimeout(() => {
           handleDataTrack({ key: CICO.checkIn, data: { apiData: data } });
@@ -109,8 +110,8 @@ function Cico() {
       }
     } else {
       let { data } = await fetchCheckOutData(
-        "63438" || students[0]?.id || "",
-        "217360"
+        students[0]?.id || "",
+        `${liveClassId}`
       );
       dispatch(cicoComponentLevelDataTrack(apiData));
       if (data.status) {
@@ -163,9 +164,9 @@ function Cico() {
             style={{
               position: "relative",
               margin: "0 auto",
-              width: "calc(100% - 160px)",
-              maxHeight: `calc(100% - ${false ? 0 : 18}px)`,
-              minHeight: `calc(100% - ${false ? 0 : 18}px)`,
+              width: "calc(100% - 100px)",
+              maxHeight: `calc(100% - ${true ? 0 : 18}px)`,
+              minHeight: `calc(100% - ${true ? 0 : 18}px)`,
             }}
           >
             {apiData?.name === "Affirmation" ? (
@@ -192,7 +193,20 @@ function Cico() {
             ) : (
               ""
             )}
-            <QuizWhitePage key={apiData?.activity_id}>
+            <QuizWhitePage
+              key={apiData?.activity_id}
+              style={
+                apiData?.name === "Shape"
+                  ? {
+                      clear: "both",
+                      width: "100%",
+                      minHeight: "100%",
+                      maxHeight: "100%",
+                      height: "100%",
+                    }
+                  : ""
+              }
+            >
               {apiData?.name === "Affirmation" ? (
                 <Affirmation
                   apiData={apiData}
@@ -205,6 +219,16 @@ function Cico() {
                 />
               ) : apiData?.name === "Feeling" ? (
                 <FeelingChart
+                  identity={identity}
+                  apiData={apiData}
+                  userId={userId}
+                  liveClassId={liveClassId}
+                  students={students}
+                  activityType={cico_type}
+                  handleDataTrack={handleDataTrack}
+                />
+              ) : apiData?.name === "Shape" ? (
+                <MainShapeChallenge
                   identity={identity}
                   apiData={apiData}
                   userId={userId}

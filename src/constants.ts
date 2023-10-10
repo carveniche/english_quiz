@@ -89,3 +89,8 @@ export const SCRATCHLESSON = {
 export const MISCELLANEOUS = {
   miscellaneousDataWhiteBoard: "miscellaneousDataWhiteBoard",
 };
+
+export const SHAPECHALLENGE={
+  shapeChallengeCheckInWhiteBoard:"shapeChallengeCheckInWhiteBoard",
+  shapeChallengeCheckOutWhiteBoard:"shapeChallengeCheckOutWhiteBoard"
+}
