@@ -213,6 +213,17 @@ export default function QuestionComponent({
     }
   };
 
+  const checkRemoteParticipantCompletion = (currentUserScore: number) => {
+    let finalScore = "";
+    if (currentUserScore < 34) {
+      finalScore = Math.floor((currentUserScore / 100) * 100) + "%";
+    } else {
+      finalScore = Math.floor((currentUserScore / 200) * 100) + "%";
+    }
+
+    return finalScore;
+  };
+
   return (
     <div className="flex flex-row w-full h-full justify-between items-center">
       <div className="flex flex-col w-full h-full justify-center items-center p-5 gap-4">
@@ -299,7 +310,9 @@ export default function QuestionComponent({
                     <div
                       className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
                       style={{
-                        width: completionPercentage, // Set the width as a percentage
+                        width: checkRemoteParticipantCompletion(
+                          studentData.currentUserScoreSpeedMath
+                        ),
                       }}
                     ></div>
                   </div>
