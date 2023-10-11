@@ -5,11 +5,15 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { isTutorTechBoth } from "../../../utils/participantIdentity";
+import {
+  isStudentName,
+  isTutorTechBoth,
+} from "../../../utils/participantIdentity";
 import {
   changePdfIndex,
   saveAllWhiteBoardData,
 } from "../../../redux/features/ComponentLevelDataReducer";
+import WhiteBoard from "../../WhiteBoardHelper/WhiteBoard";
 
 export default function Lesson() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
@@ -38,11 +42,16 @@ export default function Lesson() {
   const handleDataTrack = (coordinates) => {
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
+    coordinates.userName = isTutorTechBoth({ identity: `${role_name}` })
+      ? role_name
+      : isStudentName({ identity: `${role_name}` });
+
     let DataTrackObj = {
       pathName: ROUTERKEYCONST.lesson,
       key: ROUTERKEYCONST.lesson,
       value: {
         identity: userId,
+        name: role_name,
         datatrackName: WHITEBOARD.whiteBoardData,
         whiteBoardData: coordinates,
         dataTrackKey: LESSON.lessonWhiteBoardData,
@@ -114,7 +123,7 @@ export default function Lesson() {
           </button>
         </div>
       )}
-      <WhiteboardImageRender
+      <WhiteBoard
         images={imageUrl[whiteBoardData.currentIndex]}
         whiteBoardData={
           whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []

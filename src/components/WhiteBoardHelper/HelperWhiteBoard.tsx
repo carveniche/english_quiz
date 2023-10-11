@@ -6,6 +6,10 @@ import { WHITEBOARD } from "../../constants";
 import { saveAllWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 import WhiteBoard from "./WhiteBoard";
 import ActivityWhiteBoard from "./ActivityWhiteBoard";
+import {
+  isStudentName,
+  isTutorTechBoth,
+} from "../../utils/participantIdentity";
 
 export default function HelperWhiteBoard({
   dataTrackKey,
@@ -42,14 +46,18 @@ export default function HelperWhiteBoard({
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+
   const handleDataTrack = (coordinates) => {
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
+    coordinates.userName = isTutorTechBoth({ identity: `${role_name}` })
+      ? role_name
+      : isStudentName({ identity: `${role_name}` });
     let DataTrackObj = {
       pathName: pathName,
       key: key,
       value: {
+        userName: role_name,
         identity: userId,
         datatrackName: WHITEBOARD.whiteBoardData,
         whiteBoardData: coordinates,

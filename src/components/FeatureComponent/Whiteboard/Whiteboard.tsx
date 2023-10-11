@@ -13,6 +13,9 @@ export default function Whiteboard() {
         dataTrackKey={MAINWHITEBOARD.mainWhiteBoardData}
         pathName={currentSelectedRouter}
         key={currentSelectedKey}
+        isCico={false}
+        isWritingDisabled={false}
+        images={[]}
       />
     </>
   );

@@ -5,14 +5,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
+import { handleLoadImage } from "./WhiteboardImageRenderer/LoadImage";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
-const eraserCursor =
-  "url('WhiteBoardToolbarAssets/Toolbar/Eraser.svg') 2 30, auto";
-const penCursor = "url(/static/cursor.png) 1 16, auto";
+
+const eraserCursor = "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg";
+const penCursor = "/static/cursor.png";
+const cursorUrl = "url({}) 1 16, auto";
 export default function WhiteBoard({
   whiteBoardData,
   handleDataTrack,
+  images,
   count = 0,
   handleUpdateLocalAndRemoteData,
   currentIncomingLines,
@@ -44,6 +47,7 @@ export default function WhiteBoard({
   const [colorCode, setColorCode] = useState("#000000");
   const [strokeWidth, setStrokeWidth] = useState(1);
   const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
+  const [currentLoadedImage, setCurrentLoadedImage] = useState("");
   const remoteArrayRef = useRef(
     JSON.parse(JSON.stringify(whiteBoardData)) || []
   );
@@ -60,7 +64,6 @@ export default function WhiteBoard({
   const handleScale = () => {
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
     let containerHeight = whiteBoardContainerRef.current.clientHeight;
-    let actualWidth = containerWidth;
     // calculating ratio width by height
     let actualHeight =
       (containerWidth * WHITEBOARDSTANDARDSCREENSIZE.height) /
@@ -97,6 +100,7 @@ export default function WhiteBoard({
     );
     findParticipant = findParticipant[0] || {};
     findParticipant.identity = lastLines.identity;
+    findParticipant.userName = lastLines.userName;
     findParticipant.cursorPoints = lastLines?.cursorPoints || [];
     findParticipant.isDrawing = lastLines.isDrawing;
     let coordinates = findParticipant?.coordinates || [];
@@ -110,10 +114,9 @@ export default function WhiteBoard({
     );
 
     restParticipant.push(findParticipant);
+
     remoteArrayRef.current = restParticipant;
     if (true) setRemoteState((prev) => !prev);
-    lastLines.identity = userId;
-    lastLines.isDrawing = true;
   };
 
   const drawStraightLine = (e) => {
@@ -228,25 +231,6 @@ export default function WhiteBoard({
         isDrawing: false,
       });
   };
-  useEffect(() => {
-    if (count) {
-      if (currentIncomingLines) {
-        let temp = JSON.stringify(currentIncomingLines);
-        remoteDrawLine(JSON.parse(temp) || {});
-      }
-    }
-    return () => {
-      typeof handleUpdateLocalAndRemoteData === "function" &&
-        handleUpdateLocalAndRemoteData(
-          JSON.parse(JSON.stringify(coordinatesRef.current)),
-          JSON.parse(JSON.stringify(remoteArrayRef.current))
-        );
-    };
-  }, [count]);
-  useEffect(() => {
-    handleScale();
-  }, []);
-
   const handleToolBarSelect = (json: {
     id: number;
     value: any;
@@ -319,7 +303,53 @@ export default function WhiteBoard({
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
+  const handleAfterImageLoaded = (image) => {
+    let containerWidth = whiteBoardContainerRef.current.clientWidth;
+    let containerHeight = whiteBoardContainerRef.current.clientHeight;
+    let width = containerWidth;
+    let height = containerHeight;
+    if (image) {
+      let widthHeightProportion = image.width / image.height; //width/
+      let calculatedHeight = containerWidth / widthHeightProportion;
+      if (calculatedHeight > containerHeight) {
+        width = height * widthHeightProportion;
+      } else {
+        height = calculatedHeight;
+      }
 
+      image.width = width;
+      image.height = height;
+      setCurrentLoadedImage(image);
+    }
+    scaleRef.current = {
+      scaleX: width,
+      scaleY: height,
+    };
+  };
+  useEffect(() => {
+    if (count) {
+      if (currentIncomingLines) {
+        let temp = JSON.stringify(currentIncomingLines);
+        remoteDrawLine(JSON.parse(temp) || {});
+      }
+    }
+    return () => {
+      typeof handleUpdateLocalAndRemoteData === "function" &&
+        handleUpdateLocalAndRemoteData(
+          JSON.parse(JSON.stringify(coordinatesRef.current)),
+          JSON.parse(JSON.stringify(remoteArrayRef.current))
+        );
+    };
+  }, [count]);
+  useEffect(() => {
+    if (images) {
+      return;
+    }
+    handleScale();
+  }, []);
+  useEffect(() => {
+    if (images) handleLoadImage(images, handleAfterImageLoaded);
+  }, [images]);
   return (
     <div className="w-full h-full p-1">
       <WhiteboardToolbar
@@ -327,11 +357,13 @@ export default function WhiteBoard({
         closeToolbarPopup={closeToolbarPopup}
       />
       <div
-        className="w-full overflow-hidden"
+        className="overflow-hidden"
         style={{
-          height: "calc(100% - 20px)",
           position: "relative",
-          cursor: cursor,
+          height: currentLoadedImage ? "fit-content" : "calc(100% - 60px)",
+          width: currentLoadedImage ? "fit-content" : "100%",
+          margin: "auto",
+          cursor: cursorUrl.replace("{}", cursor),
         }}
         ref={whiteBoardContainerRef}
       >
@@ -357,65 +389,127 @@ export default function WhiteBoard({
           scaleRef={scaleRef}
           cursor={cursor}
         />
-        <Stage
-          onMouseDown={handleMouseDown}
-          onMousemove={handleMouseMove}
-          onMouseup={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleMouseDown}
-          onTouchMove={handleMouseMove}
-          onTouchEnd={handleMouseUp}
-          className="border-black border"
-          height={canvasCalculatedDimension.current.height}
-          width={canvasCalculatedDimension.current.width}
-          style={{
-            width: "fit-content",
-            height: "fit-content",
-            maxWidth: "fit-content",
-            maxHeight: "fit-content",
-            overflow: "hidden",
-            position: "relative",
-            //url(/static/cursor.png) 1 16, auto
-            cursor: cursor,
-            backgroundColor: "transparent",
-          }}
-          scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
-        >
-          {isScaled && false && (
-            <Layer>
-              <UrlImage
-                x={0}
-                width={canvasCalculatedDimension.current.width}
-                height={canvasCalculatedDimension.current.height}
-                src={"/static/whiteboard/GRAPH_PAPER.png"}
-                scaleRef={scaleRef}
-              />
-            </Layer>
-          )}
-
-          <Layer>
-            {coordinatesRef.current?.map((line, i) =>
-              line?.type === "text" ? (
-                <Text
-                  text={line?.value}
-                  x={line?.points[0]}
-                  y={line?.points[1]}
-                  fontSize={30}
-                />
-              ) : (
-                <Line
-                  key={i}
-                  points={line?.points}
-                  stroke={line?.color}
-                  strokeWidth={line?.stroke}
-                  globalCompositeOperation={
-                    line.eraser ? "destination-out" : "source-over"
-                  }
-                />
-              )
+        {images ? (
+          <>
+            {currentLoadedImage && (
+              <Stage
+                onMouseDown={handleMouseDown}
+                onMousemove={handleMouseMove}
+                onMouseup={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onTouchStart={handleMouseDown}
+                onTouchMove={handleMouseMove}
+                onTouchEnd={handleMouseUp}
+                className="border-black border"
+                height={currentLoadedImage.height}
+                width={currentLoadedImage.width}
+                style={{
+                  width: `${currentLoadedImage.width}px`,
+                  height: `${currentLoadedImage.height}px`,
+                  maxWidth: "fit-content",
+                  maxHeight: "fit-content",
+                  overflow: "hidden",
+                  margin: "auto",
+                  position: "relative",
+                }}
+              >
+                {currentLoadedImage && (
+                  <Layer>
+                    <Image
+                      x={0}
+                      y={0}
+                      image={currentLoadedImage}
+                      width={currentLoadedImage.width}
+                      height={currentLoadedImage.height}
+                    />
+                  </Layer>
+                )}
+                <Layer>
+                  {coordinatesRef.current.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line?.points.map((item, i) =>
+                        i % 2
+                          ? item * currentLoadedImage.height
+                          : item * currentLoadedImage.width
+                      )}
+                      stroke={line?.color}
+                      strokeWidth={line?.stroke}
+                      globalCompositeOperation={
+                        line.eraser ? "destination-out" : "source-over"
+                      }
+                    />
+                  ))}
+                  {remoteArrayRef.current?.map(({ coordinates }, key) =>
+                    coordinates?.map((line, index) =>
+                      line?.type === "text" ? (
+                        <Text
+                          text={line?.value}
+                          x={line?.points[0]}
+                          y={line?.points[1]}
+                          fontSize={30}
+                          key={`key${key}-cell${index}`}
+                        />
+                      ) : (
+                        <Line
+                          key={`key${key}-cell${index}`}
+                          points={line?.points.map((item, i) =>
+                            i % 2
+                              ? item * currentLoadedImage.height
+                              : item * currentLoadedImage.width
+                          )}
+                          globalCompositeOperation={
+                            line.eraser ? "destination-out" : "source-over"
+                          }
+                          stroke={line.color}
+                          strokeWidth={line?.stroke}
+                        ></Line>
+                      )
+                    )
+                  )}
+                </Layer>
+              </Stage>
             )}
-            {remoteArrayRef.current?.map(({ coordinates }, key) =>
-              coordinates?.map((line) =>
+          </>
+        ) : (
+          <Stage
+            onMouseDown={handleMouseDown}
+            onMousemove={handleMouseMove}
+            onMouseup={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={handleMouseDown}
+            onTouchMove={handleMouseMove}
+            onTouchEnd={handleMouseUp}
+            className="border-black border"
+            height={canvasCalculatedDimension.current.height}
+            width={canvasCalculatedDimension.current.width}
+            style={{
+              width: "fit-content",
+              height: "fit-content",
+              maxWidth: "fit-content",
+              maxHeight: "fit-content",
+              overflow: "hidden",
+              position: "relative",
+              //url(/static/cursor.png) 1 16, auto
+              cursor: cursorUrl.replace("{}", cursor),
+              backgroundColor: "transparent",
+            }}
+            scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
+          >
+            {isScaled && false && (
+              <Layer>
+                <UrlImage
+                  x={0}
+                  width={canvasCalculatedDimension.current.width}
+                  height={canvasCalculatedDimension.current.height}
+                  src={"/static/whiteboard/GRAPH_PAPER.png"}
+                  scaleRef={scaleRef}
+                />
+              </Layer>
+            )}
+
+            <Layer>
+              {coordinatesRef.current?.map((line, i) =>
                 line?.type === "text" ? (
                   <Text
                     text={line?.value}
@@ -425,18 +519,40 @@ export default function WhiteBoard({
                   />
                 ) : (
                   <Line
-                    points={line?.points || []}
-                    stroke={line.color}
+                    key={i}
+                    points={line?.points}
+                    stroke={line?.color}
                     strokeWidth={line?.stroke}
                     globalCompositeOperation={
                       line.eraser ? "destination-out" : "source-over"
                     }
-                  ></Line>
+                  />
                 )
-              )
-            )}
-          </Layer>
-        </Stage>
+              )}
+              {remoteArrayRef.current?.map(({ coordinates }, key) =>
+                coordinates?.map((line) =>
+                  line?.type === "text" ? (
+                    <Text
+                      text={line?.value}
+                      x={line?.points[0]}
+                      y={line?.points[1]}
+                      fontSize={30}
+                    />
+                  ) : (
+                    <Line
+                      points={line?.points || []}
+                      stroke={line.color}
+                      strokeWidth={line?.stroke}
+                      globalCompositeOperation={
+                        line.eraser ? "destination-out" : "source-over"
+                      }
+                    ></Line>
+                  )
+                )
+              )}
+            </Layer>
+          </Stage>
+        )}
       </div>
     </div>
   );
@@ -448,6 +564,7 @@ const UrlImage = (props: {
   x: number;
   src: string;
 }) => {
+  console.log();
   const { width, height, x, src, scaleRef } = props;
   const [image, setImage] = useState("");
   const handleLoad = () => {

@@ -12,7 +12,6 @@ import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
 
 import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
-import UploadResources from "../components/UploadResources/UploadResources";
 interface routerConfig {
   path: string;
   key: string;
