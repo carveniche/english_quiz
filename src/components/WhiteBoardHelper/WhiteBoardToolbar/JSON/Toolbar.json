@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "Color Palette",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Colour-palette.svg",
+    "key": "Color"
+  },
+  {
+    "id": 2,
+    "name": "Pencil",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Pencil.svg",
+    "key": "FreeDrawing"
+  },
+  {
+    "id": 3,
+    "name": "Clear",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Clear-board.svg",
+    "key": "Clear"
+  },
+
+  {
+    "id": 4,
+    "name": "Text",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Text.svg",
+    "key": "Text"
+  },
+  {
+    "id": 5,
+    "name": "Line",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Line.svg",
+    "key": "Line"
+  },
+  {
+    "id": 6,
+    "name": "Eraser",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg",
+    "key": "Eraser"
+  }
+]

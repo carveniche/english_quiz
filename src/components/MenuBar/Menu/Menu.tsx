@@ -1,10 +1,8 @@
 import { useRef, useState } from "react";
 import AboutDialog from "../../AboutDialog/AboutDialog";
 import BackgroundIcon from "../../../icons/BackgroundIcon";
-import CollaborationViewIcon from "@material-ui/icons/AccountBox";
 import DeviceSelectionDialog from "../../DeviceSelectionDialog/DeviceSelectionDialog";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import GridViewIcon from "@material-ui/icons/Apps";
 import InfoIconOutlined from "../../../icons/InfoIconOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
@@ -44,7 +42,6 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   //   const { setIsGalleryViewActive, isGalleryViewActive } = useAppState();
-  const isGalleryViewActive = true;
 
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
@@ -132,26 +129,6 @@ export default function Menu(props: { buttonClassName?: string }) {
             <Typography variant="body1">Room Monitor</Typography>
           </MenuItem>
         )}
-
-        {/* <MenuItem
-          onClick={() => {
-            setIsGalleryViewActive((isGallery) => !isGallery);
-            setMenuOpen(false);
-          }}
-        >
-          <IconContainer>
-            {isGalleryViewActive ? (
-              <CollaborationViewIcon
-                style={{ fill: "#707578", width: "0.9em" }}
-              />
-            ) : (
-              <GridViewIcon style={{ fill: "#707578", width: "0.9em" }} />
-            )}
-          </IconContainer>
-          <Typography variant="body1">
-            {isGalleryViewActive ? "Speaker View" : "Gallery View"}
-          </Typography>
-        </MenuItem> */}
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>

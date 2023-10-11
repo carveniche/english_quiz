@@ -27,6 +27,7 @@ import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import QuizCompleted from "./QuizCompleted";
 import TeachersTitle from "./Teacher/TeachersTitle";
 import SkippedQuestionModal from "./Modal/SkippedQuestionModal";
+import MathzoneWhiteBoard from "../Mathzone/MathzoneWhiteBoard";
 export default function PrePostTestInner() {
   const [showSkippedQuestionReviewModal, setShowSkippedQuestionReviewModal] =
     useState(false);
@@ -277,7 +278,14 @@ export default function PrePostTestInner() {
               />
             )}
           </div>
+
           <QuizPageLayout key={key} height={currentHeight}>
+            {!obj?.quiz_completed && (
+              <MathzoneWhiteBoard
+                currentSelectedRouter={currentSelectedRouter}
+                currentSelectedKey={currentSelectedKey}
+              />
+            )}
             <div
               style={{
                 position: "relative",

@@ -8,15 +8,32 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
-import WhiteboardToolbar from "./WhiteboardToolbar";
+import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
-export default function WhiteBoard() {
+const eraserCursor =
+  "url('WhiteBoardToolbarAssets/Toolbar/Eraser.svg') 2 30, auto";
+const penCursor = "url(/static/cursor.png) 1 16, auto";
+export default function ActivityWhiteBoard({
+  whiteBoardData,
+  handleDataTrack,
+  count = 0,
+  handleUpdateLocalAndRemoteData,
+  currentIncomingLines,
+  images,
+  whiteBoardRef,
+  isWritingDisabled,
+}: {
+  images: [];
+  whiteBoardData: object;
+  handleDataTrack: Function | undefined;
+  count: number | undefined;
+  handleUpdateLocalAndRemoteData: Function | undefined;
+  currentIncomingLines: object;
+  isWritingDisabled: boolean | undefined | null;
+}) {
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
-  const { whiteBoardData } = useSelector(
-    (state: RootState) => state.ComponentLevelDataReducer
-  );
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -26,14 +43,21 @@ export default function WhiteBoard() {
   });
   const [isScaled, setScaled] = useState(false);
   const [selectedPen, setSelectedPen] = useState("FreeDrawing");
+  const [eraserSelect, setEraserSelect] = useState(false);
+  const [cursor, setCursor] = useState(penCursor);
   const [textInput, setTextInput] = useState({
     showInputBox: false,
     x: 0,
     y: 0,
     value: "",
   });
-  const remoteArrayRef = useRef([]);
-  const [remoteState, setRemoteState] = useState(false);
+  const [colorCode, setColorCode] = useState("#000000");
+  const [strokeWidth, setStrokeWidth] = useState(1);
+  const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
+  const remoteArrayRef = useRef(
+    JSON.parse(JSON.stringify(whiteBoardData)) || []
+  );
+  const [_remoteState, setRemoteState] = useState(false);
   const canvasCalculatedDimension = useRef({
     height: WHITEBOARDSTANDARDSCREENSIZE.height,
     width: WHITEBOARDSTANDARDSCREENSIZE.width,
@@ -42,25 +66,7 @@ export default function WhiteBoard() {
   const currentIdRef = useRef(0);
   const constantDelay = 10;
   const timerRef = useRef(0);
-  const handleDataTrack = (points) => {
-    if (Date.now() - timerRef.current <= constantDelay) return;
-    timerRef.current = Date.now();
-
-    const [localDataTrackPublication] = [
-      ...room!.localParticipant.dataTracks.values(),
-    ];
-    let DataTrackObj = {
-      pathName: ROUTERKEYCONST.whiteboard.path,
-      key: ROUTERKEYCONST.whiteboard.key,
-      value: {
-        datatrackName: ROUTERKEYCONST.whiteboard.key,
-        whiteBoardPoints: points,
-      },
-    };
-
-    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
-  };
-  const [localState, setLocalState] = useState(false);
+  const [_localState, setLocalState] = useState(false);
   let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
   const handleScale = () => {
@@ -77,14 +83,13 @@ export default function WhiteBoard() {
         WHITEBOARDSTANDARDSCREENSIZE.height;
       actualHeight = containerHeight;
     }
-    actualHeight = containerHeight;
     scaleRef.current = {
-      scaleX: containerWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
-      scaleY: containerHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
+      scaleX: actualWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
+      scaleY: actualHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
     };
     canvasCalculatedDimension.current = {
-      height: containerHeight,
-      width: containerWidth,
+      height: actualHeight,
+      width: actualWidth,
     };
 
     setScaled(true);
@@ -137,9 +142,8 @@ export default function WhiteBoard() {
       coordinates: lastLines,
     };
     coordinates2.cursorPoints = [...temp];
-    coordinates2.identity = userId;
     coordinates2.isDrawing = true;
-    handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
   };
   const freeDrawing = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
@@ -155,9 +159,8 @@ export default function WhiteBoard() {
       coordinates: lastLines,
     };
     coordinates2.cursorPoints = [...temp];
-    coordinates2.identity = userId;
     coordinates2.isDrawing = true;
-    handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
@@ -182,6 +185,8 @@ export default function WhiteBoard() {
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
+    if (isWritingDisabled) return;
+    setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
       return;
@@ -192,8 +197,9 @@ export default function WhiteBoard() {
     const position = e.target.getStage().getPointerPosition();
     const penStructure = {
       id: `${userId}_${currentIdRef.current}`,
-      stroke: 5,
-      color: "black",
+      stroke: strokeWidth,
+      color: colorCode,
+      eraser: eraserSelect,
       points: [
         position.x / scaleRef.current.scaleX,
         position.y / scaleRef.current.scaleY,
@@ -205,9 +211,11 @@ export default function WhiteBoard() {
     setLocalState((prev) => !prev);
   };
   const handleMouseMove = (e) => {
+    if (isWritingDisabled) return;
     if (!drawingRef.current) {
       return;
     }
+
     if (selectedPen === "FreeDrawing") {
       freeDrawing(e);
     } else if (selectedPen === "Line") {
@@ -216,49 +224,84 @@ export default function WhiteBoard() {
   };
 
   const handleMouseUp = (e) => {
+    if (isWritingDisabled) return;
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
-    handleDataTrack({
-      identity: userId,
-      isDrawing: false,
-    });
+    typeof handleDataTrack === "function" &&
+      handleDataTrack({
+        identity: userId,
+        isDrawing: false,
+      });
   };
 
   const handleMouseLeave = () => {
+    if (isWritingDisabled) return;
+    setCloseToolbarPopup(false);
     drawingRef.current = false;
-    handleDataTrack({
-      identity: userId,
-      isDrawing: false,
-    });
+    typeof handleDataTrack === "function" &&
+      handleDataTrack({
+        identity: userId,
+        isDrawing: false,
+      });
   };
-
   useEffect(() => {
-    if (whiteBoardData?.count) {
-      if (whiteBoardData?.whiteBoardsPoints) {
+    if (count) {
+      if (currentIncomingLines) {
         //1 // 2
-        let temp = JSON.stringify(whiteBoardData?.whiteBoardsPoints);
+        let temp = JSON.stringify(currentIncomingLines);
         remoteDrawLine(JSON.parse(temp) || {});
       }
     }
-  }, [whiteBoardData?.count]);
+    return () => {
+      typeof handleUpdateLocalAndRemoteData === "function" &&
+        handleUpdateLocalAndRemoteData(
+          JSON.parse(JSON.stringify(coordinatesRef.current)),
+          JSON.parse(JSON.stringify(remoteArrayRef.current))
+        );
+    };
+  }, [count]);
   useEffect(() => {
     handleScale();
   }, []);
 
-  const handleToolBarSelect = (id: number) => {
-    switch (id) {
+  const handleToolBarSelect = (json: {
+    id: number;
+    value: any;
+    key: string;
+  }) => {
+    switch (json.id) {
       case 1:
-        setSelectedPen("Line");
+        setColorCode(json.value);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 2:
-        setSelectedPen("FreeDrawing");
+        setStrokeWidth(json.value);
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 3:
         coordinatesRef.current = [];
         remoteArrayRef.current = [];
         setLocalState((prev) => !prev);
+        setCursor(penCursor);
+        setEraserSelect(false);
         break;
       case 4:
-        setSelectedPen("Text");
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
+        break;
+      case 5:
+        setSelectedPen(json.key);
+        setCursor(penCursor);
+        setEraserSelect(false);
+        break;
+      case 6:
+        setEraserSelect(true);
+        setCursor(eraserCursor);
+        break;
     }
   };
   const handleTextArea = (e) => {
@@ -288,16 +331,24 @@ export default function WhiteBoard() {
       coordinates2.cursorPoints = [];
       coordinates2.identity = userId;
       coordinates2.isDrawing = false;
-      handleDataTrack(coordinates2);
+      typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
   return (
     <div className="w-full h-full p-1">
-      <WhiteboardToolbar handleClick={handleToolBarSelect} />
+      {!isWritingDisabled && (
+        <WhiteboardToolbar
+          handleClick={handleToolBarSelect}
+          closeToolbarPopup={closeToolbarPopup}
+        />
+      )}
       <div
-        className="w-full  border-red-500 border overflow-hidden"
-        style={{ height: "calc(100% - 20px)", position: "relative" }}
+        className="w-full"
+        style={{
+          height: "calc(100% - 20px)",
+          position: "relative",
+        }}
         ref={whiteBoardContainerRef}
       >
         <>
@@ -317,8 +368,13 @@ export default function WhiteBoard() {
             />
           )}
         </>
-        <UserCursor remtoeArray={remoteArrayRef.current} scaleRef={scaleRef} />
+        <UserCursor
+          remtoeArray={remoteArrayRef.current}
+          scaleRef={scaleRef}
+          cursor={cursor}
+        />
         <Stage
+          key={scaleRef.current.scaleX}
           onMouseDown={handleMouseDown}
           onMousemove={handleMouseMove}
           onMouseup={handleMouseUp}
@@ -331,26 +387,36 @@ export default function WhiteBoard() {
           width={canvasCalculatedDimension.current.width}
           style={{
             width: "fit-content",
-            height: "fit-content",
-            maxWidth: "fit-content",
-            maxHeight: "fit-content",
-            overflow: "hidden",
             position: "relative",
-            cursor: "url(/static/cursor.png) 1 16, auto",
+            //url(/static/cursor.png) 1 16, auto
+            cursor: cursor,
+            pointerEvents: isWritingDisabled ? "none" : "initial",
+            backgroundColor: "transparent",
           }}
           scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
+          ref={whiteBoardRef ? whiteBoardRef : null}
         >
-          {isScaled && false && (
-            <Layer>
-              <UrlImage
-                x={0}
-                width={canvasCalculatedDimension.current.width}
-                height={canvasCalculatedDimension.current.height}
-                src={"/static/whiteboard/GRAPH_PAPER.png"}
-                scaleRef={scaleRef}
-              />
-            </Layer>
-          )}
+          <Layer>
+            {images.map((src, i) => {
+              let row = i % 3;
+              let col = Math.floor(i / 3);
+              let width = 150;
+              let height = 150;
+              let xAxis = (WHITEBOARDSTANDARDSCREENSIZE.width - 450 - 120) / 2;
+              let x0 = xAxis + (width + 60) * row;
+              let yAxis = 60 + (height + 60) * col;
+              return (
+                <UrlImage
+                  key={i}
+                  src={src}
+                  width={150}
+                  height={150}
+                  x={x0}
+                  y={yAxis}
+                />
+              );
+            })}
+          </Layer>
           <Layer>
             {coordinatesRef.current?.map((line, i) =>
               line?.type === "text" ? (
@@ -366,6 +432,9 @@ export default function WhiteBoard() {
                   points={line?.points}
                   stroke={line?.color}
                   strokeWidth={line?.stroke}
+                  globalCompositeOperation={
+                    line.eraser ? "destination-out" : "source-over"
+                  }
                 />
               )
             )}
@@ -383,6 +452,9 @@ export default function WhiteBoard() {
                     points={line?.points || []}
                     stroke={line.color}
                     strokeWidth={line?.stroke}
+                    globalCompositeOperation={
+                      line.eraser ? "destination-out" : "source-over"
+                    }
                   ></Line>
                 )
               )
@@ -399,12 +471,14 @@ const UrlImage = (props: {
   height: number;
   x: number;
   src: string;
+  y: number;
 }) => {
-  const { width, height, x, src, scaleRef } = props;
+  const { width, height, x, src, y } = props;
   const [image, setImage] = useState("");
   const handleLoad = () => {
     let image = new window.Image();
     image.src = src;
+    image.crossOrigin = "annonyms";
     image.onload = function () {
       setImage(image);
     };
@@ -412,12 +486,5 @@ const UrlImage = (props: {
   useEffect(() => {
     handleLoad();
   }, [width, height]);
-  return (
-    <Image
-      x={x}
-      width={width / scaleRef.current.scaleX}
-      height={height / scaleRef.current.scaleY}
-      image={image}
-    />
-  );
+  return <Image x={x} y={y} width={width} height={height} image={image} />;
 };

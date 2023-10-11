@@ -11,4 +11,5 @@ export const allExcludedParticipants = [
   "sm",
   "smmanger",
   "parent",
+  "audit",
 ];

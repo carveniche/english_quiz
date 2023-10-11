@@ -25,14 +25,19 @@ import {
   CICO,
   FLAGGEDQUESTIONKEY,
   HOMEWORKQUESTIONKEY,
+  LESSON,
   MATHZONEDATAKEY,
   ROUTERKEYCONST,
+  WHITEBOARD,
 } from "../../constants";
 import {
   changeMathzoneData,
+  changePdfIndex,
   cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
   homeWorkQuestionDataTrack,
+  openClosedMathzoneWhiteBoard,
+  openClosedScratchWhiteBoard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -46,8 +51,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
 
-      console.log("Datatrack message received", parseMessage);
-
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
@@ -59,7 +62,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         if (parseMessage.value.type === "deleteFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(deleteFromActiveTab(parseMessage.pathName));
-        } else {
+        } else if (parseMessage.value.type === "addFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(
             addToActiveTab({
@@ -102,6 +105,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
         dispatch(changeMathzoneData(parseMessage.value.mathzoneData));
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.openClosedWhiteBoard
+      ) {
+        dispatch(
+          openClosedMathzoneWhiteBoard(
+            parseMessage.value.isMathZoneWhiteBoard || false
+          )
+        );
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
@@ -187,6 +198,12 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           )
         );
       } else if (
+        parseMessage?.value?.datatrackName === WHITEBOARD.whiteBoardData
+      ) {
+        dispatch(whiteBoardComponentLevelDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === WHITEBOARD.pdfIndex) {
+        dispatch(changePdfIndex(parseMessage?.value || {}));
+      } else if (
         parseMessage?.value?.type ===
         HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack
       ) {
@@ -221,6 +238,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(
           cicoComponentLevelDataTrack(parseMessage?.value?.cicoData || {})
         );
+      } else if (
+        parseMessage?.value?.datatrackName === "openCloseScratchWhiteBoard"
+      ) {
+        dispatch(openClosedScratchWhiteBoard(parseMessage?.value || {}));
       }
     };
 

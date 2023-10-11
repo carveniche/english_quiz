@@ -2,6 +2,10 @@ import clsx from "clsx";
 import { Link } from "@material-ui/core";
 import linkify from "linkify-it";
 import { makeStyles } from "@material-ui/core/styles";
+import {
+  isStudentName,
+  isTutorTechBoth,
+} from "../../../../utils/participantIdentity";
 
 const useStyles = makeStyles({
   messageContainer: {
@@ -63,7 +67,11 @@ export default function TextMessage({
         })}
       >
         <div>
-          <div>{identity}</div>
+          <div>
+            {isTutorTechBoth({ identity: identity })
+              ? identity.charAt(0).toUpperCase() + identity.slice(1)
+              : isStudentName({ identity: identity })}
+          </div>
           <div>{addLinks(body)}</div>
         </div>
       </div>

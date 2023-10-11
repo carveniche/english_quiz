@@ -16,6 +16,8 @@ import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
 import "../component/mathzone.css";
+import { MATHZONEDATAKEY } from "../../../../constants";
+import { useSelector } from "react-redux";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
@@ -365,7 +367,9 @@ export function RenderingQuizPage({
   if (obj?.question_data && obj?.question_data[0]?.operation) {
     obj = replaceJsonData({ ...obj });
   }
-
+  const { currentSelectedRouter, currentSelectedKey } = useSelector(
+    (state) => state.activeTabReducer
+  );
   return (
     <>
       {identity === "tutor" ? (
