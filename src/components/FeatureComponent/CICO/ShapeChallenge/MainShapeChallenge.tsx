@@ -57,7 +57,7 @@ const ShowScreenShotData = ({ img1, img2, identity1, identity2 }) => {
             }}
           >
             <div>{identity1}</div>
-            <div>
+            <div style={{ border: "2px solid indigo" }}>
               <img src={imageUrl + img1} alt={`${identity1} screenshot`} />
             </div>
           </div>
@@ -72,7 +72,7 @@ const ShowScreenShotData = ({ img1, img2, identity1, identity2 }) => {
             }}
           >
             <div>{identity2}</div>
-            <div>
+            <div style={{ border: "2px solid indigo" }}>
               <img src={imageUrl + img2} alt={`${identity2} screenshot`} />
             </div>
           </div>
@@ -182,6 +182,7 @@ const StudentScreen = ({
                       margin: "auto",
                       maxHeight: "calc(100% - 200px)",
                       height: "calc(100% - 200px)",
+                      border: "2px solid indigo",
                     }}
                   >
                     <img
@@ -528,7 +529,10 @@ const TeacherScreen = ({
                   >
                     <img
                       src={imageUrl + checkInImg}
-                      style={{ objectFit: "contain" }}
+                      style={{
+                        objectFit: "contain",
+                        border: "2px solid indigo",
+                      }}
                     />
                   </div>
                 )}
