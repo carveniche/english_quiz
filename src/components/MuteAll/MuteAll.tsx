@@ -39,7 +39,7 @@ export default function MuteAll() {
 
   return (
     <button onClick={() => muteAllToggle()}>
-      <div className="flex flex-row min-w-[100px] min-h-[35px] items-center rounded-full gap-2 bg-header-black-top px-2 py-1">
+      <div className="flex flex-row min-w-[100px] min-h-[35px] items-center rounded-full gap-2 bg-header-black-top hover:bg-black px-2 py-1">
         {activeMuteLogo ? (
           <>
             <MuteAllIcon />

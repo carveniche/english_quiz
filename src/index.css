@@ -54,3 +54,12 @@ svg {
 #quizWhitePage select {
   border: 1px solid black;
 }
+
+.closebuttonclass {
+  width: 16px;
+  height: 16px;
+  background-image: url("/menu-icon/Close.svg");
+}
+.closebuttonclass:hover {
+  background-image: url("/menu-icon/WhiteCloseIcon.svg");
+}

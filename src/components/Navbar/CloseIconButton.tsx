@@ -1,12 +1,11 @@
-import { MouseEventHandler } from 'react'
-interface CloseIconButton{
-onClick:MouseEventHandler|undefined
+import { MouseEventHandler } from "react";
+interface CloseIconButton {
+  onClick: MouseEventHandler | undefined;
 }
-export default function CloseIconButton({onClick}:CloseIconButton) {
-   
+export default function CloseIconButton({ onClick }: CloseIconButton) {
   return (
-    <div className='cursor-pointer'>
-        <img src="/menu-icon/Close.svg" onClick={onClick}/>
+    <div onClick={onClick} className="cursor-pointer ">
+      <div className="closebuttonclass"></div>
     </div>
-  )
+  );
 }

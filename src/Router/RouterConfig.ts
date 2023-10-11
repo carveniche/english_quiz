@@ -148,27 +148,6 @@ const routerConfig: routerConfig[] = [
         hasChildren: false,
         component: HomeWork,
       },
-      {
-        key: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.keys,
-        name: "Upload Resources",
-        path: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.route,
-        exact: true,
-        icon: "/menu-icon/Whiteboard.svg",
-        hasChildren: true,
-        component: UploadResources,
-
-        subRoute: [
-          {
-            key: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.keys,
-            name: "Upload",
-            path: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.route,
-            exact: true,
-            icon: "/menu-icon/Whiteboard.svg",
-            hasChildren: false,
-            component: () => {},
-          },
-        ],
-      },
     ],
   },
   {
