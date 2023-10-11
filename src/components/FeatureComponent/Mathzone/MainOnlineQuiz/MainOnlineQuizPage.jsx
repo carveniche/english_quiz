@@ -16,7 +16,6 @@ import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import TimerClock from "./TimerClock";
 import SolutionComponent from "../SolutionExplanation/SolutionComponent";
 import "../component/mathzone.css";
-import HelperWhiteBoard from "../../../WhiteBoardHelper/HelperWhiteBoard";
 import { MATHZONEDATAKEY } from "../../../../constants";
 import { useSelector } from "react-redux";
 export const ValidationContext = React.createContext("Auth Context");

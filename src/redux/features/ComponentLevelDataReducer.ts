@@ -4,6 +4,7 @@ import {
   MATHZONEDATAKEY,
   MISCELLANEOUS,
   SCRATCHLESSON,
+  SHAPECHALLENGE,
 } from "../../constants";
 
 interface localLessonWhiteboardProps {
@@ -64,6 +65,19 @@ const initialState = {
       whiteBoardCounts: 0,
     },
     [MAINWHITEBOARD.mainWhiteBoardData]: {
+      currentIndex: 0,
+      remoteWhiteBoardData: {},
+      whiteBoardData: [],
+      whiteBoardCounts: 0,
+    },
+    [SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard]: {
+      currentIndex: 0,
+      remoteWhiteBoardData: {},
+      whiteBoardData: [],
+      whiteBoardCounts: 0,
+    },
+    
+    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: {
       currentIndex: 0,
       remoteWhiteBoardData: {},
       whiteBoardData: [],

@@ -5,15 +5,23 @@ import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { WHITEBOARD } from "../../constants";
 import { saveAllWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 import WhiteBoard from "./WhiteBoard";
+import ActivityWhiteBoard from "./ActivityWhiteBoard";
 
 export default function HelperWhiteBoard({
   dataTrackKey,
   pathName,
   key,
+  isCico,
+  images,
+  whiteBoardRef,
+  isWritingDisabled,
 }: {
   dataTrackKey: string;
   pathName: string;
   key: string;
+  isCico: boolean | undefined | null;
+  images: [];
+  isWritingDisabled: boolean | undefined | null;
 }) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -72,17 +80,33 @@ export default function HelperWhiteBoard({
   };
   return (
     <>
-      <WhiteBoard
-        images={""}
-        whiteBoardData={
-          whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
-        }
-        currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
-        handleDataTrack={handleDataTrack}
-        handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
-        count={whiteBoardData.whiteBoardCounts}
-        key={whiteBoardData.currentIndex}
-      />
+      {isCico ? (
+        <ActivityWhiteBoard
+          images={images}
+          whiteBoardData={
+            whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
+          }
+          currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
+          handleDataTrack={handleDataTrack}
+          handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
+          count={whiteBoardData.whiteBoardCounts}
+          key={whiteBoardData.currentIndex}
+          whiteBoardRef={whiteBoardRef}
+          isWritingDisabled={isWritingDisabled}
+        />
+      ) : (
+        <WhiteBoard
+          images=""
+          whiteBoardData={
+            whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
+          }
+          currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
+          handleDataTrack={handleDataTrack}
+          handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
+          count={whiteBoardData.whiteBoardCounts}
+          key={whiteBoardData.currentIndex}
+        />
+      )}
     </>
   );
 }
