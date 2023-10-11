@@ -327,7 +327,7 @@ export default function WhiteBoard({
         closeToolbarPopup={closeToolbarPopup}
       />
       <div
-        className="w-full  border-red-500 border overflow-hidden"
+        className="w-full overflow-hidden"
         style={{
           height: "calc(100% - 20px)",
           position: "relative",
