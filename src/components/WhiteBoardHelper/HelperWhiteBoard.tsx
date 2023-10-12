@@ -104,7 +104,9 @@ export default function HelperWhiteBoard({
         />
       ) : (
         <WhiteBoard
-          images=""
+          images={
+            images?.length ? images[whiteBoardData.currentIndex] || "" : ""
+          }
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
           }

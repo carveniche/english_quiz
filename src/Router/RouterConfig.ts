@@ -10,8 +10,7 @@ import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQu
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
-
-import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
+import MainWhiteboard from "../components/FeatureComponent/Whiteboard/MainWhiteboard";
 interface routerConfig {
   path: string;
   key: string;
@@ -28,7 +27,7 @@ const routerConfig: routerConfig[] = [
     path: ROUTERKEYCONST.whiteboard.path,
     key: ROUTERKEYCONST.whiteboard.key,
     name: "Whiteboard",
-    component: Whiteboard,
+    component: MainWhiteboard,
     exact: true,
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,

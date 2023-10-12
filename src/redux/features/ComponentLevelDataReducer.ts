@@ -5,6 +5,7 @@ import {
   MISCELLANEOUS,
   SCRATCHLESSON,
   SHAPECHALLENGE,
+  UPLOADRESOURCE,
 } from "../../constants";
 
 interface localLessonWhiteboardProps {
@@ -38,6 +39,8 @@ const initialState = {
   whiteBoardData: {},
   isScratchOpenStatus: false,
   scratchPdfsImages: [],
+  uploadResourceImages: [],
+  isUploadResourceOpen: false,
   allWhiteBoardRelatedData: {
     lessonWhiteBoardData: {
       currentIndex: 0,
@@ -76,8 +79,15 @@ const initialState = {
       whiteBoardData: [],
       whiteBoardCounts: 0,
     },
-    
+
     [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: {
+      currentIndex: 0,
+      remoteWhiteBoardData: {},
+      whiteBoardData: [],
+      whiteBoardCounts: 0,
+    },
+
+    [UPLOADRESOURCE.uploadResourceWhiteboardData]: {
       currentIndex: 0,
       remoteWhiteBoardData: {},
       whiteBoardData: [],
@@ -148,6 +158,11 @@ const ComponentLevelDataReducer = createSlice({
       console.log(action.payload);
       state.isMathZoneWhiteBoard = action.payload;
     },
+
+    openClosedUploadResourceWhiteBoard: (state, action) => {
+      state.isUploadResourceOpen = true;
+      state.uploadResourceImages = action.payload || [];
+    },
   },
 });
 export const {
@@ -160,5 +175,6 @@ export const {
   changePdfIndex,
   openClosedScratchWhiteBoard,
   openClosedMathzoneWhiteBoard,
+  openClosedUploadResourceWhiteBoard,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

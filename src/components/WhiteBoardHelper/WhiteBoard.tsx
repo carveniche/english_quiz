@@ -68,6 +68,7 @@ export default function WhiteBoard({
     let actualHeight =
       (containerWidth * WHITEBOARDSTANDARDSCREENSIZE.height) /
       WHITEBOARDSTANDARDSCREENSIZE.width;
+    let actualWidth = containerWidth;
     if (actualHeight > containerHeight) {
       actualWidth =
         (containerHeight * WHITEBOARDSTANDARDSCREENSIZE.width) /

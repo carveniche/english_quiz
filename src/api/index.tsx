@@ -462,3 +462,10 @@ export const createLiveClassTicket = async (formData: object) =>
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const getUploadResourcesList = async (live_class_id: number) =>
+  axios.get(baseURL + "app_teachers/view_resources", {
+    params: {
+      live_class_id,
+    },
+  });

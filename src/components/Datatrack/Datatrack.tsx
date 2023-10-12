@@ -38,6 +38,7 @@ import {
   homeWorkQuestionDataTrack,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
+  openClosedUploadResourceWhiteBoard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -242,6 +243,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage?.value?.datatrackName === "openCloseScratchWhiteBoard"
       ) {
         dispatch(openClosedScratchWhiteBoard(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === "UploadResource") {
+        dispatch(
+          openClosedUploadResourceWhiteBoard(parseMessage?.value.images || [])
+        );
       }
     };
 
