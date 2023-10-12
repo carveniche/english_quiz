@@ -4,8 +4,8 @@ import ChatWindow from "../ChatWindow/ChatWindow";
 import BackgroundSelectionDialog from "../BackgroundSelectionDialog/BackgroundSelectionDialog";
 import FloatingParticipant from "../FloatingParticipant/FloatingParticipant";
 import AllScreen from "../FeatureComponent/AllScreen/AllScreen";
-import RemoteParticipantCountAndLessonDataEffect from "../RemoteCountAndLessonDataEffect/RemoteParticipantCountAndLessonDataEffect";
 import ScreenShareEffect from "../ScreenShareEffect/ScreenShareEffect";
+import VitalDataHandler from "../RemoteCountAndLessonDataEffect/VitalDataHandler";
 
 interface RoomProps {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -37,9 +37,9 @@ export default function Room({ parentRef }: RoomProps) {
       )}
 
       {/* 
-        This RemoteParticipantCountAndLessonDataEffect component will dispatch remoteParticipant count and lessons data in redux store .
+        This VitalDataHandler component will dispatch remoteParticipant count and lessons data in and also call device information api redux store .
       */}
-      <RemoteParticipantCountAndLessonDataEffect />
+      <VitalDataHandler />
       {/* 
         This ChatWindow will handle all chat flow in application .
       */}

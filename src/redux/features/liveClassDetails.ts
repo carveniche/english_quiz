@@ -37,6 +37,7 @@ interface liveClassDetailsTypes {
   isClassHasDisconnected: boolean;
   muteIndividualParticipant: any;
   openUploadResourceModal: boolean;
+  participantDeviceInformation: string[];
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -72,6 +73,7 @@ const initialState: liveClassDetailsTypes = {
   isClassHasDisconnected: false,
   muteIndividualParticipant: [],
   openUploadResourceModal: false,
+  participantDeviceInformation: [],
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -201,6 +203,10 @@ export const liveClassDetailsSlice = createSlice({
     openCloseUploadResourceModalTeacher: (state, action) => {
       state.openUploadResourceModal = action.payload;
     },
+
+    updateParticipantDeviceInformation: (state, action) => {
+      state.participantDeviceInformation = action.payload;
+    },
   },
 });
 
@@ -221,6 +227,7 @@ export const {
   endRoomRequest,
   addMuteIndividualParticipant,
   openCloseUploadResourceModalTeacher,
+  updateParticipantDeviceInformation,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

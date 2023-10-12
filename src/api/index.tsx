@@ -469,3 +469,14 @@ export const getUploadResourcesList = async (live_class_id: number) =>
       live_class_id,
     },
   });
+
+export const getDeviceInfoForTech = async (
+  live_class_id: number,
+  user_id: number
+) =>
+  axios.get(baseURL + "app_students/get_device_details", {
+    params: {
+      live_class_id,
+      user_id,
+    },
+  });

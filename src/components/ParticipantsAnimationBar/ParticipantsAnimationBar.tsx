@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
 import {
+  isStudentId,
   isStudentName,
   isTutorTechBoth,
 } from "../../utils/participantIdentity";
@@ -30,11 +31,6 @@ interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
   screen?: String;
-}
-
-interface MuteParticipantDetailsProps {
-  identity: string;
-  muteStatus: boolean;
 }
 
 export default function ParticipantsAnimationBar({
@@ -68,7 +64,6 @@ export default function ParticipantsAnimationBar({
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
-  const [mutedParticipantsDetails, setMutedParticipantsDetails] = useState([]);
 
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
@@ -81,9 +76,8 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.videoCallTokenData
   );
 
-  const { muteIndividualParticipant } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
+  const { muteIndividualParticipant, participantDeviceInformation } =
+    useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
     if (animationStarted.current) {
@@ -105,7 +99,30 @@ export default function ParticipantsAnimationBar({
     }, 2500);
   };
 
+  const checkStudentUsingIpadOrNot = (identity: string) => {
+    let result = false;
+    let studentIdentity = Number(isStudentId({ identity: identity }));
+
+    for (let i = 2; i < participantDeviceInformation.length; i++) {
+      if (
+        participantDeviceInformation[i].platform === "iPad" &&
+        participantDeviceInformation[i + 1].user_id === studentIdentity
+      ) {
+        result = true;
+      }
+    }
+
+    return result;
+  };
+
   const screenShareButtonClicked = (identity: string, key: string) => {
+    let checkFirstDevice = checkStudentUsingIpadOrNot(identity);
+
+    if (checkFirstDevice) {
+      alert("Student is Using Ipad in Browser so ScreenShare will not work");
+      return;
+    }
+
     if (screenShareRef.current) {
       return;
     }
