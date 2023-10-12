@@ -174,10 +174,11 @@ export default function WhiteboardToolbar({
     <>
       <div className="relative z-[1]">
         <div className="flex w-full h-[40px] items-center gap-2 p-5 bg-white">
-          {Toolbar.map((item, i) => (
+          {Toolbar.map((item, index) => (
             <button
               onClick={() => handleSelectedKey(item.id, item.key)}
               className="cursor-pointer"
+              key={`whiteboardtoolbar-${index}`}
             >
               {item.key === "FileUpload" &&
               isTutor({ identity: String(role_name) }) ? (
@@ -203,11 +204,12 @@ export default function WhiteboardToolbar({
           >
             {id === 1 &&
               openPopup === "ColorPalette" &&
-              Colorbar.map((item) => {
+              Colorbar.map((item, index) => {
                 return (
                   <button
                     style={{ cursor: "pointer" }}
                     onClick={() => handleColorCode(item.code)}
+                    key={`color-${index}`}
                   >
                     <img src={item.image}></img>
                   </button>
@@ -216,12 +218,13 @@ export default function WhiteboardToolbar({
 
             {id === 2 &&
               openPopup === "PencilStroke" &&
-              PenStroke.map((item) => {
+              PenStroke.map((item, index) => {
                 return (
                   <button
                     style={{ cursor: "pointer" }}
                     onClick={() => handlePenStroke(item.strokeValue)}
                     className="flex flex-row items-center w-full p-1 gap-2"
+                    key={`pencil-${index}`}
                   >
                     <div
                       style={{
@@ -263,10 +266,13 @@ export default function WhiteboardToolbar({
             </div>
             <div className="w-full h-[2px] bg-blue-500"></div>
 
-            {uploadResourceData?.map((item, i) => {
+            {uploadResourceData?.map((item, index) => {
               return (
                 <>
-                  <div key={i} className="flex flex-row gap-2">
+                  <div
+                    key={`uploadresource-${index}`}
+                    className="flex flex-row gap-2"
+                  >
                     <p>{item?.name}</p>
                     <Button
                       onClick={() => handleSelectPdf(item.image_data)}

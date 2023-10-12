@@ -196,11 +196,12 @@ export default function ParticipantsAnimationBar({
               <NetworkQualityLevel participant={participant} />
             </div>
             {muteIndividualParticipant.length > 0 ? (
-              muteIndividualParticipant?.map((item) => {
+              muteIndividualParticipant?.map((item, index) => {
                 return (
                   <button
                     disabled={!isTutorTechBoth({ identity: String(role_name) })}
                     onClick={() => muteIconButtonClicked(participant.identity)}
+                    key={`muteState-${index}`}
                   >
                     {item.identity === participant.identity ? (
                       item.muteStatus ? (
@@ -283,20 +284,25 @@ export default function ParticipantsAnimationBar({
           </div>
           <div className="flex gap-2 z-10">
             <Tooltip title="ScreenShare" arrow placement="top">
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  screenShareButtonClicked(participant.identity, "ScreenShare")
-                }
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  {studentShareScreen ? (
-                    <ScreenShareOnIcon />
-                  ) : (
-                    <ScreenShareIcon />
-                  )}
-                </div>
-              </button>
+              <span>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    screenShareButtonClicked(
+                      participant.identity,
+                      "ScreenShare"
+                    )
+                  }
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    {studentShareScreen ? (
+                      <ScreenShareOnIcon />
+                    ) : (
+                      <ScreenShareIcon />
+                    )}
+                  </div>
+                </button>
+              </span>
             </Tooltip>
           </div>
         </div>
@@ -308,7 +314,7 @@ export default function ParticipantsAnimationBar({
                 <NetworkQualityLevel participant={participant} />
               </div>
               {muteIndividualParticipant.length > 0 ? (
-                muteIndividualParticipant?.map((item) => {
+                muteIndividualParticipant?.map((item, index) => {
                   return (
                     <button
                       disabled={
@@ -317,6 +323,7 @@ export default function ParticipantsAnimationBar({
                       onClick={() =>
                         muteIconButtonClicked(participant.identity)
                       }
+                      key={`muteState-${index}`}
                     >
                       {item.identity === participant.identity ? (
                         item.muteStatus ? (
@@ -343,23 +350,25 @@ export default function ParticipantsAnimationBar({
             </div>
             <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
               <Tooltip title="ScreenShare" arrow placement="top">
-                <button
-                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                  onClick={() =>
-                    screenShareButtonClicked(
-                      participant.identity,
-                      "ScreenShare"
-                    )
-                  }
-                >
-                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                    {studentShareScreen ? (
-                      <ScreenShareOnIcon />
-                    ) : (
-                      <ScreenShareIcon />
-                    )}
-                  </div>
-                </button>
+                <span>
+                  <button
+                    disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                    onClick={() =>
+                      screenShareButtonClicked(
+                        participant.identity,
+                        "ScreenShare"
+                      )
+                    }
+                  >
+                    <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                      {studentShareScreen ? (
+                        <ScreenShareOnIcon />
+                      ) : (
+                        <ScreenShareIcon />
+                      )}
+                    </div>
+                  </button>
+                </span>
               </Tooltip>
             </div>
           </div>
