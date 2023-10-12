@@ -39,6 +39,7 @@ import {
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
+  resetWhiteBoardData,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -142,6 +143,13 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
       } else if (parseMessage?.value?.datatrackName === "MathLesson") {
+        if (parseMessage?.value?.isReset) {
+          dispatch(
+            resetWhiteBoardData({
+              dataTrackKey: parseMessage?.value?.dataTrackKey,
+            })
+          );
+        }
         dispatch(
           addToActiveTab({
             path: parseMessage.pathName,

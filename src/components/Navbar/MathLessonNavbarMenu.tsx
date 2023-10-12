@@ -132,6 +132,7 @@ export default function MathLessonNavbarMenu({
                                         icon: item.icon,
                                         extraParams: {
                                           imageUrl: tag.images,
+                                          tagId: tag?.id || 1,
                                         },
                                       })
                                     }

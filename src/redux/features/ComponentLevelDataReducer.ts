@@ -163,6 +163,15 @@ const ComponentLevelDataReducer = createSlice({
       state.isUploadResourceOpen = true;
       state.uploadResourceImages = action.payload || [];
     },
+    resetWhiteBoardData: (state, action) => {
+      const { payload } = action;
+      state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardData = [];
+      state.allWhiteBoardRelatedData[
+        payload.dataTrackKey
+      ].remoteWhiteBoardData = {};
+      state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts = 0;
+      state.allWhiteBoardRelatedData[payload.dataTrackKey].currentIndex = 0;
+    },
   },
 });
 export const {
@@ -176,5 +185,6 @@ export const {
   openClosedScratchWhiteBoard,
   openClosedMathzoneWhiteBoard,
   openClosedUploadResourceWhiteBoard,
+  resetWhiteBoardData,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;
