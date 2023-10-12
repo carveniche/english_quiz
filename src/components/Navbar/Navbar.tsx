@@ -11,7 +11,7 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CICO, ROUTERKEYCONST } from "../../constants";
+import { CICO, LESSON, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
@@ -25,6 +25,7 @@ import {
   coding_ClassType,
   mathCoding_ClassType,
 } from "../../utils/classTypesMenus";
+import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
@@ -136,7 +137,11 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     icon,
     extraParams,
   }: ActiveTabParams) => {
+    dispatch(
+      resetWhiteBoardData({ dataTrackKey: LESSON.lessonWhiteBoardData })
+    );
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
@@ -150,6 +155,8 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       value: {
         datatrackName: "MathLesson",
         identity: null,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
+        isReset: true,
       },
     };
 

@@ -148,6 +148,14 @@ const ComponentLevelDataReducer = createSlice({
       console.log(action.payload);
       state.isMathZoneWhiteBoard = action.payload;
     },
+    resetWhiteBoardData:(state,action)=>{
+      const {payload}=action
+     state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardData=[]
+     state.allWhiteBoardRelatedData[payload.dataTrackKey].remoteWhiteBoardData={}
+     state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts=0
+     state.allWhiteBoardRelatedData[payload.dataTrackKey].currentIndex=0
+
+    }
   },
 });
 export const {
@@ -160,5 +168,6 @@ export const {
   changePdfIndex,
   openClosedScratchWhiteBoard,
   openClosedMathzoneWhiteBoard,
+  resetWhiteBoardData
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

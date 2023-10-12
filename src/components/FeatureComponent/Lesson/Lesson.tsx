@@ -3,7 +3,7 @@ import { RootState } from "../../../redux/store";
 import WhiteboardImageRender from "../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import {
   isStudentName,
@@ -103,8 +103,14 @@ export default function Lesson() {
       })
     );
   };
+  if (!imageUrl?.length)
+    return (
+      <>
+        <h3>Could not find the lesson.</h3>
+      </>
+    );
   return (
-    <>
+    <React.Fragment key={`${extraParams?.tagId || 1}`}>
       {isTutorTechBoth({ identity: String(role_name) }) && (
         <div>
           <button
@@ -134,7 +140,7 @@ export default function Lesson() {
         count={whiteBoardData.whiteBoardCounts}
         key={whiteBoardData.currentIndex}
       />
-    </>
+    </React.Fragment>
   );
 }
 
