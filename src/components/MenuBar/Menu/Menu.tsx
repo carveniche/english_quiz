@@ -24,6 +24,8 @@ import { VideoRoomMonitor } from "@twilio/video-room-monitor";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { isTech } from "../../../utils/participantIdentity";
+import { useDispatch } from "react-redux";
+import { openCloseShowDeviceInfoModalTech } from "../../../redux/features/liveClassDetails";
 
 export const IconContainer = styled("div")({
   display: "flex",
@@ -36,6 +38,8 @@ export default function Menu(props: { buttonClassName?: string }) {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
   );
+
+  const dispatch = useDispatch();
 
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,6 +55,10 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+
+  const { showDeviceInfoModalTech } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
 
   return (
@@ -127,6 +135,22 @@ export default function Menu(props: { buttonClassName?: string }) {
               <SearchIcon style={{ fill: "#707578", width: "0.9em" }} />
             </IconContainer>
             <Typography variant="body1">Room Monitor</Typography>
+          </MenuItem>
+        )}
+
+        {isTech({ identity: String(role_name) }) && (
+          <MenuItem
+            onClick={() => {
+              dispatch(
+                openCloseShowDeviceInfoModalTech(!showDeviceInfoModalTech)
+              );
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <InfoIconOutlined />
+            </IconContainer>
+            <Typography variant="body1">Device Info</Typography>
           </MenuItem>
         )}
 

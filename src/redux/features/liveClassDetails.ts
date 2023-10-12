@@ -38,6 +38,7 @@ interface liveClassDetailsTypes {
   muteIndividualParticipant: any;
   openUploadResourceModal: boolean;
   participantDeviceInformation: string[];
+  showDeviceInfoModalTech: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -74,6 +75,7 @@ const initialState: liveClassDetailsTypes = {
   muteIndividualParticipant: [],
   openUploadResourceModal: false,
   participantDeviceInformation: [],
+  showDeviceInfoModalTech: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -207,6 +209,10 @@ export const liveClassDetailsSlice = createSlice({
     updateParticipantDeviceInformation: (state, action) => {
       state.participantDeviceInformation = action.payload;
     },
+
+    openCloseShowDeviceInfoModalTech: (state, action) => {
+      state.showDeviceInfoModalTech = action.payload;
+    },
   },
 });
 
@@ -228,6 +234,7 @@ export const {
   addMuteIndividualParticipant,
   openCloseUploadResourceModalTeacher,
   updateParticipantDeviceInformation,
+  openCloseShowDeviceInfoModalTech,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

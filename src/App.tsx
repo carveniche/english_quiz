@@ -51,7 +51,7 @@ function JoinedScreen() {
         ) : (
           <StudentFeedBackForm />
         ))}
-      {/* {pathname === "/" && <Navigate to={`/allScreen?${params}`} />} */}
+
       <Header />
       <Header2 />
 
