@@ -401,7 +401,6 @@ export default function WhiteBoard({
                 onTouchStart={handleMouseDown}
                 onTouchMove={handleMouseMove}
                 onTouchEnd={handleMouseUp}
-                className="border-black border"
                 height={currentLoadedImage.height}
                 width={currentLoadedImage.width}
                 style={{

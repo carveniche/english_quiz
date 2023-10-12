@@ -12,6 +12,10 @@ import { openCloseUploadResourceModalTeacher } from "../../../redux/features/liv
 import UploadResource from "../UploadResource/UploadResource";
 import UploadIcon from "./UploadIcon.png";
 import { getUploadResourcesList } from "../../../api";
+import Button from "@mui/material/Button";
+import { openClosedUploadResourceWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
+import { ROUTERKEYCONST } from "../../../constants";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 
 export default function WhiteboardToolbar({
   handleClick,
@@ -20,6 +24,8 @@ export default function WhiteboardToolbar({
   handleClick: Function;
   closeToolbarPopup: boolean;
 }) {
+  const { room } = useVideoContext();
+
   const [id, setId] = useState(0);
   const [key, setKey] = useState("");
   const [isPopoverVisible, setPopoverVisible] = useState(false);
@@ -63,7 +69,7 @@ export default function WhiteboardToolbar({
     if (key === "FileUpload") {
       checkUploadResourceList();
       setOpenUploadResourcePopover(!openUploadResourcePopover);
-      // dispatch(openCloseUploadResourceModalTeacher(!openUploadResourceModal));
+
       return;
     }
 
@@ -137,7 +143,32 @@ export default function WhiteboardToolbar({
     handleClick(json);
   };
 
-  console.log("uploadResourceData", uploadResourceData);
+  const handleDataTrack = (images: []) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: ROUTERKEYCONST.whiteboard.path,
+      key: ROUTERKEYCONST.whiteboard.key,
+      value: {
+        datatrackName: "UploadResource",
+        images: images,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
+  const handleSelectPdf = (images: []) => {
+    dispatch(openClosedUploadResourceWhiteBoard(images));
+    handleDataTrack(images);
+  };
+
+  const handleUploadDocumentModal = () => {
+    setOpenUploadResourcePopover(!openUploadResourcePopover);
+    dispatch(openCloseUploadResourceModalTeacher(!openUploadResourceModal));
+  };
 
   return (
     <>
@@ -217,18 +248,39 @@ export default function WhiteboardToolbar({
             className="flex flex-col
             flex-wrap absolute bg-white p-4 gap-4 shadow-md left-[220px]"
           >
-            <div className="flex flex-row justify-between items-center p-2 gap-2">
-              <FileUploadIcon
-                style={{
-                  color: "blue",
-                }}
-              />
-              <p>Upload</p>
+            <div>
+              <button
+                className="flex flex-row items-center p-2 gap-2"
+                onClick={handleUploadDocumentModal}
+              >
+                <FileUploadIcon
+                  style={{
+                    color: "blue",
+                  }}
+                />
+                <p>Upload</p>
+              </button>
             </div>
             <div className="w-full h-[2px] bg-blue-500"></div>
-            <div>Hello</div>
-            {uploadResourceData?.map((item) => {
-              return <></>;
+
+            {uploadResourceData?.map((item, i) => {
+              return (
+                <>
+                  <div key={i} className="flex flex-row gap-2">
+                    <p>{item?.name}</p>
+                    <Button
+                      onClick={() => handleSelectPdf(item.image_data)}
+                      style={{
+                        fontSize: "8px",
+                      }}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Select
+                    </Button>
+                  </div>
+                </>
+              );
             })}
           </div>
         )}

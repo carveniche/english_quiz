@@ -1,10 +1,11 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import axios from "axios";
 
 import BaseUrl from "../../../api/ApiConfig";
+import Button from "@mui/material/Button";
 
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
@@ -16,13 +17,14 @@ import { useDispatch } from "react-redux";
 import { openClosedUploadResourceWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { ROUTERKEYCONST } from "../../../constants";
+import { getUploadResourcesList } from "../../../api";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
-  height: 400,
+  width: 700,
+  height: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -37,6 +39,23 @@ export default function UploadResource() {
   const [filesUpload, setFilesUpload] = useState([]);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const [open, setClose] = useState(true);
+  const [uploadResourceData, setUploadResourceData] = useState([]);
+
+  const checkUploadResourceList = async () => {
+    await getUploadResourcesList(liveClassId)
+      .then((res) => {
+        if (res.data.status) {
+          setUploadResourceData(res?.data?.resource_data);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    checkUploadResourceList();
+  }, []);
 
   function getExtension(filename: string) {
     return filename?.split(".").pop();
@@ -120,7 +139,7 @@ export default function UploadResource() {
               )
             );
             handleDataTrack(response?.data?.uploaded_images);
-            //   callUploadResourceApiAgain();
+            setClose(false);
           } else {
             alert(response.data.message);
             setUploadInProgress(false);
@@ -148,6 +167,13 @@ export default function UploadResource() {
 
     setFilesUpload(filterData);
   };
+
+  const handleSelectPdf = (images: []) => {
+    dispatch(openClosedUploadResourceWhiteBoard(images));
+    handleDataTrack(images);
+    setClose(false);
+  };
+
   return (
     <div>
       <Modal
@@ -157,82 +183,107 @@ export default function UploadResource() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="flex justify-center items-center">
-            <p className="text-speedMathTextColor font-semibold text-lg text-center">
-              Upload Files
-            </p>
-          </div>
-          <div className="flex w-full h-full justify-center items-center">
-            <div className="bg-white p-8 rounded shadow-md w-96">
-              <label
-                htmlFor="file"
-                className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 hover:border-gray-500 focus:outline-none focus:border-blue-500 transition duration-300"
-              >
-                <div className="text-center">
-                  <svg
-                    className="w-8 h-8 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <rect
-                      width="20"
-                      height="20"
-                      x="2"
-                      y="2"
-                      rx="5"
-                      ry="5"
-                    ></rect>
-                    <line x1="12" y1="8" x2="12" y2="16"></line>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                  </svg>
-                  <p className="mt-1 text-sm text-gray-600">Select a file</p>
-                </div>
-              </label>
-
-              <input
-                id="file"
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-
-              {filesUpload && (
-                <div className="mt-4 text-sm text-gray-600">
-                  Selected file: {filesUpload[0]?.name}
-                  {filesUpload.length > 0 && (
-                    <button
-                      onClick={() => removeFileByName(filesUpload[0]?.name)}
+          <div className="flex flex-col">
+            <div className="flex w-full h-1/5 justify-center items-center">
+              <p className="text-speedMathTextColor font-semibold text-lg text-center">
+                {uploadResourceData.length > 0
+                  ? "Previous Uploaded Files"
+                  : "No Files Uploaded Yet"}
+              </p>
+            </div>
+            <div className="flex w-full h-auto max-h-[200px] flex-col overflow-auto items-center gap-2 mt-2">
+              {uploadResourceData?.map((item, i) => {
+                return (
+                  <>
+                    <div key={i} className="flex flex-row gap-2">
+                      <p>{item?.name}</p>
+                      <Button
+                        onClick={() => handleSelectPdf(item?.image_data)}
+                        style={{
+                          fontSize: "8px",
+                        }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Select
+                      </Button>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+            <div className="flex w-full h-full  justify-center items-center">
+              <div className="bg-white p-8 rounded shadow-md w-96">
+                <label
+                  htmlFor="file"
+                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 hover:border-gray-500 focus:outline-none focus:border-blue-500 transition duration-300"
+                >
+                  <div className="text-center">
+                    <svg
+                      className="w-8 h-8 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
                     >
-                      <DeleteIcon />
-                    </button>
-                  )}
-                </div>
-              )}
+                      <rect
+                        width="20"
+                        height="20"
+                        x="2"
+                        y="2"
+                        rx="5"
+                        ry="5"
+                      ></rect>
+                      <line x1="12" y1="8" x2="12" y2="16"></line>
+                      <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <p className="mt-1 text-sm text-gray-600">Select a file</p>
+                  </div>
+                </label>
 
-              {uploadInProgress && (
-                <div className="flex justify-center items-center">
-                  <CircularProgress variant="indeterminate" />
-                </div>
-              )}
-              {filesUpload && !uploadInProgress && (
-                <div className="flex justify-center items-center">
-                  <button
-                    disabled={uploadInProgress ? true : false}
-                    onClick={handleSubmit}
-                  >
-                    <UploadFileIcon
-                      style={{
-                        color: "green",
-                        fontSize: 40,
-                      }}
-                    />
-                  </button>
-                </div>
-              )}
+                <input
+                  id="file"
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+
+                {filesUpload && (
+                  <div className="mt-4 text-sm text-gray-600">
+                    Selected file: {filesUpload[0]?.name}
+                    {filesUpload.length > 0 && (
+                      <button
+                        onClick={() => removeFileByName(filesUpload[0]?.name)}
+                      >
+                        <DeleteIcon />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {uploadInProgress && (
+                  <div className="flex justify-center items-center">
+                    <CircularProgress variant="indeterminate" />
+                  </div>
+                )}
+                {filesUpload && !uploadInProgress && (
+                  <div className="flex justify-center items-center">
+                    <button
+                      disabled={uploadInProgress ? true : false}
+                      onClick={handleSubmit}
+                    >
+                      <UploadFileIcon
+                        style={{
+                          color: "green",
+                          fontSize: 40,
+                        }}
+                      />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </Box>

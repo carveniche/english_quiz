@@ -31,7 +31,9 @@ export default function MainWhiteboard() {
             : MAINWHITEBOARD.mainWhiteBoardData
         }
         pathName={currentSelectedRouter}
-        key={currentSelectedKey}
+        key={
+          isUploadResourceOpen ? uploadResourceImages[0] : currentSelectedKey
+        }
         isCico={false}
         isWritingDisabled={false}
         images={isUploadResourceOpen ? uploadResourceImages : []}
