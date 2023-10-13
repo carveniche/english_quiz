@@ -107,7 +107,9 @@ export default function ReportErrorScreenShot() {
       <canvas ref={canvas} style={{ display: "none" }} />
       <Tooltip title="Take ScreenShot and Submit Error" arrow>
         <button onClick={() => reportErrorSS()}>
-          <ReportErrorLogo />
+          <div className="flex justify-center items-center min-w-[35px] p-1  rounded-full gap-2 bg-header-black hover:bg-black">
+            <ReportErrorLogo />
+          </div>
         </button>
       </Tooltip>
     </>

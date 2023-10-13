@@ -12,7 +12,7 @@ export default function NestedMenu() {
 
   return (
     <>
-      <div className="group inline-block submenu-react">
+      <div className="group inline-block submenu-react hover:bg-black">
         <button
           className="outline-none focus:outline-none flex items-center"
           onClick={() => (isValidParticipant ? setShowMenu(!showMenu) : "")}

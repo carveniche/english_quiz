@@ -38,9 +38,9 @@ export default function CicoNavbar({
           overflowY: "auto",
         }}
       >
-        <li className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center">
+        <li className="rounded-sm w-full relative item-center">
           <div
-            className="flex gap-2 relative item-center "
+            className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
             style={{ cursor: "pointer" }}
           >
             <NavLink
@@ -62,9 +62,9 @@ export default function CicoNavbar({
             </NavLink>
           </div>
         </li>
-        <li className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center">
+        <li className="rounded-sm w-full relative item-center">
           <div
-            className="flex gap-2 relative item-center "
+            className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
             style={{ cursor: "pointer" }}
           >
             <NavLink

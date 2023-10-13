@@ -39,11 +39,11 @@ export default function MiscelleneousNavbar({
           {item?.subRoute.map((subRouteItem, index) => {
             return (
               <li
-                className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                className="rounded-sm w-full relative item-center"
                 key={index}
               >
                 <div
-                  className="flex gap-2 relative item-center "
+                  className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
                   style={{ cursor: "pointer" }}
                 >
                   <div className={"w-48"} style={{ display: "block" }}>
