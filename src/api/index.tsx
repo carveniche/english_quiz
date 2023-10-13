@@ -370,11 +370,11 @@ export const checkRecordingStatus = async (live_class_id: string) =>
   });
 
 export const submitErrorLog = async (
-  user_id: string,
-  live_class_id: string,
+  user_id: number,
+  live_class_id: number,
   message: string,
-  error_code: string,
-  network_quality: string
+  error_code: number,
+  network_quality: number
 ) =>
   axios
     .get(baseURL + "app_students/create_error_log", {

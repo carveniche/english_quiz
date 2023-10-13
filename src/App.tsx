@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import useVideoContext from "./hooks/useVideoContext/useVideoContext";
 import TeacherFeedbackFormStatus from "./components/FeedBackForms/TeacherFeedbackForm/TeacherFeedbackFormStatus";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 interface AppProps {
   setError: React.Dispatch<React.SetStateAction<TwilioError | Error | null>>;
@@ -75,7 +76,9 @@ export function VideoApp() {
       <ErrorDialog dismissError={() => setError(null)} error={error} />
       <BrowserRouter>
         <ChatProvider>
-          <App setError={setError} />
+          <ErrorBoundary>
+            <App setError={setError} />
+          </ErrorBoundary>
         </ChatProvider>
       </BrowserRouter>
     </VideoProvider>
