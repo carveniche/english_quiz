@@ -36,6 +36,7 @@ interface liveClassDetailsTypes {
   isRecordingEnabled: boolean;
   isClassHasDisconnected: boolean;
   muteIndividualParticipant: any;
+  isGgb:boolean
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -70,6 +71,7 @@ const initialState: liveClassDetailsTypes = {
   isRecordingEnabled: false,
   isClassHasDisconnected: false,
   muteIndividualParticipant: [],
+  isGgb:false
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -195,6 +197,10 @@ export const liveClassDetailsSlice = createSlice({
         }
       }
     },
+    changeGGbStatus:(state,action)=>{
+      const {payload}=action
+      state.isGgb=payload
+    }
   },
 });
 
@@ -214,6 +220,7 @@ export const {
   startAndStopRecordingRecording,
   endRoomRequest,
   addMuteIndividualParticipant,
+  changeGGbStatus
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

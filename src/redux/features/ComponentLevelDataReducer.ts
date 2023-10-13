@@ -84,6 +84,12 @@ const initialState = {
       whiteBoardCounts: 0,
     },
   },
+  ggbData:{
+    currentIdentity:"",
+    currentCount:0,
+    currentRole:"",
+    currentMode:"tutor"
+  }
 };
 
 const ComponentLevelDataReducer = createSlice({
@@ -148,7 +154,18 @@ const ComponentLevelDataReducer = createSlice({
       console.log(action.payload);
       state.isMathZoneWhiteBoard = action.payload;
     },
+    ggbDataTrack:(state,action)=>{
+      const {payload}=action
+      state.ggbData.currentIdentity=payload.identity
+      state.ggbData.currentRole=payload.role
+      state.ggbData.currentCount=state.ggbData.currentCount+1
+    },
+    changeGGbMode:(state,action)=>{
+      const {payload}=action
+      state.ggbData.currentMode=payload
+    }
   },
+  
 });
 export const {
   changeMathzoneData,
@@ -160,5 +177,8 @@ export const {
   changePdfIndex,
   openClosedScratchWhiteBoard,
   openClosedMathzoneWhiteBoard,
+  ggbDataTrack,
+  changeGGbMode
+  
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

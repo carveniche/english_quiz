@@ -98,3 +98,8 @@ export const SHAPECHALLENGE={
   shapeChallengeCheckInWhiteBoard:"shapeChallengeCheckInWhiteBoard",
   shapeChallengeCheckOutWhiteBoard:"shapeChallengeCheckOutWhiteBoard"
 }
+export const GGB={
+  type:"ggb",
+  dataTrackName:"ggbDataTrack",
+  ggbChangeMode:"ggbChangeMode"
+}

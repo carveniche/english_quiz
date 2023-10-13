@@ -462,3 +462,19 @@ export const createLiveClassTicket = async (formData: object) =>
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const savedGGbResponse = (formData: object) => {
+  return axios({
+    method: "post",
+    url: baseURL + "app_students/update_ggb_project",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+export const getGGbResponse = (params: object) => {
+  return axios(baseURL + "app_students/get_simulation/?live_class_id", {
+    params: {
+      ...params,
+    },
+  });
+};
