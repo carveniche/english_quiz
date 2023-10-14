@@ -3,7 +3,7 @@ import { RootState } from "../../../redux/store";
 import WhiteboardImageRender from "../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { GGB, LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   isStudentName,
@@ -20,6 +20,7 @@ export default function Lesson() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const whiteBoardRef = useRef([]);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
@@ -41,6 +42,27 @@ export default function Lesson() {
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const { imageUrl, tagType, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
+    console.log(coordinates);
+    if (coordinates?.type === "pageChange") {
+      let DataTrackObj = {
+        pathName: ROUTERKEYCONST.lesson,
+        key: ROUTERKEYCONST.lesson,
+        value: {
+          datatrackName: WHITEBOARD.pdfIndex,
+          index: Number(coordinates?.value) || 0,
+          dataTrackKey: LESSON.lessonWhiteBoardData,
+        },
+      };
+      localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+      dispatch(
+        changePdfIndex({
+          index: Number(coordinates?.value) || 0,
+          dataTrackKey: LESSON.lessonWhiteBoardData,
+        })
+      );
+      setIsImageLoaded(false);
+      return;
+    }
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
     coordinates.userName = isTutorTechBoth({ identity: `${role_name}` })
@@ -83,6 +105,7 @@ export default function Lesson() {
           dataTrackKey: LESSON.lessonWhiteBoardData,
         })
       );
+      setIsImageLoaded(false);
     }
   };
   const handleUpdateLocalAndRemoteData = (localArray, remoteArray) => {
@@ -109,6 +132,9 @@ export default function Lesson() {
       );
     }
   };
+  const afterImageRendered = () => {
+    setIsImageLoaded(true);
+  };
   if (!imageUrl?.length)
     return (
       <>
@@ -123,35 +149,44 @@ export default function Lesson() {
     );
   return (
     <React.Fragment key={`${tagId}`}>
-      {isTutorTechBoth({ identity: String(role_name) }) && (
-        <div>
-          <button
-            onClick={() => {
-              handlePdfChange(-1);
-            }}
-          >
-            Prev
-          </button>
-          <button
-            onClick={() => {
-              handlePdfChange(1);
-            }}
-          >
-            Next
-          </button>
-        </div>
-      )}
-      <WhiteBoard
-        images={imageUrl[whiteBoardData.currentIndex]}
-        whiteBoardData={
-          whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
-        }
-        currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
-        handleDataTrack={handleDataTrack}
-        handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
-        count={whiteBoardData.whiteBoardCounts}
-        key={whiteBoardData.currentIndex}
-      />
+      <div
+        className={`${
+          isImageLoaded ? "w-fit h-fit visible" : "w-full h-full invisible"
+        } relative m-auto`}
+      >
+        {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
+          <div className="absolute top-1/2 z-[2] flex w-full justify-between">
+            <button
+              onClick={() => {
+                handlePdfChange(-1);
+              }}
+            >
+              <img src="/static/media/Previous-btn.svg" />
+            </button>
+            <button
+              onClick={() => {
+                handlePdfChange(1);
+              }}
+            >
+              <img src="/static/media/Next-btn.svg" />
+            </button>
+          </div>
+        )}
+        <WhiteBoard
+          images={imageUrl[whiteBoardData.currentIndex]}
+          whiteBoardData={
+            whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
+          }
+          currentIncomingLines={whiteBoardData.remoteWhiteBoardData || []}
+          handleDataTrack={handleDataTrack}
+          handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
+          count={whiteBoardData.whiteBoardCounts}
+          key={whiteBoardData.currentIndex}
+          cbAfterImageRendered={afterImageRendered}
+          totalImageLength={imageUrl.length}
+          currentPdfIndex={whiteBoardData.currentIndex}
+        />
+      </div>
     </React.Fragment>
   );
 }

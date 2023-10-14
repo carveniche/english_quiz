@@ -20,9 +20,15 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 export default function WhiteboardToolbar({
   handleClick,
   closeToolbarPopup,
+  totalImageLength,
+  currentPdfIndex,
+  handleDataTrackPdfChange,
 }: {
   handleClick: Function;
   closeToolbarPopup: boolean;
+  totalImageLength: number;
+  currentPdfIndex: number;
+  handleDataTrackPdfChange: Function | undefined;
 }) {
   const { room } = useVideoContext();
 
@@ -174,6 +180,15 @@ export default function WhiteboardToolbar({
     dispatch(openCloseUploadResourceModalTeacher(!openUploadResourceModal));
   };
 
+  const changePageNumber = (e: any) => {
+    console.log(e.target.value);
+    console.log("handleDataTrackPdfChange", handleDataTrackPdfChange);
+    typeof handleDataTrackPdfChange === "function" &&
+      handleDataTrackPdfChange({
+        type: "pageChange",
+        value: e.target.value,
+      });
+  };
   return (
     <>
       <div className="relative z-[1]">
@@ -199,6 +214,20 @@ export default function WhiteboardToolbar({
               )}
             </button>
           ))}
+
+          {currentSelectedScreen === "/lesson" && (
+            <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
+              <input
+                onChange={changePageNumber}
+                type="text"
+                className="border border-gray w-[25px]  pl-2
+                "
+                value={currentPdfIndex + 1}
+              ></input>
+              <p>OF</p>
+              <div>{totalImageLength}</div>
+            </div>
+          )}
         </div>
 
         {isPopoverVisible && !closeToolbarPopup && (id === 1 || id === 2) && (

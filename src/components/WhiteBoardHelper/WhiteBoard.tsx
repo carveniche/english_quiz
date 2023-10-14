@@ -19,6 +19,9 @@ export default function WhiteBoard({
   count = 0,
   handleUpdateLocalAndRemoteData,
   currentIncomingLines,
+  cbAfterImageRendered,
+  totalImageLength = 0,
+  currentPdfIndex = 0,
 }: {
   images: string;
   whiteBoardData: object;
@@ -26,6 +29,9 @@ export default function WhiteBoard({
   count: number | undefined;
   handleUpdateLocalAndRemoteData: Function | undefined;
   currentIncomingLines: object;
+  cbAfterImageRendered: Function | undefined | null;
+  totalImageLength: number;
+  currentPdfIndex: number;
 }) {
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
@@ -344,6 +350,7 @@ export default function WhiteBoard({
       image.height = height;
       setCurrentLoadedImage(image);
     }
+    typeof cbAfterImageRendered === "function" && cbAfterImageRendered();
     scaleRef.current = {
       scaleX: width,
       scaleY: height,
@@ -380,6 +387,9 @@ export default function WhiteBoard({
       <WhiteboardToolbar
         handleClick={handleToolBarSelect}
         closeToolbarPopup={closeToolbarPopup}
+        totalImageLength={totalImageLength}
+        currentPdfIndex={currentPdfIndex}
+        handleDataTrackPdfChange={handleDataTrack}
       />
       <div
         className="overflow-hidden"
