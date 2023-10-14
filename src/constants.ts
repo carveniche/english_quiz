@@ -102,3 +102,8 @@ export const SHAPECHALLENGE = {
 export const UPLOADRESOURCE = {
   uploadResourceWhiteboardData: "uploadResourceWhiteboardData",
 };
+export const GGB={
+  type:"ggb",
+  dataTrackName:"ggbDataTrack",
+  ggbChangeMode:"ggbChangeMode"
+}

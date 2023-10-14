@@ -24,6 +24,7 @@ import {
 import {
   CICO,
   FLAGGEDQUESTIONKEY,
+  GGB,
   HOMEWORKQUESTIONKEY,
   LESSON,
   MATHZONEDATAKEY,
@@ -31,10 +32,12 @@ import {
   WHITEBOARD,
 } from "../../constants";
 import {
+  changeGGbMode,
   changeMathzoneData,
   changePdfIndex,
   cicoComponentLevelDataTrack,
   flagQuestionDetailsStore,
+  ggbDataTrack,
   homeWorkQuestionDataTrack,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
@@ -52,7 +55,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-
+      console.log(parseMessage);
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
@@ -210,6 +213,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage?.value?.datatrackName === WHITEBOARD.whiteBoardData
       ) {
         dispatch(whiteBoardComponentLevelDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === GGB.dataTrackName) {
+        dispatch(ggbDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === GGB.ggbChangeMode) {
+        dispatch(changeGGbMode(parseMessage?.value?.currentMode || "tutor"));
       } else if (parseMessage?.value?.datatrackName === WHITEBOARD.pdfIndex) {
         dispatch(changePdfIndex(parseMessage?.value || {}));
       } else if (
