@@ -38,6 +38,8 @@ export default function WhiteBoard({
   const [selectedPen, setSelectedPen] = useState("FreeDrawing");
   const [eraserSelect, setEraserSelect] = useState(false);
   const [cursor, setCursor] = useState(penCursor);
+  const DELAY = 200;
+  const currentTimeStamp = useRef(Date.now());
   const [textInput, setTextInput] = useState({
     showInputBox: false,
     x: 0,
@@ -61,6 +63,18 @@ export default function WhiteBoard({
   const [_localState, setLocalState] = useState(false);
   let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
+  const throttleFn = (
+    callback: Function,
+    delay: number,
+    prevTimeStampRef: { current: number }
+  ) => {
+    callback();
+    return;
+    if (Date.now() - prevTimeStampRef.current >= delay) {
+      callback();
+      prevTimeStampRef.current = Date.now();
+    }
+  };
   const handleScale = () => {
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
     let containerHeight = whiteBoardContainerRef.current.clientHeight;
@@ -136,7 +150,9 @@ export default function WhiteBoard({
     };
     coordinates2.cursorPoints = [...temp];
     coordinates2.isDrawing = true;
-    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+
+    typeof handleDataTrack === "function" &&
+      throttleFn(() => handleDataTrack(coordinates2), DELAY, currentTimeStamp);
   };
   const freeDrawing = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
@@ -153,7 +169,8 @@ export default function WhiteBoard({
     };
     coordinates2.cursorPoints = [...temp];
     coordinates2.isDrawing = true;
-    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" &&
+      throttleFn(() => handleDataTrack(coordinates2), DELAY, currentTimeStamp);
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
@@ -188,7 +205,7 @@ export default function WhiteBoard({
 
     const position = e.target.getStage().getPointerPosition();
     const penStructure = {
-      id: `${userId}_${currentIdRef.current}`,
+      id: `${userId}_${Date.now()}`,
       stroke: strokeWidth,
       color: colorCode,
       eraser: eraserSelect,
@@ -300,7 +317,12 @@ export default function WhiteBoard({
       coordinates2.cursorPoints = [];
       coordinates2.identity = userId;
       coordinates2.isDrawing = false;
-      typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+      typeof handleDataTrack === "function" &&
+        throttleFn(
+          () => handleDataTrack(coordinates2),
+          DELAY,
+          currentTimeStamp
+        );
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
@@ -334,6 +356,14 @@ export default function WhiteBoard({
         remoteDrawLine(JSON.parse(temp) || {});
       }
     }
+  }, [count]);
+  useEffect(() => {
+    if (images) {
+      return;
+    }
+    handleScale();
+  }, []);
+  useEffect(() => {
     return () => {
       typeof handleUpdateLocalAndRemoteData === "function" &&
         handleUpdateLocalAndRemoteData(
@@ -341,12 +371,6 @@ export default function WhiteBoard({
           JSON.parse(JSON.stringify(remoteArrayRef.current))
         );
     };
-  }, [count]);
-  useEffect(() => {
-    if (images) {
-      return;
-    }
-    handleScale();
   }, []);
   useEffect(() => {
     if (images) handleLoadImage(images, handleAfterImageLoaded);

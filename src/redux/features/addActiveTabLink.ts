@@ -61,7 +61,7 @@ const activeTabReducer = createSlice({
         }
       } else if (
         action.payload.key === ROUTERKEYCONST.mathvideolesson ||
-        action.payload.key === CICO.key
+        action.payload.key === CICO.key|| action.payload.key===ROUTERKEYCONST.lesson
       ) {
         activeTabArray[index] = action.payload;
       } else if (action.payload.key === ROUTERKEYCONST.speedmath) {

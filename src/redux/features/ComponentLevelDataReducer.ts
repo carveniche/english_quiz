@@ -31,6 +31,13 @@ export interface ComponentLevelData {
 interface otherData {
   [key: string]: string | number | object;
 }
+let defaultParameterWhiteBoard={
+  currentIndex: 0,
+  remoteWhiteBoardData: {},
+  whiteBoardData: [],
+  whiteBoardCounts: 0,
+  isRemoteReceived:false
+}
 const initialState = {
   mathzone: {},
   isMathZoneWhiteBoard: false,
@@ -49,50 +56,15 @@ const initialState = {
       whiteBoardCounts: 0,
     },
 
-    [SCRATCHLESSON.scratchWhiteBoardData]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
-    [MATHZONEDATAKEY.mathzoneWhiteBoardData]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
-    [MISCELLANEOUS.miscellaneousDataWhiteBoard]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
-    [MAINWHITEBOARD.mainWhiteBoardData]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
-    [SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
+    [SCRATCHLESSON.scratchWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [MATHZONEDATAKEY.mathzoneWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [MISCELLANEOUS.miscellaneousDataWhiteBoard]:JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [MAINWHITEBOARD.mainWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
 
-    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
+    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
 
-    [UPLOADRESOURCE.uploadResourceWhiteboardData]: {
-      currentIndex: 0,
-      remoteWhiteBoardData: {},
-      whiteBoardData: [],
-      whiteBoardCounts: 0,
-    },
+    [UPLOADRESOURCE.uploadResourceWhiteboardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
   },
   ggbData:{
     currentIdentity:"",

@@ -41,6 +41,10 @@ export default function WhiteboardToolbar({
     (state: RootState) => state.videoCallTokenData
   );
 
+  const currentSelectedScreen = useSelector(
+    (state: RootState) => state.activeTabReducer.currentSelectedRouter
+  );
+
   const { openUploadResourceModal } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
@@ -181,7 +185,8 @@ export default function WhiteboardToolbar({
               key={`whiteboardtoolbar-${index}`}
             >
               {item.key === "FileUpload" &&
-              isTutor({ identity: String(role_name) }) ? (
+              isTutor({ identity: String(role_name) }) &&
+              currentSelectedScreen === "/whiteboard" ? (
                 <img
                   style={{
                     width: "45px",

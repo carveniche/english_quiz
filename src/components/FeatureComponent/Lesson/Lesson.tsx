@@ -39,7 +39,7 @@ export default function Lesson() {
     (state: RootState) => state.videoCallTokenData
   );
   const { extraParams } = activeTabArray[currentSelectedIndex];
-  const { imageUrl, tagType } = extraParams || [];
+  const { imageUrl, tagType, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
@@ -95,14 +95,19 @@ export default function Lesson() {
     let arr = remoteArray.map((item) => {
       return { ...item, cursorPoints: [], isDrawing: false };
     });
-    arr.push(coordinates);
-    dispatch(
-      saveAllWhiteBoardData({
-        index: whiteBoardData.currentIndex,
-        whiteBoardData: arr,
-        dataTrackKey: LESSON.lessonWhiteBoardData,
-      })
-    );
+    if (localArray.length) {
+      arr.push(coordinates);
+    }
+
+    if (arr.length) {
+      dispatch(
+        saveAllWhiteBoardData({
+          index: whiteBoardData.currentIndex,
+          whiteBoardData: arr,
+          dataTrackKey: LESSON.lessonWhiteBoardData,
+        })
+      );
+    }
   };
   if (!imageUrl?.length)
     return (
@@ -117,7 +122,7 @@ export default function Lesson() {
       </>
     );
   return (
-    <React.Fragment key={`${extraParams?.tagId || 1}`}>
+    <React.Fragment key={`${tagId}`}>
       {isTutorTechBoth({ identity: String(role_name) }) && (
         <div>
           <button
