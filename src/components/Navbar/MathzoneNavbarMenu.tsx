@@ -150,39 +150,41 @@ export default function MathzoneNavbar({
                               <div>
                                 {Boolean(tag.levels.length) &&
                                   currentSelectedTag === tagIndex && (
-                                    <div className="w-full ">
-                                      <div className="px-1 py-1 pl-12 pr-3 hover:bg-black">
+                                    <div className="w-full">
+                                      <div className="w-full">
                                         {tag.levels.map((level, levelIndex) => (
-                                          <NavLink
-                                            key={levelIndex}
-                                            to={`${item.path}/${math.id}/${
-                                              tag.tag_id
-                                            }/${
-                                              level.split("level")[1]
-                                            }?${queryParams}`}
-                                            onClick={() =>
-                                              handleClick({
-                                                path: `${item.path}/${
-                                                  math.id
-                                                }/${tag.tag_id}/${
-                                                  level.split("level")[1]
-                                                }`,
-                                                key: item.key,
-                                                name: `${item.name}:${math.name} - ${tag.name}`,
-                                                icon: item.icon,
-                                                extraParams: {
-                                                  conceptName: math.name,
-                                                  tagName: tag.name,
-                                                  level:
-                                                    level.split("level")[1],
-                                                },
-                                              })
-                                            }
-                                            className={"w-48"}
-                                            style={{ display: "block" }}
-                                          >
-                                            {level}
-                                          </NavLink>
+                                          <div className="pl-12 pr-3 hover:bg-black">
+                                            <NavLink
+                                              key={levelIndex}
+                                              to={`${item.path}/${math.id}/${
+                                                tag.tag_id
+                                              }/${
+                                                level.split("level")[1]
+                                              }?${queryParams}`}
+                                              onClick={() =>
+                                                handleClick({
+                                                  path: `${item.path}/${
+                                                    math.id
+                                                  }/${tag.tag_id}/${
+                                                    level.split("level")[1]
+                                                  }`,
+                                                  key: item.key,
+                                                  name: `${item.name}:${math.name} - ${tag.name}`,
+                                                  icon: item.icon,
+                                                  extraParams: {
+                                                    conceptName: math.name,
+                                                    tagName: tag.name,
+                                                    level:
+                                                      level.split("level")[1],
+                                                  },
+                                                })
+                                              }
+                                              className={"w-48"}
+                                              style={{ display: "block" }}
+                                            >
+                                              {level}
+                                            </NavLink>
+                                          </div>
                                         ))}
                                       </div>
                                     </div>
@@ -190,9 +192,9 @@ export default function MathzoneNavbar({
                               </div>
                             </>
                           ) : (
-                            <div className="py-3 pl-2" key={tagIndex}>
+                            <div className="w-full" key={tagIndex}>
                               <div
-                                className="flex gap-2 relative item-center justify-between"
+                                className="px-1 py-1 pl-6 pr-3 hover:bg-black"
                                 style={{ cursor: "pointer" }}
                               >
                                 <div style={{ display: "block" }}>
@@ -214,7 +216,10 @@ export default function MathzoneNavbar({
                                         })
                                       }
                                       className={"w-48"}
-                                      style={{ display: "block" }}
+                                      style={{
+                                        display: "block",
+                                        color: "green",
+                                      }}
                                     >
                                       {tag?.name}
                                     </NavLink>
