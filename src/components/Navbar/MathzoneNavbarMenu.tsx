@@ -47,7 +47,7 @@ export default function MathzoneNavbar({
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center -right-px
+          transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[38px] items-center -right-px
           `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
@@ -60,160 +60,174 @@ export default function MathzoneNavbar({
           {allConceptsDetails?.mathzoneConceptDetails.map((math, index) => {
             return (
               <li
-                className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                className="rounded-sm w-full h-full relative item-center"
                 key={index}
               >
-                <div
-                  className="flex gap-2 relative item-center "
-                  onClick={() => handleSelectTopic(index)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className={"w-48"} style={{ display: "block" }}>
-                    <div className="flex gap-2">
-                      <div>
-                        {math?.today_class ? (
-                          <div className="flex">
-                            {math?.name}
-                            <img
-                              style={{
-                                width: "40px",
-                                margin: "auto",
-                                marginLeft: "5px",
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                              src={todayClassIcon}
-                            />
-                          </div>
-                        ) : (
-                          math?.name
-                        )}
+                <div className="w-full h-full px-3 pl-6 pr-3 py-3 hover:bg-black">
+                  <div
+                    className="flex gap-2 relative item-center "
+                    onClick={() => handleSelectTopic(index)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className={"w-full"} style={{ display: "block" }}>
+                      <div className="flex gap-2">
+                        <div>
+                          {math?.today_class ? (
+                            <div className="flex">
+                              {math?.name}
+                              <img
+                                style={{
+                                  width: "40px",
+                                  margin: "auto",
+                                  marginLeft: "5px",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                                src={todayClassIcon}
+                              />
+                            </div>
+                          ) : (
+                            math?.name
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <TabIcon
+                      src={`/menu-icon/chevron_${
+                        currentSelectedTopic === index ? "up" : "down"
+                      }.svg`}
+                    />
                   </div>
-                  <TabIcon
-                    src={`/menu-icon/chevron_${
-                      currentSelectedTopic === index ? "up" : "down"
-                    }.svg`}
-                  />
                 </div>
                 {math.tags.length && currentSelectedTopic === index && (
                   <div className="w-full">
-                    {math.tags.map((tag, tagIndex) =>
-                      tag.name ? (
-                        tag?.levels?.length ? (
-                          <div
-                            className="py-3 pl-2"
-                            key={tagIndex}
-                            onClick={() => handleTagSelected(tagIndex)}
-                          >
-                            <div
-                              className="flex gap-2 relative item-center justify-between"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div style={{ display: "block" }}>
-                                <div className="flex gap-2">
-                                  <div>
-                                    {tag?.today_class ? (
-                                      <div className="flex">
-                                        {tag?.name}
-                                        <img
-                                          style={{
-                                            width: "40px",
-                                            margin: "auto",
-                                            marginLeft: "5px",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                          }}
-                                          src={todayClassIcon}
-                                        />
+                    <div className="w-full">
+                      {math.tags.map((tag, tagIndex) =>
+                        tag.name ? (
+                          tag?.levels?.length ? (
+                            <>
+                              <div
+                                className="px-1 pl-6 pr-3 py-1 hover:bg-black"
+                                key={tagIndex}
+                                onClick={() => handleTagSelected(tagIndex)}
+                              >
+                                <div
+                                  className="flex gap-2 relative item-center justify-between"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <div style={{ display: "block" }}>
+                                    <div className="flex gap-2">
+                                      <div>
+                                        {tag?.today_class ? (
+                                          <div className="flex">
+                                            {tag?.name}
+                                            <img
+                                              style={{
+                                                width: "40px",
+                                                margin: "auto",
+                                                marginLeft: "5px",
+                                                display: "flex",
+                                                justifyContent: "center",
+                                              }}
+                                              src={todayClassIcon}
+                                            />
+                                          </div>
+                                        ) : (
+                                          tag?.name
+                                        )}
                                       </div>
-                                    ) : (
-                                      tag?.name
-                                    )}
+                                    </div>
                                   </div>
+                                  <TabIcon
+                                    src={`/menu-icon/chevron_${
+                                      currentSelectedTag === index
+                                        ? "up"
+                                        : "down"
+                                    }.svg`}
+                                  />
                                 </div>
                               </div>
-                              <TabIcon
-                                src={`/menu-icon/chevron_${
-                                  currentSelectedTag === index ? "up" : "down"
-                                }.svg`}
-                              />
-                            </div>
-
-                            {Boolean(tag.levels.length) &&
-                              currentSelectedTag === tagIndex && (
-                                <div className="py-3 pl-2">
-                                  {tag.levels.map((level, levelIndex) => (
+                              <div>
+                                {Boolean(tag.levels.length) &&
+                                  currentSelectedTag === tagIndex && (
+                                    <div className="w-full ">
+                                      <div className="px-1 py-1 pl-12 pr-3 hover:bg-black">
+                                        {tag.levels.map((level, levelIndex) => (
+                                          <NavLink
+                                            key={levelIndex}
+                                            to={`${item.path}/${math.id}/${
+                                              tag.tag_id
+                                            }/${
+                                              level.split("level")[1]
+                                            }?${queryParams}`}
+                                            onClick={() =>
+                                              handleClick({
+                                                path: `${item.path}/${
+                                                  math.id
+                                                }/${tag.tag_id}/${
+                                                  level.split("level")[1]
+                                                }`,
+                                                key: item.key,
+                                                name: `${item.name}:${math.name} - ${tag.name}`,
+                                                icon: item.icon,
+                                                extraParams: {
+                                                  conceptName: math.name,
+                                                  tagName: tag.name,
+                                                  level:
+                                                    level.split("level")[1],
+                                                },
+                                              })
+                                            }
+                                            className={"w-48"}
+                                            style={{ display: "block" }}
+                                          >
+                                            {level}
+                                          </NavLink>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                              </div>
+                            </>
+                          ) : (
+                            <div className="py-3 pl-2" key={tagIndex}>
+                              <div
+                                className="flex gap-2 relative item-center justify-between"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div style={{ display: "block" }}>
+                                  <div className="flex gap-2">
                                     <NavLink
-                                      key={levelIndex}
-                                      to={`${item.path}/${math.id}/${
-                                        tag.tag_id
-                                      }/${
-                                        level.split("level")[1]
-                                      }?${queryParams}`}
+                                      to={`${item.path}/${math.id}/${tag.tag_id}/0
+                                    }?${queryParams}`}
                                       onClick={() =>
                                         handleClick({
-                                          path: `${item.path}/${math.id}/${
-                                            tag.tag_id
-                                          }/${level.split("level")[1]}`,
+                                          path: `${item.path}/${math.id}/${tag.tag_id}/0`,
                                           key: item.key,
                                           name: `${item.name}:${math.name} - ${tag.name}`,
                                           icon: item.icon,
                                           extraParams: {
                                             conceptName: math.name,
                                             tagName: tag.name,
-                                            level: level.split("level")[1],
+                                            level: 0,
                                           },
                                         })
                                       }
                                       className={"w-48"}
                                       style={{ display: "block" }}
                                     >
-                                      {level}
+                                      {tag?.name}
                                     </NavLink>
-                                  ))}
-                                </div>
-                              )}
-                          </div>
-                        ) : (
-                          <div className="py-3 pl-2" key={tagIndex}>
-                            <div
-                              className="flex gap-2 relative item-center justify-between"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div style={{ display: "block" }}>
-                                <div className="flex gap-2">
-                                  <NavLink
-                                    to={`${item.path}/${math.id}/${tag.tag_id}/0
-                                    }?${queryParams}`}
-                                    onClick={() =>
-                                      handleClick({
-                                        path: `${item.path}/${math.id}/${tag.tag_id}/0`,
-                                        key: item.key,
-                                        name: `${item.name}:${math.name} - ${tag.name}`,
-                                        icon: item.icon,
-                                        extraParams: {
-                                          conceptName: math.name,
-                                          tagName: tag.name,
-                                          level: 0,
-                                        },
-                                      })
-                                    }
-                                    className={"w-48"}
-                                    style={{ display: "block" }}
-                                  >
-                                    {tag?.name}
-                                  </NavLink>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          )
+                        ) : (
+                          ""
                         )
-                      ) : (
-                        ""
-                      )
-                    )}
+                      )}
+                    </div>
                   </div>
                 )}
               </li>

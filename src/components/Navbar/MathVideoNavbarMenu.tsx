@@ -67,7 +67,7 @@ export default function MathVideoNavbarMenu({
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-         transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center -right-px
+         transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[48px] items-center -right-px
          `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
@@ -86,68 +86,72 @@ export default function MathVideoNavbarMenu({
 
               return (
                 <li
-                  className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                  className="rounded-sm w-full h-full relative item-center"
                   key={index}
                 >
-                  <div
-                    className="flex gap-2 relative item-center "
-                    onClick={() => handleSelectTopic(index)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className={"w-48"} style={{ display: "block" }}>
-                      <div className="flex gap-2">
-                        <div> {videos?.name}</div>
+                  <div className="w-full h-full px-3 pl-6 pr-3 py-3 hover:bg-black">
+                    <div
+                      className="flex gap-2 relative item-center "
+                      onClick={() => handleSelectTopic(index)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className={"w-full"} style={{ display: "block" }}>
+                        <div className="flex gap-2">
+                          <div> {videos?.name}</div>
+                        </div>
                       </div>
+                      <TabIcon
+                        src={`/menu-icon/chevron_${
+                          currentSelectedTopic === index ? "up" : "down"
+                        }.svg`}
+                      />
                     </div>
-                    <TabIcon
-                      src={`/menu-icon/chevron_${
-                        currentSelectedTopic === index ? "up" : "down"
-                      }.svg`}
-                    />
                   </div>
 
                   {currentSelectedTopic === index && (
                     <div className="w-full">
-                      {videos.video.map((tag, tagIndex) =>
-                        tag.name ? (
-                          <div
-                            className="py-3 pl-2"
-                            key={tagIndex}
-                            onClick={() => handleTagSelected(tagIndex)}
-                          >
+                      <div className="w-full">
+                        {videos.video.map((tag, tagIndex) =>
+                          tag.name ? (
                             <div
-                              className="flex gap-2 relative item-center justify-between"
-                              style={{ cursor: "pointer" }}
+                              className="py-1 pl-12 hover:bg-black"
+                              key={tagIndex}
+                              onClick={() => handleTagSelected(tagIndex)}
                             >
-                              <div style={{ display: "block" }}>
-                                <div className="flex gap-2">
-                                  <NavLink
-                                    key={tagIndex}
-                                    to={`/mathvideolesson?${queryParams}`}
-                                    onClick={() =>
-                                      handleClickMathVideoLesson({
-                                        path: ROUTERKEYCONST.mathvideolesson,
-                                        key: ROUTERKEYCONST.mathvideolesson,
-                                        name: "Play Video",
-                                        icon: item.icon,
-                                        extraParams: {
-                                          videoUrl: tag.url,
-                                        },
-                                      })
-                                    }
-                                    className={"w-48"}
-                                    style={{ display: "block" }}
-                                  >
-                                    {tag?.name}
-                                  </NavLink>
+                              <div
+                                className="flex gap-2 relative item-center justify-between"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div style={{ display: "block" }}>
+                                  <div className="flex gap-2">
+                                    <NavLink
+                                      key={tagIndex}
+                                      to={`/mathvideolesson?${queryParams}`}
+                                      onClick={() =>
+                                        handleClickMathVideoLesson({
+                                          path: ROUTERKEYCONST.mathvideolesson,
+                                          key: ROUTERKEYCONST.mathvideolesson,
+                                          name: "Play Video",
+                                          icon: item.icon,
+                                          extraParams: {
+                                            videoUrl: tag.url,
+                                          },
+                                        })
+                                      }
+                                      className={"w-48"}
+                                      style={{ display: "block" }}
+                                    >
+                                      {tag?.name}
+                                    </NavLink>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : (
-                          ""
-                        )
-                      )}
+                          ) : (
+                            ""
+                          )
+                        )}
+                      </div>
                     </div>
                   )}
                 </li>
