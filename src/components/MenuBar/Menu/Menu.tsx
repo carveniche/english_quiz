@@ -1,10 +1,8 @@
 import { useRef, useState } from "react";
 import AboutDialog from "../../AboutDialog/AboutDialog";
 import BackgroundIcon from "../../../icons/BackgroundIcon";
-import CollaborationViewIcon from "@material-ui/icons/AccountBox";
 import DeviceSelectionDialog from "../../DeviceSelectionDialog/DeviceSelectionDialog";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import GridViewIcon from "@material-ui/icons/Apps";
 import InfoIconOutlined from "../../../icons/InfoIconOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
@@ -26,6 +24,8 @@ import { VideoRoomMonitor } from "@twilio/video-room-monitor";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { isTech } from "../../../utils/participantIdentity";
+import { useDispatch } from "react-redux";
+import { openCloseShowDeviceInfoModalTech } from "../../../redux/features/liveClassDetails";
 
 export const IconContainer = styled("div")({
   display: "flex",
@@ -39,12 +39,13 @@ export default function Menu(props: { buttonClassName?: string }) {
     theme.breakpoints.down("sm")
   );
 
+  const dispatch = useDispatch();
+
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   //   const { setIsGalleryViewActive, isGalleryViewActive } = useAppState();
-  const isGalleryViewActive = true;
 
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
@@ -54,6 +55,10 @@ export default function Menu(props: { buttonClassName?: string }) {
 
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
+  );
+
+  const { showDeviceInfoModalTech } = useSelector(
+    (state: RootState) => state.liveClassDetails
   );
 
   return (
@@ -133,25 +138,21 @@ export default function Menu(props: { buttonClassName?: string }) {
           </MenuItem>
         )}
 
-        {/* <MenuItem
-          onClick={() => {
-            setIsGalleryViewActive((isGallery) => !isGallery);
-            setMenuOpen(false);
-          }}
-        >
-          <IconContainer>
-            {isGalleryViewActive ? (
-              <CollaborationViewIcon
-                style={{ fill: "#707578", width: "0.9em" }}
-              />
-            ) : (
-              <GridViewIcon style={{ fill: "#707578", width: "0.9em" }} />
-            )}
-          </IconContainer>
-          <Typography variant="body1">
-            {isGalleryViewActive ? "Speaker View" : "Gallery View"}
-          </Typography>
-        </MenuItem> */}
+        {isTech({ identity: String(role_name) }) && (
+          <MenuItem
+            onClick={() => {
+              dispatch(
+                openCloseShowDeviceInfoModalTech(!showDeviceInfoModalTech)
+              );
+              setMenuOpen(false);
+            }}
+          >
+            <IconContainer>
+              <InfoIconOutlined />
+            </IconContainer>
+            <Typography variant="body1">Device Info</Typography>
+          </MenuItem>
+        )}
 
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>

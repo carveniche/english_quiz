@@ -3,8 +3,9 @@ import { storeGameResponse, createSpeedMathGame } from "../../../api/index";
 import CorrectMark from "./assets/images/Correct.svg";
 import ComputerPlay from "./ComputerPlay";
 import { Room } from "twilio-video";
-import { isStudentName } from "../../../utils/participantIdentity";
+import { isStudentName, isTech } from "../../../utils/participantIdentity";
 import { iPadDevice, isIpadDeviceChrome } from "../../../utils/devices";
+import { excludeParticipantTechSmParent } from "../../../utils/excludeParticipant";
 
 interface QuestionComponentProps {
   room: Room | null;
@@ -50,6 +51,10 @@ export default function QuestionComponent({
   const textAnswerInput = useRef(null);
 
   useEffect(() => {
+    if (isTech({ identity: identity })) {
+      return;
+    }
+
     try {
       createSpeedMathGame(speedMathGameId, userId).then((res) => {
         if (res.data.status) setGameQuestionsData(res.data.game_questions);
@@ -90,6 +95,9 @@ export default function QuestionComponent({
   };
 
   const handleKeyPress = (event: any) => {
+    if (excludeParticipantTechSmParent.includes(identity)) {
+      return;
+    }
     if (event.key === "Enter" && event.target.value != "") {
       var userAnswer = event.target.value;
       setQuestionCount((questionCount) => questionCount + 1);
@@ -205,6 +213,17 @@ export default function QuestionComponent({
     }
   };
 
+  const checkRemoteParticipantCompletion = (currentUserScore: number) => {
+    let finalScore = "";
+    if (currentUserScore < 34) {
+      finalScore = Math.floor((currentUserScore / 100) * 100) + "%";
+    } else {
+      finalScore = Math.floor((currentUserScore / 200) * 100) + "%";
+    }
+
+    return finalScore;
+  };
+
   return (
     <div className="flex flex-row w-full h-full justify-between items-center">
       <div className="flex flex-col w-full h-full justify-center items-center p-5 gap-4">
@@ -291,7 +310,9 @@ export default function QuestionComponent({
                     <div
                       className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
                       style={{
-                        width: completionPercentage, // Set the width as a percentage
+                        width: checkRemoteParticipantCompletion(
+                          studentData.currentUserScoreSpeedMath
+                        ),
                       }}
                     ></div>
                   </div>

@@ -370,11 +370,11 @@ export const checkRecordingStatus = async (live_class_id: string) =>
   });
 
 export const submitErrorLog = async (
-  user_id: string,
-  live_class_id: string,
+  user_id: number,
+  live_class_id: number,
   message: string,
-  error_code: string,
-  network_quality: string
+  error_code: number,
+  network_quality: number
 ) =>
   axios
     .get(baseURL + "app_students/create_error_log", {
@@ -462,3 +462,36 @@ export const createLiveClassTicket = async (formData: object) =>
     data: formData,
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const getUploadResourcesList = async (live_class_id: number) =>
+  axios.get(baseURL + "app_teachers/view_resources", {
+    params: {
+      live_class_id,
+    },
+  });
+
+export const getDeviceInfoForTech = async (
+  live_class_id: number,
+  user_id: number
+) =>
+  axios.get(baseURL + "app_students/get_device_details", {
+    params: {
+      live_class_id,
+      user_id,
+    },
+  });
+export const savedGGbResponse = (formData: object) => {
+  return axios({
+    method: "post",
+    url: baseURL + "app_students/update_ggb_project",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+export const getGGbResponse = (params: object) => {
+  return axios(baseURL + "app_students/get_simulation/?live_class_id", {
+    params: {
+      ...params,
+    },
+  });
+};

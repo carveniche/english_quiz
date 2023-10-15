@@ -64,7 +64,10 @@ export default function ToggleAudioButton(props: {
           },
         };
 
-        localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+        if (localDataTrackPublication) {
+          localDataTrackPublication?.track?.send(JSON.stringify(DataTrackObj));
+        }
+
         dispatch(
           addMuteIndividualParticipant({
             muteStatus: muteStatus,

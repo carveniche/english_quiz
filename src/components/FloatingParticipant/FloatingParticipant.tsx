@@ -58,10 +58,7 @@ export default function FloatingParticipant({
         </React.Fragment>
       ) : (
         <div
-          className="relative max-h-[200px] max-w-[290px]"
-          style={{
-            marginTop: "10px",
-          }}
+          className="relative max-h-[225px] max-w-[290px]"
           key={participant.sid}
         >
           <Participant
@@ -97,10 +94,7 @@ export default function FloatingParticipant({
         </React.Fragment>
       ) : !isTutor({ identity: participant.identity }) ? (
         <div
-          className="relative max-h-[200px] max-w-[290px]"
-          style={{
-            marginTop: "10px",
-          }}
+          className="relative max-h-[225px] max-w-[290px]"
           key={participant.sid}
         >
           <Participant
@@ -125,7 +119,7 @@ export default function FloatingParticipant({
 
   const showSelfParticipantView = () => {
     return (
-      <div className="relative max-h-[200px] max-w-[290px]">
+      <div className="relative max-h-[225px] max-w-[290px]">
         <Participant
           participant={localParticipant}
           isLocalParticipant={true}
@@ -153,9 +147,15 @@ export default function FloatingParticipant({
         zIndex: 999,
         width: 200,
         height: "fit-content",
+
+        bottom: 0,
       }}
     >
-      <Rnd bounds={parentRef.current || ""}>
+      <Rnd
+        bounds={parentRef.current || ""}
+        enableResizing={false}
+        style={{ position: "relative" }}
+      >
         <>
           {screenName !== "/myscreen"
             ? showSelfParticipantView()

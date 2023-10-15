@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script>
-      // AWS Amplify needs this to work. See https://github.com/aws/aws-sdk-js/issues/3673
-      const isBrowser = () => typeof window !== "undefined";
-      const isGlobal = () => typeof global !== "undefined";
-      if (!isGlobal() && isBrowser()) {
-        var global = window;
-      }
-    </script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <script>
+    // AWS Amplify needs this to work. See https://github.com/aws/aws-sdk-js/issues/3673
+
+    const isBrowser = () => typeof window !== "undefined";
+    const isGlobal = () => typeof global !== "undefined";
+    if (!isGlobal() && isBrowser()) {
+      var global = window;
+    }
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

@@ -74,10 +74,10 @@ export default function CallTechSupport() {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative ">
         <button onClick={() => requestTechSupport()}>
           <div
-            className={`flex flex-row min-w-[100px] rounded-full gap-2 ${backgroundColor} px-2 py-1`}
+            className={`flex flex-row min-w-[100px] rounded-full gap-2 ${backgroundColor} hover:bg-black px-2 py-1`}
           >
             {activeLogo ? (
               <CallTechSupportActiveLogo />

@@ -11,6 +11,10 @@ import {
   storeCodingLogNewCurriculam,
 } from "../../../../api";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
+import { ROUTERKEYCONST } from "../../../../constants";
+import { openClosedScratchWhiteBoard } from "../../../../redux/features/ComponentLevelDataReducer";
 
 const activeProjectBgCss = "bg-gradient-to-r from-[#3bd7b1] to-[#a4ec9e]";
 const unactiveProjectBgCss = "bg-gradient-to-r from-[#eb3349] to-[#f45c43]";
@@ -47,7 +51,11 @@ interface studentSpecificData {
 export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   const [thunkableLink, setThunkableLink] = useState("");
   const [newCodingData, setNewCodingData] = useState([]);
-
+  const dispatch = useDispatch();
+  const { room } = useVideoContext();
+  const [localDataTrackPublication] = [
+    ...room!.localParticipant.dataTracks.values(),
+  ];
   const { userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
@@ -210,6 +218,21 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     );
   };
 
+  const openScratchLesson = (item: []) => {
+    let DataTrackObj = {
+      pathName: ROUTERKEYCONST.coding,
+      key: ROUTERKEYCONST.coding,
+      value: {
+        status: true,
+        datatrackName: "openCloseScratchWhiteBoard",
+        images: item,
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    dispatch(openClosedScratchWhiteBoard({ status: true, images: item }));
+    // openCloseScratchWhiteBoard
+  };
+
   return (
     <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded">
       {newCodingData.length === 0 && (
@@ -224,7 +247,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
         newCodingData.map((item: newCodingData, index) => {
           return (
             <div
-              className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded"
+              className="flex w-[98%] h-[38%] justify-center items-center border border-gray-300 p-1 rounded"
               key={index}
             >
               <div className="flex w-[10%] h-full justify-center items-center">
@@ -240,25 +263,31 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 )}
               </div>
               <div className="flex w-[10%] h-full justify-center items-center">
-                <a className="text-blue-500 hover:text-blue-700 cursor-pointer">
+                <a
+                  onClick={() => openScratchLesson(item.lesson_data.pdfs)}
+                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                >
                   <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.lesson_data.name ? "View Lesson" : "No Lesson"}
+                    {item.lesson_data.length > 0 &&
+                    item.lesson_data.pdfs.length > 0
+                      ? "View Lesson"
+                      : "No Lesson"}
                   </p>
                 </a>
               </div>
-              <div className="flex flex-col w-[20%] h-full justify-center items-center ">
-                <div className="flex w-full h-[50%] justify-center items-center flex-wrap overflow-auto ">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
+              <div className="flex flex-col w-[20%] h-full justify-center items-center gap-1 ">
+                <div className="flex w-full  justify-center items-center flex-wrap ">
+                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
                     {item.class_title}
                   </p>
                 </div>
-                <div className="flex w-full h-[50%] justify-center items-center flex-wrap overflow-auto">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
+                <div className="flex w-full  justify-center items-center flex-wrap ">
+                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
                     {item.learning_outcome}
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col w-[40%] h-full justify-center items-center">
+              <div className="flex flex-col w-[25%] h-full justify-center items-center ml-[2.5%] mr-[2.5%]">
                 <div className="flex w-full h-[50%] justify-center items-center">
                   <p className="text-speedMathTextColor font-semibold text-lg">
                     Student Project
@@ -285,9 +314,9 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col w-[10%] h-full justify-center items-center">
+              <div className="flex flex-col w-[20%] h-full justify-center items-center">
                 <div className="flex w-full h-[50%] justify-center items-center">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
+                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
                     Teacher Project
                   </p>
                 </div>

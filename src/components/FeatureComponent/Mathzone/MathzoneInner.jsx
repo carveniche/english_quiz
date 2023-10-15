@@ -23,6 +23,7 @@ import OnlineQuizPagination from "./Teacher/OnlineQuizPagination";
 import StudentsTitle from "./Student/StudentsTitle";
 import handleResizeWidth from "./handleResizeWidth";
 import ViewQuestionAtMiddle from "./Teacher/ViewQuestionAtMiddle";
+import MathzoneWhiteBoard from "./MathzoneWhiteBoard";
 export default function MathzoneInner() {
   const [loading, setLoading] = useState(true);
   const [keys, setKeys] = useState(0);
@@ -229,6 +230,12 @@ export default function MathzoneInner() {
             )}
           </div>
           <QuizPageLayout key={key} height={currentHeight}>
+            {!obj?.quiz_completed && (
+              <MathzoneWhiteBoard
+                currentSelectedRouter={currentSelectedRouter}
+                currentSelectedKey={currentSelectedKey}
+              />
+            )}
             <div
               style={{
                 position: "relative",

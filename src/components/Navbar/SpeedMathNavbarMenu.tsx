@@ -59,42 +59,44 @@ export default function SpeedMathNavbarMenu({
           {speedMathLevels.map((levels, index) => {
             return (
               <li
-                className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                className="rounded-sm  w-full h-full relative item-center"
                 key={index}
               >
-                <div
-                  className="flex gap-2 relative item-center "
-                  onClick={() => handleSelectTopic(index)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className={"w-48"} style={{ display: "block" }}>
-                    <div className="flex gap-2">
-                      <NavLink
-                        key={index}
-                        to={`/speedmath?${queryParams}`}
-                        onClick={() =>
-                          handleClickSpeedMath({
-                            path: ROUTERKEYCONST.speedmath,
-                            key: ROUTERKEYCONST.speedmath,
-                            name: "Speed Math",
-                            icon: item.icon,
-                            extraParams: {
-                              speedMathLevel: index + 1,
-                            },
-                          })
-                        }
-                        className={"w-48"}
-                        style={{ display: "block" }}
-                      >
-                        {levels}
-                      </NavLink>
+                <div className="w-full h-full px-3 pl-6 pr-3 py-3 hover:bg-black">
+                  <div
+                    className="flex gap-2 relative item-center "
+                    onClick={() => handleSelectTopic(index)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className={"w-48"} style={{ display: "block" }}>
+                      <div className="flex gap-2">
+                        <NavLink
+                          key={index}
+                          to={`/speedmath?${queryParams}`}
+                          onClick={() =>
+                            handleClickSpeedMath({
+                              path: ROUTERKEYCONST.speedmath,
+                              key: ROUTERKEYCONST.speedmath,
+                              name: "Speed Math",
+                              icon: item.icon,
+                              extraParams: {
+                                speedMathLevel: index + 1,
+                              },
+                            })
+                          }
+                          className={"w-48"}
+                          style={{ display: "block" }}
+                        >
+                          {levels}
+                        </NavLink>
+                      </div>
                     </div>
-                  </div>
-                  {/* <TabIcon
+                    {/* <TabIcon
                     src={`/menu-icon/chevron_${
                       currentSelectedTopic === index ? "up" : "down"
                     }.svg`}
                   /> */}
+                  </div>
                 </div>
               </li>
             );

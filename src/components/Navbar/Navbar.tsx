@@ -11,9 +11,10 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CICO, ROUTERKEYCONST } from "../../constants";
+import { CICO, LESSON, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
+import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
 import SpeedMathNavbarMenu from "./SpeedMathNavbarMenu";
 import { useEffect, useState } from "react";
 import MiscelleneousNavbar from "./MiscelleneousNavbar";
@@ -24,6 +25,7 @@ import {
   coding_ClassType,
   mathCoding_ClassType,
 } from "../../utils/classTypesMenus";
+import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
@@ -128,6 +130,40 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
+  const handleClickMathLesson = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(
+      resetWhiteBoardData({ dataTrackKey: LESSON.lessonWhiteBoardData })
+    );
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+
+    typeof onClick === "function" && onClick();
+    const [localDataTrackPublication] = [
+      ...room!.localParticipant.dataTracks.values(),
+    ];
+    let DataTrackObj = {
+      pathName: path,
+      key,
+      name,
+      icon,
+      extraParams,
+      value: {
+        datatrackName: "MathLesson",
+        identity: null,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
+        isReset: true,
+      },
+    };
+
+    console.log("Data message send");
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   const handleClick = ({
     path,
     key,
@@ -146,8 +182,9 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       name,
       icon,
       extraParams,
+
       value: {
-        type: null,
+        type: "addFromActiveTab",
         identity: null,
       },
     };
@@ -274,7 +311,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                   <MathVideoLessonNavbar
                     allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
-                    key={`mathzone-${mathzoneKeys}`}
+                    key={`mathvideolesson-${mathzoneKeys}`}
                     handleClickMathVideoLesson={handleClickMathVideoLesson}
                     queryParams={queryParams}
                     calcWidth={44.01}
@@ -301,8 +338,36 @@ export default function Navbar({ onClick }: { onClick: Function }) {
                 {index === currentSelectedMenuIndex && (
                   <SpeedMathNavbarMenu
                     item={{ ...item, extraParams: {} }}
-                    key={`mathzone-${mathzoneKeys}`}
+                    key={`speedmath-${mathzoneKeys}`}
                     handleClickSpeedMath={handleClickSpeedMath}
+                    queryParams={queryParams}
+                    calcWidth={44.01}
+                    elementPosition={index + 1}
+                    handleOpenSubMenu={handleOpenSubMenu}
+                    currentSelectedMenuIndex={currentSelectedMenuIndex}
+                  />
+                )}
+              </li>
+            ) : item.key === ROUTERKEYCONST.lesson ? (
+              <li
+                className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
+                onClick={() => handleOpenSubMenu(index)}
+                style={{ cursor: "pointer" }}
+                key={index}
+              >
+                <div className={"w-48"} style={{ display: "block" }}>
+                  <div className="flex gap-2">
+                    <TabIcon src={item.icon} />
+                    <div> {item.name}</div>
+                  </div>
+                </div>
+                <TabIcon src={"/menu-icon/chevron.svg"} />
+                {index === currentSelectedMenuIndex && (
+                  <MathLessonNavbarMenu
+                    allConceptsDetails={allConceptsDetails}
+                    item={{ ...item, extraParams: {} }}
+                    key={`mathlesson-${index}`}
+                    handleClickMathLesson={handleClickMathLesson}
                     queryParams={queryParams}
                     calcWidth={44.01}
                     elementPosition={index + 1}

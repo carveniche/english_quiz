@@ -4,6 +4,7 @@ import ReportErrorLogo from "../Navbar/NavbarIcons/ReportErrorLogo";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { createLiveClassTicket } from "../../api";
+import { Tooltip } from "@material-ui/core";
 
 export default function ReportErrorScreenShot() {
   const [screenShotProgress, setScreenShotProgress] = useState(false);
@@ -104,9 +105,13 @@ export default function ReportErrorScreenShot() {
   return (
     <>
       <canvas ref={canvas} style={{ display: "none" }} />
-      <button onClick={() => reportErrorSS()}>
-        <ReportErrorLogo />
-      </button>
+      <Tooltip title="Take ScreenShot and Submit Error" arrow>
+        <button onClick={() => reportErrorSS()}>
+          <div className="flex justify-center items-center min-w-[35px] p-1  rounded-full gap-2 bg-header-black hover:bg-black">
+            <ReportErrorLogo />
+          </div>
+        </button>
+      </Tooltip>
     </>
   );
 }

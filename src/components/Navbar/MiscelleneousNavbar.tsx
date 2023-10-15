@@ -1,8 +1,7 @@
-import React from "react";
+import { useState } from "react";
 import TabIcon from "./TabIcon";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
-import { NavLink } from "react-router-dom";
-import { ROUTERKEYCONST } from "../../constants";
+
 interface MiscelleneousNavbarInterface {
   index: number;
   handleOpenSubMenu: Function;
@@ -40,27 +39,26 @@ export default function MiscelleneousNavbar({
           {item?.subRoute.map((subRouteItem, index) => {
             return (
               <li
-                className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                className="rounded-sm w-full relative item-center"
                 key={index}
               >
                 <div
-                  className="flex gap-2 relative item-center "
+                  className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
                   style={{ cursor: "pointer" }}
                 >
-                  <div
-                    className={"w-48"}
-                    style={{ display: "block" }}
-                    onClick={() =>
-                      handleClick({
-                        path: `${item.path}${subRouteItem.key}`,
-                        key: item.key,
-                        name: `${item.name}:${subRouteItem.name} `,
-                        icon: item.icon,
-                        extraParams: {},
-                      })
-                    }
-                  >
-                    <div className="flex gap-2">
+                  <div className={"w-48"} style={{ display: "block" }}>
+                    <div
+                      className="flex gap-2"
+                      onClick={() =>
+                        handleClick({
+                          path: `${item.path}${subRouteItem.key}`,
+                          key: item.key,
+                          name: `${item.name}:${subRouteItem.name} `,
+                          icon: item.icon,
+                          extraParams: {},
+                        })
+                      }
+                    >
                       <div> {subRouteItem?.name}</div>
                     </div>
                   </div>

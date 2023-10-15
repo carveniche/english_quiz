@@ -54,7 +54,7 @@ export default function HeaderBar({
           </h1>
         </div>
       </div>
-      <div className="flex flex-row w-full h-full justify-center">
+      <div className="flex flex-row w-full h-full justify-center items-center">
         {startQuestionTimer && (
           <QuestionTimer
             duration={60}

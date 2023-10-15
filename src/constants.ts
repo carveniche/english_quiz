@@ -22,9 +22,12 @@ export const ROUTERKEYCONST = {
   mathvideolesson: "/mathvideolesson",
   speedmath: "/speedmath",
   coding: "/coding",
-  whiteboard: "/whiteboard",
   lesson: "/lesson",
   mathzone: "/mathzone",
+  whiteboard: {
+    key: "whiteboard",
+    path: "/whiteboard",
+  },
   miscellaneous: {
     key: "miscellaneous",
     subRoute: {
@@ -36,11 +39,21 @@ export const ROUTERKEYCONST = {
         keys: "/flagQuestion",
         route: "/flagQuestion",
       },
+      uploadResources: {
+        keys: "/uploadResources",
+        route: "/uploadResources",
+      },
     },
   },
 };
 export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
+  mathzoneWhiteBoardData: "mathzoneWhiteBoardData",
+  openClosedWhiteBoard: "openClosedWhiteBoard",
+};
+
+export const MAINWHITEBOARD = {
+  mainWhiteBoardData: "mainWhiteBoardData",
 };
 export const FLAGGEDQUESTIONKEY = {
   flaggedQuestionMenu: "flaggedQuestionMenu",
@@ -58,4 +71,40 @@ export const CICO = {
   key: "cico",
   checkIn: "checkIn",
   checkOut: "checkOut",
+};
+
+export const WHITEBOARDSTANDARDSCREENSIZE = {
+  width: 1500,
+  height: 500,
+};
+export const MENUBARHEIGHT = 60;
+export const LESSON = {
+  LessonDataTrack: "LessonDataTrack",
+  LessonIndexChange: "LessonIndexChange",
+  lessonWhiteBoardData: "lessonWhiteBoardData",
+};
+export const WHITEBOARD = {
+  whiteBoardData: "whiteBoardData",
+  pdfIndex: "pdfIndex",
+};
+export const SCRATCHLESSON = {
+  scratchWhiteBoardData: "scratchWhiteBoardData",
+};
+export const MISCELLANEOUS = {
+  miscellaneousDataWhiteBoard: "miscellaneousDataWhiteBoard",
+};
+
+export const SHAPECHALLENGE = {
+  shapeChallengeCheckInWhiteBoard: "shapeChallengeCheckInWhiteBoard",
+  shapeChallengeCheckOutWhiteBoard: "shapeChallengeCheckOutWhiteBoard",
+};
+
+export const UPLOADRESOURCE = {
+  uploadResourceWhiteboardData: "uploadResourceWhiteboardData",
+  closeUploadResource: "closeUploadResource",
+};
+export const GGB = {
+  type: "ggb",
+  dataTrackName: "ggbDataTrack",
+  ggbChangeMode: "ggbChangeMode",
 };

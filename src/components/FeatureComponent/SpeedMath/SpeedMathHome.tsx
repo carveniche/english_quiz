@@ -67,6 +67,7 @@ export default function SpeedMath() {
     console.log("SpeedMathGameLevel", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
+    setFinalSpeedMathScoreBoard([]);
     dispatch(
       addSpeedMathScoreOfAllParticipant({
         resetScore: true,

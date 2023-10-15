@@ -48,7 +48,7 @@ export default function ActiveTabMenu() {
       icon,
       extraParams,
       value: {
-        type: null,
+        type: "addFromActiveTab",
         identity: null,
       },
     };
@@ -83,7 +83,7 @@ export default function ActiveTabMenu() {
   return activeTabArray.length ? (
     <>
       {activeTabArray.map((item) => (
-        <div key={`${item.key}`} className="activeTabLayout">
+        <div key={`${item.key}`} className="activeTabLayout hover:bg-black">
           <TabIcon src={item.icon} />
           <div>
             <NavLink
