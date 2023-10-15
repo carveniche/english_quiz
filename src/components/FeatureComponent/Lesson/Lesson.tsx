@@ -135,18 +135,19 @@ export default function Lesson() {
   const afterImageRendered = () => {
     setIsImageLoaded(true);
   };
-  if (!imageUrl?.length)
-    return (
-      <>
-        <h3>Could not find the lesson.</h3>
-      </>
-    );
   if (tagType === GGB.type)
     return (
       <>
         <Geogebra />
       </>
     );
+  if (!imageUrl?.length)
+    return (
+      <>
+        <h3>Could not find the lesson.</h3>
+      </>
+    );
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div
