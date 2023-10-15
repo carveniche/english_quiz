@@ -13,8 +13,11 @@ import UploadResource from "../UploadResource/UploadResource";
 import UploadIcon from "./UploadIcon.png";
 import { getUploadResourcesList } from "../../../api";
 import Button from "@mui/material/Button";
-import { openClosedUploadResourceWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
-import { ROUTERKEYCONST } from "../../../constants";
+import {
+  closeUploadResourceWhiteboard,
+  openClosedUploadResourceWhiteBoard,
+} from "../../../redux/features/ComponentLevelDataReducer";
+import { ROUTERKEYCONST, UPLOADRESOURCE } from "../../../constants";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 
 export default function WhiteboardToolbar({
@@ -31,7 +34,6 @@ export default function WhiteboardToolbar({
   handleDataTrackPdfChange: Function | undefined;
 }) {
   const { room } = useVideoContext();
-
   const [id, setId] = useState(0);
   const [key, setKey] = useState("");
   const [isPopoverVisible, setPopoverVisible] = useState(false);
@@ -53,6 +55,10 @@ export default function WhiteboardToolbar({
 
   const { openUploadResourceModal } = useSelector(
     (state: RootState) => state.liveClassDetails
+  );
+
+  const { isUploadResourceOpen } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
   );
 
   const dispatch = useDispatch();
@@ -180,15 +186,36 @@ export default function WhiteboardToolbar({
     dispatch(openCloseUploadResourceModalTeacher(!openUploadResourceModal));
   };
 
-  const changePageNumber = (e: any) => {
-    console.log(e.target.value);
-    console.log("handleDataTrackPdfChange", handleDataTrackPdfChange);
-    typeof handleDataTrackPdfChange === "function" &&
-      handleDataTrackPdfChange({
-        type: "pageChange",
-        value: e.target.value,
-      });
+  const handleKeyPress = (e: any) => {
+    if (Number(e.target.value) === 0) {
+      return;
+    }
+    if (e.key === "Enter" && !isNaN(e.target.value)) {
+      typeof handleDataTrackPdfChange === "function" &&
+        handleDataTrackPdfChange({
+          type: "pageChange",
+          value: Number(e.target.value),
+        });
+    }
   };
+
+  const goBackToWhiteboard = () => {
+    dispatch(closeUploadResourceWhiteboard(false));
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: ROUTERKEYCONST.whiteboard.path,
+      key: ROUTERKEYCONST.whiteboard.key,
+      value: {
+        datatrackName: UPLOADRESOURCE.closeUploadResource,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   return (
     <>
       <div className="relative z-[1]">
@@ -218,14 +245,27 @@ export default function WhiteboardToolbar({
           {currentSelectedScreen === "/lesson" && (
             <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
               <input
-                onChange={changePageNumber}
+                onKeyDown={handleKeyPress}
                 type="text"
-                className="border border-gray w-[25px]  pl-2
+                className="border border-gray w-[35px]  pl-2
                 "
-                value={currentPdfIndex + 1}
+                defaultValue={currentPdfIndex + 1}
               ></input>
               <p>OF</p>
               <div>{totalImageLength}</div>
+            </div>
+          )}
+
+          {isUploadResourceOpen && (
+            <div>
+              <Button
+                onClick={goBackToWhiteboard}
+                variant="contained"
+                color="primary"
+                style={{ fontSize: "10px" }}
+              >
+                Back to Whiteboard
+              </Button>
             </div>
           )}
         </div>

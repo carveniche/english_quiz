@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import WhiteboardImageRender from "../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { GGB, LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   isStudentName,
@@ -21,7 +20,6 @@ export default function Lesson() {
     (state: RootState) => state.activeTabReducer
   );
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const whiteBoardRef = useRef([]);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -42,24 +40,29 @@ export default function Lesson() {
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const { imageUrl, tagType, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
-    console.log(coordinates);
     if (coordinates?.type === "pageChange") {
+      if (coordinates?.value - 1 === whiteBoardData.currentIndex) {
+        return;
+      }
+
       let DataTrackObj = {
         pathName: ROUTERKEYCONST.lesson,
         key: ROUTERKEYCONST.lesson,
         value: {
           datatrackName: WHITEBOARD.pdfIndex,
-          index: Number(coordinates?.value) || 0,
+          index: coordinates?.value - 1 || 0,
           dataTrackKey: LESSON.lessonWhiteBoardData,
         },
       };
       localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+
       dispatch(
         changePdfIndex({
-          index: Number(coordinates?.value) || 0,
+          index: coordinates?.value - 1 || 0,
           dataTrackKey: LESSON.lessonWhiteBoardData,
         })
       );
+
       setIsImageLoaded(false);
       return;
     }
@@ -135,6 +138,13 @@ export default function Lesson() {
   const afterImageRendered = () => {
     setIsImageLoaded(true);
   };
+
+  useEffect(() => {
+    if (!isTutorTechBoth({ identity: String(role_name) })) {
+      setIsImageLoaded(false);
+    }
+  }, [whiteBoardData.currentIndex]);
+
   if (!imageUrl?.length)
     return (
       <>
@@ -155,7 +165,12 @@ export default function Lesson() {
         } relative m-auto`}
       >
         {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
-          <div className="absolute top-1/2 z-[2] flex w-full justify-between">
+          <div
+            className="absolute top-1/2 left-[-40px] flex w-full justify-between"
+            style={{
+              width: "calc(100% + 80px)",
+            }}
+          >
             <button
               onClick={() => {
                 handlePdfChange(-1);
@@ -190,9 +205,3 @@ export default function Lesson() {
     </React.Fragment>
   );
 }
-
-// same image render last line store
-
-//  remoteArray // saveRedux
-
-// mount remoteArray + localArray => remote

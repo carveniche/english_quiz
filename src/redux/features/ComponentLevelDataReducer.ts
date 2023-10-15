@@ -31,13 +31,13 @@ export interface ComponentLevelData {
 interface otherData {
   [key: string]: string | number | object;
 }
-let defaultParameterWhiteBoard={
+let defaultParameterWhiteBoard = {
   currentIndex: 0,
   remoteWhiteBoardData: {},
   whiteBoardData: [],
   whiteBoardCounts: 0,
-  isRemoteReceived:false
-}
+  isRemoteReceived: false,
+};
 const initialState = {
   mathzone: {},
   isMathZoneWhiteBoard: false,
@@ -56,22 +56,36 @@ const initialState = {
       whiteBoardCounts: 0,
     },
 
-    [SCRATCHLESSON.scratchWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
-    [MATHZONEDATAKEY.mathzoneWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
-    [MISCELLANEOUS.miscellaneousDataWhiteBoard]:JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
-    [MAINWHITEBOARD.mainWhiteBoardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
-    [SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [SCRATCHLESSON.scratchWhiteBoardData]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
+    [MATHZONEDATAKEY.mathzoneWhiteBoardData]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
+    [MISCELLANEOUS.miscellaneousDataWhiteBoard]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
+    [MAINWHITEBOARD.mainWhiteBoardData]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
+    [SHAPECHALLENGE.shapeChallengeCheckInWhiteBoard]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
 
-    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [SHAPECHALLENGE.shapeChallengeCheckOutWhiteBoard]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
 
-    [UPLOADRESOURCE.uploadResourceWhiteboardData]: JSON.parse(JSON.stringify(defaultParameterWhiteBoard)),
+    [UPLOADRESOURCE.uploadResourceWhiteboardData]: JSON.parse(
+      JSON.stringify(defaultParameterWhiteBoard)
+    ),
   },
-  ggbData:{
-    currentIdentity:"",
-    currentCount:0,
-    currentRole:"",
-    currentMode:"tutor"
-  }
+  ggbData: {
+    currentIdentity: "",
+    currentCount: 0,
+    currentRole: "",
+    currentMode: "tutor",
+  },
 };
 
 const ComponentLevelDataReducer = createSlice({
@@ -150,18 +164,21 @@ const ComponentLevelDataReducer = createSlice({
       state.allWhiteBoardRelatedData[payload.dataTrackKey].whiteBoardCounts = 0;
       state.allWhiteBoardRelatedData[payload.dataTrackKey].currentIndex = 0;
     },
-    ggbDataTrack:(state,action)=>{
-      const {payload}=action
-      state.ggbData.currentIdentity=payload.identity
-      state.ggbData.currentRole=payload.role
-      state.ggbData.currentCount=state.ggbData.currentCount+1
+    ggbDataTrack: (state, action) => {
+      const { payload } = action;
+      state.ggbData.currentIdentity = payload.identity;
+      state.ggbData.currentRole = payload.role;
+      state.ggbData.currentCount = state.ggbData.currentCount + 1;
     },
-    changeGGbMode:(state,action)=>{
-      const {payload}=action
-      state.ggbData.currentMode=payload
-    }
+    changeGGbMode: (state, action) => {
+      const { payload } = action;
+      state.ggbData.currentMode = payload;
+    },
+
+    closeUploadResourceWhiteboard: (state, action) => {
+      state.isUploadResourceOpen = action.payload;
+    },
   },
-  
 });
 export const {
   changeMathzoneData,
@@ -176,7 +193,7 @@ export const {
   openClosedUploadResourceWhiteBoard,
   resetWhiteBoardData,
   ggbDataTrack,
-  changeGGbMode
-  
+  changeGGbMode,
+  closeUploadResourceWhiteboard,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

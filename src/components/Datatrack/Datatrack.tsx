@@ -29,6 +29,7 @@ import {
   LESSON,
   MATHZONEDATAKEY,
   ROUTERKEYCONST,
+  UPLOADRESOURCE,
   WHITEBOARD,
 } from "../../constants";
 import {
@@ -36,6 +37,7 @@ import {
   changeMathzoneData,
   changePdfIndex,
   cicoComponentLevelDataTrack,
+  closeUploadResourceWhiteboard,
   flagQuestionDetailsStore,
   ggbDataTrack,
   homeWorkQuestionDataTrack,
@@ -262,6 +264,11 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(
           openClosedUploadResourceWhiteBoard(parseMessage?.value.images || [])
         );
+      } else if (
+        parseMessage?.value?.datatrackName ===
+        UPLOADRESOURCE.closeUploadResource
+      ) {
+        dispatch(closeUploadResourceWhiteboard(false));
       }
     };
 
