@@ -18,7 +18,7 @@ export default function CodingNew({ identity, env }: CodingNew) {
     (state: RootState) => state.ComponentLevelDataReducer
   );
   return (
-    <div className="flex flex-col w-full h-full justify-center items-cente">
+    <div className="flex flex-col w-full h-full justify-center items-center">
       {isScratchOpenStatus ? (
         <>
           <ScratchWhiteBoard pdfImages={scratchPdfsImages} />

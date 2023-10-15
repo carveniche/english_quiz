@@ -103,7 +103,7 @@ export default function ParticipantsAnimationBar({
     let result = false;
     let studentIdentity = Number(isStudentId({ identity: identity }));
 
-    for (let i = 2; i < participantDeviceInformation.length; i++) {
+    for (let i = 0; i < participantDeviceInformation.length; i = i + 2) {
       if (
         participantDeviceInformation[i].platform === "iPad" &&
         participantDeviceInformation[i + 1].user_id === studentIdentity
@@ -230,7 +230,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "ThumbsUpIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <ThumbsUpIcon />
@@ -244,7 +244,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "ClapIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <ClapIcon />
@@ -258,7 +258,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "SmileIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <SmileIcon />
@@ -272,7 +272,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "StarIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <StarIcon />
@@ -379,7 +379,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "ThumbsUpIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <ThumbsUpIcon />
@@ -393,7 +393,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "ClapIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <ClapIcon />
@@ -407,7 +407,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "SmileIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <SmileIcon />
@@ -421,7 +421,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "StarIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <StarIcon />
