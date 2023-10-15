@@ -77,14 +77,19 @@ export default function HelperWhiteBoard({
     let arr = remoteArray.map((item) => {
       return { ...item, cursorPoints: [], isDrawing: false };
     });
-    arr.push(coordinates);
-    dispatch(
-      saveAllWhiteBoardData({
-        index: whiteBoardData.currentIndex,
-        whiteBoardData: arr,
-        dataTrackKey: dataTrackKey,
-      })
-    );
+    if (localArray.length) {
+      arr.push(coordinates);
+    }
+
+    if (arr.length) {
+      dispatch(
+        saveAllWhiteBoardData({
+          index: whiteBoardData.currentIndex,
+          whiteBoardData: arr,
+          dataTrackKey: dataTrackKey,
+        })
+      );
+    }
   };
   return (
     <>

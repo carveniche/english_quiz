@@ -29,9 +29,11 @@ const liveClassConceptDetails = createSlice({
         if (concept_list.length) {
           state.allConceptsDetails.conceptDetails = concept_list || [];
           state.allConceptsDetails.status = true;
-        let mathzoneDetails=[...concept_list]
+        let mathzoneDetails=[...concept_list]  
         mathzoneDetails=mathzoneDetails.map(({today_class,id,name,tags})=>{
-          
+          let str=JSON.stringify(tags)
+          let warmUp=str.includes("Warm Up")
+          let wrapUp=str.includes("Wrap Up")
          let preTest= {
            
             "tag_id": PREPOSTTESTKEY.preTest,
@@ -44,7 +46,10 @@ const liveClassConceptDetails = createSlice({
             "name": "PostTest",
             "levels": []
         }
-          tags=[preTest,...tags,postTest]
+if(!warmUp)
+tags=[preTest,...tags]
+if(!wrapUp)
+tags=[...tags,postTest]
           return {today_class,id,name,tags:[...tags]}
         })
         state.allConceptsDetails.mathzoneConceptDetails=mathzoneDetails||[]
