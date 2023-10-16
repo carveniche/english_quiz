@@ -80,7 +80,7 @@ export default function HelperWhiteBoard({
     if (localArray.length) {
       arr.push(coordinates);
     }
-
+    arr = arr.filter((item) => item?.coordinates?.length);
     if (arr.length) {
       dispatch(
         saveAllWhiteBoardData({
