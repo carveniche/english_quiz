@@ -3,6 +3,8 @@ import { RootState } from "../../redux/store";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect } from "react";
 import ScreenShareDraggable from "../DraggableComponent/ScreenShareDraggable";
+
+import { iPadDevice, isIpadDeviceChrome } from "../../utils/devices";
 export default function ScreenShareEffect() {
   const { room, toggleScreenShare, isSharingScreen } = useVideoContext();
 
@@ -11,6 +13,10 @@ export default function ScreenShareEffect() {
   );
 
   useEffect(() => {
+    if (iPadDevice || isIpadDeviceChrome) {
+      return;
+    }
+
     if (
       isSharingScreen &&
       screenShareState.toggleFrom !== "RequestingScreenShare"

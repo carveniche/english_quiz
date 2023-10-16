@@ -4,7 +4,8 @@ import linkify from "linkify-it";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   isStudentName,
-  isTutorTechBoth,
+  isTech,
+  isTutor,
 } from "../../../../utils/participantIdentity";
 
 const useStyles = makeStyles({
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
     padding: "0.5em 0.8em 0.6em",
     margin: "0.3em 0 0",
     wordBreak: "break-word",
-    backgroundColor: "#E1E3EA",
+    // backgroundColor: "#E1E3EA",
     hyphens: "auto",
     whiteSpace: "pre-wrap",
   },
@@ -28,6 +29,7 @@ interface TextMessageProps {
   body: string;
   identity: string;
   isLocalParticipant: boolean;
+  localParticipantIdentity: string;
 }
 
 function addLinks(text: string) {
@@ -56,21 +58,32 @@ export default function TextMessage({
   body,
   isLocalParticipant,
   identity,
+  localParticipantIdentity,
 }: TextMessageProps) {
   const classes = useStyles();
 
   return (
-    <div>
+    <div
+      className={`${
+        localParticipantIdentity !== identity ? "flex w-full justify-end" : ""
+      }`}
+    >
       <div
         className={clsx(classes.messageContainer, {
           [classes.isLocalParticipant]: isLocalParticipant,
         })}
+        style={{
+          background: localParticipantIdentity !== identity ? "green" : "grey",
+          color: "white",
+        }}
       >
         <div>
           <div>
-            {isTutorTechBoth({ identity: identity })
-              ? identity.charAt(0).toUpperCase() + identity.slice(1)
-              : isStudentName({ identity: identity })}
+            {isTutor({ identity: identity })
+              ? "Coach : "
+              : isTech({ identity: identity })
+              ? "Tech : "
+              : isStudentName({ identity: identity }) + " : "}
           </div>
           <div>{addLinks(body)}</div>
         </div>

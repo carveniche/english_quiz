@@ -161,15 +161,12 @@ export default function ChatInput({ isChatWindowOpen }: ChatInputProps) {
         />
       </div>
 
-      <Grid
+      {/* <Grid
         container
         alignItems="flex-end"
         justifyContent="flex-end"
         wrap="nowrap"
       >
-        {/* Since the file input element is invisible, we can hardcode an empty string as its value.
-        This allows users to upload the same file multiple times. */}
-
         <div className={classes.buttonContainer}>
           <Button
             className={classes.button}
@@ -182,7 +179,7 @@ export default function ChatInput({ isChatWindowOpen }: ChatInputProps) {
             <SendMessageIcon />
           </Button>
         </div>
-      </Grid>
+      </Grid> */}
     </div>
   );
 }

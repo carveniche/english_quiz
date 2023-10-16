@@ -24,17 +24,6 @@ interface routerConfig {
 }
 const routerConfig: routerConfig[] = [
   {
-    path: ROUTERKEYCONST.whiteboard.path,
-    key: ROUTERKEYCONST.whiteboard.key,
-    name: "Whiteboard",
-    component: MainWhiteboard,
-    exact: true,
-    icon: "/menu-icon/Whiteboard.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-  {
     path: defaultRouter.path,
     key: defaultRouter.key,
     exact: true,
@@ -52,6 +41,18 @@ const routerConfig: routerConfig[] = [
     exact: true,
     component: MyScreen,
     name: "My Screen",
+    icon: "/menu-icon/Whiteboard.svg",
+    hasChildren: false,
+    hasSubRoute: false,
+    subRoute: null,
+  },
+
+  {
+    path: ROUTERKEYCONST.whiteboard.path,
+    key: ROUTERKEYCONST.whiteboard.key,
+    name: "Whiteboard",
+    component: MainWhiteboard,
+    exact: true,
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: false,

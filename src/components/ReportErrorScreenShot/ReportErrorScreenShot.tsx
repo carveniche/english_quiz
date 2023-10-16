@@ -5,9 +5,12 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { createLiveClassTicket } from "../../api";
 import { Tooltip } from "@material-ui/core";
+import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 
 export default function ReportErrorScreenShot() {
+  const [openAlertBox, setOpenAlertBox] = useState(true);
   const [screenShotProgress, setScreenShotProgress] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const { userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -45,13 +48,19 @@ export default function ReportErrorScreenShot() {
     setScreenShotProgress(true);
 
     navigator.mediaDevices
-      .getDisplayMedia()
+      .getDisplayMedia({
+        video: {
+          displaySurface: "monitor",
+        },
+      })
       .then((stream) => {
         // Grab frame from stream
         captureScreenShot(stream);
       })
       .catch(() => setScreenShotProgress(false));
   };
+
+  console.log("alertMessage", alertMessage);
 
   const captureScreenShot = (stream: MediaStream) => {
     let canvasCapture = canvas.current;
@@ -87,9 +96,9 @@ export default function ReportErrorScreenShot() {
       const response = await createLiveClassTicket(bodyFormData);
 
       if (response.data.status) {
-        alert("Your error has been reported");
+        setAlertMessage("Your error has been reported");
       } else {
-        alert(
+        setAlertMessage(
           "Unable to send screen shot : " +
             response.data.message +
             " Please try again"
@@ -112,6 +121,15 @@ export default function ReportErrorScreenShot() {
           </div>
         </button>
       </Tooltip>
+
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
+      )}
     </>
   );
 }

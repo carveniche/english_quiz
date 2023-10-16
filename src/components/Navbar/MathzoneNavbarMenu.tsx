@@ -47,7 +47,7 @@ export default function MathzoneNavbar({
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-          transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[38px] items-center -right-px
+          transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[38px] items-center right-0
           `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
@@ -107,7 +107,7 @@ export default function MathzoneNavbar({
                           tag?.levels?.length ? (
                             <>
                               <div
-                                className="px-1 pl-6 pr-3 py-1 hover:bg-black"
+                                className="px-1 pl-12 pr-3 py-1 hover:bg-black"
                                 key={tagIndex}
                                 onClick={() => handleTagSelected(tagIndex)}
                               >
@@ -153,7 +153,7 @@ export default function MathzoneNavbar({
                                     <div className="w-full">
                                       <div className="w-full">
                                         {tag.levels.map((level, levelIndex) => (
-                                          <div className="pl-12 pr-3 hover:bg-black">
+                                          <div className="pl-16 pr-3 hover:bg-black">
                                             <NavLink
                                               key={levelIndex}
                                               to={`${item.path}/${math.id}/${
@@ -194,7 +194,7 @@ export default function MathzoneNavbar({
                           ) : (
                             <div className="w-full" key={tagIndex}>
                               <div
-                                className="px-1 py-1 pl-6 pr-3 hover:bg-black"
+                                className="px-1 py-1 pl-12 pr-3 hover:bg-black"
                                 style={{ cursor: "pointer" }}
                               >
                                 <div style={{ display: "block" }}>

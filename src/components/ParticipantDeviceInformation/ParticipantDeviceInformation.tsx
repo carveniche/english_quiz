@@ -16,15 +16,13 @@ export default function ParticipantDeviceInformation({
 }: ParticipantDeviceInformationProps) {
   const dispatch = useDispatch();
   useEffect(() => {
-    getDeviceInfoForTech(liveClassId, 47804) // For now userId is hardcoded its need to change once api changes are done from backend
+    getDeviceInfoForTech(liveClassId, userId) // For now userId is hardcoded its need to change once api changes are done from backend
       .then((res) => {
         if (res.data.status) {
           dispatch(updateParticipantDeviceInformation(res?.data?.device_data));
         }
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch((e) => {});
   }, [remotePCount]);
   return null;
 }

@@ -6,11 +6,13 @@ import TextMessage from "./TextMessage/TextMessage";
 import { RootState } from "../../../redux/store";
 import { useSelector } from "react-redux";
 import useChatContext from "../../../hooks/useChatContext/useChatContext";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 
 export default function MessageList() {
   const messagesFromStore = useSelector(
     (state: RootState) => state.dataTrackStore.ChatMessages
   );
+  const { room } = useVideoContext();
 
   const { isChatWindowOpen, setHasUnreadMessages } = useChatContext();
 
@@ -29,6 +31,7 @@ export default function MessageList() {
               identity={message.identity}
               body={message.message!}
               isLocalParticipant={true}
+              localParticipantIdentity={room?.localParticipant.identity || ""}
             />
           </React.Fragment>
         );

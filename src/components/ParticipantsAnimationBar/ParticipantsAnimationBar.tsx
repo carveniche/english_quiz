@@ -27,6 +27,7 @@ import PlayLottieParticipantBar from "../PlayLottieParticipantBar/PlayLottiePati
 import { useDispatch } from "react-redux";
 import { disabledAnimation } from "../../redux/features/dataTrackStore";
 import { Tooltip } from "@material-ui/core";
+import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -64,6 +65,9 @@ export default function ParticipantsAnimationBar({
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
+  const [openAlertBox, setOpenAlertBox] = useState(true);
+
+  const [alertMessage, setAlertMessage] = useState("");
 
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
@@ -119,7 +123,10 @@ export default function ParticipantsAnimationBar({
     let checkFirstDevice = checkStudentUsingIpadOrNot(identity);
 
     if (checkFirstDevice) {
-      alert("Student is Using Ipad in Browser so ScreenShare will not work");
+      setAlertMessage(
+        "Screen sharing is not supported on iPads in the browser"
+      );
+
       return;
     }
 
@@ -433,6 +440,15 @@ export default function ParticipantsAnimationBar({
             </div>
           </div>
         </div>
+      )}
+
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
       )}
     </>
   );

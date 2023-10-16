@@ -31,7 +31,7 @@ svg {
   transform: translatex(100%) scale(1);
 }
 .submenu-react li:hover > ul {
-  transform: translatex(101%) scale(1);
+  transform: translatex(100%) scale(1);
 }
 .submenu-react li > button svg {
   transform: rotate(-90deg);

@@ -67,7 +67,7 @@ export default function MathLessonNavbarMenu({
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-         transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[48px] items-center -right-px
+         transition duration-150 ease-in-out origin-top flex min-w-[360px] flex-col min-h-[48px] items-center right-0
          `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
@@ -110,7 +110,12 @@ export default function MathLessonNavbarMenu({
 
                   {currentSelectedTopic === index && (
                     <div className="w-full">
-                      <div className="w-full ">
+                      <div
+                        className="w-full "
+                        style={{
+                          transition: "ease-in-out all 3000",
+                        }}
+                      >
                         {pdf.pdfs.map((tag, tagIndex) =>
                           tag.name ? (
                             <div
