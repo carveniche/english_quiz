@@ -60,8 +60,6 @@ export default function ReportErrorScreenShot() {
       .catch(() => setScreenShotProgress(false));
   };
 
-  console.log("alertMessage", alertMessage);
-
   const captureScreenShot = (stream: MediaStream) => {
     let canvasCapture = canvas.current;
 

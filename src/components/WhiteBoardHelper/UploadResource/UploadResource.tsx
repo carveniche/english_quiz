@@ -18,13 +18,14 @@ import { openClosedUploadResourceWhiteBoard } from "../../../redux/features/Comp
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { ROUTERKEYCONST } from "../../../constants";
 import { getUploadResourcesList } from "../../../api";
+import CustomAlert from "../../DisplayCustomAlert/CustomAlert";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
-  height: 600,
+  height: "auto",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -40,6 +41,8 @@ export default function UploadResource() {
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const [open, setClose] = useState(true);
   const [uploadResourceData, setUploadResourceData] = useState([]);
+  const [openAlertBox, setOpenAlertBox] = useState(true);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const checkUploadResourceList = async () => {
     await getUploadResourcesList(liveClassId)
@@ -61,13 +64,24 @@ export default function UploadResource() {
     return filename?.split(".").pop();
   }
 
+  function bytesToMB(bytes) {
+    return Number((bytes / (1024 * 1024)).toFixed(2));
+  }
+
   const handleFileChange = (e: any) => {
     if (filesUpload.length > 0) {
-      alert("You can only upload one file at a time");
+      setAlertMessage("You can only upload one file at a time");
       return;
     }
 
     let verifyExtensionFirst = getExtension(e.target.files[0]?.name);
+
+    let checkFileSize = bytesToMB(e.target.files[0]?.size);
+
+    if (checkFileSize > 10) {
+      setAlertMessage("Please upload files below 10 MB");
+      return;
+    }
 
     if (
       verifyExtensionFirst == "png" ||
@@ -77,17 +91,17 @@ export default function UploadResource() {
     ) {
       setFilesUpload([...filesUpload, e.target.files[0]]);
     } else {
-      alert("Please upload only Images and Pdf");
+      setAlertMessage("Please upload only Images and Pdf");
       return;
     }
   };
 
   const checkFilesBeforeUploading = () => {
     if (filesUpload.length == 0) {
-      alert("Please choose atleast one file to upload");
+      setAlertMessage("Please choose atleast one file to upload");
       return false;
     } else if (filesUpload.length > 1) {
-      alert("Please choose one file to upload");
+      setAlertMessage("Please choose one file to upload");
       return false;
     } else {
       return true;
@@ -141,7 +155,7 @@ export default function UploadResource() {
             handleDataTrack(response?.data?.uploaded_images);
             setClose(false);
           } else {
-            alert(response.data.message);
+            setAlertMessage(response.data.message);
             setUploadInProgress(false);
             setFilesUpload([]);
           }
@@ -288,6 +302,15 @@ export default function UploadResource() {
           </div>
         </Box>
       </Modal>
+
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
+      )}
     </div>
   );
 }
