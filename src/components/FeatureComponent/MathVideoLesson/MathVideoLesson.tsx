@@ -1,12 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { isTutor } from "../../../utils/participantIdentity";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { useDispatch } from "react-redux";
+import { updateMathVideoCurrentTime } from "../../../redux/features/liveClassDetails";
 
 export default function MathVideoLesson() {
+  const dispatch = useDispatch();
+
+  const { mathVideoCurrentTime } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const [videoPlaying, setVideoPlaying] = useState(false);
   const { room } = useVideoContext();
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
@@ -31,12 +39,32 @@ export default function MathVideoLesson() {
     }
   }, [videoPlayState]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("MathVideoLesson component");
-  //     // handleDataTrack(false);
-  //   };
-  // }, []);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = mathVideoCurrentTime;
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    return () => {
+      if (videoRef.current) {
+        const [localDataTrackPublication] = [
+          ...room!.localParticipant.dataTracks.values(),
+        ];
+        let DataTrackObj = {
+          pathName: null,
+          value: {
+            datatrackName: "UpdatePlayVideoTiming",
+            playVideoCurrentTime: videoRef.current.currentTime,
+          },
+        };
+
+        localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+
+        dispatch(updateMathVideoCurrentTime(videoRef.current.currentTime));
+      }
+    };
+  }, []);
 
   const handleDataTrack = (state: boolean) => {
     const [localDataTrackPublication] = [

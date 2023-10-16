@@ -39,7 +39,8 @@ interface liveClassDetailsTypes {
   openUploadResourceModal: boolean;
   participantDeviceInformation: string[];
   showDeviceInfoModalTech: boolean;
-  isGgb:boolean
+  isGgb: boolean;
+  mathVideoCurrentTime: number;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -77,7 +78,8 @@ const initialState: liveClassDetailsTypes = {
   openUploadResourceModal: false,
   participantDeviceInformation: [],
   showDeviceInfoModalTech: false,
-  isGgb:false
+  isGgb: false,
+  mathVideoCurrentTime: 0,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -215,10 +217,13 @@ export const liveClassDetailsSlice = createSlice({
     openCloseShowDeviceInfoModalTech: (state, action) => {
       state.showDeviceInfoModalTech = action.payload;
     },
-    changeGGbStatus:(state,action)=>{
-      const {payload}=action
-      state.isGgb=payload
-    }
+    changeGGbStatus: (state, action) => {
+      const { payload } = action;
+      state.isGgb = payload;
+    },
+    updateMathVideoCurrentTime: (state, action) => {
+      state.mathVideoCurrentTime = action.payload;
+    },
   },
 });
 
@@ -241,7 +246,8 @@ export const {
   openCloseUploadResourceModalTeacher,
   updateParticipantDeviceInformation,
   openCloseShowDeviceInfoModalTech,
-  changeGGbStatus
+  changeGGbStatus,
+  updateMathVideoCurrentTime,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

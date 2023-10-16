@@ -20,6 +20,7 @@ import {
   addSpeedMathScoreOfAllParticipant,
   addTechJoinedClass,
   addMuteIndividualParticipant,
+  updateMathVideoCurrentTime,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -169,6 +170,17 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           addVideoPlayState({
             muteAllState: parseMessage.value.muteState,
             videoPlayState: parseMessage.value.videoPlayState,
+          })
+        );
+      } else if (
+        parseMessage?.value?.datatrackName === "UpdatePlayVideoTiming"
+      ) {
+        dispatch(
+          updateMathVideoCurrentTime(parseMessage?.value?.playVideoCurrentTime)
+        );
+        dispatch(
+          addVideoPlayState({
+            videoPlayState: false,
           })
         );
       } else if (parseMessage?.value?.datatrackName === "SpeedMath") {
