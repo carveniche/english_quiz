@@ -82,8 +82,8 @@ export default function Geogebra() {
   const { ggbLink, tagId } = extraParams;
   const [isEnabledWriting, setIsEnabledWriting] = useState(false);
   const elementRef = useRef<typeof Element>(null);
-  let link = ggbLink.split("/");
-  link = link[link.length - 1];
+  let link = ggbLink?.split("/");
+  if (link) link = link[link.length - 1];
   const [parameter, setParamter] = useState({
     ...PARAMETERS,
     material_id: link,

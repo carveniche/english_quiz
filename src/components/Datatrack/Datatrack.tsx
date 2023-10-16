@@ -57,7 +57,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-      console.log(parseMessage);
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
@@ -67,7 +66,6 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         }
       } else {
         if (parseMessage.value.type === "deleteFromActiveTab") {
-          history(`${parseMessage.pathName}?${queryParams}`);
           dispatch(deleteFromActiveTab(parseMessage.pathName));
         } else if (parseMessage.value.type === "addFromActiveTab") {
           history(`${parseMessage.pathName}?${queryParams}`);
