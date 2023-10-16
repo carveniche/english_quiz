@@ -43,6 +43,9 @@ export default function UploadResource() {
   const [uploadResourceData, setUploadResourceData] = useState([]);
   const [openAlertBox, setOpenAlertBox] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
+  const [alertWarningType, setAlertWarningType] = useState<
+    "info" | "error" | "warning" | undefined
+  >("info");
 
   const checkUploadResourceList = async () => {
     await getUploadResourcesList(liveClassId)
@@ -156,6 +159,7 @@ export default function UploadResource() {
             setClose(false);
           } else {
             setAlertMessage(response.data.message);
+            setAlertWarningType("error");
             setUploadInProgress(false);
             setFilesUpload([]);
           }
@@ -305,7 +309,7 @@ export default function UploadResource() {
 
       {alertMessage !== "" && (
         <CustomAlert
-          variant="info"
+          variant={alertWarningType}
           headline={alertMessage}
           open={openAlertBox}
           handleClose={() => setOpenAlertBox(false)}

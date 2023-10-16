@@ -11,6 +11,9 @@ export default function ReportErrorScreenShot() {
   const [openAlertBox, setOpenAlertBox] = useState(true);
   const [screenShotProgress, setScreenShotProgress] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [alertWarningType, setAlertWarningType] = useState<
+    "info" | "error" | "warning" | undefined
+  >("info");
 
   const { userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -101,6 +104,7 @@ export default function ReportErrorScreenShot() {
             response.data.message +
             " Please try again"
         );
+        setAlertWarningType("error");
       }
     } catch (error) {
       console.error("An error occurred while sending feedback:", error);
@@ -122,7 +126,7 @@ export default function ReportErrorScreenShot() {
 
       {alertMessage !== "" && (
         <CustomAlert
-          variant="info"
+          variant={alertWarningType}
           headline={alertMessage}
           open={openAlertBox}
           handleClose={() => setOpenAlertBox(false)}
