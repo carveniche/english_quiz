@@ -7,6 +7,7 @@ import { GGB, ROUTERKEYCONST } from "../../../../constants";
 import { isTutorTechBoth } from "../../../../utils/participantIdentity";
 import { useDispatch } from "react-redux";
 import { changeGGbStatus } from "../../../../redux/features/liveClassDetails";
+import UserTab from "../UserTab";
 const VIEWS = {
   is3D: 1,
   AV: 1,
@@ -79,10 +80,6 @@ export default function Geogebra() {
   );
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const { ggbLink, tagId } = extraParams;
-  const [appletDimension, setAppletDimension] = useState({
-    width: 0,
-    height: 0,
-  });
   const [isEnabledWriting, setIsEnabledWriting] = useState(false);
   const elementRef = useRef<typeof Element>(null);
   let link = ggbLink.split("/");
@@ -99,7 +96,7 @@ export default function Geogebra() {
   );
   const timerRef = useRef(null);
   const fetchTimerRef = useRef(null);
-  const handleEnabledDisabledAction = (mode) => {
+  const handleEnabledDisabledAction = (mode: string) => {
     let isTutor = isTutorTechBoth({ identity: role_name.toString() });
     let temp = false;
     if (isTutor) {
@@ -116,7 +113,12 @@ export default function Geogebra() {
     }, 200);
   };
   const debounceFn = (api) => {
-    if (!isEnabledWriting) return;
+    let temp = false;
+    setIsEnabledWriting((prev) => {
+      temp = prev;
+      return prev;
+    });
+    if (!temp) return;
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       let studentId = userId;
@@ -150,12 +152,10 @@ export default function Geogebra() {
 
   const calculateWidthAndHeight = (app, data) => {
     // var applet = new app("5.0", parameter, VIEWS);
-    console.log(data.width);
     let appletWidth = data.width;
     let appletHeight = data.height;
     let containerWidth = elementRef.current.clientWidth;
-    let containerHeight = elementRef.current.clientHeight;
-    console.log(containerWidth, containerHeight);
+    let containerHeight = elementRef.current.clientHeight - 40 - 16;
     let heightWidthProportion = appletWidth / appletHeight;
     let actualWidth = containerWidth;
     let actualHeight = containerHeight;
@@ -164,7 +164,6 @@ export default function Geogebra() {
       actualWidth = containerHeight * heightWidthProportion;
       actualHeight = containerHeight;
     }
-    console.log(appletHeight, appletWidth);
     let scale = actualWidth / appletWidth;
     let newParmater = {
       ...PARAMETERS,
@@ -181,7 +180,7 @@ export default function Geogebra() {
       api.registerClientListener((event) => {
         clientListener(event, api);
       });
-      console.log(newParmater);
+
       //   api.unregisterClientListener((event) => {
       //     console.log("unregister");
       //     clientListener(event, api);
@@ -253,10 +252,19 @@ export default function Geogebra() {
   };
   useEffect(() => {
     if (!ggbData.currentCount) return;
-    let studentId = students[0]?.id || "";
-    if (role_name.toString() === "tutor") {
-      if (studentId) debounceFetchRequest(() => getData(studentId));
-    } else debounceFetchRequest(() => getData(`${userId}`));
+
+    if (isTutorTechBoth({ identity: role_name.toString() })) {
+      if (
+        ggbData.currentSelectedStudentId == ggbData.currentIdentity &&
+        ggbData.currentSelectedStudentId
+      ) {
+        debounceFetchRequest(() => getData(ggbData.currentSelectedStudentId));
+      }
+    } else {
+      if (isTutorTechBoth({ identity: ggbData.currentRole })) {
+        debounceFetchRequest(() => getData(`${userId}`));
+      }
+    }
   }, [ggbData.currentCount]);
   useEffect(() => {
     dispatch(changeGGbStatus(true));
@@ -268,6 +276,13 @@ export default function Geogebra() {
     handleEnabledDisabledAction(ggbData.currentMode);
   }, [ggbData.currentMode]);
 
+  useEffect(() => {
+    if (ggbData.currentSelectedStudentId) {
+      if (isTutorTechBoth({ identity: role_name.toString() })) {
+        debounceFetchRequest(() => getData(ggbData.currentSelectedStudentId));
+      }
+    }
+  }, [ggbData.currentSelectedStudentId]);
   return (
     <div
       ref={elementRef}
@@ -276,8 +291,13 @@ export default function Geogebra() {
         pointerEvents: isEnabledWriting ? "initial" : "none",
       }}
     >
-      {loading && <h3>Loading...</h3>}
-      <div id="geogebra" style={{ margin: "auto" }}></div>
+      <div className="w-fit m-auto">
+        {isTutorTechBoth({ identity: role_name.toString() }) && (
+          <UserTab students={students} />
+        )}
+        {loading && <h3>Loading...</h3>}
+        <div id="geogebra" style={{ margin: "auto" }}></div>
+      </div>
     </div>
   );
 }
