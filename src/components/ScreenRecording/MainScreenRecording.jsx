@@ -4,6 +4,7 @@ import ScreenRecording from "./ScreenRecording";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import { isTutor } from "../../utils/participantIdentity";
 import { useSelector } from "react-redux";
+import { SCREENRECORDING } from "../../constants";
 export default function MainScreenRecording() {
   const { room } = useVideoContext();
   const speakerViewParticipants = useSpeakerViewParticipants();
@@ -14,7 +15,7 @@ export default function MainScreenRecording() {
   const ref2 = useRef();
   return (
     <>
-      {isTutor({ identity: String(role_name) }) && (
+      {SCREENRECORDING && isTutor({ identity: String(role_name) }) && (
         <ScreenRecording
           ref={ref}
           screenRecordingRef2={ref2}

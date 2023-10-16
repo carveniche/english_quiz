@@ -108,3 +108,5 @@ export const GGB = {
   dataTrackName: "ggbDataTrack",
   ggbChangeMode: "ggbChangeMode",
 };
+
+export const SCREENRECORDING = true;

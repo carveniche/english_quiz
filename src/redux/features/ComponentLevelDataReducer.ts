@@ -85,12 +85,6 @@ const initialState = {
     currentCount: 0,
     currentRole: "",
     currentMode: "tutor",
-  },
-  ggbData: {
-    currentIdentity: "",
-    currentCount: 0,
-    currentRole: "",
-    currentMode: "tutor",
     currentSelectedStudentId: "",
   },
 };
