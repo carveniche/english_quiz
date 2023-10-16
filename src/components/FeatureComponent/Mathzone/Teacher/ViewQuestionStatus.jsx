@@ -7,6 +7,7 @@ export default function ViewQuestionStatus({
   totalQuestion,
   identity,
   practiceId,
+  handleWindowListener,
 }) {
   const [totalQuestionArray, setTotalQuestionArray] = React.useState(
     new Array(totalQuestion || 5).fill(1)
@@ -59,6 +60,15 @@ export default function ViewQuestionStatus({
   useEffect(() => {
     return () => {
       handleOpenCloseResponse(false, -1, {});
+    };
+  }, []);
+  const windowListner = () => {
+    typeof handleWindowListener === "function" && handleWindowListener();
+  };
+  useEffect(() => {
+    window.addEventListener("click", windowListner);
+    return () => {
+      window.removeEventListener("click", windowListner);
     };
   }, []);
   return (

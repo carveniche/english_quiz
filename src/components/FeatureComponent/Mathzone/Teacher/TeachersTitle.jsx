@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ViewQuestionStatus from "./ViewQuestionStatus";
 
@@ -17,13 +17,23 @@ export default function TeachersTitle({
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const totalQuestionArray = new Array(totalQuestion || 5).fill(1);
   const [selectedStudent, setSelectedStudent] = useState("");
-  const handleSelectedStudent = (identity) => {
+  const selectedStudentRef = useRef(false);
+  const handleSelectedStudent = (identity, from) => {
+    if (from === "window") {
+      setSelectedStudent("");
+      return;
+    }
+    selectedStudentRef.current = true;
     if (identity) {
       if (identity === selectedStudent) setSelectedStudent("");
       else setSelectedStudent(identity);
     }
   };
-
+  const handleWindowListener = () => {
+    console.log("working");
+    if (!selectedStudentRef.current) handleSelectedStudent("", "window");
+    selectedStudentRef.current = false;
+  };
   return (
     <div
       className={`flex bg-F5F5F5 ${
@@ -81,6 +91,7 @@ export default function TeachersTitle({
                           identity={identity}
                           practiceId={practiceId}
                           key={identity}
+                          handleWindowListener={handleWindowListener}
                         />
                       </div>
                     </div>
