@@ -14,7 +14,7 @@ export default function MainScreenRecording() {
   const ref2 = useRef();
   return (
     <>
-      {/* {isTutor({ identity: String(role_name) }) && (
+      {isTutor({ identity: String(role_name) }) && (
         <ScreenRecording
           ref={ref}
           screenRecordingRef2={ref2}
@@ -22,7 +22,7 @@ export default function MainScreenRecording() {
           userJoined={true}
           participantLength={speakerViewParticipants.length || 0}
         />
-      )} */}
+      )}
     </>
   );
 }

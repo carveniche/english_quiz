@@ -372,9 +372,6 @@ export default function WhiteBoard({
   }, []);
   useEffect(() => {
     return () => {
-      if (!coordinatesRef.current.length && !remoteArrayRef.current?.length) {
-        return;
-      }
       typeof handleUpdateLocalAndRemoteData === "function" &&
         handleUpdateLocalAndRemoteData(
           JSON.parse(JSON.stringify(coordinatesRef.current)),
