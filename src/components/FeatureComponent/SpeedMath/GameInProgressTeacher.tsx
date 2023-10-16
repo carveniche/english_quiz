@@ -50,7 +50,7 @@ export default function GameInProgressTeacher({
         </p>
       </div>
       <div className="flex w-full h-full items-center">
-        <div className="flex flex-col w-[90%] pl-2 h-full">
+        <div className="flex flex-col w-[70%] h-full pl-2">
           {speedMathScoreofAllParticipant.length > 0 &&
             speedMathScoreofAllParticipant.map((studentData: any) => {
               return (
