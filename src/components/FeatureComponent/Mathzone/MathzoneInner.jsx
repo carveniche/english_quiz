@@ -242,10 +242,10 @@ export default function MathzoneInner() {
                 margin: "0 auto",
                 width: "calc(100% - 160px)",
                 maxHeight: `calc(100% - ${
-                  !obj?.quiz_completed && localParticipant !== "tutor" ? 78 : 58
+                  !obj?.quiz_completed && localParticipant !== "tutor" ? 58 : 8
                 }px)`,
                 minHeight: `calc(100% - ${
-                  !obj?.quiz_completed && localParticipant !== "tutor" ? 78 : 58
+                  !obj?.quiz_completed && localParticipant !== "tutor" ? 58 : 8
                 }px)`,
               }}
             >

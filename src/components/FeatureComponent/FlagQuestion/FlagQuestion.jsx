@@ -258,7 +258,9 @@ const FlagQuestionViewer = (props) => {
                       data[currentIndex] && (
                         <TeacherQuizDisplay
                           obj={data[currentIndex]}
-                          showSolution={showSolution}
+                          showSolution={
+                            props?.identity === "tutor" ? true : showSolution
+                          }
                         />
                       )
                     );
