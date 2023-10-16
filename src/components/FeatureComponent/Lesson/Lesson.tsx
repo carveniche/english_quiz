@@ -145,18 +145,19 @@ export default function Lesson() {
     }
   }, [whiteBoardData.currentIndex]);
 
-  if (!imageUrl?.length)
-    return (
-      <>
-        <h3>Could not find the lesson.</h3>
-      </>
-    );
   if (tagType === GGB.type)
     return (
       <>
         <Geogebra />
       </>
     );
+  if (!imageUrl?.length)
+    return (
+      <>
+        <h3>Could not find the lesson.</h3>
+      </>
+    );
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div

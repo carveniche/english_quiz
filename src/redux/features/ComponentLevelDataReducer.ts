@@ -86,6 +86,13 @@ const initialState = {
     currentRole: "",
     currentMode: "tutor",
   },
+  ggbData: {
+    currentIdentity: "",
+    currentCount: 0,
+    currentRole: "",
+    currentMode: "tutor",
+    currentSelectedStudentId: "",
+  },
 };
 
 const ComponentLevelDataReducer = createSlice({
@@ -178,6 +185,11 @@ const ComponentLevelDataReducer = createSlice({
     closeUploadResourceWhiteboard: (state, action) => {
       state.isUploadResourceOpen = action.payload;
     },
+
+    changeGgbStudent: (state, action) => {
+      const { payload } = action;
+      state.ggbData.currentSelectedStudentId = payload;
+    },
   },
 });
 export const {
@@ -194,6 +206,7 @@ export const {
   resetWhiteBoardData,
   ggbDataTrack,
   changeGGbMode,
+  changeGgbStudent,
   closeUploadResourceWhiteboard,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;
