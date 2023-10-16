@@ -63,8 +63,9 @@ export default function MathVideoLesson() {
             currentVideoTagId: extraParams.videoTagId,
           },
         };
-
-        localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+        if (localDataTrackPublication) {
+          localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+        }
 
         dispatch(
           updateMathVideoCurrentTime({
