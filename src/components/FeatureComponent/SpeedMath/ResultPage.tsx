@@ -191,7 +191,7 @@ export default function ResultPage({
             </div>
             <div className="flex w-1/2 justify-center items-center">
               <p className="text-speedMathTextColor font-bold text-xl">
-                Corrent Answer
+                Correct Answer
               </p>
             </div>
           </div>

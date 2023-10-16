@@ -212,7 +212,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     <>
       <ul
         className="bg-header-black text-white transform group-hover:scale-100 absolute 
-      transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center right-0"
+      transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center"
       >
         {true &&
           filterRouterConfig.map((item, index) => {
