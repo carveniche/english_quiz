@@ -9,7 +9,7 @@ import { updateMathVideoCurrentTime } from "../../../redux/features/liveClassDet
 export default function MathVideoLesson() {
   const dispatch = useDispatch();
 
-  const { mathVideoCurrentTime } = useSelector(
+  const { mathCurrentVideoPlaying } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
   const [videoPlaying, setVideoPlaying] = useState(false);
@@ -41,7 +41,11 @@ export default function MathVideoLesson() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.currentTime = mathVideoCurrentTime;
+      if (
+        mathCurrentVideoPlaying.currentVideoTagId === extraParams.videoTagId
+      ) {
+        videoRef.current.currentTime = mathCurrentVideoPlaying.currentVideoTime;
+      }
     }
   }, []);
 
@@ -55,13 +59,19 @@ export default function MathVideoLesson() {
           pathName: null,
           value: {
             datatrackName: "UpdatePlayVideoTiming",
-            playVideoCurrentTime: videoRef.current.currentTime,
+            currentVideoTime: videoRef.current.currentTime,
+            currentVideoTagId: extraParams.videoTagId,
           },
         };
 
         localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
 
-        dispatch(updateMathVideoCurrentTime(videoRef.current.currentTime));
+        dispatch(
+          updateMathVideoCurrentTime({
+            currentVideoTime: videoRef.current.currentTime,
+            currentVideoTagId: extraParams.videoTagId,
+          })
+        );
       }
     };
   }, []);

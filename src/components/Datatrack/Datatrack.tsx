@@ -176,7 +176,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage?.value?.datatrackName === "UpdatePlayVideoTiming"
       ) {
         dispatch(
-          updateMathVideoCurrentTime(parseMessage?.value?.playVideoCurrentTime)
+          updateMathVideoCurrentTime({
+            currentVideoTime: parseMessage?.value?.currentVideoTime,
+            currentVideoTagId: parseMessage?.value?.currentVideoTagId,
+          })
         );
         dispatch(
           addVideoPlayState({

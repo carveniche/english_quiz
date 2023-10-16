@@ -135,6 +135,7 @@ export default function MathVideoNavbarMenu({
                                           icon: item.icon,
                                           extraParams: {
                                             videoUrl: tag.url,
+                                            videoTagId: tag.id,
                                           },
                                         })
                                       }

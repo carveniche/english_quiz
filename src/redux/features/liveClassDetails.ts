@@ -40,7 +40,7 @@ interface liveClassDetailsTypes {
   participantDeviceInformation: string[];
   showDeviceInfoModalTech: boolean;
   isGgb: boolean;
-  mathVideoCurrentTime: number;
+  mathCurrentVideoPlaying: object;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -79,7 +79,10 @@ const initialState: liveClassDetailsTypes = {
   participantDeviceInformation: [],
   showDeviceInfoModalTech: false,
   isGgb: false,
-  mathVideoCurrentTime: 0,
+  mathCurrentVideoPlaying: {
+    currentVideoTime: 0,
+    currentVideoTagId: 0,
+  },
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -222,7 +225,10 @@ export const liveClassDetailsSlice = createSlice({
       state.isGgb = payload;
     },
     updateMathVideoCurrentTime: (state, action) => {
-      state.mathVideoCurrentTime = action.payload;
+      state.mathCurrentVideoPlaying.currentVideoTime =
+        action.payload.currentVideoTime;
+      state.mathCurrentVideoPlaying.currentVideoTagId =
+        action.payload.currentVideoTagId;
     },
   },
 });

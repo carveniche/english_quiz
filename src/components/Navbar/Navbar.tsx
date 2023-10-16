@@ -75,6 +75,11 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     if (demo || group_class || !isCicoAllowed) {
       finalArr = finalArr.filter((item) => item.key !== CICO.key);
     }
+    if (demo) {
+      finalArr = finalArr.filter(
+        (item) => item.key !== ROUTERKEYCONST.miscellaneous.key
+      );
+    }
     return finalArr;
   };
 
