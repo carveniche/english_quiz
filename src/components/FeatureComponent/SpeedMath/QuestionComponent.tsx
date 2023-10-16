@@ -227,7 +227,7 @@ export default function QuestionComponent({
   return (
     <div className="flex flex-row w-full h-full justify-between items-center">
       <div className="flex flex-col w-full h-full justify-center items-center p-5 gap-4">
-        <div className="flex flex-col w-full h-full justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
+        <div className="flex flex-col w-full h-[70%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
           <div className="flex h-2/5 w-full justify-center items-center">
             <p className="text-speedMathTextColor font-bold text-xl">
               Keep answering as quickly as you can
@@ -246,7 +246,7 @@ export default function QuestionComponent({
             )}
           </div>
         </div>
-        <div className="flex w-full h-full justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
+        <div className="flex w-full h-[70%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
           <input
             autoFocus
             placeholder="Answer and Enter"

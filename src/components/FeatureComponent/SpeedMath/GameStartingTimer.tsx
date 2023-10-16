@@ -18,12 +18,15 @@ export default function GameStartingTimer({
 
   return (
     <div className="flex flex-col w-full h-full justify-center items-center">
-      <div className="flex h-1/5 w-full  justify-center">
-        <p className=" text-speedMathTextColor text-7xl font-bold">
+      <div className="flex flex-col h-1/5 w-full  justify-center items-center">
+        <p className=" text-speedMathTextColor text-7xl font-extrabold opacity-5">
+          0{counter - 1}
+        </p>
+        <p className=" text-speedMathTextColor text-7xl font-extrabold ">
           0{counter}
         </p>
       </div>
-      <div className="flex h-1/5 w-full justify-center mt-2">
+      <div className="flex h-2/5 w-[50%] justify-center mt-10">
         <p className="text-speedMathTextColor text-2xl font-semibold">
           You have 60 sec to answer as many question as you can. Don't miss the
           chance to get ahead of your teacher

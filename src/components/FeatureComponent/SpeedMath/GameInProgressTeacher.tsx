@@ -43,14 +43,14 @@ export default function GameInProgressTeacher({
   };
 
   return (
-    <div className="flex flex-row w-full h-full justify-between items-center">
-      <div className="flex w-full h-full justify-center items-center">
-        <p className="text-speedMathTextColor font-bold text-6xl">
+    <div className="flex flex-col w-[85%] h-full justify-between items-center">
+      <div className="flex w-full h-[30%] pl-10 items-center">
+        <p className="text-speedMathTextColor font-bold text-3xl">
           Game In Progress
         </p>
       </div>
-      <div className="flex w-full h-full justify-center items-center">
-        <div className="flex flex-col w-[90%] h-full justify-center">
+      <div className="flex w-full h-full items-center">
+        <div className="flex flex-col w-[90%] pl-2 h-full">
           {speedMathScoreofAllParticipant.length > 0 &&
             speedMathScoreofAllParticipant.map((studentData: any) => {
               return (
