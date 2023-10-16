@@ -109,4 +109,4 @@ export const GGB = {
   ggbChangeMode: "ggbChangeMode",
 };
 
-export const SCREENRECORDING = false;
+export const SCREENRECORDING = true;
