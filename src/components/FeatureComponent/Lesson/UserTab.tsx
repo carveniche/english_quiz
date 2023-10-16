@@ -22,13 +22,13 @@ export default function UserTab({ students }: { students: students[] }) {
   }, []);
   if ((students?.length || 0) < 2) return <></>;
   return (
-    <div className="h-[40px]">
+    <div className="h-[40px] flex gap-2 mt-2">
       {students?.map((item: { id: string; name: string }, key: number) => (
         <div
           key={key}
           className={`w-fit h-fit border ${
-            item.id == currentSelectedStudentId ? "bg-sky-500" : ""
-          } border-sky-500 pt-2`}
+            item.id == currentSelectedStudentId ? "bg-sky-500 text-white" : ""
+          } border-sky-500 p-2 rounded`}
         >
           <button onClick={() => handleChangeStudent(key)}>{item.name}</button>
         </div>

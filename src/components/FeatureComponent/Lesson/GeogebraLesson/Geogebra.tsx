@@ -155,7 +155,7 @@ export default function Geogebra() {
     let appletWidth = data.width;
     let appletHeight = data.height;
     let containerWidth = elementRef.current.clientWidth;
-    let containerHeight = elementRef.current.clientHeight;
+    let containerHeight = elementRef.current.clientHeight - 40 - 16;
     let heightWidthProportion = appletWidth / appletHeight;
     let actualWidth = containerWidth;
     let actualHeight = containerHeight;
@@ -291,11 +291,13 @@ export default function Geogebra() {
         pointerEvents: isEnabledWriting ? "initial" : "none",
       }}
     >
-      {isTutorTechBoth({ identity: role_name.toString }) && (
-        <UserTab students={students} />
-      )}
-      {loading && <h3>Loading...</h3>}
-      <div id="geogebra" style={{ margin: "auto" }}></div>
+      <div className="w-fit m-auto">
+        {isTutorTechBoth({ identity: role_name.toString() }) && (
+          <UserTab students={students} />
+        )}
+        {loading && <h3>Loading...</h3>}
+        <div id="geogebra" style={{ margin: "auto" }}></div>
+      </div>
     </div>
   );
 }
