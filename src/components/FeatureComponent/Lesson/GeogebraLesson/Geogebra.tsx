@@ -155,7 +155,15 @@ export default function Geogebra() {
     let appletWidth = data.width;
     let appletHeight = data.height;
     let containerWidth = elementRef.current.clientWidth;
-    let containerHeight = elementRef.current.clientHeight - 40 - 16;
+    let containerHeight = elementRef.current.clientHeight;
+    if (
+      (students?.length || 0) > 1 &&
+      isTutorTechBoth({ identity: role_name.toString() })
+    ) {
+      containerHeight = containerHeight;
+      -40 - 16;
+    }
+
     let heightWidthProportion = appletWidth / appletHeight;
     let actualWidth = containerWidth;
     let actualHeight = containerHeight;
@@ -284,19 +292,19 @@ export default function Geogebra() {
     }
   }, [ggbData.currentSelectedStudentId]);
   return (
-    <div
-      ref={elementRef}
-      className="w-full h-full"
-      style={{
-        pointerEvents: isEnabledWriting ? "initial" : "none",
-      }}
-    >
+    <div ref={elementRef} className="w-full h-full">
       <div className="w-fit m-auto">
         {isTutorTechBoth({ identity: role_name.toString() }) && (
           <UserTab students={students} />
         )}
         {loading && <h3>Loading...</h3>}
-        <div id="geogebra" style={{ margin: "auto" }}></div>
+        <div
+          id="geogebra"
+          style={{
+            margin: "auto",
+            pointerEvents: isEnabledWriting ? "initial" : "none",
+          }}
+        ></div>
       </div>
     </div>
   );

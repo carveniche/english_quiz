@@ -29,8 +29,9 @@ export default function UserTab({ students }: { students: students[] }) {
           className={`w-fit h-fit border ${
             item.id == currentSelectedStudentId ? "bg-sky-500 text-white" : ""
           } border-sky-500 p-2 rounded`}
+          onClick={() => handleChangeStudent(key)}
         >
-          <button onClick={() => handleChangeStudent(key)}>{item.name}</button>
+          <button>{item.name}</button>
         </div>
       ))}
     </div>
