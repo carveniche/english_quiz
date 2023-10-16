@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ViewQuestionStatus from "./ViewQuestionStatus";
 
 const expectedBackgroundColor = ["#FC7E41", "#4544C4"];
+import styles from "../outerPage.module.css";
 export default function TeachersTitle({
   remoteParticipant,
   isQuizCompleted,
@@ -30,7 +31,6 @@ export default function TeachersTitle({
     }
   };
   const handleWindowListener = () => {
-    console.log("working");
     if (!selectedStudentRef.current) handleSelectedStudent("", "window");
     selectedStudentRef.current = false;
   };
@@ -44,7 +44,7 @@ export default function TeachersTitle({
         Q. {currentQuestion} / {totalQuestion}
       </div>
 
-      <div>
+      <div className={styles.mathzoneTitle}>
         {extraParams?.conceptName} - {extraParams?.tagName} Level-
         {extraParams?.level}
       </div>
