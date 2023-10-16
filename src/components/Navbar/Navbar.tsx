@@ -11,7 +11,7 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CICO, ROUTERKEYCONST } from "../../constants";
+import { CICO, LESSON, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
@@ -25,13 +25,16 @@ import {
   coding_ClassType,
   mathCoding_ClassType,
 } from "../../utils/classTypesMenus";
+import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
+import { isGradeAllowed } from "../../utils/isGradeAllowed";
 
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
-
-  const { class_type } = useSelector((state) => state.videoCallTokenData);
+  const { class_type, demo, group_class, grade } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
 
   const [currentSelectedMenuIndex, setCurrentSelectedMenuIndex] = useState(-1);
   const [mathzoneKeys, setMathzoneKeys] = useState(0);
@@ -67,7 +70,11 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         }
       }
     }
-
+    console.log(grade);
+    let isCicoAllowed = isGradeAllowed(grade.toString());
+    if (demo || group_class || !isCicoAllowed) {
+      finalArr = finalArr.filter((item) => item.key !== CICO.key);
+    }
     return finalArr;
   };
 
@@ -136,7 +143,11 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     icon,
     extraParams,
   }: ActiveTabParams) => {
+    dispatch(
+      resetWhiteBoardData({ dataTrackKey: LESSON.lessonWhiteBoardData })
+    );
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
@@ -150,6 +161,8 @@ export default function Navbar({ onClick }: { onClick: Function }) {
       value: {
         datatrackName: "MathLesson",
         identity: null,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
+        isReset: true,
       },
     };
 
@@ -194,7 +207,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     }
     setCurrentSelectedMenuIndex(index);
   };
-
+  filterRouterConfig;
   return (
     <>
       <ul

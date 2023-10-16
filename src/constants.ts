@@ -94,7 +94,17 @@ export const MISCELLANEOUS = {
   miscellaneousDataWhiteBoard: "miscellaneousDataWhiteBoard",
 };
 
-export const SHAPECHALLENGE={
-  shapeChallengeCheckInWhiteBoard:"shapeChallengeCheckInWhiteBoard",
-  shapeChallengeCheckOutWhiteBoard:"shapeChallengeCheckOutWhiteBoard"
-}
+export const SHAPECHALLENGE = {
+  shapeChallengeCheckInWhiteBoard: "shapeChallengeCheckInWhiteBoard",
+  shapeChallengeCheckOutWhiteBoard: "shapeChallengeCheckOutWhiteBoard",
+};
+
+export const UPLOADRESOURCE = {
+  uploadResourceWhiteboardData: "uploadResourceWhiteboardData",
+  closeUploadResource: "closeUploadResource",
+};
+export const GGB = {
+  type: "ggb",
+  dataTrackName: "ggbDataTrack",
+  ggbChangeMode: "ggbChangeMode",
+};

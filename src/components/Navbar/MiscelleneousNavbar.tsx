@@ -20,7 +20,6 @@ export default function MiscelleneousNavbar({
   elementPosition,
   calcWidth,
 }: MiscelleneousNavbarInterface) {
-  const [open, setOpen] = useState(false);
   return (
     <>
       {item?.hasSubRoute ? (
@@ -40,48 +39,30 @@ export default function MiscelleneousNavbar({
           {item?.subRoute.map((subRouteItem, index) => {
             return (
               <li
-                className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center"
+                className="rounded-sm w-full relative item-center"
                 key={index}
               >
                 <div
-                  className="flex gap-2 relative item-center "
+                  className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
                   style={{ cursor: "pointer" }}
                 >
                   <div className={"w-48"} style={{ display: "block" }}>
                     <div
                       className="flex gap-2"
-                      onClick={() => setOpen((prev) => !prev)}
+                      onClick={() =>
+                        handleClick({
+                          path: `${item.path}${subRouteItem.key}`,
+                          key: item.key,
+                          name: `${item.name}:${subRouteItem.name} `,
+                          icon: item.icon,
+                          extraParams: {},
+                        })
+                      }
                     >
                       <div> {subRouteItem?.name}</div>
-                      {subRouteItem.hasChildren && (
-                        <TabIcon
-                          src={`/menu-icon/chevron_${open ? "up" : "down"}.svg`}
-                        />
-                      )}
                     </div>
                   </div>
                 </div>
-                {subRouteItem.hasChildren && open && (
-                  <div className="py-3 pl-2">
-                    {subRouteItem?.subRoute.map((subRouteInner, index) => (
-                      <div>
-                        <div
-                          onClick={() =>
-                            handleClick({
-                              path: `${item.path}${subRouteItem.key}`,
-                              key: item.key,
-                              name: `${item.name}:${subRouteItem.name} `,
-                              icon: item.icon,
-                              extraParams: {},
-                            })
-                          }
-                        >
-                          {subRouteInner?.name}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </li>
             );
           })}

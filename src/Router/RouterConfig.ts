@@ -10,9 +10,7 @@ import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQu
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
 import MainCico from "../components/FeatureComponent/CICO/MainCico";
-
-import Whiteboard from "../components/FeatureComponent/Whiteboard/Whiteboard";
-import UploadResources from "../components/UploadResources/UploadResources";
+import MainWhiteboard from "../components/FeatureComponent/Whiteboard/MainWhiteboard";
 interface routerConfig {
   path: string;
   key: string;
@@ -29,7 +27,7 @@ const routerConfig: routerConfig[] = [
     path: ROUTERKEYCONST.whiteboard.path,
     key: ROUTERKEYCONST.whiteboard.key,
     name: "Whiteboard",
-    component: Whiteboard,
+    component: MainWhiteboard,
     exact: true,
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
@@ -147,27 +145,6 @@ const routerConfig: routerConfig[] = [
         icon: "/menu-icon/Whiteboard.svg",
         hasChildren: false,
         component: HomeWork,
-      },
-      {
-        key: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.keys,
-        name: "Upload Resources",
-        path: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.route,
-        exact: true,
-        icon: "/menu-icon/Whiteboard.svg",
-        hasChildren: true,
-        component: UploadResources,
-
-        subRoute: [
-          {
-            key: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.keys,
-            name: "Upload",
-            path: ROUTERKEYCONST.miscellaneous.subRoute.uploadResources.route,
-            exact: true,
-            icon: "/menu-icon/Whiteboard.svg",
-            hasChildren: false,
-            component: () => {},
-          },
-        ],
       },
     ],
   },

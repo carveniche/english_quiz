@@ -36,6 +36,10 @@ interface liveClassDetailsTypes {
   isRecordingEnabled: boolean;
   isClassHasDisconnected: boolean;
   muteIndividualParticipant: any;
+  openUploadResourceModal: boolean;
+  participantDeviceInformation: string[];
+  showDeviceInfoModalTech: boolean;
+  isGgb:boolean
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -70,6 +74,10 @@ const initialState: liveClassDetailsTypes = {
   isRecordingEnabled: false,
   isClassHasDisconnected: false,
   muteIndividualParticipant: [],
+  openUploadResourceModal: false,
+  participantDeviceInformation: [],
+  showDeviceInfoModalTech: false,
+  isGgb:false
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -195,6 +203,22 @@ export const liveClassDetailsSlice = createSlice({
         }
       }
     },
+
+    openCloseUploadResourceModalTeacher: (state, action) => {
+      state.openUploadResourceModal = action.payload;
+    },
+
+    updateParticipantDeviceInformation: (state, action) => {
+      state.participantDeviceInformation = action.payload;
+    },
+
+    openCloseShowDeviceInfoModalTech: (state, action) => {
+      state.showDeviceInfoModalTech = action.payload;
+    },
+    changeGGbStatus:(state,action)=>{
+      const {payload}=action
+      state.isGgb=payload
+    }
   },
 });
 
@@ -214,6 +238,10 @@ export const {
   startAndStopRecordingRecording,
   endRoomRequest,
   addMuteIndividualParticipant,
+  openCloseUploadResourceModalTeacher,
+  updateParticipantDeviceInformation,
+  openCloseShowDeviceInfoModalTech,
+  changeGGbStatus
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

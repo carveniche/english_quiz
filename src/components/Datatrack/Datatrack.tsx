@@ -24,20 +24,27 @@ import {
 import {
   CICO,
   FLAGGEDQUESTIONKEY,
+  GGB,
   HOMEWORKQUESTIONKEY,
   LESSON,
   MATHZONEDATAKEY,
   ROUTERKEYCONST,
+  UPLOADRESOURCE,
   WHITEBOARD,
 } from "../../constants";
 import {
+  changeGGbMode,
   changeMathzoneData,
   changePdfIndex,
   cicoComponentLevelDataTrack,
+  closeUploadResourceWhiteboard,
   flagQuestionDetailsStore,
+  ggbDataTrack,
   homeWorkQuestionDataTrack,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
+  openClosedUploadResourceWhiteBoard,
+  resetWhiteBoardData,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -50,7 +57,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
   useEffect(() => {
     const handleMessage = (message: string) => {
       let parseMessage = JSON.parse(message);
-
+      console.log(parseMessage);
       if (
         pathname === parseMessage.pathName ||
         parseMessage.pathName === null
@@ -141,6 +148,13 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
       } else if (parseMessage?.value?.datatrackName === "MathLesson") {
+        if (parseMessage?.value?.isReset) {
+          dispatch(
+            resetWhiteBoardData({
+              dataTrackKey: parseMessage?.value?.dataTrackKey,
+            })
+          );
+        }
         dispatch(
           addToActiveTab({
             path: parseMessage.pathName,
@@ -201,6 +215,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage?.value?.datatrackName === WHITEBOARD.whiteBoardData
       ) {
         dispatch(whiteBoardComponentLevelDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === GGB.dataTrackName) {
+        dispatch(ggbDataTrack(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === GGB.ggbChangeMode) {
+        dispatch(changeGGbMode(parseMessage?.value?.currentMode || "tutor"));
       } else if (parseMessage?.value?.datatrackName === WHITEBOARD.pdfIndex) {
         dispatch(changePdfIndex(parseMessage?.value || {}));
       } else if (
@@ -242,6 +260,15 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         parseMessage?.value?.datatrackName === "openCloseScratchWhiteBoard"
       ) {
         dispatch(openClosedScratchWhiteBoard(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === "UploadResource") {
+        dispatch(
+          openClosedUploadResourceWhiteBoard(parseMessage?.value.images || [])
+        );
+      } else if (
+        parseMessage?.value?.datatrackName ===
+        UPLOADRESOURCE.closeUploadResource
+      ) {
+        dispatch(closeUploadResourceWhiteboard(false));
       }
     };
 

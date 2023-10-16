@@ -35,5 +35,10 @@
     "name": "Eraser",
     "image": "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg",
     "key": "Eraser"
+  },
+  {
+    "id": 7,
+    "name": "File Upload",
+    "key": "FileUpload"
   }
 ]

@@ -74,8 +74,8 @@ export default function MathVideoLesson() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full justify-center items-center ">
-      <div className="flex flex-row justify-center items-center h-[30px] w-[30px]">
+    <div className="flex flex-col w-full h-full justify-center">
+      <div className="flex h-[10%] w-full justify-center items-center">
         {isTutor({ identity: String(role_name) }) ? (
           <>
             <button
@@ -86,6 +86,8 @@ export default function MathVideoLesson() {
                 borderRadius: "5px",
                 fontSize: "bold",
                 marginTop: "10px",
+                width: "70px",
+                height: "40px",
               }}
               onClick={() => {
                 if (videoPlaying) {
@@ -100,22 +102,18 @@ export default function MathVideoLesson() {
           </>
         ) : null}
       </div>
-      {videoPlaying && isTutor({ identity: String(role_name) }) && (
-        <div className="flex w-full h-[30px] justify-center items-center mt-5">
-          <h1>
-            All participants are muted during video play. Pausing the video will
-            unmute the participants
-          </h1>
-        </div>
-      )}
+      <div className="flex h-[6%] w-full justify-center items-center">
+        {videoPlaying && isTutor({ identity: String(role_name) }) && (
+          <div className="flex w-full h-[30px] justify-center items-center">
+            <p className="text-speedMathTextColor font-semibold text-lg">
+              All participants are muted during video play. Pausing the video
+              will unmute the participants
+            </p>
+          </div>
+        )}
+      </div>
 
-      <div
-        style={{
-          height: "calc(100% - 50px)",
-          marginTop: "25px",
-        }}
-        className="justify-center items-center"
-      >
+      <div className="flex h-[84%] w-full justify-center items-center">
         <video
           ref={videoRef}
           style={{

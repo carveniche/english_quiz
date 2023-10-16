@@ -13,6 +13,7 @@ import {
   WHITEBOARD,
 } from "../../../../constants";
 import WhiteboardImageRender from "../../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
+import WhiteBoard from "../../../WhiteBoardHelper/WhiteBoard";
 
 export default function ScratchWhiteBoard({
   pdfImages,
@@ -116,7 +117,7 @@ export default function ScratchWhiteBoard({
           </button>
         </div>
       )}
-      <WhiteboardImageRender
+      <WhiteBoard
         images={imageUrl[whiteBoardData.currentIndex]}
         whiteBoardData={
           whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []

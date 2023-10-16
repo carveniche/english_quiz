@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { RootState } from "../../redux/store";
 import {
+  isStudentId,
   isStudentName,
   isTutorTechBoth,
 } from "../../utils/participantIdentity";
@@ -30,11 +31,6 @@ interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
   screen?: String;
-}
-
-interface MuteParticipantDetailsProps {
-  identity: string;
-  muteStatus: boolean;
 }
 
 export default function ParticipantsAnimationBar({
@@ -68,7 +64,6 @@ export default function ParticipantsAnimationBar({
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
   const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
-  const [mutedParticipantsDetails, setMutedParticipantsDetails] = useState([]);
 
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
@@ -81,9 +76,8 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.videoCallTokenData
   );
 
-  const { muteIndividualParticipant } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
+  const { muteIndividualParticipant, participantDeviceInformation } =
+    useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
     if (animationStarted.current) {
@@ -105,7 +99,30 @@ export default function ParticipantsAnimationBar({
     }, 2500);
   };
 
+  const checkStudentUsingIpadOrNot = (identity: string) => {
+    let result = false;
+    let studentIdentity = Number(isStudentId({ identity: identity }));
+
+    for (let i = 0; i < participantDeviceInformation.length; i = i + 2) {
+      if (
+        participantDeviceInformation[i].platform === "iPad" &&
+        participantDeviceInformation[i + 1].user_id === studentIdentity
+      ) {
+        result = true;
+      }
+    }
+
+    return result;
+  };
+
   const screenShareButtonClicked = (identity: string, key: string) => {
+    let checkFirstDevice = checkStudentUsingIpadOrNot(identity);
+
+    if (checkFirstDevice) {
+      alert("Student is Using Ipad in Browser so ScreenShare will not work");
+      return;
+    }
+
     if (screenShareRef.current) {
       return;
     }
@@ -179,11 +196,12 @@ export default function ParticipantsAnimationBar({
               <NetworkQualityLevel participant={participant} />
             </div>
             {muteIndividualParticipant.length > 0 ? (
-              muteIndividualParticipant?.map((item) => {
+              muteIndividualParticipant?.map((item, index) => {
                 return (
                   <button
                     disabled={!isTutorTechBoth({ identity: String(role_name) })}
                     onClick={() => muteIconButtonClicked(participant.identity)}
+                    key={`muteState-${index}`}
                   >
                     {item.identity === participant.identity ? (
                       item.muteStatus ? (
@@ -212,7 +230,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "ThumbsUpIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <ThumbsUpIcon />
@@ -226,7 +244,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "ClapIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <ClapIcon />
@@ -240,7 +258,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "SmileIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <SmileIcon />
@@ -254,7 +272,7 @@ export default function ParticipantsAnimationBar({
               onClick={() =>
                 animationButtonClicked(participant.identity, "StarIcon")
               }
-              className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
             >
               <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                 <StarIcon />
@@ -266,20 +284,25 @@ export default function ParticipantsAnimationBar({
           </div>
           <div className="flex gap-2 z-10">
             <Tooltip title="ScreenShare" arrow placement="top">
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  screenShareButtonClicked(participant.identity, "ScreenShare")
-                }
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  {studentShareScreen ? (
-                    <ScreenShareOnIcon />
-                  ) : (
-                    <ScreenShareIcon />
-                  )}
-                </div>
-              </button>
+              <span>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    screenShareButtonClicked(
+                      participant.identity,
+                      "ScreenShare"
+                    )
+                  }
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    {studentShareScreen ? (
+                      <ScreenShareOnIcon />
+                    ) : (
+                      <ScreenShareIcon />
+                    )}
+                  </div>
+                </button>
+              </span>
             </Tooltip>
           </div>
         </div>
@@ -291,7 +314,7 @@ export default function ParticipantsAnimationBar({
                 <NetworkQualityLevel participant={participant} />
               </div>
               {muteIndividualParticipant.length > 0 ? (
-                muteIndividualParticipant?.map((item) => {
+                muteIndividualParticipant?.map((item, index) => {
                   return (
                     <button
                       disabled={
@@ -300,6 +323,7 @@ export default function ParticipantsAnimationBar({
                       onClick={() =>
                         muteIconButtonClicked(participant.identity)
                       }
+                      key={`muteState-${index}`}
                     >
                       {item.identity === participant.identity ? (
                         item.muteStatus ? (
@@ -326,23 +350,25 @@ export default function ParticipantsAnimationBar({
             </div>
             <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
               <Tooltip title="ScreenShare" arrow placement="top">
-                <button
-                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                  onClick={() =>
-                    screenShareButtonClicked(
-                      participant.identity,
-                      "ScreenShare"
-                    )
-                  }
-                >
-                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                    {studentShareScreen ? (
-                      <ScreenShareOnIcon />
-                    ) : (
-                      <ScreenShareIcon />
-                    )}
-                  </div>
-                </button>
+                <span>
+                  <button
+                    disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                    onClick={() =>
+                      screenShareButtonClicked(
+                        participant.identity,
+                        "ScreenShare"
+                      )
+                    }
+                  >
+                    <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                      {studentShareScreen ? (
+                        <ScreenShareOnIcon />
+                      ) : (
+                        <ScreenShareIcon />
+                      )}
+                    </div>
+                  </button>
+                </span>
               </Tooltip>
             </div>
           </div>
@@ -353,7 +379,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "ThumbsUpIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <ThumbsUpIcon />
@@ -367,7 +393,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "ClapIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <ClapIcon />
@@ -381,7 +407,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "SmileIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <SmileIcon />
@@ -395,7 +421,7 @@ export default function ParticipantsAnimationBar({
                 onClick={() =>
                   animationButtonClicked(participant.identity, "StarIcon")
                 }
-                className="flex h-[20px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar rounded"
+                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
               >
                 <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
                   <StarIcon />

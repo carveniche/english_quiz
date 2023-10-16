@@ -9,6 +9,7 @@ export default {
         "participant-animation-bar-main": "rgba(0, 0, 0, 0.50)",
         "participant-animation-bar-main-otherScreen": "rgba(0, 0, 0, 0.80)",
         "participant-animation-bar": "rgba(79, 79, 79, 0.6)",
+        "participant-animation-bar-hover": "#4F4F4F",
         BDBDBD: "#BDBDBD",
         F2F2F2: "#F2F2F2",
         F5F5F5: "#F5F5F5",
