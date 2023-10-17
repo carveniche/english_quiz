@@ -107,10 +107,11 @@ export const GGB = {
   type: "ggb",
   dataTrackName: "ggbDataTrack",
   ggbChangeMode: "ggbChangeMode",
-  key:"geogebra",
-  path:"/geogebra",
-  Name:"Geogebra",
+  key: "geogebra",
+  path: "/geogebra",
+  Name: "Geogebra",
   icon: "/menu-icon/MathLessons.svg",
 };
 
-export const SCREENRECORDING = false;
+export const SCREENRECORDING = true;
+export const SHOWFLOATINGPARTICIPANT = true;

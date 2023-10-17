@@ -8,6 +8,7 @@ import ScreenShareEffect from "../ScreenShareEffect/ScreenShareEffect";
 import VitalDataHandler from "../RemoteCountAndLessonDataEffect/VitalDataHandler";
 import ShowDeviceInfoModalTech from "../ShowDeviceInfoModalTech/ShowDeviceInfoModalTech";
 import { isTech } from "../../utils/participantIdentity";
+import { SHOWFLOATINGPARTICIPANT } from "../../constants";
 
 interface RoomProps {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -38,7 +39,7 @@ export default function Room({ parentRef }: RoomProps) {
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />
       ) : (
-        <div style={{ display: "block" }}>
+        <div style={{ display: SHOWFLOATINGPARTICIPANT ? "block" : "none" }}>
           <FloatingParticipant
             screen={currentSelectedScreen}
             parentRef={parentRef}

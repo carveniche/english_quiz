@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
+import { IconButton } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -144,6 +147,13 @@ export default function UploadResource() {
         url: `${BaseUrl}/app_teachers/upload_resource`,
         data: formdata,
         headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const percentage = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+
+          console.log("percentage of file upload", percentage);
+        },
       })
         .then(function (response) {
           if (response.data.status) {
@@ -196,11 +206,21 @@ export default function UploadResource() {
     <div>
       <Modal
         open={open}
-        onClose={() => setClose(false)}
+        // onClose={() => setClose(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div className="flex justify-end">
+            <IconButton
+              size="medium"
+              aria-label="close"
+              color="inherit"
+              onClick={() => setClose(false)}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </div>
           <div className="flex flex-col">
             <div className="flex w-full h-1/5 justify-center items-center">
               <p className="text-speedMathTextColor font-semibold text-lg text-center">
