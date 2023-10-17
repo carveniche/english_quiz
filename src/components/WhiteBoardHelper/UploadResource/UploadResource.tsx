@@ -147,13 +147,6 @@ export default function UploadResource() {
         url: `${BaseUrl}/app_teachers/upload_resource`,
         data: formdata,
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (progressEvent) => {
-          const percentage = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-
-          console.log("percentage of file upload", percentage);
-        },
       })
         .then(function (response) {
           if (response.data.status) {
@@ -225,7 +218,7 @@ export default function UploadResource() {
             <div className="flex w-full h-1/5 justify-center items-center">
               <p className="text-speedMathTextColor font-semibold text-lg text-center">
                 {uploadResourceData.length > 0
-                  ? "Previous Uploaded Files"
+                  ? `Files Uploaded ${uploadResourceData?.length || 0}`
                   : "No Files Uploaded Yet"}
               </p>
             </div>

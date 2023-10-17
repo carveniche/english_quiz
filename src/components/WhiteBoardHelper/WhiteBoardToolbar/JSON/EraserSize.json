@@ -1,0 +1,14 @@
+[
+  {
+    "strokeValue": 5,
+    "name": "Thin"
+  },
+  {
+    "strokeValue": 10,
+    "name": "Normal"
+  },
+  {
+    "strokeValue": 15,
+    "name": "Thick"
+  }
+]

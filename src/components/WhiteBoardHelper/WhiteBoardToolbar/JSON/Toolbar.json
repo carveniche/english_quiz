@@ -11,6 +11,13 @@
     "image": "/WhiteBoardToolbarAssets/Toolbar/Pencil.svg",
     "key": "FreeDrawing"
   },
+
+  {
+    "id": 6,
+    "name": "Eraser",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg",
+    "key": "Eraser"
+  },
   {
     "id": 3,
     "name": "Clear",
@@ -30,12 +37,7 @@
     "image": "/WhiteBoardToolbarAssets/Toolbar/Line.svg",
     "key": "Line"
   },
-  {
-    "id": 6,
-    "name": "Eraser",
-    "image": "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg",
-    "key": "Eraser"
-  },
+
   {
     "id": 7,
     "name": "File Upload",

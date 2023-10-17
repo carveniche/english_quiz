@@ -5,12 +5,15 @@ import CallTechSupportInActiveLogo from "../Navbar/NavbarIcons/CallTechSupportIn
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { callTechSupport, techNotPresentApi } from "../../api";
+import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 
 export default function CallTechSupport() {
   const [backgroundColor, setBackgroundColor] = useState("bg-header-black");
   const [activeLogo, setActiveLogo] = useState(false);
   const [connectingFlag, setConnectingFlag] = useState(false);
   const [connectedFlag, setConnectedFlag] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [openAlertBox, setOpenAlertBox] = useState(true);
 
   const { techJoinedClass, userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -42,7 +45,7 @@ export default function CallTechSupport() {
 
   const requestTechSupport = async () => {
     if (techJoinedClass) {
-      alert("Tech Support has already joined the session");
+      setAlertMessage("Tech Support has already joined the session");
       return;
     }
 
@@ -52,8 +55,8 @@ export default function CallTechSupport() {
           sendNotificationToTech();
         } else {
           techSupportBtnClicked.current = true;
-          alert(
-            "You have already request Tech Support Please wait for TechSupport to Join"
+          setAlertMessage(
+            "You have already placed the request for the Support team. Please wait for them to join"
           );
         }
       });
@@ -100,6 +103,15 @@ export default function CallTechSupport() {
         <div className="flex absolute top-12 min-w-[115px] min-h-[20px] rounded px-2 py-1  bg-header-black justify-center ">
           <span className="text-white">Connecting...</span>
         </div>
+      )}
+
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
       )}
     </>
   );

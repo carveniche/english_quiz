@@ -291,8 +291,10 @@ export default function WhiteBoard({
         setEraserSelect(false);
         break;
       case 6:
+        setStrokeWidth(json.value);
         setEraserSelect(true);
         setCursor(eraserCursor);
+
         break;
     }
   };

@@ -124,7 +124,7 @@ export default function ParticipantsAnimationBar({
 
     if (checkFirstDevice) {
       setAlertMessage(
-        "Screen sharing is not supported on iPads in the browser"
+        "The student has joined the live class from iPad using a browser so, student screen share will not work"
       );
 
       return;

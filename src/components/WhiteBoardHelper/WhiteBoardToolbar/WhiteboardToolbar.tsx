@@ -1,6 +1,7 @@
 import Toolbar from "./JSON/Toolbar.json";
 import Colorbar from "./JSON/ColorPicker.json";
 import PenStroke from "./JSON/PenStroke.json";
+import EraserSize from "./JSON/EraserSize.json";
 import { useEffect, useState } from "react";
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -125,6 +126,7 @@ export default function WhiteboardToolbar({
       case 6: {
         setId(id);
         setKey(key);
+        setOpenPopup("EraserSize");
         handleCommonClick(6, "Eraser");
         break;
       }
@@ -144,6 +146,16 @@ export default function WhiteboardToolbar({
     let json = {
       id: id,
       value: penStroke,
+      key: key,
+    };
+
+    handleClick(json);
+  };
+
+  const handleEraserSize = (eraserSize: number) => {
+    let json = {
+      id: id,
+      value: eraserSize,
       key: key,
     };
 
@@ -270,55 +282,85 @@ export default function WhiteboardToolbar({
           )}
         </div>
 
-        {isPopoverVisible && !closeToolbarPopup && (id === 1 || id === 2) && (
-          <div
-            className={`flex  ${
-              id === 1 ? "w-[90px]" : "w-[130px]"
-            }  flex-wrap absolute flex-row bg-white p-4 gap-4 shadow-md left-2`}
-          >
-            {id === 1 &&
-              openPopup === "ColorPalette" &&
-              Colorbar.map((item, index) => {
-                return (
-                  <button
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleColorCode(item.code)}
-                    key={`color-${index}`}
-                  >
-                    <img src={item.image}></img>
-                  </button>
-                );
-              })}
+        {isPopoverVisible &&
+          !closeToolbarPopup &&
+          (id === 1 || id === 2 || id === 6) && (
+            <div
+              className={`flex  ${
+                id === 1 ? "w-[90px]" : "w-[130px]"
+              }  flex-wrap absolute flex-row bg-white p-4 gap-4 shadow-md left-2`}
+            >
+              {id === 1 &&
+                openPopup === "ColorPalette" &&
+                Colorbar.map((item, index) => {
+                  return (
+                    <button
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleColorCode(item.code)}
+                      key={`color-${index}`}
+                    >
+                      <img src={item.image}></img>
+                    </button>
+                  );
+                })}
 
-            {id === 2 &&
-              openPopup === "PencilStroke" &&
-              PenStroke.map((item, index) => {
-                return (
-                  <button
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handlePenStroke(item.strokeValue)}
-                    className="flex flex-row items-center w-full p-1 gap-2"
-                    key={`pencil-${index}`}
-                  >
-                    <div
-                      style={{
-                        border: "2px solid black",
-                        width: "22px",
-                        height:
-                          item.strokeValue === 1
-                            ? "0.5px"
-                            : item.strokeValue === 3
-                            ? "7px"
-                            : "12px",
-                        background: "black",
-                      }}
-                    ></div>
-                    <p>{item.name}</p>
-                  </button>
-                );
-              })}
-          </div>
-        )}
+              {id === 2 &&
+                openPopup === "PencilStroke" &&
+                PenStroke.map((item, index) => {
+                  return (
+                    <button
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handlePenStroke(item.strokeValue)}
+                      className="flex flex-row items-center w-full p-1 gap-2"
+                      key={`pencil-${index}`}
+                    >
+                      <div
+                        style={{
+                          border: "2px solid black",
+                          width: "22px",
+                          height:
+                            item.strokeValue === 1
+                              ? "0.5px"
+                              : item.strokeValue === 3
+                              ? "7px"
+                              : "12px",
+                          background: "black",
+                        }}
+                      ></div>
+                      <p>{item.name}</p>
+                    </button>
+                  );
+                })}
+
+              {id === 6 &&
+                openPopup === "EraserSize" &&
+                EraserSize.map((item, index) => {
+                  return (
+                    <button
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleEraserSize(item.strokeValue)}
+                      className="flex flex-row items-center w-full p-1 gap-2"
+                      key={`pencil-${index}`}
+                    >
+                      <div
+                        style={{
+                          border: "2px solid black",
+                          width: "22px",
+                          height:
+                            item.strokeValue === 1
+                              ? "0.5px"
+                              : item.strokeValue === 3
+                              ? "7px"
+                              : "12px",
+                          background: "black",
+                        }}
+                      ></div>
+                      <p>{item.name}</p>
+                    </button>
+                  );
+                })}
+            </div>
+          )}
 
         {openUploadResourcePopover && (
           <div

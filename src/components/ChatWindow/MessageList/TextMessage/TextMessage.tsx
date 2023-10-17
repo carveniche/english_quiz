@@ -42,7 +42,15 @@ function addLinks(text: string) {
   matches.forEach((match, i) => {
     results.push(text.slice(lastIndex, match.index));
     results.push(
-      <Link target="_blank" rel="noreferrer" href={match.url} key={i}>
+      <Link
+        style={{
+          color: "blue",
+        }}
+        target="_blank"
+        rel="noreferrer"
+        href={match.url}
+        key={i}
+      >
         {match.text}
       </Link>
     );
