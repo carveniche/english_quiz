@@ -1,5 +1,3 @@
-import { useState } from "react";
-import TabIcon from "./TabIcon";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
 
 interface MiscelleneousNavbarInterface {

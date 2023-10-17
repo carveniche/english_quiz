@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ViewQuestionStatus from "./ViewQuestionStatus";
 
 const expectedBackgroundColor = ["#FC7E41", "#4544C4"];
+import styles from "../outerPage.module.css";
 export default function TeachersTitle({
   remoteParticipant,
   isQuizCompleted,
@@ -17,13 +18,22 @@ export default function TeachersTitle({
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const totalQuestionArray = new Array(totalQuestion || 5).fill(1);
   const [selectedStudent, setSelectedStudent] = useState("");
-  const handleSelectedStudent = (identity) => {
+  const selectedStudentRef = useRef(false);
+  const handleSelectedStudent = (identity, from) => {
+    if (from === "window") {
+      setSelectedStudent("");
+      return;
+    }
+    selectedStudentRef.current = true;
     if (identity) {
       if (identity === selectedStudent) setSelectedStudent("");
       else setSelectedStudent(identity);
     }
   };
-
+  const handleWindowListener = () => {
+    if (!selectedStudentRef.current) handleSelectedStudent("", "window");
+    selectedStudentRef.current = false;
+  };
   return (
     <div
       className={`flex bg-F5F5F5 ${
@@ -34,7 +44,7 @@ export default function TeachersTitle({
         Q. {currentQuestion} / {totalQuestion}
       </div>
 
-      <div>
+      <div className={styles.mathzoneTitle}>
         {extraParams?.conceptName} - {extraParams?.tagName} Level-
         {extraParams?.level}
       </div>
@@ -81,6 +91,7 @@ export default function TeachersTitle({
                           identity={identity}
                           practiceId={practiceId}
                           key={identity}
+                          handleWindowListener={handleWindowListener}
                         />
                       </div>
                     </div>

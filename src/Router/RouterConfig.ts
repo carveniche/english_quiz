@@ -69,7 +69,17 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-
+  {
+    path: `${ROUTERKEYCONST.mathzone}`,
+    key: ROUTERKEYCONST.mathzone,
+    exact: true,
+    component: Mathzone,
+    name: "Math Zone",
+    icon: "/menu-icon/MathQuiz.svg",
+    hasChildren: true,
+    hasSubRoute: false,
+    subRoute: null,
+  },
   {
     path: "/mathvideolesson",
     key: ROUTERKEYCONST.mathvideolesson,
@@ -93,19 +103,6 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: false,
     subRoute: null,
   },
-
-  {
-    path: `${ROUTERKEYCONST.mathzone}`,
-    key: ROUTERKEYCONST.mathzone,
-    exact: true,
-    component: Mathzone,
-    name: "Mathzone",
-    icon: "/menu-icon/MathQuiz.svg",
-    hasChildren: true,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-
   {
     path: ROUTERKEYCONST.coding,
     key: ROUTERKEYCONST.coding,

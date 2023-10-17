@@ -4,7 +4,7 @@ import TabIcon from "./TabIcon";
 import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
 
-import { ROUTERKEYCONST } from "../../constants";
+import { GGB, ROUTERKEYCONST } from "../../constants";
 
 interface props {
   allConceptsDetails: allConceptsDetails;
@@ -129,28 +129,53 @@ export default function MathLessonNavbarMenu({
                               >
                                 <div style={{ display: "block" }}>
                                   <div className="flex gap-2">
-                                    <NavLink
-                                      key={tagIndex}
-                                      to={`${item.key}?${queryParams}`}
-                                      onClick={() =>
-                                        handleClickMathLesson({
-                                          path: ROUTERKEYCONST.lesson,
-                                          key: ROUTERKEYCONST.lesson,
-                                          name: "Math Lesson",
-                                          icon: item.icon,
-                                          extraParams: {
-                                            imageUrl: tag.images,
-                                            tagId: tag?.id || 1,
-                                            tagType: tag.type,
-                                            ggbLink: tag?.link || "",
-                                          },
-                                        })
-                                      }
-                                      className={"w-48"}
-                                      style={{ display: "block" }}
-                                    >
-                                      {tag?.name + " " + tag?.type}
-                                    </NavLink>
+                                    {tag?.type === GGB.type ? (
+                                      <NavLink
+                                        key={tagIndex}
+                                        to={`${GGB.key}?${queryParams}`}
+                                        onClick={() =>
+                                          handleClickMathLesson({
+                                            path: GGB.path,
+                                            key: GGB.key,
+                                            name: "Geogebra",
+                                            icon: GGB.icon,
+                                            extraParams: {
+                                              imageUrl: tag.images,
+                                              tagId: tag?.id || 1,
+                                              tagType: tag.type,
+                                              ggbLink: tag?.link || "",
+                                            },
+                                          })
+                                        }
+                                        className={"w-48"}
+                                        style={{ display: "block" }}
+                                      >
+                                        {tag?.name + " " + tag?.type}
+                                      </NavLink>
+                                    ) : (
+                                      <NavLink
+                                        key={tagIndex}
+                                        to={`${item.key}?${queryParams}`}
+                                        onClick={() =>
+                                          handleClickMathLesson({
+                                            path: ROUTERKEYCONST.lesson,
+                                            key: ROUTERKEYCONST.lesson,
+                                            name: "Math Lesson",
+                                            icon: item.icon,
+                                            extraParams: {
+                                              imageUrl: tag.images,
+                                              tagId: tag?.id || 1,
+                                              tagType: tag.type,
+                                              ggbLink: tag?.link || "",
+                                            },
+                                          })
+                                        }
+                                        className={"w-48"}
+                                        style={{ display: "block" }}
+                                      >
+                                        {tag?.name + " " + tag?.type}
+                                      </NavLink>
+                                    )}
                                   </div>
                                 </div>
                               </div>

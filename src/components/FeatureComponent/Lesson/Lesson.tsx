@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
-import { GGB, LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
+import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -13,8 +13,6 @@ import {
   saveAllWhiteBoardData,
 } from "../../../redux/features/ComponentLevelDataReducer";
 import WhiteBoard from "../../WhiteBoardHelper/WhiteBoard";
-import Geogebra from "./GeogebraLesson/Geogebra";
-
 export default function Lesson() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -38,7 +36,7 @@ export default function Lesson() {
     (state: RootState) => state.videoCallTokenData
   );
   const { extraParams } = activeTabArray[currentSelectedIndex];
-  const { imageUrl, tagType, tagId } = extraParams || [];
+  const { imageUrl, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
       if (coordinates?.value - 1 === whiteBoardData.currentIndex) {
@@ -144,13 +142,6 @@ export default function Lesson() {
       setIsImageLoaded(false);
     }
   }, [whiteBoardData.currentIndex]);
-
-  if (tagType === GGB.type)
-    return (
-      <>
-        <Geogebra />
-      </>
-    );
   if (!imageUrl?.length)
     return (
       <>

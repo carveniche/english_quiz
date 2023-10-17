@@ -370,6 +370,9 @@ export function RenderingQuizPage({
   const { currentSelectedRouter, currentSelectedKey } = useSelector(
     (state) => state.activeTabReducer
   );
+  useEffect(() => {
+    setTotalQuestion(obj?.total || 0);
+  }, []);
   return (
     <>
       {identity === "tutor" ? (

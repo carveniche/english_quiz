@@ -56,8 +56,7 @@ export default function ViewIncorrectQuestion({
   } = useContext(ViewStatusContext);
   return (
     <div className={styles.resultReview}>
-      <div style={{ clear: "both" }}>
-        {" "}
+      <div style={{ clear: "both", float: "right" }}>
         <button
           className={styles.NextButton2}
           onClick={onClick}
@@ -75,22 +74,14 @@ export default function ViewIncorrectQuestion({
           X
         </button>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBlock: "0.8rem",
-        }}
-      >
-        <div>
-          <u style={{ fontSize: "22px" }}>Result Review</u>
-        </div>
-      </div>
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (
         <>
-          <div className={styles.timerContainer}>
+          <div
+            className={styles.timerContainer}
+            style={{ justifyContent: "center" }}
+          >
             <div className={styles.timerCircle}>
               <span className={styles.timerTime} id={styles.timerDisplay}>
                 {(() => {
