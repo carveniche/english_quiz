@@ -18,21 +18,19 @@ export default function TeachersTitle({
   const { extraParams } = activeTabArray[currentSelectedIndex];
   const totalQuestionArray = new Array(totalQuestion || 5).fill(1);
   const [selectedStudent, setSelectedStudent] = useState("");
-  const selectedStudentRef = useRef(false);
   const handleSelectedStudent = (identity, from) => {
     if (from === "window") {
       setSelectedStudent("");
       return;
     }
-    selectedStudentRef.current = true;
+
     if (identity) {
       if (identity === selectedStudent) setSelectedStudent("");
       else setSelectedStudent(identity);
     }
   };
   const handleWindowListener = () => {
-    if (!selectedStudentRef.current) handleSelectedStudent("", "window");
-    selectedStudentRef.current = false;
+    handleSelectedStudent("", "window");
   };
   return (
     <div
@@ -63,7 +61,10 @@ export default function TeachersTitle({
                         ],
                       color: "#F2F2F2",
                     }}
-                    onClick={() => handleSelectedStudent(identity)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSelectedStudent(identity);
+                    }}
                   >
                     {(() => {
                       let names = identity?.split("-")[1];
