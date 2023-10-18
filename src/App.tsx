@@ -41,7 +41,7 @@ function JoinedScreen() {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const { room } = useVideoContext();
   const localParticipant = room?.localParticipant;
-  const { isClassHasDisconnected } = useSelector(
+  const { isClassHasDisconnected, isMenuOpen } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
   return (
@@ -63,7 +63,7 @@ function JoinedScreen() {
         <MainScreenRecording />
         <AllPageRoutes />
       </div>
-      <MenuBar />
+      {!isMenuOpen && <MenuBar />}
     </Main>
   );
 }
