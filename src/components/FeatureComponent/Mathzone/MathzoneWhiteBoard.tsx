@@ -22,6 +22,9 @@ export default function MathzoneWhiteBoard({
   const { isMathZoneWhiteBoard } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
+  const { role_name } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
   const { room } = useVideoContext();
   const dispatch = useDispatch();
   const onShowRoughBoard = () => {
@@ -119,6 +122,14 @@ export default function MathzoneWhiteBoard({
               dataTrackKey={dataTrack || MATHZONEDATAKEY.mathzoneWhiteBoardData}
               pathName={currentSelectedRouter}
               key={currentSelectedKey}
+              removeClearAllBtn={
+                isTutorTechBoth({ identity: role_name.toString() })
+                  ? false
+                  : true
+              }
+              isWritingDisabled={false}
+              images={[]}
+              isCico={false}
             />
           </div>
         </div>

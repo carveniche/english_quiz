@@ -18,6 +18,11 @@ import SolutionComponent from "../SolutionExplanation/SolutionComponent";
 import "../component/mathzone.css";
 import { MATHZONEDATAKEY } from "../../../../constants";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  openClosedMathzoneWhiteBoard,
+  resetWhiteBoardData,
+} from "../../../../redux/features/ComponentLevelDataReducer";
 export const ValidationContext = React.createContext("Auth Context");
 addStyles();
 export function ValidationContextProvider({ children }) {
@@ -362,6 +367,7 @@ export function RenderingQuizPage({
   identity,
   isPrePostTest,
   handleCheckLastQuestionBeforeSkipping,
+  dataTrackKey,
 }) {
   const { setTotalQuestion } = useContext(ViewStatusContext);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
@@ -370,10 +376,15 @@ export function RenderingQuizPage({
   const { currentSelectedRouter, currentSelectedKey } = useSelector(
     (state) => state.activeTabReducer
   );
+  const dispatch = useDispatch();
   useEffect(() => {
     setTotalQuestion(obj?.total || 0);
+
     return () => {
-      // reset whiteboard
+      if (dataTrackKey) {
+        dispatch(resetWhiteBoardData({ dataTrackKey: dataTrackKey }));
+        dispatch(openClosedMathzoneWhiteBoard(false));
+      }
     };
   }, []);
   return (

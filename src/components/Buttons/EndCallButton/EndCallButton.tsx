@@ -6,6 +6,7 @@ import { Button } from "@material-ui/core";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
 import { endRoomRequest } from "../../../redux/features/liveClassDetails";
+import { isTech } from "../../../utils/participantIdentity";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +25,9 @@ export default function EndCallButton(props: { className?: string }) {
   const { room } = useVideoContext();
   const dispatch = useDispatch();
   const handleOpenFeedbackForm = () => {
-    dispatch(endRoomRequest(true));
+    if (isTech({ identity: `${room?.localParticipant.identity}` })) {
+      room!.disconnect();
+    } else dispatch(endRoomRequest(true));
   };
   return (
     <Button
