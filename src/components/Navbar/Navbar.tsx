@@ -70,7 +70,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         }
       }
     }
-    console.log(grade);
     let isCicoAllowed = isGradeAllowed(grade.toString());
     if (demo || group_class || !isCicoAllowed) {
       finalArr = finalArr.filter((item) => item.key !== CICO.key);
@@ -212,7 +211,6 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     }
     setCurrentSelectedMenuIndex(index);
   };
-  filterRouterConfig;
   return (
     <>
       <ul
