@@ -5,9 +5,17 @@ import { isTutor } from "../../../utils/participantIdentity";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
 import { updateMathVideoCurrentTime } from "../../../redux/features/liveClassDetails";
+import {
+  isSafariBrowser,
+  iPadDevice,
+  isIpadDeviceChrome,
+} from "../../../utils/devices";
 
 export default function MathVideoLesson() {
   const dispatch = useDispatch();
+
+  const [mutedForSafari, setMutedForSafari] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { mathCurrentVideoPlaying } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -34,8 +42,10 @@ export default function MathVideoLesson() {
     console.log("videoPlayState", videoPlayState);
     if (videoPlayState) {
       handleVideoAction("play");
+      setMutedForSafari(true);
     } else {
       handleVideoAction("pause");
+      setMutedForSafari(false);
     }
   }, [videoPlayState]);
 
@@ -45,6 +55,8 @@ export default function MathVideoLesson() {
         mathCurrentVideoPlaying.currentVideoTagId === extraParams.videoTagId
       ) {
         videoRef.current.currentTime = mathCurrentVideoPlaying.currentVideoTime;
+      } else {
+        videoRef.current.currentTime = 2;
       }
     }
   }, []);
@@ -112,6 +124,12 @@ export default function MathVideoLesson() {
     }
   };
 
+  const handleLoadedData = () => {
+    setIsLoading(false);
+
+    // Video data loaded, can hide the loader
+  };
+
   return (
     <div className="flex flex-col w-full h-full justify-center">
       <div className="flex h-[10%] w-full justify-center items-center">
@@ -151,18 +169,57 @@ export default function MathVideoLesson() {
           </div>
         )}
       </div>
+      <div className="flex h-[6%] w-full justify-center items-center">
+        {iPadDevice ||
+          (isIpadDeviceChrome && (
+            <div className="flex flex-row w-full h-[30px] justify-center items-center">
+              <p className="text-speedMathTextColor font-semibold text-lg">
+                {isLoading
+                  ? "Please wait for video to Load"
+                  : "You can click on play video now"}
+              </p>
+            </div>
+          ))}
+      </div>
 
       <div className="flex h-[84%] w-full justify-center items-center">
-        <video
-          ref={videoRef}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-          }}
-          playsInline
-          src={extraParams.videoUrl}
-        />
+        {isSafariBrowser && !iPadDevice && !isIpadDeviceChrome ? (
+          <video
+            ref={videoRef}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+            playsInline
+            src={extraParams.videoUrl}
+            muted={mutedForSafari}
+          />
+        ) : iPadDevice || isIpadDeviceChrome ? (
+          <video
+            ref={videoRef}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+            playsInline
+            src={extraParams.videoUrl}
+            onLoadedData={handleLoadedData}
+            controls={isLoading ? false : true}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+            playsInline
+            src={extraParams.videoUrl}
+          />
+        )}
       </div>
     </div>
   );

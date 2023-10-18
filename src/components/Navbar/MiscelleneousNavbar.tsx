@@ -24,7 +24,7 @@ export default function MiscelleneousNavbar({
         <ul
           onMouseLeave={() => handleOpenSubMenu(-1)}
           className={`bg-header-black text-white transform absolute scale-
-         transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center right-0
+         transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[90px] items-center right-0
          `}
           style={{
             maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${

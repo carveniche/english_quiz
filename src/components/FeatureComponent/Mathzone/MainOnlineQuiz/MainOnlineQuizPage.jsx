@@ -372,6 +372,9 @@ export function RenderingQuizPage({
   );
   useEffect(() => {
     setTotalQuestion(obj?.total || 0);
+    return () => {
+      // reset whiteboard
+    };
   }, []);
   return (
     <>

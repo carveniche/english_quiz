@@ -97,7 +97,9 @@ export default function ReportErrorScreenShot() {
       const response = await createLiveClassTicket(bodyFormData);
 
       if (response.data.status) {
-        setAlertMessage("Your error has been reported");
+        setAlertMessage(
+          "Your error report has been submitted to the beGalileo team."
+        );
       } else {
         setAlertMessage(
           "Unable to send screen shot : " +

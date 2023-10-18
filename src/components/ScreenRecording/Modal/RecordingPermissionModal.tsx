@@ -51,7 +51,7 @@ export default function RecordingPermissionModal({
                       fontWeight: 500,
                     }}
                   >
-                    Please start the Recording
+                    Please start the recording
                   </h3>
                 )}
               </div>

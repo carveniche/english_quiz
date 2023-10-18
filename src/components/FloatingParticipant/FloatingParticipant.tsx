@@ -10,6 +10,9 @@ import {
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
 import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import Draggable from "react-draggable";
 
 interface FloatingParticipantProps {
   screen: any;
@@ -24,6 +27,10 @@ export default function FloatingParticipant({
   const [showTeacherView, setShowTeacherView] = useState(false);
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
+
+  const { remoteParticipantCount } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
 
   const speakerViewParticipants = useSpeakerViewParticipants();
 
@@ -139,32 +146,35 @@ export default function FloatingParticipant({
     );
   };
 
+  let y =
+    parentRef.current?.clientHeight - (remoteParticipantCount + 1) * 200 < 0
+      ? 0
+      : parentRef.current?.clientHeight - (remoteParticipantCount + 1) * 200;
   return (
-    <div
-      style={{
-        position: "absolute",
-        right: 0,
-        zIndex: 999,
-        width: 200,
-        height: "fit-content",
-
-        bottom: 0,
-      }}
-    >
-      <Rnd
-        bounds={parentRef.current || ""}
-        enableResizing={false}
-        style={{ position: "relative" }}
+    <>
+      <Draggable
+        key={remoteParticipantCount + 1}
+        defaultPosition={{
+          x: parentRef.current?.clientWidth - 200,
+          y: y,
+        }}
+        offsetParent={parentRef.current}
+        bounds={{
+          left: 0,
+          right: parentRef.current?.clientWidth - 200,
+          top: 0,
+          bottom: y,
+        }}
       >
-        <>
+        <div className="z-10 absolute fit max-h-full cursor-pointer overflow-x-hidden overflow-y-auto">
           {screenName !== "/myscreen"
             ? showSelfParticipantView()
             : screenName === "/myscreen" &&
               !isTutor({ identity: localParticipant.identity }) &&
               showSelfParticipantView()}
           {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
-        </>
-      </Rnd>
-    </div>
+        </div>
+      </Draggable>
+    </>
   );
 }

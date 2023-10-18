@@ -5,6 +5,9 @@ export const isIpadDeviceChrome =
   /CriOS/i.test(navigator.userAgent) &&
   /iphone|ipod|ipad/i.test(navigator.userAgent);
 
+export const isSafariBrowser =
+  /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
 export const isMobile = (() => {
   if (
     typeof navigator === "undefined" ||

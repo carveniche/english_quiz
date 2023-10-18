@@ -150,7 +150,7 @@ export default function MathLessonNavbarMenu({
                                         className={"w-48"}
                                         style={{ display: "block" }}
                                       >
-                                        {tag?.name + " " + tag?.type}
+                                        {tag?.name + "(S)"}
                                       </NavLink>
                                     ) : (
                                       <NavLink
@@ -173,7 +173,7 @@ export default function MathLessonNavbarMenu({
                                         className={"w-48"}
                                         style={{ display: "block" }}
                                       >
-                                        {tag?.name + " " + tag?.type}
+                                        {tag?.name}
                                       </NavLink>
                                     )}
                                   </div>

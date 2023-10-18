@@ -28,7 +28,7 @@ export default function CicoNavbar({
     <>
       <ul
         className={`bg-header-black text-white transform absolute scale-
-          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[48px] items-center right-0
+          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[80px] items-center right-0
           `}
         style={{
           maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${
@@ -64,7 +64,7 @@ export default function CicoNavbar({
         </li>
         <li className="rounded-sm w-full relative item-center">
           <div
-            className="flex gap-2 px-3 pl-6 pr-3 py-3 hover:bg-black relative item-center "
+            className="flex gap-2 px-1 pl-6 pr-3 py-1 hover:bg-black relative item-center "
             style={{ cursor: "pointer" }}
           >
             <NavLink

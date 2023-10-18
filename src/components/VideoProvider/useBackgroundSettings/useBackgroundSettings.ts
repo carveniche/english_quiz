@@ -8,6 +8,8 @@ import {
   ImageFit,
   isSupported,
 } from "@twilio/video-processors";
+import BeGalileoLogo from "../../../images/BeGalileoWhiteBg.png";
+import BeGalileoThumb from "../../../images/thumb/BeGalileoWhiteBgThumbnail.png";
 
 import Abstract from "../../../images/Abstract.jpg";
 import AbstractThumb from "../../../images/thumb/Abstract.jpg";
@@ -50,6 +52,7 @@ export interface BackgroundSettings {
 }
 
 const imageNames: string[] = [
+  "BeGalileo",
   "Abstract",
   "Boho Home",
   "Bookshelf",
@@ -69,6 +72,7 @@ const imageNames: string[] = [
 ];
 
 const images = [
+  BeGalileoThumb,
   AbstractThumb,
   BohoHomeThumb,
   BookshelfThumb,
@@ -88,6 +92,7 @@ const images = [
 ];
 
 const rawImagePaths = [
+  BeGalileoLogo,
   Abstract,
   BohoHome,
   Bookshelf,
