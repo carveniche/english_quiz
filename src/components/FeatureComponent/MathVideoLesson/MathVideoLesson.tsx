@@ -206,7 +206,7 @@ export default function MathVideoLesson() {
             playsInline
             src={extraParams.videoUrl}
             onLoadedData={handleLoadedData}
-            controls
+            controls={isLoading ? false : true}
           />
         ) : (
           <video
