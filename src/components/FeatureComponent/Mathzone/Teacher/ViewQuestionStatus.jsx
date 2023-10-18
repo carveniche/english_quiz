@@ -112,9 +112,10 @@ export default function ViewQuestionStatus({
                 } ${
                   item?.current_question === i + 1 ? "border-2" : "border-2"
                 } border-solid`}
-                onClick={() =>
-                  item.current_question > i ? handleShowQestion(i) : ""
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  item.current_question > i ? handleShowQestion(i) : "";
+                }}
                 style={{
                   cursor: item.current_question > i ? "pointer" : "initial",
                 }}
