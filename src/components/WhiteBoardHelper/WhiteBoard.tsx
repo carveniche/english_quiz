@@ -43,7 +43,7 @@ export default function WhiteBoard({
   const [isScaled, setScaled] = useState(false);
   const [selectedPen, setSelectedPen] = useState("FreeDrawing");
   const [eraserSelect, setEraserSelect] = useState(false);
-  const [cursor, setCursor] = useState(penCursor);
+  const [cursor, setCursor] = useState("crosshair");
   const DELAY = 200;
   const currentTimeStamp = useRef(Date.now());
   const [textInput, setTextInput] = useState({
@@ -53,7 +53,7 @@ export default function WhiteBoard({
     value: "",
   });
   const [colorCode, setColorCode] = useState("#000000");
-  const [strokeWidth, setStrokeWidth] = useState(1);
+  const [strokeWidth, setStrokeWidth] = useState(3);
   const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
   const [currentLoadedImage, setCurrentLoadedImage] = useState("");
   const remoteArrayRef = useRef(
@@ -260,7 +260,6 @@ export default function WhiteBoard({
     value: any;
     key: string;
   }) => {
-    console.log("json", json);
     switch (json.id) {
       case 1:
         setColorCode(json.value);
@@ -282,7 +281,7 @@ export default function WhiteBoard({
         break;
       case 4:
         setSelectedPen(json.key);
-        setCursor(penCursor);
+        setCursor("crosshair");
         setEraserSelect(false);
         break;
       case 5:
@@ -294,8 +293,9 @@ export default function WhiteBoard({
         setStrokeWidth(json.value);
         setEraserSelect(true);
         setCursor(eraserCursor);
-
         break;
+      default:
+        setCursor("crosshair");
     }
   };
   const handleTextArea = (e) => {
@@ -400,7 +400,8 @@ export default function WhiteBoard({
           height: currentLoadedImage ? "fit-content" : "calc(100% - 60px)",
           width: currentLoadedImage ? "fit-content" : "100%",
           margin: "auto",
-          cursor: cursorUrl.replace("{}", cursor),
+          cursor:
+            cursor === "crosshair" ? cursor : cursorUrl.replace("{}", cursor),
         }}
         ref={whiteBoardContainerRef}
       >
@@ -424,7 +425,7 @@ export default function WhiteBoard({
         <UserCursor
           remtoeArray={remoteArrayRef.current}
           scaleRef={scaleRef}
-          cursor={cursor}
+          cursor={cursor === "crosshair" ? penCursor : cursor}
         />
         {images ? (
           <>
@@ -526,7 +527,10 @@ export default function WhiteBoard({
               overflow: "hidden",
               position: "relative",
               //url(/static/cursor.png) 1 16, auto
-              cursor: cursorUrl.replace("{}", cursor),
+              cursor:
+                cursor === "crosshair"
+                  ? cursor
+                  : cursorUrl.replace("{}", cursor),
               backgroundColor: "transparent",
             }}
             scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
