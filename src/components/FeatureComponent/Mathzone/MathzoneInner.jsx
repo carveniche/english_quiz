@@ -266,7 +266,13 @@ export default function MathzoneInner() {
                     <ViewQuestionAtMiddle />
                   </ValidationContextProvider>
                 ) : (
-                  <RenderingQuizPage obj={obj} identity={localParticipant} />
+                  <RenderingQuizPage
+                    obj={obj}
+                    identity={localParticipant}
+                    currentSelectedRouter={currentSelectedRouter}
+                    currentSelectedKey={currentSelectedKey}
+                    dataTrackKey={MATHZONEDATAKEY.mathzoneWhiteBoardData}
+                  />
                 )}
               </QuizWhitePage>
             </div>

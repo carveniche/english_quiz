@@ -192,6 +192,9 @@ export default function Lesson() {
           cbAfterImageRendered={afterImageRendered}
           totalImageLength={imageUrl.length}
           currentPdfIndex={whiteBoardData.currentIndex}
+          removeClearAllBtn={
+            isTutorTechBoth({ identity: role_name.toString() }) ? false : true
+          }
         />
       </div>
     </React.Fragment>

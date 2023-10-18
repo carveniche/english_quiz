@@ -19,6 +19,8 @@ export default function HelperWhiteBoard({
   images,
   whiteBoardRef,
   isWritingDisabled,
+  removeClearAllBtn = false,
+  cbAfterImageRendered,
 }: {
   dataTrackKey: string;
   pathName: string;
@@ -26,6 +28,8 @@ export default function HelperWhiteBoard({
   isCico: boolean | undefined | null;
   images: [];
   isWritingDisabled: boolean | undefined | null;
+  removeClearAllBtn: boolean;
+  cbAfterImageRendered: Function | undefined | null;
 }) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -120,6 +124,8 @@ export default function HelperWhiteBoard({
           handleUpdateLocalAndRemoteData={handleUpdateLocalAndRemoteData}
           count={whiteBoardData.whiteBoardCounts}
           key={whiteBoardData.currentIndex}
+          removeClearAllBtn={removeClearAllBtn}
+          cbAfterImageRendered={cbAfterImageRendered}
         />
       )}
     </>

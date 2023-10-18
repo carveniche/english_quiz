@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import TabIcon from "./TabIcon";
 import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
-
+import todayClassIcon from "./NavbarIcons/todayClassIconGreen.png";
 import { GGB, ROUTERKEYCONST } from "../../constants";
 
 interface props {
@@ -97,7 +97,25 @@ export default function MathLessonNavbarMenu({
                     >
                       <div className={"w-full"} style={{ display: "block" }}>
                         <div className="flex gap-2">
-                          <div> {pdf?.name}</div>
+                          <div>
+                            {pdf?.today_class ? (
+                              <div className="flex">
+                                {pdf?.name}
+                                <img
+                                  style={{
+                                    width: "40px",
+                                    margin: "auto",
+                                    marginLeft: "5px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                  }}
+                                  src={todayClassIcon}
+                                />
+                              </div>
+                            ) : (
+                              pdf?.name
+                            )}
+                          </div>
                         </div>
                       </div>
                       <TabIcon
@@ -150,7 +168,25 @@ export default function MathLessonNavbarMenu({
                                         className={"w-48"}
                                         style={{ display: "block" }}
                                       >
-                                        {tag?.name + "(S)"}
+                                        <div>
+                                          {tag?.today_class ? (
+                                            <div className="flex">
+                                              {tag?.name}
+                                              <img
+                                                style={{
+                                                  width: "40px",
+                                                  margin: "auto",
+                                                  marginLeft: "5px",
+                                                  display: "flex",
+                                                  justifyContent: "center",
+                                                }}
+                                                src={todayClassIcon}
+                                              />
+                                            </div>
+                                          ) : (
+                                            tag?.name + "(S)"
+                                          )}
+                                        </div>
                                       </NavLink>
                                     ) : (
                                       <NavLink
@@ -173,7 +209,25 @@ export default function MathLessonNavbarMenu({
                                         className={"w-48"}
                                         style={{ display: "block" }}
                                       >
-                                        {tag?.name}
+                                        <div>
+                                          {tag?.today_class ? (
+                                            <div className="flex">
+                                              {tag?.name}
+                                              <img
+                                                style={{
+                                                  width: "40px",
+                                                  margin: "auto",
+                                                  marginLeft: "5px",
+                                                  display: "flex",
+                                                  justifyContent: "center",
+                                                }}
+                                                src={todayClassIcon}
+                                              />
+                                            </div>
+                                          ) : (
+                                            tag?.name
+                                          )}
+                                        </div>
                                       </NavLink>
                                     )}
                                   </div>

@@ -22,6 +22,7 @@ export default function WhiteBoard({
   cbAfterImageRendered,
   totalImageLength = 0,
   currentPdfIndex = 0,
+  removeClearAllBtn = false,
 }: {
   images: string;
   whiteBoardData: object;
@@ -32,6 +33,7 @@ export default function WhiteBoard({
   cbAfterImageRendered: Function | undefined | null;
   totalImageLength: number;
   currentPdfIndex: number;
+  removeClearAllBtn: boolean;
 }) {
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
@@ -273,11 +275,13 @@ export default function WhiteBoard({
         setEraserSelect(false);
         break;
       case 3:
-        coordinatesRef.current = [];
-        remoteArrayRef.current = [];
-        setLocalState((prev) => !prev);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        typeof handleDataTrack === "function" &&
+          throttleFn(
+            () => handleDataTrack({ type: "clearAll" }),
+            DELAY,
+            currentTimeStamp
+          );
+        handleClearAll();
         break;
       case 4:
         setSelectedPen(json.key);
@@ -358,10 +362,20 @@ export default function WhiteBoard({
       scaleY: height,
     };
   };
+  const handleClearAll = () => {
+    coordinatesRef.current = [];
+    remoteArrayRef.current = [];
+    setLocalState((prev) => !prev);
+    setCursor(penCursor);
+    setEraserSelect(false);
+  };
   useEffect(() => {
     if (count) {
       if (currentIncomingLines) {
         let temp = JSON.stringify(currentIncomingLines);
+        if (currentIncomingLines?.type === "clearAll") {
+          handleClearAll();
+        }
         remoteDrawLine(JSON.parse(temp) || {});
       }
     }
@@ -392,6 +406,7 @@ export default function WhiteBoard({
         totalImageLength={totalImageLength}
         currentPdfIndex={currentPdfIndex}
         handleDataTrackPdfChange={handleDataTrack}
+        removeClearAllBtn={removeClearAllBtn}
       />
       <div
         className="overflow-hidden"
