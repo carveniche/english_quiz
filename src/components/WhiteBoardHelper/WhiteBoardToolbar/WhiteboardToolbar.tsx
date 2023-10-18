@@ -5,7 +5,7 @@ import EraserSize from "./JSON/EraserSize.json";
 import { useEffect, useState } from "react";
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { isTutor } from "../../../utils/participantIdentity";
+import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useDispatch } from "react-redux";
@@ -27,11 +27,13 @@ export default function WhiteboardToolbar({
   totalImageLength,
   currentPdfIndex,
   handleDataTrackPdfChange,
+  removeClearAllBtn,
 }: {
   handleClick: Function;
   closeToolbarPopup: boolean;
   totalImageLength: number;
   currentPdfIndex: number;
+  removeClearAllBtn: boolean;
   handleDataTrackPdfChange: Function | undefined;
 }) {
   const { room } = useVideoContext();
@@ -227,12 +229,16 @@ export default function WhiteboardToolbar({
 
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
+  let newToolbar = Toolbar;
+  if (removeClearAllBtn) {
+    newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
+  }
 
   return (
     <>
       <div className="relative z-[1]">
         <div className="flex w-full h-[40px] items-center gap-2 p-5 bg-white">
-          {Toolbar.map((item, index) => (
+          {newToolbar.map((item, index) => (
             <button
               onClick={() => handleSelectedKey(item.id, item.key)}
               className="cursor-pointer"
@@ -240,6 +246,7 @@ export default function WhiteboardToolbar({
             >
               {item.key === "FileUpload" &&
               isTutor({ identity: String(role_name) }) &&
+              !isUploadResourceOpen &&
               currentSelectedScreen === "/whiteboard" ? (
                 <img
                   style={{
@@ -268,18 +275,19 @@ export default function WhiteboardToolbar({
             </div>
           )}
 
-          {isUploadResourceOpen && (
-            <div>
-              <Button
-                onClick={goBackToWhiteboard}
-                variant="contained"
-                color="primary"
-                style={{ fontSize: "10px" }}
-              >
-                Back to Whiteboard
-              </Button>
-            </div>
-          )}
+          {isUploadResourceOpen &&
+            isTutorTechBoth({ identity: String(role_name) }) && (
+              <div>
+                <Button
+                  onClick={goBackToWhiteboard}
+                  variant="contained"
+                  color="primary"
+                  style={{ fontSize: "10px" }}
+                >
+                  Back to Whiteboard
+                </Button>
+              </div>
+            )}
         </div>
 
         {isPopoverVisible &&

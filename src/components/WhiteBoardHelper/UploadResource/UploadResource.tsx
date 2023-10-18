@@ -22,6 +22,7 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { ROUTERKEYCONST } from "../../../constants";
 import { getUploadResourcesList } from "../../../api";
 import CustomAlert from "../../DisplayCustomAlert/CustomAlert";
+import { openCloseUploadResourceModalTeacher } from "../../../redux/features/liveClassDetails";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -158,8 +159,8 @@ export default function UploadResource() {
                 response?.data?.uploaded_images
               )
             );
+            dispatch(openCloseUploadResourceModalTeacher(false));
             handleDataTrack(response?.data?.uploaded_images);
-            setClose(false);
           } else {
             setAlertMessage(response.data.message);
             setAlertWarningType("error");
@@ -189,11 +190,11 @@ export default function UploadResource() {
     setFilesUpload(filterData);
   };
 
-  const handleSelectPdf = (images: []) => {
-    dispatch(openClosedUploadResourceWhiteBoard(images));
-    handleDataTrack(images);
-    setClose(false);
-  };
+  // const handleSelectPdf = (images: []) => {
+  //   dispatch(openClosedUploadResourceWhiteBoard(images));
+  //   handleDataTrack(images);
+  //   setClose(false);
+  // };
 
   return (
     <div>
@@ -218,11 +219,11 @@ export default function UploadResource() {
             <div className="flex w-full h-1/5 justify-center items-center">
               <p className="text-speedMathTextColor font-semibold text-lg text-center">
                 {uploadResourceData.length > 0
-                  ? `Files Uploaded ${uploadResourceData?.length || 0}`
+                  ? `Files Uploaded(${uploadResourceData?.length || 0})`
                   : "No Files Uploaded Yet"}
               </p>
             </div>
-            <div className="flex w-full h-auto max-h-[200px] flex-col overflow-auto items-center gap-2 mt-2">
+            {/* <div className="flex w-full h-auto max-h-[200px] flex-col overflow-auto items-center gap-2 mt-2">
               {uploadResourceData?.map((item, i) => {
                 return (
                   <>
@@ -242,7 +243,7 @@ export default function UploadResource() {
                   </>
                 );
               })}
-            </div>
+            </div> */}
             <div className="flex w-full h-full  justify-center items-center">
               <div className="bg-white p-8 rounded shadow-md w-96">
                 <label
