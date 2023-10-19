@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
 import animationData from "../LottieAnimations/correctAnswerLottie.json";
 import styles from "./LottieMathZone.module.css";
@@ -8,23 +8,27 @@ const removeWhiteSpace = (container) => {
 };
 export default function CorrectAnswerAnimation() {
   const container = useRef(null);
-
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    // lottie.loadAnimation({
-    //   container: container.current,
-    //   renderer: "svg",
-    //   loop: "false",
-    //   autoplay: "false",
-    //   animationData: cloneDeep(animationData),
-    // });
-    // removeWhiteSpace(container);
+    console.log("mounted");
+
+    lottie.loadAnimation({
+      container: container.current,
+      renderer: "svg",
+      loop: "false",
+      autoplay: "false",
+      animationData: cloneDeep(animationData),
+    });
+    removeWhiteSpace(container);
   }, []);
   return (
     <div>
-      <div
-        className={`sampleoneanimation ${styles.correctAnswerAnimation}`}
-        ref={container}
-      ></div>
+      {
+        <div
+          className={`sampleoneanimation ${styles.correctAnswerAnimation}`}
+          ref={container}
+        ></div>
+      }
     </div>
   );
 }
