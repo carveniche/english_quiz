@@ -23,9 +23,6 @@ export default function SpeedMathScoreBoard({
                 </p>
               </div>
               <div className="flex w-[20%] flex-wrap justify-center">
-                <p className="text-speedMathTextColor font-bold text-lg">-</p>
-              </div>
-              <div className="flex w-[20%] flex-wrap justify-center">
                 <p className="text-speedMathTextColor font-bold text-lg">
                   {item.correct}/{item.total}
                 </p>

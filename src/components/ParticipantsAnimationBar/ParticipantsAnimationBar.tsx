@@ -20,6 +20,7 @@ import { RootState } from "../../redux/store";
 import {
   isStudentId,
   isStudentName,
+  isTutor,
   isTutorTechBoth,
 } from "../../utils/participantIdentity";
 import _isEqual from "lodash/isEqual";
@@ -76,7 +77,7 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.dataTrackStore
   );
 
-  const { role_name } = useSelector(
+  const { role_name, teacher_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
 
@@ -202,160 +203,109 @@ export default function ParticipantsAnimationBar({
             <div className="flex justify-center mb-3">
               <NetworkQualityLevel participant={participant} />
             </div>
-            {muteIndividualParticipant.length > 0 ? (
-              muteIndividualParticipant?.map((item, index) => {
-                return (
+            {!isTutor({ identity: participant.identity }) && (
+              <>
+                {muteIndividualParticipant.length > 0 ? (
+                  muteIndividualParticipant?.map((item, index) => {
+                    return (
+                      <button
+                        disabled={
+                          !isTutorTechBoth({ identity: String(role_name) })
+                        }
+                        onClick={() =>
+                          muteIconButtonClicked(participant.identity)
+                        }
+                        key={`muteState-${index}`}
+                      >
+                        {item.identity === participant.identity ? (
+                          item.muteStatus ? (
+                            <UnMuteIcon />
+                          ) : (
+                            <MuteIcon />
+                          )
+                        ) : null}
+                      </button>
+                    );
+                  })
+                ) : (
                   <button
                     disabled={!isTutorTechBoth({ identity: String(role_name) })}
                     onClick={() => muteIconButtonClicked(participant.identity)}
-                    key={`muteState-${index}`}
                   >
-                    {item.identity === participant.identity ? (
-                      item.muteStatus ? (
-                        <UnMuteIcon />
-                      ) : (
-                        <MuteIcon />
-                      )
-                    ) : null}
+                    {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
                   </button>
-                );
-              })
-            ) : (
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() => muteIconButtonClicked(participant.identity)}
-              >
-                {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
-              </button>
+                )}
+              </>
             )}
 
-            <span className="text-white">
-              {isStudentName({ identity: participant.identity })}
+            <span className="flex items-center justify-center text-white">
+              {isTutor({ identity: participant.identity })
+                ? String(teacher_name)
+                : isStudentName({ identity: participant.identity })}
             </span>
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() =>
-                animationButtonClicked(participant.identity, "ThumbsUpIcon")
-              }
-              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-            >
-              <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                <ThumbsUpIcon />
-                <span className="text-white">
-                  {animationCount["ThumbsUpIcon"]?.count || 0}
-                </span>
-              </div>
-            </button>
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() =>
-                animationButtonClicked(participant.identity, "ClapIcon")
-              }
-              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-            >
-              <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                <ClapIcon />
-                <span className="text-white">
-                  {animationCount["ClapIcon"]?.count || 0}
-                </span>
-              </div>
-            </button>
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() =>
-                animationButtonClicked(participant.identity, "SmileIcon")
-              }
-              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-            >
-              <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                <SmileIcon />
-                <span className="text-white">
-                  {animationCount["SmileIcon"]?.count || 0}
-                </span>
-              </div>
-            </button>
-            <button
-              disabled={!isTutorTechBoth({ identity: String(role_name) })}
-              onClick={() =>
-                animationButtonClicked(participant.identity, "StarIcon")
-              }
-              className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-            >
-              <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                <StarIcon />
-                <span className="text-white">
-                  {animationCount["StarIcon"]?.count || 0}
-                </span>
-              </div>
-            </button>
-          </div>
-          <div className="flex gap-2 z-10">
-            <Tooltip title="ScreenShare" arrow placement="top">
-              <span>
+            {!isTutor({ identity: participant.identity }) && (
+              <>
                 <button
                   disabled={!isTutorTechBoth({ identity: String(role_name) })}
                   onClick={() =>
-                    screenShareButtonClicked(
-                      participant.identity,
-                      "ScreenShare"
-                    )
+                    animationButtonClicked(participant.identity, "ThumbsUpIcon")
                   }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
                 >
                   <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                    {studentShareScreen ? (
-                      <ScreenShareOnIcon />
-                    ) : (
-                      <ScreenShareIcon />
-                    )}
+                    <ThumbsUpIcon />
+                    <span className="text-white">
+                      {animationCount["ThumbsUpIcon"]?.count || 0}
+                    </span>
                   </div>
                 </button>
-              </span>
-            </Tooltip>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full h-[70px]">
-          <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[30px]">
-            <div className="flex flex-row justify-evenly">
-              <div className="flex justify-center mb-3 items-start">
-                <NetworkQualityLevel participant={participant} />
-              </div>
-              {muteIndividualParticipant.length > 0 ? (
-                muteIndividualParticipant?.map((item, index) => {
-                  return (
-                    <button
-                      disabled={
-                        !isTutorTechBoth({ identity: String(role_name) })
-                      }
-                      onClick={() =>
-                        muteIconButtonClicked(participant.identity)
-                      }
-                      key={`muteState-${index}`}
-                    >
-                      {item.identity === participant.identity ? (
-                        item.muteStatus ? (
-                          <UnMuteIcon />
-                        ) : (
-                          <MuteIcon />
-                        )
-                      ) : null}
-                    </button>
-                  );
-                })
-              ) : (
                 <button
                   disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                  onClick={() => muteIconButtonClicked(participant.identity)}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "ClapIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
                 >
-                  {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <ClapIcon />
+                    <span className="text-white">
+                      {animationCount["ClapIcon"]?.count || 0}
+                    </span>
+                  </div>
                 </button>
-              )}
-
-              <span className="flex text-white items-center text-center">
-                {isStudentName({ identity: participant.identity })}
-              </span>
-            </div>
-            <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "SmileIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <SmileIcon />
+                    <span className="text-white">
+                      {animationCount["SmileIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "StarIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <StarIcon />
+                    <span className="text-white">
+                      {animationCount["StarIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+              </>
+            )}
+          </div>
+          {!isTutor({ identity: participant.identity }) && (
+            <div className="flex gap-2 z-10">
               <Tooltip title="ScreenShare" arrow placement="top">
                 <span>
                   <button
@@ -378,67 +328,155 @@ export default function ParticipantsAnimationBar({
                 </span>
               </Tooltip>
             </div>
-          </div>
-          <div className="flex bg-black w-full h-[40px] justify-center items-center">
-            <div className=" flex mt-1 h-full justify-center items-center">
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  animationButtonClicked(participant.identity, "ThumbsUpIcon")
-                }
-                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  <ThumbsUpIcon />
-                  <span className="text-white">
-                    {animationCount["ThumbsUpIcon"]?.count || 0}
-                  </span>
-                </div>
-              </button>
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  animationButtonClicked(participant.identity, "ClapIcon")
-                }
-                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  <ClapIcon />
-                  <span className="text-white">
-                    {animationCount["ClapIcon"]?.count || 0}
-                  </span>
-                </div>
-              </button>
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  animationButtonClicked(participant.identity, "SmileIcon")
-                }
-                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  <SmileIcon />
-                  <span className="text-white">
-                    {animationCount["SmileIcon"]?.count || 0}
-                  </span>
-                </div>
-              </button>
-              <button
-                disabled={!isTutorTechBoth({ identity: String(role_name) })}
-                onClick={() =>
-                  animationButtonClicked(participant.identity, "StarIcon")
-                }
-                className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
-              >
-                <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                  <StarIcon />
-                  <span className="text-white">
-                    {animationCount["StarIcon"]?.count || 0}
-                  </span>
-                </div>
-              </button>
+          )}
+        </div>
+      ) : (
+        <div
+          className={`flex flex-col flew-row flex-auto justify-between bottom-0 z-10 w-full max-w-[200px] ${
+            isTutor({ identity: participant.identity }) ? "" : "h-[70px]"
+          }`}
+        >
+          <div className="flex justify-between bg-participant-animation-bar-main-otherScreen w-full h-[30px]">
+            <div className="flex flex-row justify-evenly">
+              <div className="flex justify-center mb-3 items-start">
+                <NetworkQualityLevel participant={participant} />
+              </div>
+
+              {!isTutor({ identity: participant.identity }) && (
+                <>
+                  {muteIndividualParticipant.length > 0 ? (
+                    muteIndividualParticipant?.map((item, index) => {
+                      return (
+                        <button
+                          disabled={
+                            !isTutorTechBoth({ identity: String(role_name) })
+                          }
+                          onClick={() =>
+                            muteIconButtonClicked(participant.identity)
+                          }
+                          key={`muteState-${index}`}
+                        >
+                          {item.identity === participant.identity ? (
+                            item.muteStatus ? (
+                              <UnMuteIcon />
+                            ) : (
+                              <MuteIcon />
+                            )
+                          ) : null}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <button
+                      disabled={
+                        !isTutorTechBoth({ identity: String(role_name) })
+                      }
+                      onClick={() =>
+                        muteIconButtonClicked(participant.identity)
+                      }
+                    >
+                      {muteParticipant ? <UnMuteIcon /> : <MuteIcon />}
+                    </button>
+                  )}
+                </>
+              )}
+
+              <span className="flex items-center justify-center text-white">
+                {isTutor({ identity: participant.identity })
+                  ? String(teacher_name)
+                  : isStudentName({ identity: participant.identity })}
+              </span>
             </div>
+            {!isTutor({ identity: participant.identity }) && (
+              <div className="flex gap-2 z-10 mr-1" title="ScreenShare">
+                <Tooltip title="ScreenShare" arrow placement="top">
+                  <span>
+                    <button
+                      disabled={
+                        !isTutorTechBoth({ identity: String(role_name) })
+                      }
+                      onClick={() =>
+                        screenShareButtonClicked(
+                          participant.identity,
+                          "ScreenShare"
+                        )
+                      }
+                    >
+                      <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                        {studentShareScreen ? (
+                          <ScreenShareOnIcon />
+                        ) : (
+                          <ScreenShareIcon />
+                        )}
+                      </div>
+                    </button>
+                  </span>
+                </Tooltip>
+              </div>
+            )}
           </div>
+          {!isTutor({ identity: participant.identity }) && (
+            <div className="flex bg-black w-full h-[40px] justify-center items-center">
+              <div className=" flex mt-1 h-full justify-center items-center">
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "ThumbsUpIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <ThumbsUpIcon />
+                    <span className="text-white">
+                      {animationCount["ThumbsUpIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "ClapIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <ClapIcon />
+                    <span className="text-white">
+                      {animationCount["ClapIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "SmileIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <SmileIcon />
+                    <span className="text-white">
+                      {animationCount["SmileIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+                <button
+                  disabled={!isTutorTechBoth({ identity: String(role_name) })}
+                  onClick={() =>
+                    animationButtonClicked(participant.identity, "StarIcon")
+                  }
+                  className="flex h-[25px] w-[29px]  py-2 px-6 content-center justify-center items-center gap-4 bg-participant-animation-bar hover:bg-participant-animation-bar-hover rounded-full"
+                >
+                  <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
+                    <StarIcon />
+                    <span className="text-white">
+                      {animationCount["StarIcon"]?.count || 0}
+                    </span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

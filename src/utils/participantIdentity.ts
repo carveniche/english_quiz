@@ -1,4 +1,4 @@
-import { allExcludedParticipants } from "./excludeParticipant";
+import { excludeParticipantTechSmParent } from "./excludeParticipant";
 
 interface IdentityObject {
   identity: string;
@@ -6,6 +6,9 @@ interface IdentityObject {
 
 export function isStudentName({ identity }: IdentityObject) {
   let studentName = identity?.split("-")[1];
+
+  studentName = studentName.split(" ");
+  studentName = studentName.slice(0, 2).join(" ");
 
   return studentName;
 }
@@ -62,7 +65,7 @@ export function isTutorTechBoth({ identity }: IdentityObject) {
 }
 
 export function allExcludedParticipant({ identity }: IdentityObject) {
-  if (allExcludedParticipants.includes(identity || "")) {
+  if (excludeParticipantTechSmParent.includes(identity || "")) {
     return true;
   } else {
     return false;

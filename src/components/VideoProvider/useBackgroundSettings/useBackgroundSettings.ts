@@ -8,9 +8,8 @@ import {
   ImageFit,
   isSupported,
 } from "@twilio/video-processors";
-import BeGalileoLogo from "../../../images/BeGalileoWhiteBg.png";
+import BeGalileoLogo from "../../../images/BegalileoBackgroundLogo.png";
 import BeGalileoThumb from "../../../images/thumb/BeGalileoWhiteBgThumbnail.png";
-
 import Abstract from "../../../images/Abstract.jpg";
 import AbstractThumb from "../../../images/thumb/Abstract.jpg";
 import BohoHome from "../../../images/BohoHome.jpg";
