@@ -83,6 +83,7 @@ export default function ParticipantsAnimationBar({
     muteIndividualParticipant,
     participantDeviceInformation,
     studentScreenShareReceived,
+    screenSharePermissionDenied,
   } = useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
@@ -131,6 +132,15 @@ export default function ParticipantsAnimationBar({
 
       return;
     }
+
+    if (
+      screenSharePermissionDenied.status &&
+      screenSharePermissionDenied.identity === identity
+    ) {
+      screenShareRef.current = false;
+      clearTimeout(screenShareTimerRef.current);
+    }
+
     if (screenShareRef.current) {
       setAlertMessage(
         "Please wait a moment before trying to request screenshare again."

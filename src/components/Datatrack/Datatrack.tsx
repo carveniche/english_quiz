@@ -21,6 +21,8 @@ import {
   addTechJoinedClass,
   addMuteIndividualParticipant,
   updateMathVideoCurrentTime,
+  setScreenSharePermission,
+  setStudentScreenShareReceived,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -83,6 +85,17 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
 
       if (parseMessage?.value?.datatrackName === "ScreenShare") {
         dispatch(addScreenShareDatatrack(parseMessage.value));
+      } else if (
+        parseMessage.value.datatrackName === "ScreenSharePermissionDenied"
+      ) {
+        dispatch(
+          setScreenSharePermission({
+            status: parseMessage?.value?.status,
+            identity: parseMessage?.value?.identity,
+          })
+        );
+
+        dispatch(setStudentScreenShareReceived(false));
       } else if (parseMessage.value.datatrackName === "Animations") {
         dispatch(addAnimationDatatrack(parseMessage.value));
       } else if (parseMessage.value.datatrackName === "ChatMessage") {
