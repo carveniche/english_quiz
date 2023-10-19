@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Rnd } from "react-rnd";
 import useScreenShareParticipant from "../../hooks/useScreenShareParticipant/useScreenShareParticipant";
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
+import { useDispatch } from "react-redux";
+import { setStudentScreenShareReceived } from "../../redux/features/liveClassDetails";
 export default function ScreenShareDraggable() {
   const [width, setWidth] = useState<string>("600px");
   const [height, setHeight] = useState<string>("400px");
   const [xPosition, setXPosition] = useState<number>(0);
   const [yPosition, setYPosition] = useState<number>(0);
 
+  const dispatch = useDispatch();
+
   const screenShareParticipant = useScreenShareParticipant();
+
+  useEffect(() => {
+    if (screenShareParticipant !== undefined) {
+      dispatch(setStudentScreenShareReceived(true));
+    }
+  }, [screenShareParticipant]);
 
   return (
     <div>

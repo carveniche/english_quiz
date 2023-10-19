@@ -41,7 +41,10 @@ interface liveClassDetailsTypes {
   showDeviceInfoModalTech: boolean;
   isGgb: boolean;
   mathCurrentVideoPlaying: object;
-  isMenuOpen:boolean,
+  isMenuOpen: boolean;
+  studentScreenShareReceived: boolean;
+  screenSharePermissionDenied: object;
+  showFiveStarAnimation: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -84,7 +87,13 @@ const initialState: liveClassDetailsTypes = {
     currentVideoTime: 0,
     currentVideoTagId: 0,
   },
-  isMenuOpen:false
+  isMenuOpen: false,
+  studentScreenShareReceived: false,
+  screenSharePermissionDenied: {
+    status: false,
+    identity: "",
+  },
+  showFiveStarAnimation: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -232,9 +241,22 @@ export const liveClassDetailsSlice = createSlice({
       state.mathCurrentVideoPlaying.currentVideoTagId =
         action.payload.currentVideoTagId;
     },
-    toggleMenuBar:(state,action)=>{
-      state.isMenuOpen=action.payload
-    }
+    toggleMenuBar: (state, action) => {
+      state.isMenuOpen = action.payload;
+    },
+
+    setStudentScreenShareReceived: (state, action) => {
+      state.studentScreenShareReceived = action.payload;
+    },
+    setScreenSharePermission: (state, action) => {
+      const { status, identity } = action.payload;
+      state.screenSharePermissionDenied.status = status;
+      state.screenSharePermissionDenied.identity = identity;
+    },
+
+    setShowFiveStarAnimation: (state, action) => {
+      state.showFiveStarAnimation = action.payload;
+    },
   },
 });
 
@@ -259,7 +281,10 @@ export const {
   openCloseShowDeviceInfoModalTech,
   changeGGbStatus,
   updateMathVideoCurrentTime,
-  toggleMenuBar
+  toggleMenuBar,
+  setStudentScreenShareReceived,
+  setScreenSharePermission,
+  setShowFiveStarAnimation,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

@@ -1,33 +1,75 @@
 import React, { useEffect, useState } from "react";
-import { useContext } from "react";
 import styled from "styled-components";
-import { ViewStatusContext } from "../mathzone";
 import styles from "../component/OnlineQuiz.module.css";
 import { StudentResultMathZone } from "../../../../api";
-import ViewIncorrectQuestion from "./ViewIncorrectQuestion";
+import ChildHappyAnimation from "../../../LottieTransformation/ChildHappyAnimation";
+import VictoryAnimation from "../../../LottieTransformation/VictoryAnimation";
+interface DataInterface {
+  total: number;
+  incorrect: number;
+  score: number;
+  correct: number;
+  skipped: number;
+  name: string;
+}
 export default function StudentView({
   practiceId,
-
   userId,
+}: {
+  practiceId: string;
+  userId: string;
 }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<DataInterface[]>([]);
+  const [topScorer, setTopScorer] = useState(false);
+  const [openAnimation, setOpenAnimation] = useState(false);
   useEffect(() => {
     getStudentResult(practiceId, userId);
   }, []);
-  const getStudentResult = async (live_class_practice_id, user_id) => {
+  const getStudentResult = async (
+    live_class_practice_id: string,
+    user_id: string
+  ) => {
     try {
       let result = await StudentResultMathZone({
         live_class_practice_id,
         user_id,
       });
+      findAnimation(result?.data?.result_data || []);
       setData(result?.data?.result_data);
     } catch (e) {
       console.log("error in api", e);
     }
   };
+  const findAnimation = (data: DataInterface[]) => {
+    if (openAnimation || data.length < 1) return;
+    let temp = data[0] || {};
+    let percentageCalc = (temp?.correct || 0) / (temp?.total || 1);
+    if (percentageCalc >= 0.8) {
+      setTopScorer(true);
+    } else {
+      setTopScorer(false);
+    }
+    handleOpenAnimation();
+  };
+  const handleOpenAnimation = () => {
+    let id = setTimeout(() => {
+      setOpenAnimation(true);
+      clearTimeout(id);
+      handleCloseAnimation();
+    }, 500);
+  };
+  const handleCloseAnimation = () => {
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      setOpenAnimation(false);
+    }, 5000);
+  };
 
   return (
     <div>
+      {openAnimation && !topScorer && <ChildHappyAnimation />}
+      {openAnimation && topScorer && <VictoryAnimation />}
+
       <div className={styles.title2}>
         <div
           style={{
@@ -51,7 +93,7 @@ export default function StudentView({
         <div className="bgColor textColor">Score</div>
 
         {data?.map((item, i) => (
-          <>
+          <React.Fragment key={i}>
             <div className="borderRight borderTop">{item?.name}</div>
             <div className="borderRight borderTop">{item?.total || 0}</div>
             <div className="borderRight borderTop">{item?.skipped || 0}</div>
@@ -60,7 +102,7 @@ export default function StudentView({
               {item?.incorrect}
             </div>
             <div className="borderTop ">{item?.score}</div>
-          </>
+          </React.Fragment>
         ))}
       </Grid>
     </div>

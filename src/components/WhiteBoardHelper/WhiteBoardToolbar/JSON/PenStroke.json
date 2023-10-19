@@ -1,14 +1,14 @@
 [
   {
-    "strokeValue": 1,
+    "strokeValue": 3,
     "name": "Thin"
   },
   {
-    "strokeValue": 3,
+    "strokeValue": 5,
     "name": "Normal"
   },
   {
-    "strokeValue": 5,
+    "strokeValue": 7,
     "name": "Thick"
   }
 ]

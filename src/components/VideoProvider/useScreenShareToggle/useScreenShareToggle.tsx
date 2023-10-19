@@ -18,6 +18,7 @@ export default function useScreenShareToggle(
 ) {
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
+  const alreadyGetScreenShareRequestRef = useRef<boolean | undefined>(false);
   const dispatch = useDispatch();
 
   const sendScreenShareDatatrack = (state: boolean) => {
@@ -46,7 +47,29 @@ export default function useScreenShareToggle(
     );
   };
 
+  const handlePermissionDeniedDataTrack = (value) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: null,
+      value: {
+        datatrackName: "ScreenSharePermissionDenied",
+        status: value,
+        identity: room?.localParticipant.identity,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   const shareScreen = useCallback(() => {
+    if (alreadyGetScreenShareRequestRef.current) {
+      return;
+    }
+
+    alreadyGetScreenShareRequestRef.current = true;
     navigator.mediaDevices
       .getDisplayMedia({
         audio: false,
@@ -72,6 +95,8 @@ export default function useScreenShareToggle(
               track.stop();
               setIsSharing(false);
               sendScreenShareDatatrack(false);
+              alreadyGetScreenShareRequestRef.current = false;
+              handlePermissionDeniedDataTrack(true);
             };
 
             track.onended = stopScreenShareRef.current;
@@ -81,6 +106,8 @@ export default function useScreenShareToggle(
           .catch(onError);
       })
       .catch((error) => {
+        alreadyGetScreenShareRequestRef.current = false;
+        handlePermissionDeniedDataTrack(true);
         // Don't display an error if the user closes the screen share dialog
         if (
           error.message === "Permission denied by system" ||

@@ -21,6 +21,7 @@ export default function HelperWhiteBoard({
   isWritingDisabled,
   removeClearAllBtn = false,
   cbAfterImageRendered,
+  from,
 }: {
   dataTrackKey: string;
   pathName: string;
@@ -30,6 +31,7 @@ export default function HelperWhiteBoard({
   isWritingDisabled: boolean | undefined | null;
   removeClearAllBtn: boolean;
   cbAfterImageRendered: Function | undefined | null;
+  from: string | undefined | null;
 }) {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -126,6 +128,7 @@ export default function HelperWhiteBoard({
           key={whiteBoardData.currentIndex}
           removeClearAllBtn={removeClearAllBtn}
           cbAfterImageRendered={cbAfterImageRendered}
+          from={from}
         />
       )}
     </>
