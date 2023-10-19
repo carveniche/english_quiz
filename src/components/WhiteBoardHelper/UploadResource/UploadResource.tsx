@@ -1,17 +1,11 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-
 import axios from "axios";
-
 import BaseUrl from "../../../api/ApiConfig";
-import Button from "@mui/material/Button";
-
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-
 import { IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";

@@ -25,6 +25,7 @@ export default function WhiteBoard({
   totalImageLength = 0,
   currentPdfIndex = 0,
   removeClearAllBtn = false,
+  from,
 }: {
   images: string;
   whiteBoardData: object;
@@ -36,6 +37,7 @@ export default function WhiteBoard({
   totalImageLength: number;
   currentPdfIndex: number;
   removeClearAllBtn: boolean;
+  from: string | undefined | null;
 }) {
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
@@ -394,28 +396,46 @@ export default function WhiteBoard({
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
+  const handleA4SizePageCalculation = (image) => {
+    let containerWidth = whiteBoardContainerRef.current.clientWidth;
+    if (image) {
+      let widthHeightProportion = image.width / image.height;
+      let width = image.width;
+      if (containerWidth < width) width = containerWidth;
+      let height = width / widthHeightProportion;
+      image.width = width;
+      image.height = height;
+      console.log(image.width);
+      console.log(image.height);
+    }
+  };
   const handleAfterImageLoaded = (image) => {
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
     let containerHeight = whiteBoardContainerRef.current.clientHeight;
     let width = containerWidth;
     let height = containerHeight;
     if (image) {
-      let widthHeightProportion = image.width / image.height; //width/
-      let calculatedHeight = containerWidth / widthHeightProportion;
-      if (calculatedHeight > containerHeight) {
-        width = height * widthHeightProportion;
+      if (from === "uploadResource") {
+        handleA4SizePageCalculation(image);
       } else {
-        height = calculatedHeight;
+        let widthHeightProportion = image.width / image.height; //width/
+        let calculatedHeight = containerWidth / widthHeightProportion;
+        if (calculatedHeight > containerHeight) {
+          width = height * widthHeightProportion;
+        } else {
+          height = calculatedHeight;
+        }
+
+        image.width = width;
+        image.height = height;
       }
 
-      image.width = width;
-      image.height = height;
       setCurrentLoadedImage(image);
     }
     typeof cbAfterImageRendered === "function" && cbAfterImageRendered();
     scaleRef.current = {
-      scaleX: width,
-      scaleY: height,
+      scaleX: image.width,
+      scaleY: image.height,
     };
   };
   const handleClearAll = () => {
@@ -467,10 +487,18 @@ export default function WhiteBoard({
         removeClearAllBtn={removeClearAllBtn}
       />
       <div
-        className="overflow-hidden"
+        className={`${
+          from === "uploadResource"
+            ? "overflow-y-auto overflow-x-hidden h-max-full h-full"
+            : "overflow-hidden"
+        } `}
         style={{
           position: "relative",
-          height: currentLoadedImage ? "fit-content" : "calc(100% - 60px)",
+          height: currentLoadedImage
+            ? from === "uploadResource"
+              ? ""
+              : "fit-content"
+            : "calc(100% - 60px)",
           width: currentLoadedImage ? "fit-content" : "100%",
           margin: "auto",
           cursor:

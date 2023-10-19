@@ -68,7 +68,7 @@ export default function UploadResourceWhiteBoard() {
   return (
     <div
       className={`${
-        isImageLoaded ? "w-fit h-fit visible" : "w-full h-full invisible"
+        isImageLoaded ? "w-fit h-full visible" : "w-full h-full invisible"
       } relative m-auto`}
     >
       {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
@@ -105,6 +105,7 @@ export default function UploadResourceWhiteBoard() {
         removeClearAllBtn={
           isTutorTechBoth({ identity: role_name.toString() }) ? false : true
         }
+        from="uploadResource"
       />
     </div>
   );

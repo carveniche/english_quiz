@@ -276,7 +276,8 @@ export default function WhiteboardToolbar({
           )}
 
           {isUploadResourceOpen &&
-            isTutorTechBoth({ identity: String(role_name) }) && (
+            isTutorTechBoth({ identity: String(role_name) }) &&
+            currentSelectedScreen === ROUTERKEYCONST.whiteboard.path && (
               <div>
                 <Button
                   onClick={goBackToWhiteboard}
