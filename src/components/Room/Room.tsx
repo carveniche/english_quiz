@@ -10,6 +10,8 @@ import ShowDeviceInfoModalTech from "../ShowDeviceInfoModalTech/ShowDeviceInfoMo
 import { isTech } from "../../utils/participantIdentity";
 import { SHOWFLOATINGPARTICIPANT } from "../../constants";
 
+import FiveStarAnimation from "../LottieAnimations/FiveStarAnimation";
+
 interface RoomProps {
   parentRef: React.RefObject<HTMLDivElement>;
 }
@@ -19,7 +21,7 @@ export default function Room({ parentRef }: RoomProps) {
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
 
-  const { showDeviceInfoModalTech } = useSelector(
+  const { showDeviceInfoModalTech, showFiveStarAnimation } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
 
@@ -35,6 +37,18 @@ export default function Room({ parentRef }: RoomProps) {
         This ScreenShareEffect component will handle all screenShare request and toggleOn toggleOff ScreenShare for LocalParticipant and RemoteParticipant.
       */}
       <ScreenShareEffect />
+
+      {/*
+
+      Showing FiveStarAnimation for Student
+      
+    */}
+
+      {showFiveStarAnimation && (
+        <div className="flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-between w-[500px] h-[500px] z-10">
+          <FiveStarAnimation />
+        </div>
+      )}
 
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />

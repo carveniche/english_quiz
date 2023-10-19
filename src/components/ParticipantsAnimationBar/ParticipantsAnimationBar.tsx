@@ -29,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { disabledAnimation } from "../../redux/features/dataTrackStore";
 import { Tooltip } from "@material-ui/core";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
+import { setShowFiveStarAnimation } from "../../redux/features/liveClassDetails";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -201,6 +202,27 @@ export default function ParticipantsAnimationBar({
         setAnimationCount(item?.animationDetails);
       }
     });
+  };
+
+  useEffect(() => {
+    if (!isTutorTechBoth({ identity: String(role_name) })) {
+      checkIfAnimationCountReachesFive();
+    }
+  }, [animationCount]);
+
+  const clearFiveStarAnimation = () => {
+    setTimeout(() => {
+      dispatch(setShowFiveStarAnimation(false));
+    }, 4000);
+  };
+
+  const checkIfAnimationCountReachesFive = () => {
+    for (let key in animationCount) {
+      if (animationCount[key].count === 5) {
+        dispatch(setShowFiveStarAnimation(true));
+        clearFiveStarAnimation();
+      }
+    }
   };
 
   return (
