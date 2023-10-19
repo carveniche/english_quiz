@@ -6,6 +6,8 @@ import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 import { handleLoadImage } from "./WhiteboardImageRenderer/LoadImage";
+import { useDispatch } from "react-redux";
+import { changeWhiteBoardToolBarValue } from "../../redux/features/ComponentLevelDataReducer";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
 
@@ -43,9 +45,18 @@ export default function WhiteBoard({
     scaleY: 1,
   });
   const [isScaled, setScaled] = useState(false);
-  const [selectedPen, setSelectedPen] = useState("FreeDrawing");
-  const [eraserSelect, setEraserSelect] = useState(false);
-  const [cursor, setCursor] = useState("crosshair");
+  const dispatch = useDispatch();
+  const {
+    colorCode,
+    strokeWidth,
+    cursor,
+    selectedPen,
+    eraserSelect,
+    eraserSize,
+  } = useSelector(
+    (state: RootState) =>
+      state.ComponentLevelDataReducer.allWhiteBoardRelatedData.whiteboardToolbar
+  );
   const DELAY = 200;
   const currentTimeStamp = useRef(Date.now());
   const [textInput, setTextInput] = useState({
@@ -54,8 +65,6 @@ export default function WhiteBoard({
     y: 0,
     value: "",
   });
-  const [colorCode, setColorCode] = useState("#000000");
-  const [strokeWidth, setStrokeWidth] = useState(3);
   const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
   const [currentLoadedImage, setCurrentLoadedImage] = useState("");
   const remoteArrayRef = useRef(
@@ -203,6 +212,9 @@ export default function WhiteBoard({
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
+    if (cursor === "crosshair") {
+      return;
+    }
     setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
@@ -214,7 +226,7 @@ export default function WhiteBoard({
     const position = e.target.getStage().getPointerPosition();
     const penStructure = {
       id: `${userId}_${Date.now()}`,
-      stroke: strokeWidth,
+      stroke: eraserSelect ? eraserSize : strokeWidth,
       color: colorCode,
       eraser: eraserSelect,
       points: [
@@ -264,15 +276,33 @@ export default function WhiteBoard({
   }) => {
     switch (json.id) {
       case 1:
-        setColorCode(json.value);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "colorCode", value: json.value })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 2:
-        setStrokeWidth(json.value);
-        setSelectedPen(json.key);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({
+            key: "strokeWidth",
+            value: json.value,
+          })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
+
         break;
       case 3:
         typeof handleDataTrack === "function" &&
@@ -284,22 +314,45 @@ export default function WhiteBoard({
         handleClearAll();
         break;
       case 4:
-        setSelectedPen(json.key);
-        setCursor("crosshair");
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: "crosshair" })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 5:
-        setSelectedPen(json.key);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 6:
-        setStrokeWidth(json.value);
-        setEraserSelect(true);
-        setCursor(eraserCursor);
+        dispatch(
+          changeWhiteBoardToolBarValue({
+            key: "eraserSize",
+            value: json.value,
+          })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: eraserCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: true })
+        );
         break;
       default:
-        setCursor("crosshair");
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: "crosshair" })
+        );
     }
   };
   const handleTextArea = (e) => {
@@ -366,8 +419,10 @@ export default function WhiteBoard({
     coordinatesRef.current = [];
     remoteArrayRef.current = [];
     setLocalState((prev) => !prev);
-    setCursor(penCursor);
-    setEraserSelect(false);
+    dispatch(changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor }));
+    dispatch(
+      changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+    );
   };
   useEffect(() => {
     if (count) {
@@ -421,7 +476,7 @@ export default function WhiteBoard({
         ref={whiteBoardContainerRef}
       >
         <>
-          {textInput?.showInputBox && (
+          {selectedPen === "Text" && textInput?.showInputBox && (
             <textarea
               className={`absolute z-10 border-black border`}
               style={{

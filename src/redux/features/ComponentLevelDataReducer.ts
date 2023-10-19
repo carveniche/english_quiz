@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   MAINWHITEBOARD,
   MATHZONEDATAKEY,
@@ -49,6 +49,15 @@ const initialState = {
   uploadResourceImages: [],
   isUploadResourceOpen: false,
   allWhiteBoardRelatedData: {
+    whiteboardToolbar:{
+      colorCode:"#000000" as string,
+      strokeWidth:5 as number,
+      cursor:"crosshair" as string,
+      selectedPen:"FreeDrawing" as string,
+      eraserSelect:false,
+      eraserSize:5
+  
+    },
     lessonWhiteBoardData: {
       currentIndex: 0,
       remoteWhiteBoardData: {},
@@ -184,6 +193,10 @@ const ComponentLevelDataReducer = createSlice({
       const { payload } = action;
       state.ggbData.currentSelectedStudentId = payload;
     },
+    changeWhiteBoardToolBarValue:(state,action:PayloadAction<{key:string,value:string}>)=>{
+      const {payload}=action
+      state.allWhiteBoardRelatedData.whiteboardToolbar[payload.key]=payload.value
+    }
   },
 });
 export const {
@@ -202,5 +215,6 @@ export const {
   changeGGbMode,
   changeGgbStudent,
   closeUploadResourceWhiteboard,
+  changeWhiteBoardToolBarValue
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;
