@@ -5,9 +5,12 @@ import { ViewStatusContext } from "./mathzone";
 import { ValidationContext } from "./MainOnlineQuiz/MainOnlineQuizPage";
 import styles from "./component/OnlineQuiz.module.css";
 import styles2 from "./outerPage.module.css";
+import { useParams } from "react-router";
+import { PREPOSTTESTKEY } from "../../../constants";
 export default function SolveButton({ onClick }) {
   const excludeParticipant = ["sm", "audit", "smmanager", "", "parent"];
   const [openAnimation, setOpenAnimation] = useState(false);
+  const { tag } = useParams();
   const timer1 = useRef(null);
   const timer2 = useRef(null);
   const {
@@ -35,7 +38,7 @@ export default function SolveButton({ onClick }) {
   };
   const handleCloseAnimation = () => {
     timer2.current = setTimeout(() => {
-      // setOpenAnimation(false);
+      setOpenAnimation(false);
       clearTimeout(timer2.current);
     }, 5000);
   };
@@ -43,12 +46,23 @@ export default function SolveButton({ onClick }) {
   if (excludeParticipant?.includes(currentIdentity)) return <></>;
   return !hideSolveButton ? (
     <>
+      {tag === PREPOSTTESTKEY.preTest ||
+      tag === PREPOSTTESTKEY.postTest ? null : (
+        <>
+          {hasAnswerSubmitted && isAnswerCorrect && openAnimation && (
+            <CorrectAnswerAnimation />
+          )}
+          {hasAnswerSubmitted && !isAnswerCorrect && openAnimation && (
+            <GameLoseEmotionMathZone />
+          )}
+        </>
+      )}
       {hasAnswerSubmitted ? (
         <div
           className={`${styles2.checkButton} ${styles.checkButtonWaiting}`}
           id="solveBtn"
         >
-          <b>please wait...</b>
+          {!openAnimation && <b>please wait...</b>}
         </div>
       ) : (
         <button
@@ -58,12 +72,6 @@ export default function SolveButton({ onClick }) {
         >
           Solve
         </button>
-      )}
-      {hasAnswerSubmitted && isAnswerCorrect && openAnimation && (
-        <CorrectAnswerAnimation />
-      )}
-      {hasAnswerSubmitted && !isAnswerCorrect && openAnimation && (
-        <GameLoseEmotionMathZone />
       )}
     </>
   ) : null;
