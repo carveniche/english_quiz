@@ -42,7 +42,7 @@ interface liveClassDetailsTypes {
   isGgb: boolean;
   mathCurrentVideoPlaying: object;
   isMenuOpen: boolean;
-  isScreenSharePermissionGiven: boolean;
+  studentScreenShareReceived: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -86,7 +86,7 @@ const initialState: liveClassDetailsTypes = {
     currentVideoTagId: 0,
   },
   isMenuOpen: false,
-  isScreenSharePermissionGiven: false,
+  studentScreenShareReceived: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -238,8 +238,8 @@ export const liveClassDetailsSlice = createSlice({
       state.isMenuOpen = action.payload;
     },
 
-    screenSharePermissionGiven: (state, action) => {
-      state.isScreenSharePermissionGiven = action.payload;
+    setStudentScreenShareReceived: (state, action) => {
+      state.studentScreenShareReceived = action.payload;
     },
   },
 });
@@ -266,7 +266,7 @@ export const {
   changeGGbStatus,
   updateMathVideoCurrentTime,
   toggleMenuBar,
-  screenSharePermissionGiven,
+  setStudentScreenShareReceived,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

@@ -64,14 +64,12 @@ export default function ParticipantsAnimationBar({
   const [animationPariticipantType, setAnimationParticipantType] =
     useState<string>("");
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
-  const [studentShareScreen, setStundentShareScreen] = useState<boolean>(false);
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState(true);
-
   const [alertMessage, setAlertMessage] = useState("");
-
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
+  const screenShareTimerRef = useRef<NodeJS.Timeout | undefined>();
 
   const animationDataTracks = useSelector(
     (state: RootState) => state.dataTrackStore
@@ -81,8 +79,11 @@ export default function ParticipantsAnimationBar({
     (state: RootState) => state.videoCallTokenData
   );
 
-  const { muteIndividualParticipant, participantDeviceInformation } =
-    useSelector((state: RootState) => state.liveClassDetails);
+  const {
+    muteIndividualParticipant,
+    participantDeviceInformation,
+    studentScreenShareReceived,
+  } = useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
     if (animationStarted.current) {
@@ -130,18 +131,19 @@ export default function ParticipantsAnimationBar({
 
       return;
     }
-
     if (screenShareRef.current) {
+      setAlertMessage(
+        "Please wait a moment before trying to request screenshare again."
+      );
       return;
     }
 
     screenShareRef.current = true;
-    setTimeout(() => {
+    screenShareTimerRef.current = setTimeout(() => {
       screenShareRef.current = false;
-    }, 2500);
+    }, 5000);
 
-    setStundentShareScreen(!studentShareScreen);
-    if (!studentShareScreen) {
+    if (!studentScreenShareReceived) {
       handleKeyClick(identity, key, true);
     } else {
       handleKeyClick(identity, key, false);
@@ -318,7 +320,7 @@ export default function ParticipantsAnimationBar({
                     }
                   >
                     <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                      {studentShareScreen ? (
+                      {studentScreenShareReceived ? (
                         <ScreenShareOnIcon />
                       ) : (
                         <ScreenShareIcon />
@@ -403,7 +405,7 @@ export default function ParticipantsAnimationBar({
                       }
                     >
                       <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                        {studentShareScreen ? (
+                        {studentScreenShareReceived ? (
                           <ScreenShareOnIcon />
                         ) : (
                           <ScreenShareIcon />

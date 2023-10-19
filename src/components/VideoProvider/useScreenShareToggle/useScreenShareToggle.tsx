@@ -18,6 +18,7 @@ export default function useScreenShareToggle(
 ) {
   const [isSharing, setIsSharing] = useState(false);
   const stopScreenShareRef = useRef<() => void>(null!);
+  const alreadyGetScreenShareRequestRef = useRef<boolean | undefined>(false);
   const dispatch = useDispatch();
 
   const sendScreenShareDatatrack = (state: boolean) => {
@@ -47,6 +48,11 @@ export default function useScreenShareToggle(
   };
 
   const shareScreen = useCallback(() => {
+    if (alreadyGetScreenShareRequestRef.current) {
+      return;
+    }
+
+    alreadyGetScreenShareRequestRef.current = true;
     navigator.mediaDevices
       .getDisplayMedia({
         audio: false,
@@ -72,6 +78,7 @@ export default function useScreenShareToggle(
               track.stop();
               setIsSharing(false);
               sendScreenShareDatatrack(false);
+              alreadyGetScreenShareRequestRef.current = false;
             };
 
             track.onended = stopScreenShareRef.current;
@@ -81,6 +88,7 @@ export default function useScreenShareToggle(
           .catch(onError);
       })
       .catch((error) => {
+        alreadyGetScreenShareRequestRef.current = false;
         // Don't display an error if the user closes the screen share dialog
         if (
           error.message === "Permission denied by system" ||
