@@ -8,8 +8,8 @@ import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 import { handleLoadImage } from "./WhiteboardImageRenderer/LoadImage";
 import { useDispatch } from "react-redux";
 import { changeWhiteBoardToolBarValue } from "../../redux/features/ComponentLevelDataReducer";
-const TEXTAREAWIDTH = 250;
-const TEXTAREAHEIGHT = 150;
+const TEXTAREAWIDTH = 200;
+const TEXTAREAHEIGHT = 50;
 
 const eraserCursor = "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg";
 const penCursor = "/static/cursor.png";
@@ -193,26 +193,26 @@ export default function WhiteBoard({
     const position = e.target.getStage().getPointerPosition();
     let x = position.x + TEXTAREAWIDTH;
     let y = position.y + TEXTAREAHEIGHT;
-    if (x > canvasCalculatedDimension.current.width) {
-      x = position.x - TEXTAREAWIDTH;
-    } else {
-      x = position.x;
-    }
-    if (y > canvasCalculatedDimension.current.height) {
-      y = position.y - TEXTAREAHEIGHT;
-    } else {
-      y = position.y;
-    }
+    // if (x > canvasCalculatedDimension.current.width) {
+    //   x = position.x - TEXTAREAWIDTH;
+    // } else {
+    //   x = position.x;
+    // }
+    // if (y > canvasCalculatedDimension.current.height) {
+    //   y = position.y - TEXTAREAHEIGHT;
+    // } else {
+    //   y = position.y;
+    // }
     let inputText = {
-      x: x,
-      y: y,
+      x: position.x,
+      y: position.y,
       showInputBox: true,
       value: "",
     };
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
-    if (cursor === "crosshair") {
+    if (cursor === "crosshair" && selectedPen !== "Text") {
       return;
     }
     setCloseToolbarPopup(true);
@@ -363,7 +363,10 @@ export default function WhiteBoard({
   const handleKeyDown = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
       let data = {
-        points: [textInput.x, textInput.y],
+        points: [
+          textInput.x / scaleRef.current.scaleX,
+          textInput.y / scaleRef.current.scaleY,
+        ],
         value: textInput.value,
         type: "text",
         id: `${userId}_${currentIdRef.current}`,
@@ -532,28 +535,38 @@ export default function WhiteBoard({
                   </Layer>
                 )}
                 <Layer>
-                  {coordinatesRef.current.map((line, i) => (
-                    <Line
-                      key={i}
-                      points={line?.points.map((item, i) =>
-                        i % 2
-                          ? item * currentLoadedImage.height
-                          : item * currentLoadedImage.width
-                      )}
-                      stroke={line?.color}
-                      strokeWidth={line?.stroke}
-                      globalCompositeOperation={
-                        line.eraser ? "destination-out" : "source-over"
-                      }
-                    />
-                  ))}
+                  {coordinatesRef.current.map((line, i) =>
+                    line?.type === "text" ? (
+                      <Text
+                        text={line?.value}
+                        x={line?.points[0] * currentLoadedImage.width}
+                        y={line?.points[1] * currentLoadedImage.height}
+                        fontSize={30}
+                        key={`key${i}`}
+                      />
+                    ) : (
+                      <Line
+                        key={`key${i}`}
+                        points={line?.points.map((item, i) =>
+                          i % 2
+                            ? item * currentLoadedImage.height
+                            : item * currentLoadedImage.width
+                        )}
+                        globalCompositeOperation={
+                          line.eraser ? "destination-out" : "source-over"
+                        }
+                        stroke={line.color}
+                        strokeWidth={line?.stroke}
+                      ></Line>
+                    )
+                  )}
                   {remoteArrayRef.current?.map(({ coordinates }, key) =>
                     coordinates?.map((line, index) =>
                       line?.type === "text" ? (
                         <Text
                           text={line?.value}
-                          x={line?.points[0]}
-                          y={line?.points[1]}
+                          x={line?.points[0] * currentLoadedImage.width}
+                          y={line?.points[1] * currentLoadedImage.height}
                           fontSize={30}
                           key={`key${key}-cell${index}`}
                         />
