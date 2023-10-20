@@ -405,8 +405,6 @@ export default function WhiteBoard({
       let height = width / widthHeightProportion;
       image.width = width;
       image.height = height;
-      console.log(image.width);
-      console.log(image.height);
     }
   };
   const handleAfterImageLoaded = (image) => {
