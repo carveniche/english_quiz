@@ -100,7 +100,7 @@ export default function CallTechSupport() {
       )}
 
       {connectingFlag && (
-        <div className="flex absolute top-12 min-w-[115px] min-h-[20px] rounded px-2 py-1  bg-header-black justify-center ">
+        <div className="flex absolute top-12 min-w-[115px] min-h-[20px] rounded px-2 py-1  bg-header-black justify-center right-20 ">
           <span className="text-white">Connecting...</span>
         </div>
       )}
