@@ -68,6 +68,7 @@ export default function ParticipantsAnimationBar({
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
+  const [screenShare, setScreenShare] = useState(false);
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
   const screenShareTimerRef = useRef<NodeJS.Timeout | undefined>();
@@ -83,7 +84,6 @@ export default function ParticipantsAnimationBar({
   const {
     muteIndividualParticipant,
     participantDeviceInformation,
-    studentScreenShareReceived,
     screenSharePermissionDenied,
   } = useSelector((state: RootState) => state.liveClassDetails);
 
@@ -154,12 +154,19 @@ export default function ParticipantsAnimationBar({
       screenShareRef.current = false;
     }, 5000);
 
-    if (!studentScreenShareReceived) {
+    setScreenShare(!screenShare);
+    if (!screenShare) {
       handleKeyClick(identity, key, true);
     } else {
       handleKeyClick(identity, key, false);
     }
   };
+
+  useEffect(() => {
+    if (screenSharePermissionDenied.status) {
+      setScreenShare(false);
+    }
+  }, [screenSharePermissionDenied.status]);
 
   const muteIconButtonClicked = (identity: string) => {
     if (!muteParticipant) {
@@ -352,7 +359,7 @@ export default function ParticipantsAnimationBar({
                     }
                   >
                     <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                      {studentScreenShareReceived ? (
+                      {screenShare ? (
                         <ScreenShareOnIcon />
                       ) : (
                         <ScreenShareIcon />
@@ -437,7 +444,7 @@ export default function ParticipantsAnimationBar({
                       }
                     >
                       <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                        {studentScreenShareReceived ? (
+                        {screenShare ? (
                           <ScreenShareOnIcon />
                         ) : (
                           <ScreenShareIcon />

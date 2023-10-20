@@ -73,7 +73,9 @@ export default function useScreenShareToggle(
     navigator.mediaDevices
       .getDisplayMedia({
         audio: false,
-        video: true,
+        video: {
+          displaySurface: "monitor",
+        },
       })
       .then((stream) => {
         const track = stream.getTracks()[0];
@@ -102,6 +104,7 @@ export default function useScreenShareToggle(
             track.onended = stopScreenShareRef.current;
             setIsSharing(true);
             sendScreenShareDatatrack(true);
+            handlePermissionDeniedDataTrack(false);
           })
           .catch(onError);
       })
