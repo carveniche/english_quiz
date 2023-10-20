@@ -154,6 +154,13 @@ export default function Menu(props: { buttonClassName?: string }) {
           </MenuItem>
         )}
 
+        <MenuItem component="a" href="https://fast.com/" target="_blank">
+          <IconContainer>
+            <InfoIconOutlined />
+          </IconContainer>
+          <Typography variant="body1">Network Speed</Typography>
+        </MenuItem>
+
         <MenuItem onClick={() => setAboutOpen(true)}>
           <IconContainer>
             <InfoIconOutlined />
