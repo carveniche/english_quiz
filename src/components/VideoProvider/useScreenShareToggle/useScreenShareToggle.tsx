@@ -2,6 +2,8 @@ import { useState, useCallback, useRef } from "react";
 import { LogLevels, Track, Room } from "twilio-video";
 import { ErrorCallback } from "../../../types";
 
+import { isSafariBrowser } from "../../../utils/devices";
+
 interface MediaStreamTrackPublishOptions {
   name?: string;
   priority: Track.Priority;
@@ -11,6 +13,7 @@ interface MediaStreamTrackPublishOptions {
 import { useDispatch } from "react-redux";
 
 import { addScreenShareDatatrack } from "../../../redux/features/dataTrackStore";
+import { setSafariModalForScreenShare } from "../../../redux/features/liveClassDetails";
 
 export default function useScreenShareToggle(
   room: Room | null,
@@ -122,11 +125,27 @@ export default function useScreenShareToggle(
       });
   }, [room, onError]);
 
-  const toggleScreenShare = useCallback(() => {
-    if (room) {
-      !isSharing ? shareScreen() : stopScreenShareRef.current();
-    }
-  }, [isSharing, shareScreen, room]);
+  const toggleScreenShare = useCallback(
+    (from: string | undefined) => {
+      if (room) {
+        if (isSharing) {
+          stopScreenShareRef.current();
+        } else {
+          if (from === "usergesture") {
+            dispatch(setSafariModalForScreenShare(false));
+            shareScreen();
+          } else {
+            if (isSafariBrowser) {
+              dispatch(setSafariModalForScreenShare(true));
+            } else {
+              shareScreen();
+            }
+          }
+        }
+      }
+    },
+    [isSharing, shareScreen, room]
+  );
 
   return [isSharing, toggleScreenShare] as const;
 }

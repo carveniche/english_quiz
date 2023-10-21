@@ -39,7 +39,7 @@ export interface IVideoContext {
   isAcquiringLocalTracks: boolean;
   removeLocalVideoTrack: () => void;
   isSharingScreen: boolean;
-  toggleScreenShare: () => void;
+  toggleScreenShare: (from: string | undefined) => void;
   getAudioAndVideoTracks: () => Promise<void>;
   isBackgroundSelectionOpen: boolean;
   setIsBackgroundSelectionOpen: (value: boolean) => void;

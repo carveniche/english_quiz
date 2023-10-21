@@ -45,6 +45,7 @@ interface liveClassDetailsTypes {
   studentScreenShareReceived: boolean;
   screenSharePermissionDenied: object;
   showFiveStarAnimation: boolean;
+  openSafariModalForScreenShare: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -94,6 +95,7 @@ const initialState: liveClassDetailsTypes = {
     identity: "",
   },
   showFiveStarAnimation: false,
+  openSafariModalForScreenShare: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -257,6 +259,9 @@ export const liveClassDetailsSlice = createSlice({
     setShowFiveStarAnimation: (state, action) => {
       state.showFiveStarAnimation = action.payload;
     },
+    setSafariModalForScreenShare: (state, action) => {
+      state.openSafariModalForScreenShare = action.payload;
+    },
   },
 });
 
@@ -285,6 +290,7 @@ export const {
   setStudentScreenShareReceived,
   setScreenSharePermission,
   setShowFiveStarAnimation,
+  setSafariModalForScreenShare,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

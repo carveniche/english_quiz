@@ -11,6 +11,7 @@ import { isTech } from "../../utils/participantIdentity";
 import { SHOWFLOATINGPARTICIPANT } from "../../constants";
 
 import FiveStarAnimation from "../LottieAnimations/FiveStarAnimation";
+import SafariScreenShareModal from "../SafariScreenShareModal/SafariScreenShareModal";
 
 interface RoomProps {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -21,9 +22,11 @@ export default function Room({ parentRef }: RoomProps) {
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
 
-  const { showDeviceInfoModalTech, showFiveStarAnimation } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
+  const {
+    showDeviceInfoModalTech,
+    showFiveStarAnimation,
+    openSafariModalForScreenShare,
+  } = useSelector((state: RootState) => state.liveClassDetails);
 
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
@@ -39,9 +42,7 @@ export default function Room({ parentRef }: RoomProps) {
       <ScreenShareEffect />
 
       {/*
-
       Showing FiveStarAnimation for Student
-      
     */}
 
       {showFiveStarAnimation && (
@@ -49,6 +50,8 @@ export default function Room({ parentRef }: RoomProps) {
           <FiveStarAnimation />
         </div>
       )}
+
+      {openSafariModalForScreenShare && <SafariScreenShareModal />}
 
       {currentSelectedScreen === "/allscreen" ? (
         <AllScreen />
