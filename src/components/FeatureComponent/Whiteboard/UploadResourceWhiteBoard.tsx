@@ -10,11 +10,11 @@ import HelperWhiteBoard from "../../WhiteBoardHelper/HelperWhiteBoard";
 
 export default function UploadResourceWhiteBoard() {
   const { room } = useVideoContext();
-  const { allWhiteBoardRelatedData } = useSelector(
+  const { allWhiteBoardRelatedData, uploadResourceImagesId } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
   );
-  let whiteBoardData =
-    allWhiteBoardRelatedData[UPLOADRESOURCE.uploadResourceWhiteboardData] || {};
+  const dataTrackKey = `${UPLOADRESOURCE.uploadResourceWhiteboardData}${uploadResourceImagesId}`;
+  let whiteBoardData = allWhiteBoardRelatedData[dataTrackKey] || {};
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
   ];
@@ -41,7 +41,7 @@ export default function UploadResourceWhiteBoard() {
         value: {
           datatrackName: WHITEBOARD.pdfIndex,
           index: whiteBoardData.currentIndex + val,
-          dataTrackKey: UPLOADRESOURCE.uploadResourceWhiteboardData,
+          dataTrackKey: dataTrackKey,
         },
       };
 
@@ -49,7 +49,7 @@ export default function UploadResourceWhiteBoard() {
       dispatch(
         changePdfIndex({
           index: whiteBoardData.currentIndex + val,
-          dataTrackKey: UPLOADRESOURCE.uploadResourceWhiteboardData,
+          dataTrackKey: dataTrackKey,
         })
       );
       setIsImageLoaded(false);
@@ -70,32 +70,35 @@ export default function UploadResourceWhiteBoard() {
       className={`${
         isImageLoaded ? "w-fit h-full visible" : "w-full h-full invisible"
       } relative m-auto`}
+      key={uploadResourceImagesId}
     >
-      {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
-        <div
-          className="absolute top-1/2 left-[-40px] flex w-full justify-between"
-          style={{
-            width: "calc(100% + 80px)",
-          }}
-        >
-          <button
-            onClick={() => {
-              handlePdfChange(-1);
+      {isTutorTechBoth({ identity: String(role_name) }) &&
+        isImageLoaded &&
+        uploadResourceImages.length > 1 && (
+          <div
+            className="absolute top-1/2 left-[-40px] flex w-full justify-between"
+            style={{
+              width: "calc(100% + 80px)",
             }}
           >
-            <img src="/static/media/Previous-btn.svg" />
-          </button>
-          <button
-            onClick={() => {
-              handlePdfChange(1);
-            }}
-          >
-            <img src="/static/media/Next-btn.svg" />
-          </button>
-        </div>
-      )}
+            <button
+              onClick={() => {
+                handlePdfChange(-1);
+              }}
+            >
+              <img src="/static/media/Previous-btn.svg" />
+            </button>
+            <button
+              onClick={() => {
+                handlePdfChange(1);
+              }}
+            >
+              <img src="/static/media/Next-btn.svg" />
+            </button>
+          </div>
+        )}
       <HelperWhiteBoard
-        dataTrackKey={UPLOADRESOURCE.uploadResourceWhiteboardData}
+        dataTrackKey={dataTrackKey}
         pathName={currentSelectedRouter}
         key={uploadResourceImages[whiteBoardData.currentIndex]}
         cbAfterImageRendered={afterImageRendered}

@@ -8,6 +8,7 @@ import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 import { handleLoadImage } from "./WhiteboardImageRenderer/LoadImage";
 import { useDispatch } from "react-redux";
 import { changeWhiteBoardToolBarValue } from "../../redux/features/ComponentLevelDataReducer";
+import { isTutorTechBoth } from "../../utils/participantIdentity";
 const TEXTAREAWIDTH = 200;
 const TEXTAREAHEIGHT = 50;
 
@@ -42,6 +43,9 @@ export default function WhiteBoard({
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
+  const { role_name } = useSelector((state: RootState) => {
+    return state.videoCallTokenData;
+  });
   const scaleRef = useRef({
     scaleX: 1,
     scaleY: 1,
@@ -69,7 +73,8 @@ export default function WhiteBoard({
   });
   const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
   const [currentLoadedImage, setCurrentLoadedImage] = useState("");
-  const remoteArrayRef = useRef(
+  const remoteArrayRef = useRef([]);
+  const allCoordinateRef = useRef(
     JSON.parse(JSON.stringify(whiteBoardData)) || []
   );
   const [_remoteState, setRemoteState] = useState(false);
@@ -121,10 +126,10 @@ export default function WhiteBoard({
     setScaled(true);
   };
   const drawLine = (lastLines) => {
-    coordinatesRef.current = coordinatesRef.current.filter(
+    allCoordinateRef.current = allCoordinateRef.current.filter(
       (item) => item.id != lastLines.id
     );
-    coordinatesRef.current.push(lastLines);
+    allCoordinateRef.current.push(lastLines);
     setLocalState((prev) => !prev);
   };
   let ref = useRef();
@@ -137,22 +142,15 @@ export default function WhiteBoard({
     findParticipant.userName = lastLines.userName;
     findParticipant.cursorPoints = lastLines?.cursorPoints || [];
     findParticipant.isDrawing = lastLines.isDrawing;
-    let coordinates = findParticipant?.coordinates || [];
-    coordinates = coordinates.filter(
-      (item) => item.id != lastLines?.coordinates?.id
-    );
-    if (lastLines?.coordinates) coordinates.push(lastLines?.coordinates);
-    findParticipant.coordinates = coordinates;
+    delete findParticipant.coordinates;
     let restParticipant = remoteArrayRef.current.filter(
       ({ identity }) => identity != lastLines.identity
     );
-
     restParticipant.push(findParticipant);
 
     remoteArrayRef.current = restParticipant;
     if (true) setRemoteState((prev) => !prev);
   };
-
   const drawStraightLine = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
     let temp = [
@@ -160,8 +158,8 @@ export default function WhiteBoard({
       positionMove.y / scaleRef.current.scaleY,
     ];
 
-    let lastLines = coordinatesRef.current.pop();
-
+    let lastLines = coordinatesRef.current[0];
+    if (!lastLines) return;
     lastLines.points = [lastLines.points[0], lastLines.points[1], ...temp];
     drawLine(lastLines);
     let coordinates2 = {
@@ -179,7 +177,9 @@ export default function WhiteBoard({
       positionMove.x / scaleRef.current.scaleX,
       positionMove.y / scaleRef.current.scaleY,
     ];
-    let lastLines = coordinatesRef.current.pop();
+
+    let lastLines = coordinatesRef.current[0];
+    if (!lastLines) return;
     // let lastLines = coordinates[coordinates.length - 1];
     lastLines.points = lastLines.points.concat([...temp]);
     drawLine(lastLines);
@@ -193,18 +193,6 @@ export default function WhiteBoard({
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
-    let x = position.x + TEXTAREAWIDTH;
-    let y = position.y + TEXTAREAHEIGHT;
-    // if (x > canvasCalculatedDimension.current.width) {
-    //   x = position.x - TEXTAREAWIDTH;
-    // } else {
-    //   x = position.x;
-    // }
-    // if (y > canvasCalculatedDimension.current.height) {
-    //   y = position.y - TEXTAREAHEIGHT;
-    // } else {
-    //   y = position.y;
-    // }
     let inputText = {
       x: position.x,
       y: position.y,
@@ -236,7 +224,7 @@ export default function WhiteBoard({
         position.y / scaleRef.current.scaleY,
       ],
     };
-
+    coordinatesRef.current = [];
     currentIdRef.current = currentIdRef.current + 1;
     coordinatesRef.current.push(penStructure);
     setLocalState((prev) => !prev);
@@ -348,6 +336,12 @@ export default function WhiteBoard({
           changeWhiteBoardToolBarValue({ key: "cursor", value: eraserCursor })
         );
         dispatch(
+          changeWhiteBoardToolBarValue({
+            key: "selectedPen",
+            value: "FreeDrawing",
+          })
+        );
+        dispatch(
           changeWhiteBoardToolBarValue({ key: "eraserSelect", value: true })
         );
         break;
@@ -371,9 +365,9 @@ export default function WhiteBoard({
         ],
         value: textInput.value,
         type: "text",
-        id: `${userId}_${currentIdRef.current}`,
+        id: `${userId}_${Date.now()}`,
       };
-      coordinatesRef.current.push(data);
+      allCoordinateRef.current.push(data);
       setLocalState((prev) => !prev);
       setTextInput({
         x: 0,
@@ -387,6 +381,7 @@ export default function WhiteBoard({
       coordinates2.cursorPoints = [];
       coordinates2.identity = userId;
       coordinates2.isDrawing = false;
+      coordinates2.type = "text";
       typeof handleDataTrack === "function" &&
         throttleFn(
           () => handleDataTrack(coordinates2),
@@ -401,12 +396,16 @@ export default function WhiteBoard({
     if (image) {
       let widthHeightProportion = image.width / image.height;
       let width = image.width;
+      if (
+        isTutorTechBoth({ identity: role_name.toString() }) &&
+        totalImageLength > 1
+      ) {
+        containerWidth -= 100;
+      }
       if (containerWidth < width) width = containerWidth;
       let height = width / widthHeightProportion;
       image.width = width;
       image.height = height;
-      console.log(image.width);
-      console.log(image.height);
     }
   };
   const handleAfterImageLoaded = (image) => {
@@ -441,6 +440,7 @@ export default function WhiteBoard({
   const handleClearAll = () => {
     coordinatesRef.current = [];
     remoteArrayRef.current = [];
+    allCoordinateRef.current = [];
     setLocalState((prev) => !prev);
     dispatch(changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor }));
     dispatch(
@@ -450,11 +450,13 @@ export default function WhiteBoard({
   useEffect(() => {
     if (count) {
       if (currentIncomingLines) {
-        let temp = JSON.stringify(currentIncomingLines);
+        let temp = JSON.parse(JSON.stringify(currentIncomingLines));
         if (currentIncomingLines?.type === "clearAll") {
           handleClearAll();
         }
-        remoteDrawLine(JSON.parse(temp) || {});
+        remoteDrawLine(temp || {});
+        if ((temp?.isDrawing || temp.type === "text") && temp?.coordinates)
+          drawLine(temp?.coordinates || {});
       }
     }
   }, [count]);
@@ -468,14 +470,14 @@ export default function WhiteBoard({
     return () => {
       typeof handleUpdateLocalAndRemoteData === "function" &&
         handleUpdateLocalAndRemoteData(
-          JSON.parse(JSON.stringify(coordinatesRef.current)),
-          JSON.parse(JSON.stringify(remoteArrayRef.current))
+          JSON.parse(JSON.stringify(allCoordinateRef.current))
         );
     };
   }, []);
   useEffect(() => {
     if (images) handleLoadImage(images, handleAfterImageLoaded);
   }, [images]);
+
   return (
     <div className="w-full h-full p-1">
       <WhiteboardToolbar
@@ -563,7 +565,7 @@ export default function WhiteBoard({
                   </Layer>
                 )}
                 <Layer>
-                  {coordinatesRef.current.map((line, i) =>
+                  {allCoordinateRef.current.map((line, i) =>
                     line?.type === "text" ? (
                       <Text
                         text={line?.value}
@@ -575,7 +577,7 @@ export default function WhiteBoard({
                     ) : (
                       <Line
                         key={`key${i}`}
-                        points={line?.points.map((item, i) =>
+                        points={line?.points?.map((item, i) =>
                           i % 2
                             ? item * currentLoadedImage.height
                             : item * currentLoadedImage.width
@@ -586,33 +588,6 @@ export default function WhiteBoard({
                         stroke={line.color}
                         strokeWidth={line?.stroke}
                       ></Line>
-                    )
-                  )}
-                  {remoteArrayRef.current?.map(({ coordinates }, key) =>
-                    coordinates?.map((line, index) =>
-                      line?.type === "text" ? (
-                        <Text
-                          text={line?.value}
-                          x={line?.points[0] * currentLoadedImage.width}
-                          y={line?.points[1] * currentLoadedImage.height}
-                          fontSize={30}
-                          key={`key${key}-cell${index}`}
-                        />
-                      ) : (
-                        <Line
-                          key={`key${key}-cell${index}`}
-                          points={line?.points.map((item, i) =>
-                            i % 2
-                              ? item * currentLoadedImage.height
-                              : item * currentLoadedImage.width
-                          )}
-                          globalCompositeOperation={
-                            line.eraser ? "destination-out" : "source-over"
-                          }
-                          stroke={line.color}
-                          strokeWidth={line?.stroke}
-                        ></Line>
-                      )
                     )
                   )}
                 </Layer>
@@ -659,8 +634,8 @@ export default function WhiteBoard({
             )}
 
             <Layer>
-              {coordinatesRef.current?.map((line, i) =>
-                line?.type === "text" ? (
+              {allCoordinateRef.current?.map((line, i) => {
+                return line?.type === "text" ? (
                   <Text
                     text={line?.value}
                     x={line?.points[0]}
@@ -677,29 +652,8 @@ export default function WhiteBoard({
                       line.eraser ? "destination-out" : "source-over"
                     }
                   />
-                )
-              )}
-              {remoteArrayRef.current?.map(({ coordinates }, key) =>
-                coordinates?.map((line) =>
-                  line?.type === "text" ? (
-                    <Text
-                      text={line?.value}
-                      x={line?.points[0]}
-                      y={line?.points[1]}
-                      fontSize={30}
-                    />
-                  ) : (
-                    <Line
-                      points={line?.points || []}
-                      stroke={line.color}
-                      strokeWidth={line?.stroke}
-                      globalCompositeOperation={
-                        line.eraser ? "destination-out" : "source-over"
-                      }
-                    ></Line>
-                  )
-                )
-              )}
+                );
+              })}
             </Layer>
           </Stage>
         )}
@@ -714,7 +668,6 @@ const UrlImage = (props: {
   x: number;
   src: string;
 }) => {
-  console.log();
   const { width, height, x, src, scaleRef } = props;
   const [image, setImage] = useState("");
   const handleLoad = () => {

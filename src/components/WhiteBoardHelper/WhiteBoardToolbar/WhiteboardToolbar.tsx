@@ -173,7 +173,7 @@ export default function WhiteboardToolbar({
     handleClick(json);
   };
 
-  const handleDataTrack = (images: []) => {
+  const handleDataTrack = (images: obj) => {
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
     ];
@@ -190,9 +190,11 @@ export default function WhiteboardToolbar({
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handleSelectPdf = (images: []) => {
-    dispatch(openClosedUploadResourceWhiteBoard(images));
-    handleDataTrack(images);
+  const handleSelectPdf = (obj: { images: string[]; id: number }) => {
+    dispatch(
+      openClosedUploadResourceWhiteBoard({ images: obj.images, id: obj?.id })
+    );
+    handleDataTrack({ images: obj.images, id: obj.id });
   };
 
   const handleUploadDocumentModal = () => {
@@ -391,28 +393,35 @@ export default function WhiteboardToolbar({
             </div>
             <div className="w-full h-[2px] bg-blue-500"></div>
 
-            {uploadResourceData?.map((item, index) => {
-              return (
-                <>
-                  <div
-                    key={`uploadresource-${index}`}
-                    className="flex flex-row gap-2"
-                  >
-                    <p>{item?.name}</p>
-                    <Button
-                      onClick={() => handleSelectPdf(item.image_data)}
-                      style={{
-                        fontSize: "8px",
-                      }}
-                      variant="contained"
-                      color="primary"
+            {uploadResourceData?.map(
+              (item: { id: number; image_data: string[] }, index) => {
+                return (
+                  <>
+                    <div
+                      key={`uploadresource-${index}`}
+                      className="flex flex-row gap-2"
                     >
-                      Select
-                    </Button>
-                  </div>
-                </>
-              );
-            })}
+                      <p>{item?.name}</p>
+                      <Button
+                        onClick={() =>
+                          handleSelectPdf({
+                            id: item?.id,
+                            images: item?.image_data,
+                          })
+                        }
+                        style={{
+                          fontSize: "8px",
+                        }}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Select
+                      </Button>
+                    </div>
+                  </>
+                );
+              }
+            )}
           </div>
         )}
       </div>

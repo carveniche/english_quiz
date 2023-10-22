@@ -73,29 +73,26 @@ export default function HelperWhiteBoard({
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handleUpdateLocalAndRemoteData = (localArray, remoteArray) => {
+  const handleUpdateLocalAndRemoteData = (localArray) => {
     let coordinates = {
       coordinates: localArray,
       cursorPoints: [],
       identity: userId,
       isDrawing: false,
     };
-    let arr = remoteArray.map((item) => {
-      return { ...item, cursorPoints: [], isDrawing: false };
+    let arr = localArray.map((item) => {
+      return { ...item };
     });
     if (localArray.length) {
       arr.push(coordinates);
     }
-    arr = arr.filter((item) => item?.coordinates?.length);
-    if (arr.length) {
-      dispatch(
-        saveAllWhiteBoardData({
-          index: whiteBoardData.currentIndex,
-          whiteBoardData: arr,
-          dataTrackKey: dataTrackKey,
-        })
-      );
-    }
+    dispatch(
+      saveAllWhiteBoardData({
+        index: whiteBoardData.currentIndex,
+        whiteBoardData: arr,
+        dataTrackKey: dataTrackKey,
+      })
+    );
   };
   return (
     <>
@@ -118,6 +115,7 @@ export default function HelperWhiteBoard({
           images={
             images?.length ? images[whiteBoardData.currentIndex] || "" : ""
           }
+          totalImageLength={images?.length || 0}
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
           }
