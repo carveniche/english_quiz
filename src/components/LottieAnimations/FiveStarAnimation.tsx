@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import lottie, { AnimationItem } from "lottie-web";
 
-import fiveStarLottie from "../../assets/LottieFiles/fiveStar.json";
+import fiveStarLottie from "../../assets/LottieFiles/FiveStar.json";
 
 export default function FileStarLottie() {
   const container = useRef<HTMLDivElement>(null);

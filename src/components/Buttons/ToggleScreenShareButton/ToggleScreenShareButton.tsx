@@ -60,7 +60,7 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
           a tooltip when screen sharing is disabled */}
         <Button
           className={classes.button}
-          onClick={toggleScreenShare}
+          onClick={() => toggleScreenShare("usergesture")}
           disabled={isDisabled}
           startIcon={<ScreenShareIcon />}
           data-cy-share-screen

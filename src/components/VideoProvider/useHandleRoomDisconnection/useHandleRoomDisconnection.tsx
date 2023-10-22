@@ -9,7 +9,7 @@ export default function useHandleRoomDisconnection(
   removeLocalAudioTrack: () => void,
   removeLocalVideoTrack: () => void,
   isSharingScreen: boolean,
-  toggleScreenShare: () => void
+  toggleScreenShare: (from: string | undefined) => void
 ) {
   useEffect(() => {
     if (room) {
@@ -21,7 +21,7 @@ export default function useHandleRoomDisconnection(
         removeLocalAudioTrack();
         removeLocalVideoTrack();
         if (isSharingScreen) {
-          toggleScreenShare();
+          toggleScreenShare("");
         }
       };
 

@@ -3,15 +3,12 @@ import Colorbar from "./JSON/ColorPicker.json";
 import PenStroke from "./JSON/PenStroke.json";
 import EraserSize from "./JSON/EraserSize.json";
 import { useEffect, useState } from "react";
-
-import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import { openCloseUploadResourceModalTeacher } from "../../../redux/features/liveClassDetails";
 import UploadResource from "../UploadResource/UploadResource";
-import UploadIcon from "./UploadIcon.png";
 import { getUploadResourcesList } from "../../../api";
 import Button from "@mui/material/Button";
 import {
@@ -20,6 +17,10 @@ import {
 } from "../../../redux/features/ComponentLevelDataReducer";
 import { ROUTERKEYCONST, UPLOADRESOURCE } from "../../../constants";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import UploadFilesIcon from "../UploadResource/UploadResourceIcons/UploadFilesIcon";
+import FilesChevronDown from "../UploadResource/UploadResourceIcons/FilesChevronDown";
+import FilesUploadIcon from "../UploadResource/UploadResourceIcons/FilesUploadIcon";
+import UploadResourceFileTextIcon from "../UploadResource/UploadResourceIcons/UploadResourceFileTextIcon";
 
 export default function WhiteboardToolbar({
   handleClick,
@@ -250,13 +251,13 @@ export default function WhiteboardToolbar({
               isTutor({ identity: String(role_name) }) &&
               !isUploadResourceOpen &&
               currentSelectedScreen === "/whiteboard" ? (
-                <img
-                  style={{
-                    width: "45px",
-                    height: "45px",
-                  }}
-                  src={UploadIcon}
-                />
+                <div className="flex w-[100px] justify-between items-center">
+                  <UploadFilesIcon />
+                  <p className="text-speedMathTextColor font-semibold text-lg">
+                    Files
+                  </p>
+                  <FilesChevronDown />
+                </div>
               ) : (
                 <img src={item.image}></img>
               )}
@@ -376,52 +377,59 @@ export default function WhiteboardToolbar({
         {openUploadResourcePopover && (
           <div
             className="flex flex-col
-            flex-wrap absolute bg-white p-4 gap-4 shadow-md left-[220px]"
+            flex-wrap w-[420px] absolute bg-white gap-4 shadow-md left-[220px]"
           >
-            <div>
+            <div className="w-full border bg-[#E0E0E0] h-[40px] items-center justify-center">
               <button
                 className="flex flex-row items-center p-2 gap-2"
                 onClick={handleUploadDocumentModal}
               >
-                <FileUploadIcon
-                  style={{
-                    color: "blue",
-                  }}
-                />
-                <p>Upload</p>
+                <FilesUploadIcon />
+                <p className="text-speedMathTextColor font-semibold text-sm">
+                  Upload new file
+                </p>
               </button>
             </div>
-            <div className="w-full h-[2px] bg-blue-500"></div>
 
-            {uploadResourceData?.map(
-              (item: { id: number; image_data: string[] }, index) => {
-                return (
-                  <>
-                    <div
-                      key={`uploadresource-${index}`}
-                      className="flex flex-row gap-2"
-                    >
-                      <p>{item?.name}</p>
-                      <Button
-                        onClick={() =>
-                          handleSelectPdf({
-                            id: item?.id,
-                            images: item?.image_data,
-                          })
-                        }
-                        style={{
-                          fontSize: "8px",
-                        }}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Select
-                      </Button>
-                    </div>
-                  </>
-                );
-              }
+            {uploadResourceData?.length > 0 && (
+              <div className="items-center justify-center pl-3">
+                <p className="font-semibold text-base leading-6 ">
+                  Previously uploaded files
+                </p>
+              </div>
             )}
+
+            {uploadResourceData?.length > 0 &&
+              uploadResourceData?.map(
+                (
+                  item: { name: string; id: number; image_data: string[] },
+                  index
+                ) => {
+                  return (
+                    <>
+                      <div
+                        key={`uploadresource-${index}`}
+                        className="flex flex-row items-center pl-3 gap-2 mb-2"
+                      >
+                        <div className="flex w-[28px] h-[28px] border border-[#ECEBEB] bg-[#ECEBEB] justify-center items-center">
+                          <UploadResourceFileTextIcon />
+                        </div>
+                        <p
+                          onClick={() =>
+                            handleSelectPdf({
+                              images: item.image_data,
+                              id: item?.id,
+                            })
+                          }
+                          className="font-semibold leading-4 tracking-normal text-left cursor-pointer"
+                        >
+                          {item?.name}
+                        </p>
+                      </div>
+                    </>
+                  );
+                }
+              )}
           </div>
         )}
       </div>
