@@ -64,7 +64,6 @@ export default function SpeedMath() {
   }, [speedMathGameIdStudent]);
 
   useEffect(() => {
-    console.log("SpeedMathGameLevel", speedMathGameLevel);
     setComponentNo(1);
     setStartQuestionTimer(false);
     setFinalSpeedMathScoreBoard([]);
@@ -154,7 +153,6 @@ export default function SpeedMath() {
   };
 
   const onGameInProgressTimerEnd = (computerScore: number) => {
-    console.log("computerScore", computerScore);
     setGameComputerScore(computerScore);
     setShowSpeedMathSummaryBoard(true);
     setComponentNo(4);

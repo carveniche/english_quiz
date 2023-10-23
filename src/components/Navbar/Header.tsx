@@ -50,9 +50,10 @@ export default function Header() {
             )}
             <CallTechSupport />
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
-            {!isParent({ identity: String(role_name) }) && (
-              <ReportErrorScreenShot />
-            )}
+            {isTutor({ identity: String(role_name) }) &&
+              !isParent({ identity: String(role_name) }) && (
+                <ReportErrorScreenShot />
+              )}
           </div>
         </div>
       </div>

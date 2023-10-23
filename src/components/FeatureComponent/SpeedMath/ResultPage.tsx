@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getGameResult } from "../../../api/index";
 
-import WinnerIcon from "./assets/images/trophyicon.png";
-import LosserIcon from "./assets/images/Sademoji.png";
-
 import SpeedMathResultFetchingLottie from "../../LottieAnimations/SpeedMathResultFetchingLottie";
+import { isTutor } from "../../../utils/participantIdentity";
+import VictoryAnimation from "../../LottieAnimations/SpeedMathVictoryAnimation";
+import LossingAnimation from "../../LottieAnimations/SpeedMathLossingAnimation";
+
 interface ResultPageProps {
   userAnswerData: any;
   computerScore: number;
@@ -21,13 +22,15 @@ export default function ResultPage({
   liveClassId,
   playerId,
   gameId,
-  playMode,
+  identity,
   getFinalResult,
 }: ResultPageProps) {
   const [counter, setCounter] = useState(10);
   const [gameResultData, setGameResultData] = useState(null);
   const [studentScore, setStudentScore] = useState([]);
-  const [computerWinnerStatus, setComputerWinnerStatus] = useState(false);
+  const [studentWinningStatus, setStudentWinningStatus] = useState(false);
+  const [showWinningStatusAnimation, setShowWinningStatusAnimation] =
+    useState(false);
 
   useEffect(() => {
     counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
@@ -37,22 +40,35 @@ export default function ResultPage({
   }, [counter]);
 
   useEffect(() => {
-    if (gameResultData !== null && playMode == "computer") {
-      findWhoWinsComputerOrStudent();
+    if (counter === 0) {
+      findAverageForStudent();
     }
   }, [studentScore]);
 
-  function findWhoWinsComputerOrStudent() {
-    let finalStudentScore = studentScore;
-    for (let i = 0; i < finalStudentScore.length; i++) {
-      if (finalStudentScore[i].game_result === "winner") {
-        setComputerWinnerStatus(false);
-      } else if (finalStudentScore[i].game_result === "tied") {
-        setComputerWinnerStatus(true);
-      } else {
-        setComputerWinnerStatus(true);
-      }
+  const resetWinningStatusAnimation = () => {
+    setTimeout(() => {
+      setShowWinningStatusAnimation(false);
+    }, 5000);
+  };
+
+  function findAverageForStudent() {
+    if (isTutor({ identity: String(identity) })) {
+      return;
     }
+
+    studentScore.forEach((score) => {
+      let userIdentity = identity.split("-");
+      if (score.player_id === Number(userIdentity[0])) {
+        if (score.game_result === "winner" || score.game_result === "tied") {
+          setStudentWinningStatus(true);
+          setShowWinningStatusAnimation(true);
+          resetWinningStatusAnimation();
+        } else {
+          setShowWinningStatusAnimation(true);
+          resetWinningStatusAnimation();
+        }
+      }
+    });
   }
 
   function getSpeedMathResult() {
@@ -78,107 +94,6 @@ export default function ResultPage({
     );
   };
 
-  const showParticipantsScore = () => {
-    return (
-      <></>
-      // <div className="flex flex-col justify-start items-start">
-      //   <>
-      //     {gameResultData.response_data.map((item: any) => {
-      //       return (
-      //         <>
-      //           <div className="flex flex-row w-full h-full mt-5">
-      //             <div className="flex w-2/3 h-[10%] justify-between items-center  p-1">
-      //               <div className="flex w-[60%] flex-wrap">
-      //                 <p className="text-speedMathTextColor font-bold text-lg">
-      //                   {item.name}
-      //                 </p>
-      //               </div>
-      //               <div className="flex w-[20%] flex-wrap justify-center">
-      //                 <p className="text-speedMathTextColor font-bold text-lg">
-      //                   -
-      //                 </p>
-      //               </div>
-      //               <div className="flex w-[20%] flex-wrap justify-center">
-      //                 <p className="text-speedMathTextColor font-bold text-lg">
-      //                   {item.correct}/{item.total}
-      //                 </p>
-      //               </div>
-      //             </div>
-      //             <div className="flex w-1/3 h-[10%] justify-center items-center m-auto  p-1">
-      //               {item.game_result === "winner" ? (
-      //                 <img
-      //                   style={{
-      //                     width: "40px",
-      //                     height: "40px",
-      //                   }}
-      //                   src={WinnerIcon}
-      //                 ></img>
-      //               ) : item.game_result === "tied" ? (
-      //                 <img
-      //                   style={{
-      //                     width: "40px",
-      //                     height: "40px",
-      //                   }}
-      //                   src={WinnerIcon}
-      //                 ></img>
-      //               ) : (
-      //                 <img
-      //                   style={{
-      //                     width: "40px",
-      //                     height: "40px",
-      //                   }}
-      //                   src={LosserIcon}
-      //                 ></img>
-      //               )}
-      //             </div>
-      //           </div>
-      //         </>
-      //       );
-      //     })}
-
-      //     {playMode === "computer" && (
-      //       <div className="flex flex-row w-full h-full mt-5">
-      //         <div className="flex w-2/3 h-[10%] justify-between items-center  p-1">
-      //           <div className="flex w-[60%] flex-wrap">
-      //             <p className="text-speedMathTextColor font-bold text-lg">
-      //               Computer Score
-      //             </p>
-      //           </div>
-      //           <div className="flex w-[20%] flex-wrap justify-center">
-      //             <p className="text-speedMathTextColor font-bold text-lg">-</p>
-      //           </div>
-      //           <div className="flex w-[20%] flex-wrap justify-center">
-      //             <p className="text-speedMathTextColor font-bold text-lg">
-      //               {gameResultData?.computer_score || 0}
-      //             </p>
-      //           </div>
-      //         </div>
-      //         <div className="flex w-1/3 h-[10%] justify-center items-center m-auto  p-1">
-      //           {computerWinnerStatus ? (
-      //             <img
-      //               style={{
-      //                 width: "40px",
-      //                 height: "40px",
-      //               }}
-      //               src={WinnerIcon}
-      //             ></img>
-      //           ) : (
-      //             <img
-      //               style={{
-      //                 width: "40px",
-      //                 height: "40px",
-      //               }}
-      //               src={LosserIcon}
-      //             ></img>
-      //           )}
-      //         </div>
-      //       </div>
-      //     )}
-      //   </>
-      // </div>
-    );
-  };
-
   const scoreBoard = () => {
     return (
       <div className="flex flex-col w-full h-full items-start gap-2">
@@ -196,9 +111,12 @@ export default function ResultPage({
             </div>
           </div>
           <div className="flex w-1/2 h-full justify-around items-center  p-5">
-            {gameResultData.response_data.map((student) => {
+            {gameResultData.response_data.map((student, index) => {
               return (
-                <div className="flex w-1/2 justify-center items-center">
+                <div
+                  className="flex w-1/2 justify-center items-center"
+                  key={index}
+                >
                   <p className="text-speedMathTextColor font-bold text-xl">
                     {student.name}
                   </p>
@@ -210,7 +128,10 @@ export default function ResultPage({
         {gameResultData.question_data.map((obj, index) => {
           return (
             <>
-              <div className="flex flex-row w-[98%] h-[10%] justify-center items-start border rounded-full bg-speedMathGameSelectionModeYelloBg">
+              <div
+                className="flex flex-row w-[98%] h-[10%] justify-center items-start border rounded-full bg-speedMathGameSelectionModeYelloBg"
+                key={index}
+              >
                 <div className="flex w-1/2 h-full justify-around items-center  p-5">
                   <div className="flex w-1/2 justify-center items-center">
                     <p
@@ -225,7 +146,7 @@ export default function ResultPage({
                   </div>
                 </div>
                 <div className="flex w-1/2 h-full justify-around items-center  p-5">
-                  {gameResultData?.response_data.map((res) => {
+                  {gameResultData?.response_data.map((res, index) => {
                     return (
                       <div key={res.id}>
                         {res.player_question_data[index] !== undefined ? (
@@ -265,15 +186,26 @@ export default function ResultPage({
         <div className="flex w-4/5 h-[95%] max-h-[400px] justify-center items-center overflow-auto mt-5">
           {gameResultData !== null && scoreBoard()}
         </div>
-        <div className="flex w-1/5 h-full items-start mt-10">
-          {/* {gameResultData !== null && showParticipantsScore()} */}
-        </div>
+        <div className="flex w-1/5 h-full items-start mt-10"></div>
       </div>
     );
   };
 
+  console.log("studentWinningStatus", studentWinningStatus);
+  console.log("showWinningStatusAnimation", showWinningStatusAnimation);
+
   return (
     <div className="flex w-full h-full justify-between items-center">
+      {studentWinningStatus && showWinningStatusAnimation ? (
+        <div className="flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-between w-[500px] h-[500px] z-10">
+          <VictoryAnimation />
+        </div>
+      ) : !studentWinningStatus && showWinningStatusAnimation ? (
+        <div className="flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-between w-[250px] h-[250px] z-10">
+          <LossingAnimation />
+        </div>
+      ) : null}
+
       {counter > 0 ? resultPackingView() : resultView()}
     </div>
   );

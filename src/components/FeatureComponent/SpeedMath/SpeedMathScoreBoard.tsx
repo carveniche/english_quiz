@@ -13,9 +13,12 @@ export default function SpeedMathScoreBoard({
   console.log("speedMathScoreBoard", speedMathScoreBoard);
   return (
     <>
-      {speedMathScoreBoard?.response_data.map((item: any) => {
+      {speedMathScoreBoard?.response_data.map((item: any, index) => {
         return (
-          <div className="flex flex-row w-full h-full mt-5 justify-center items-center">
+          <div
+            className="flex flex-row w-full h-full mt-5 justify-center items-center"
+            key={`SpeedMathScore-${index}`}
+          >
             <div className="flex w-2/3 h-[10%] justify-between items-center p-1">
               <div className="flex w-[60%] flex-wrap">
                 <p className="text-speedMathTextColor font-bold text-lg">
