@@ -26,7 +26,8 @@ export default function SafariScreenShareModal() {
         <Box sx={style}>
           <div className="flex justify-center items-center">
             <p className="text-speedMathTextColor font-semibold text-lg text-center">
-              Please Click on Screen Share
+              Please Click on Screen Share and then click on Allow to Share
+              Screen
             </p>
           </div>
           <div className="flex justify-around flex-row items-center mt-5">
