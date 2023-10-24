@@ -109,29 +109,27 @@ export default function Lesson() {
       setIsImageLoaded(false);
     }
   };
-  const handleUpdateLocalAndRemoteData = (localArray, remoteArray) => {
+  const handleUpdateLocalAndRemoteData = (localArray) => {
     let coordinates = {
       coordinates: localArray,
       cursorPoints: [],
       identity: userId,
       isDrawing: false,
     };
-    let arr = remoteArray.map((item) => {
-      return { ...item, cursorPoints: [], isDrawing: false };
+    let arr = localArray.map((item) => {
+      return { ...item };
     });
     if (localArray.length) {
       arr.push(coordinates);
     }
 
-    if (arr.length) {
-      dispatch(
-        saveAllWhiteBoardData({
-          index: whiteBoardData.currentIndex,
-          whiteBoardData: arr,
-          dataTrackKey: LESSON.lessonWhiteBoardData,
-        })
-      );
-    }
+    dispatch(
+      saveAllWhiteBoardData({
+        index: whiteBoardData.currentIndex,
+        whiteBoardData: arr,
+        dataTrackKey: LESSON.lessonWhiteBoardData,
+      })
+    );
   };
   const afterImageRendered = () => {
     setIsImageLoaded(true);

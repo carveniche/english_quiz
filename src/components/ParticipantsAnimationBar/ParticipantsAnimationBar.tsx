@@ -29,7 +29,10 @@ import { useDispatch } from "react-redux";
 import { disabledAnimation } from "../../redux/features/dataTrackStore";
 import { Tooltip } from "@material-ui/core";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
-import { setShowFiveStarAnimation } from "../../redux/features/liveClassDetails";
+import {
+  setScreenShareStatus,
+  setShowFiveStarAnimation,
+} from "../../redux/features/liveClassDetails";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -83,8 +86,8 @@ export default function ParticipantsAnimationBar({
   const {
     muteIndividualParticipant,
     participantDeviceInformation,
-    studentScreenShareReceived,
     screenSharePermissionDenied,
+    screenShareStatus,
   } = useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
@@ -154,12 +157,20 @@ export default function ParticipantsAnimationBar({
       screenShareRef.current = false;
     }, 5000);
 
-    if (!studentScreenShareReceived) {
+    dispatch(setScreenShareStatus(!screenShareStatus));
+
+    if (!screenShareStatus) {
       handleKeyClick(identity, key, true);
     } else {
       handleKeyClick(identity, key, false);
     }
   };
+
+  useEffect(() => {
+    if (screenSharePermissionDenied.status) {
+      dispatch(setScreenShareStatus(false));
+    }
+  }, [screenSharePermissionDenied.status]);
 
   const muteIconButtonClicked = (identity: string) => {
     if (!muteParticipant) {
@@ -352,7 +363,7 @@ export default function ParticipantsAnimationBar({
                     }
                   >
                     <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                      {studentScreenShareReceived ? (
+                      {screenShareStatus ? (
                         <ScreenShareOnIcon />
                       ) : (
                         <ScreenShareIcon />
@@ -437,7 +448,7 @@ export default function ParticipantsAnimationBar({
                       }
                     >
                       <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                        {studentScreenShareReceived ? (
+                        {screenShareStatus ? (
                           <ScreenShareOnIcon />
                         ) : (
                           <ScreenShareIcon />

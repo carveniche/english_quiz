@@ -27,7 +27,7 @@ export default function ScreenShareEffect() {
         screenShareState.identity === room?.localParticipant.identity &&
         screenShareState.toggleFrom !== "CommonScreenShareButtonClicked"
       ) {
-        toggleScreenShare();
+        toggleScreenShare("");
       }
     }
   }, [screenShareState, isSharingScreen]);

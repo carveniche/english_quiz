@@ -323,7 +323,7 @@ export default function DeviceSelectionScreen({
                     cursor: "none",
                   }}
                 >
-                  T.2.29
+                  T.2.30
                 </Button>
                 <Button
                   variant="contained"

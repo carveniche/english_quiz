@@ -1,7 +1,4 @@
-import React, { useEffect, useId, useRef, useState } from "react";
-interface WhiteboardProps {
-  callback: Function;
-}
+import { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Star, Text, Line, Image } from "react-konva";
 import { ROUTERKEYCONST, WHITEBOARDSTANDARDSCREENSIZE } from "../../constants";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
@@ -9,11 +6,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
+import { changeWhiteBoardToolBarValue } from "../../redux/features/ComponentLevelDataReducer";
+import { useDispatch } from "react-redux";
 const TEXTAREAWIDTH = 250;
 const TEXTAREAHEIGHT = 150;
-const eraserCursor =
-  "url('WhiteBoardToolbarAssets/Toolbar/Eraser.svg') 2 30, auto";
-const penCursor = "url(/static/cursor.png) 1 16, auto";
+const eraserCursor = "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg";
+const penCursor = "/static/cursor.png";
+const cursorUrl = "url({}) 1 16, auto";
 export default function ActivityWhiteBoard({
   whiteBoardData,
   handleDataTrack,
@@ -32,8 +31,7 @@ export default function ActivityWhiteBoard({
   currentIncomingLines: object;
   isWritingDisabled: boolean | undefined | null;
 }) {
-  const { room } = useVideoContext();
-  const localParticipant = room?.localParticipant;
+  const dispatch = useDispatch();
   const { userId } = useSelector((state: RootState) => {
     return state.liveClassDetails;
   });
@@ -41,34 +39,41 @@ export default function ActivityWhiteBoard({
     scaleX: 1,
     scaleY: 1,
   });
+  const {
+    colorCode,
+    strokeWidth,
+    cursor,
+    selectedPen,
+    eraserSelect,
+    eraserSize,
+  } = useSelector(
+    (state: RootState) =>
+      state.ComponentLevelDataReducer.allWhiteBoardRelatedData.whiteboardToolbar
+  );
   const [isScaled, setScaled] = useState(false);
-  const [selectedPen, setSelectedPen] = useState("FreeDrawing");
-  const [eraserSelect, setEraserSelect] = useState(false);
-  const [cursor, setCursor] = useState(penCursor);
   const [textInput, setTextInput] = useState({
     showInputBox: false,
     x: 0,
     y: 0,
     value: "",
   });
-  const [colorCode, setColorCode] = useState("#000000");
-  const [strokeWidth, setStrokeWidth] = useState(1);
   const [closeToolbarPopup, setCloseToolbarPopup] = useState(false);
-  const remoteArrayRef = useRef(
-    JSON.parse(JSON.stringify(whiteBoardData)) || []
-  );
+  const remoteArrayRef = useRef([]);
   const [_remoteState, setRemoteState] = useState(false);
   const canvasCalculatedDimension = useRef({
     height: WHITEBOARDSTANDARDSCREENSIZE.height,
     width: WHITEBOARDSTANDARDSCREENSIZE.width,
   });
+  const currentTimeStamp = useRef(Date.now());
+  const DELAY = 200;
   const whiteBoardContainerRef = useRef();
   const currentIdRef = useRef(0);
-  const constantDelay = 10;
-  const timerRef = useRef(0);
   const [_localState, setLocalState] = useState(false);
   let coordinatesRef = useRef([]);
   const drawingRef = useRef(false);
+  const allCoordinateRef = useRef(
+    JSON.parse(JSON.stringify(whiteBoardData)) || []
+  );
   const handleScale = () => {
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
     let containerHeight = whiteBoardContainerRef.current.clientHeight;
@@ -94,11 +99,23 @@ export default function ActivityWhiteBoard({
 
     setScaled(true);
   };
-  const drawLine = (lastLines) => {
-    coordinatesRef.current = coordinatesRef.current.filter(
-      (item) => item.id != lastLines.id
+  const throttleFn = (
+    callback: Function,
+    delay: number,
+    prevTimeStampRef: { current: number }
+  ) => {
+    callback();
+    return;
+    if (Date.now() - prevTimeStampRef.current >= delay) {
+      callback();
+      prevTimeStampRef.current = Date.now();
+    }
+  };
+  const drawLine = (lastLines: { id: string }) => {
+    allCoordinateRef.current = allCoordinateRef.current.filter(
+      (item: { id: string }) => item.id != lastLines.id
     );
-    coordinatesRef.current.push(lastLines);
+    allCoordinateRef.current.push(lastLines);
     setLocalState((prev) => !prev);
   };
   let ref = useRef();
@@ -108,23 +125,17 @@ export default function ActivityWhiteBoard({
     );
     findParticipant = findParticipant[0] || {};
     findParticipant.identity = lastLines.identity;
+    findParticipant.userName = lastLines.userName;
     findParticipant.cursorPoints = lastLines?.cursorPoints || [];
     findParticipant.isDrawing = lastLines.isDrawing;
-    let coordinates = findParticipant?.coordinates || [];
-    coordinates = coordinates.filter(
-      (item) => item.id != lastLines?.coordinates?.id
-    );
-    if (lastLines?.coordinates) coordinates.push(lastLines?.coordinates);
-    findParticipant.coordinates = coordinates;
+    delete findParticipant.coordinates;
     let restParticipant = remoteArrayRef.current.filter(
       ({ identity }) => identity != lastLines.identity
     );
-
     restParticipant.push(findParticipant);
+
     remoteArrayRef.current = restParticipant;
     if (true) setRemoteState((prev) => !prev);
-    lastLines.identity = userId;
-    lastLines.isDrawing = true;
   };
 
   const drawStraightLine = (e) => {
@@ -134,8 +145,8 @@ export default function ActivityWhiteBoard({
       positionMove.y / scaleRef.current.scaleY,
     ];
 
-    let lastLines = coordinatesRef.current.pop();
-
+    let lastLines = coordinatesRef.current[0];
+    if (!lastLines) return;
     lastLines.points = [lastLines.points[0], lastLines.points[1], ...temp];
     drawLine(lastLines);
     let coordinates2 = {
@@ -143,7 +154,9 @@ export default function ActivityWhiteBoard({
     };
     coordinates2.cursorPoints = [...temp];
     coordinates2.isDrawing = true;
-    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+
+    typeof handleDataTrack === "function" &&
+      throttleFn(() => handleDataTrack(coordinates2), DELAY, currentTimeStamp);
   };
   const freeDrawing = (e) => {
     let positionMove = e.target.getStage().getPointerPosition();
@@ -151,7 +164,9 @@ export default function ActivityWhiteBoard({
       positionMove.x / scaleRef.current.scaleX,
       positionMove.y / scaleRef.current.scaleY,
     ];
-    let lastLines = coordinatesRef.current.pop();
+
+    let lastLines = coordinatesRef.current[0];
+    if (!lastLines) return;
     // let lastLines = coordinates[coordinates.length - 1];
     lastLines.points = lastLines.points.concat([...temp]);
     drawLine(lastLines);
@@ -160,32 +175,23 @@ export default function ActivityWhiteBoard({
     };
     coordinates2.cursorPoints = [...temp];
     coordinates2.isDrawing = true;
-    typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+    typeof handleDataTrack === "function" &&
+      throttleFn(() => handleDataTrack(coordinates2), DELAY, currentTimeStamp);
   };
   const getTextBoxPosition = (e) => {
     const position = e.target.getStage().getPointerPosition();
-    let x = position.x + TEXTAREAWIDTH;
-    let y = position.y + TEXTAREAHEIGHT;
-    if (x > canvasCalculatedDimension.current.width) {
-      x = position.x - TEXTAREAWIDTH;
-    } else {
-      x = position.x;
-    }
-    if (y > canvasCalculatedDimension.current.height) {
-      y = position.y - TEXTAREAHEIGHT;
-    } else {
-      y = position.y;
-    }
     let inputText = {
-      x: x,
-      y: y,
+      x: position.x,
+      y: position.y,
       showInputBox: true,
       value: "",
     };
     setTextInput({ ...inputText });
   };
   const handleMouseDown = (e) => {
-    if (isWritingDisabled) return;
+    if (cursor === "crosshair" && selectedPen !== "Text") {
+      return;
+    }
     setCloseToolbarPopup(true);
     if (selectedPen === "Text") {
       getTextBoxPosition(e);
@@ -196,8 +202,8 @@ export default function ActivityWhiteBoard({
 
     const position = e.target.getStage().getPointerPosition();
     const penStructure = {
-      id: `${userId}_${currentIdRef.current}`,
-      stroke: strokeWidth,
+      id: `${userId}_${Date.now()}`,
+      stroke: eraserSelect ? eraserSize : strokeWidth,
       color: colorCode,
       eraser: eraserSelect,
       points: [
@@ -205,7 +211,7 @@ export default function ActivityWhiteBoard({
         position.y / scaleRef.current.scaleY,
       ],
     };
-
+    coordinatesRef.current = [];
     currentIdRef.current = currentIdRef.current + 1;
     coordinatesRef.current.push(penStructure);
     setLocalState((prev) => !prev);
@@ -244,22 +250,37 @@ export default function ActivityWhiteBoard({
         isDrawing: false,
       });
   };
+  const handleClearAll = () => {
+    coordinatesRef.current = [];
+    remoteArrayRef.current = [];
+    allCoordinateRef.current = [];
+    setLocalState((prev) => !prev);
+    dispatch(changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor }));
+    dispatch(
+      changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+    );
+  };
   useEffect(() => {
     if (count) {
       if (currentIncomingLines) {
-        //1 // 2
-        let temp = JSON.stringify(currentIncomingLines);
-        remoteDrawLine(JSON.parse(temp) || {});
+        let temp = JSON.parse(JSON.stringify(currentIncomingLines));
+        if (currentIncomingLines?.type === "clearAll") {
+          handleClearAll();
+        }
+        remoteDrawLine(temp || {});
+        if ((temp?.isDrawing || temp?.type === "text") && temp?.coordinates)
+          drawLine(temp?.coordinates || {});
       }
     }
+  }, [count]);
+  useEffect(() => {
     return () => {
       typeof handleUpdateLocalAndRemoteData === "function" &&
         handleUpdateLocalAndRemoteData(
-          JSON.parse(JSON.stringify(coordinatesRef.current)),
-          JSON.parse(JSON.stringify(remoteArrayRef.current))
+          JSON.parse(JSON.stringify(allCoordinateRef.current))
         );
     };
-  }, [count]);
+  }, []);
   useEffect(() => {
     handleScale();
   }, []);
@@ -271,37 +292,83 @@ export default function ActivityWhiteBoard({
   }) => {
     switch (json.id) {
       case 1:
-        setColorCode(json.value);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "colorCode", value: json.value })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 2:
-        setStrokeWidth(json.value);
-        setSelectedPen(json.key);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({
+            key: "strokeWidth",
+            value: json.value,
+          })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
+
         break;
       case 3:
-        coordinatesRef.current = [];
-        remoteArrayRef.current = [];
-        setLocalState((prev) => !prev);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        typeof handleDataTrack === "function" &&
+          throttleFn(
+            () => handleDataTrack({ type: "clearAll" }),
+            DELAY,
+            currentTimeStamp
+          );
+        handleClearAll();
         break;
       case 4:
-        setSelectedPen(json.key);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: "crosshair" })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 5:
-        setSelectedPen(json.key);
-        setCursor(penCursor);
-        setEraserSelect(false);
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "selectedPen", value: json.key })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: penCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: false })
+        );
         break;
       case 6:
-        setEraserSelect(true);
-        setCursor(eraserCursor);
+        dispatch(
+          changeWhiteBoardToolBarValue({
+            key: "eraserSize",
+            value: json.value,
+          })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: eraserCursor })
+        );
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "eraserSelect", value: true })
+        );
         break;
+      default:
+        dispatch(
+          changeWhiteBoardToolBarValue({ key: "cursor", value: "crosshair" })
+        );
     }
   };
   const handleTextArea = (e) => {
@@ -312,12 +379,15 @@ export default function ActivityWhiteBoard({
   const handleKeyDown = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
       let data = {
-        points: [textInput.x, textInput.y],
+        points: [
+          textInput.x / scaleRef.current.scaleX,
+          textInput.y / scaleRef.current.scaleY,
+        ],
         value: textInput.value,
         type: "text",
         id: `${userId}_${currentIdRef.current}`,
       };
-      coordinatesRef.current.push(data);
+      allCoordinateRef.current.push(data);
       setLocalState((prev) => !prev);
       setTextInput({
         x: 0,
@@ -331,7 +401,13 @@ export default function ActivityWhiteBoard({
       coordinates2.cursorPoints = [];
       coordinates2.identity = userId;
       coordinates2.isDrawing = false;
-      typeof handleDataTrack === "function" && handleDataTrack(coordinates2);
+      coordinates2.type = "text";
+      typeof handleDataTrack === "function" &&
+        throttleFn(
+          () => handleDataTrack(coordinates2),
+          DELAY,
+          currentTimeStamp
+        );
       currentIdRef.current = currentIdRef.current + 1;
     }
   };
@@ -341,6 +417,10 @@ export default function ActivityWhiteBoard({
         <WhiteboardToolbar
           handleClick={handleToolBarSelect}
           closeToolbarPopup={closeToolbarPopup}
+          totalImageLength={0}
+          currentPdfIndex={0}
+          handleDataTrackPdfChange={() => {}}
+          removeClearAllBtn={false}
         />
       )}
       <div
@@ -371,7 +451,7 @@ export default function ActivityWhiteBoard({
         <UserCursor
           remtoeArray={remoteArrayRef.current}
           scaleRef={scaleRef}
-          cursor={cursor}
+          cursor={cursor === "crosshair" ? penCursor : cursor}
         />
         <Stage
           key={scaleRef.current.scaleX}
@@ -418,8 +498,8 @@ export default function ActivityWhiteBoard({
             })}
           </Layer>
           <Layer>
-            {coordinatesRef.current?.map((line, i) =>
-              line?.type === "text" ? (
+            {allCoordinateRef.current?.map((line, i) => {
+              return line?.type === "text" ? (
                 <Text
                   text={line?.value}
                   x={line?.points[0]}
@@ -436,29 +516,8 @@ export default function ActivityWhiteBoard({
                     line.eraser ? "destination-out" : "source-over"
                   }
                 />
-              )
-            )}
-            {remoteArrayRef.current?.map(({ coordinates }, key) =>
-              coordinates?.map((line) =>
-                line?.type === "text" ? (
-                  <Text
-                    text={line?.value}
-                    x={line?.points[0]}
-                    y={line?.points[1]}
-                    fontSize={30}
-                  />
-                ) : (
-                  <Line
-                    points={line?.points || []}
-                    stroke={line.color}
-                    strokeWidth={line?.stroke}
-                    globalCompositeOperation={
-                      line.eraser ? "destination-out" : "source-over"
-                    }
-                  ></Line>
-                )
-              )
-            )}
+              );
+            })}
           </Layer>
         </Stage>
       </div>

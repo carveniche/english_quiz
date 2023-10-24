@@ -47,6 +47,7 @@ const initialState = {
   isScratchOpenStatus: false,
   scratchPdfsImages: [],
   uploadResourceImages: [],
+  uploadResourceImagesId:0,
   isUploadResourceOpen: false,
   allWhiteBoardRelatedData: {
     whiteboardToolbar:{
@@ -155,6 +156,7 @@ const ComponentLevelDataReducer = createSlice({
     openClosedScratchWhiteBoard: (state, action) => {
       state.isScratchOpenStatus = action.payload.status;
       state.scratchPdfsImages = action.payload.images || [];
+      
     },
     openClosedMathzoneWhiteBoard: (state, action) => {
       console.log(action.payload);
@@ -163,7 +165,14 @@ const ComponentLevelDataReducer = createSlice({
 
     openClosedUploadResourceWhiteBoard: (state, action) => {
       state.isUploadResourceOpen = true;
-      state.uploadResourceImages = action.payload || [];
+      state.uploadResourceImages = action.payload?.images || [];
+      state.uploadResourceImagesId=action.payload?.id
+      let key=`${UPLOADRESOURCE.uploadResourceWhiteboardData}${action.payload?.id}`
+      if(!state.allWhiteBoardRelatedData[key]){
+        state.allWhiteBoardRelatedData[key]=JSON.parse(
+          JSON.stringify(defaultParameterWhiteBoard)
+        )
+      }
     },
     resetWhiteBoardData: (state, action) => {
       const { payload } = action;
