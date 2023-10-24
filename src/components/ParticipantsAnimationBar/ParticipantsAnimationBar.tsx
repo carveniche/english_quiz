@@ -29,7 +29,10 @@ import { useDispatch } from "react-redux";
 import { disabledAnimation } from "../../redux/features/dataTrackStore";
 import { Tooltip } from "@material-ui/core";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
-import { setShowFiveStarAnimation } from "../../redux/features/liveClassDetails";
+import {
+  setScreenShareStatus,
+  setShowFiveStarAnimation,
+} from "../../redux/features/liveClassDetails";
 interface ParticipantProps {
   localParticipant?: ILocalParticipant;
   participant: IParticipant;
@@ -68,7 +71,6 @@ export default function ParticipantsAnimationBar({
   const [muteParticipant, setMuteParticipant] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
-  const [screenShare, setScreenShare] = useState(false);
   const animationStarted = useRef(false);
   const screenShareRef = useRef(false);
   const screenShareTimerRef = useRef<NodeJS.Timeout | undefined>();
@@ -85,6 +87,7 @@ export default function ParticipantsAnimationBar({
     muteIndividualParticipant,
     participantDeviceInformation,
     screenSharePermissionDenied,
+    screenShareStatus,
   } = useSelector((state: RootState) => state.liveClassDetails);
 
   const animationButtonClicked = (identity: string, key: string) => {
@@ -154,8 +157,9 @@ export default function ParticipantsAnimationBar({
       screenShareRef.current = false;
     }, 5000);
 
-    setScreenShare(!screenShare);
-    if (!screenShare) {
+    dispatch(setScreenShareStatus(!screenShareStatus));
+
+    if (!screenShareStatus) {
       handleKeyClick(identity, key, true);
     } else {
       handleKeyClick(identity, key, false);
@@ -164,7 +168,7 @@ export default function ParticipantsAnimationBar({
 
   useEffect(() => {
     if (screenSharePermissionDenied.status) {
-      setScreenShare(false);
+      dispatch(setScreenShareStatus(false));
     }
   }, [screenSharePermissionDenied.status]);
 
@@ -359,7 +363,7 @@ export default function ParticipantsAnimationBar({
                     }
                   >
                     <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                      {screenShare ? (
+                      {screenShareStatus ? (
                         <ScreenShareOnIcon />
                       ) : (
                         <ScreenShareIcon />
@@ -444,7 +448,7 @@ export default function ParticipantsAnimationBar({
                       }
                     >
                       <div className="flex justify-between gap-1 mt-[2px] mb-[2px]">
-                        {screenShare ? (
+                        {screenShareStatus ? (
                           <ScreenShareOnIcon />
                         ) : (
                           <ScreenShareIcon />
