@@ -287,7 +287,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(openClosedScratchWhiteBoard(parseMessage?.value || {}));
       } else if (parseMessage?.value?.datatrackName === "UploadResource") {
         dispatch(
-          openClosedUploadResourceWhiteBoard(parseMessage?.value.images || [])
+          openClosedUploadResourceWhiteBoard({
+            images: parseMessage?.value?.images || [],
+            id: parseMessage?.value?.id,
+          })
         );
       } else if (
         parseMessage?.value?.datatrackName ===

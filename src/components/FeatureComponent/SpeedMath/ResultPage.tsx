@@ -5,6 +5,8 @@ import SpeedMathResultFetchingLottie from "../../LottieAnimations/SpeedMathResul
 import { isTutor } from "../../../utils/participantIdentity";
 import VictoryAnimation from "../../LottieAnimations/SpeedMathVictoryAnimation";
 import LossingAnimation from "../../LottieAnimations/SpeedMathLossingAnimation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 interface ResultPageProps {
   userAnswerData: any;
@@ -23,8 +25,12 @@ export default function ResultPage({
   playerId,
   gameId,
   identity,
+  playMode,
   getFinalResult,
 }: ResultPageProps) {
+  const { students } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
   const [counter, setCounter] = useState(10);
   const [gameResultData, setGameResultData] = useState(null);
   const [studentScore, setStudentScore] = useState([]);
@@ -35,7 +41,11 @@ export default function ResultPage({
   useEffect(() => {
     counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
     if (counter === 0) {
-      getSpeedMathResult();
+      if (playMode === "computer" && isTutor({ identity: identity })) {
+        getSpeedMathResultForTutorInComputerMode();
+      } else {
+        getSpeedMathResult();
+      }
     }
   }, [counter]);
 
@@ -67,6 +77,17 @@ export default function ResultPage({
           setShowWinningStatusAnimation(true);
           resetWinningStatusAnimation();
         }
+      }
+    });
+  }
+
+  function getSpeedMathResultForTutorInComputerMode() {
+    let studentId = students[0]?.id || 0;
+    getGameResult(gameId, liveClassId, studentId, computerScore).then((res) => {
+      if (res.data.status) {
+        setGameResultData(res.data);
+        setStudentScore(res.data.response_data);
+        getFinalResult(res.data);
       }
     });
   }
@@ -146,7 +167,7 @@ export default function ResultPage({
                   </div>
                 </div>
                 <div className="flex w-1/2 h-full justify-around items-center  p-5">
-                  {gameResultData?.response_data.map((res, index) => {
+                  {gameResultData?.response_data.map((res) => {
                     return (
                       <div key={res.id}>
                         {res.player_question_data[index] !== undefined ? (
@@ -190,9 +211,6 @@ export default function ResultPage({
       </div>
     );
   };
-
-  console.log("studentWinningStatus", studentWinningStatus);
-  console.log("showWinningStatusAnimation", showWinningStatusAnimation);
 
   return (
     <div className="flex w-full h-full justify-between items-center">

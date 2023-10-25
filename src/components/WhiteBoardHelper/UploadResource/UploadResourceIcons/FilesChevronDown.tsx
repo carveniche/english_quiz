@@ -12,9 +12,9 @@ export default function FilesChevronDown() {
           id="Vector"
           d="M5 7.5L10 12.5L15 7.5"
           stroke="#2032A1"
-          stroke-width="1.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
     </svg>

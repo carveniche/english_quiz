@@ -174,7 +174,7 @@ export default function WhiteboardToolbar({
     handleClick(json);
   };
 
-  const handleDataTrack = (images: obj) => {
+  const handleDataTrack = (obj: { images: string[]; id: number }) => {
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
     ];
@@ -184,7 +184,8 @@ export default function WhiteboardToolbar({
       key: ROUTERKEYCONST.whiteboard.key,
       value: {
         datatrackName: "UploadResource",
-        images: images,
+        images: obj.images,
+        id: obj.id,
       },
     };
 

@@ -48,7 +48,8 @@ export default function Header() {
                 <span className="text-white">Tech Joined...</span>
               </div>
             )}
-            <CallTechSupport />
+            {!isTech({ identity: String(role_name) }) && <CallTechSupport />}
+
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
             {isTutor({ identity: String(role_name) }) &&
               !isParent({ identity: String(role_name) }) && (

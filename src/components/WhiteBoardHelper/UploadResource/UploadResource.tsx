@@ -105,6 +105,7 @@ export default function UploadResource() {
       value: {
         datatrackName: "UploadResource",
         images: images,
+        id: 0,
       },
     };
 
@@ -133,9 +134,10 @@ export default function UploadResource() {
             setUploadInProgress(false);
             setFilesUpload([]);
             dispatch(
-              openClosedUploadResourceWhiteBoard(
-                response?.data?.uploaded_images
-              )
+              openClosedUploadResourceWhiteBoard({
+                images: response?.data?.uploaded_images,
+                id: 0,
+              })
             );
             dispatch(openCloseUploadResourceModalTeacher(false));
             handleDataTrack(response?.data?.uploaded_images);

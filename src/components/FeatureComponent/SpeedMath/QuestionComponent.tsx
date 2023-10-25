@@ -33,8 +33,6 @@ export default function QuestionComponent({
   room,
   speedMathGameId,
   identity,
-  speedMathGameLevel,
-  liveClassId,
   userId,
   playMode,
   onGameTimerEnd,
