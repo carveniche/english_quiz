@@ -1,6 +1,6 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import BaseUrl from "../../../api/ApiConfig";
 
@@ -32,6 +32,8 @@ const style = {
 
 export default function UploadResource() {
   const dispatch = useDispatch();
+
+  const fileInputRef = useRef(null);
   const { room } = useVideoContext();
   const { liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -76,6 +78,10 @@ export default function UploadResource() {
       verifyExtensionFirst == "pdf"
     ) {
       setFilesUpload([...filesUpload, e.target.files[0]]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } else {
       setAlertMessage("Please upload only Images and Pdf");
       return;
@@ -193,7 +199,7 @@ export default function UploadResource() {
             <div className="flex w-full h-full  justify-center items-center">
               <div className="bg-white p-8 rounded shadow-md w-96">
                 {filesUpload.length > 0 ? (
-                  <div className="flex flex-col justify-center items-center w-full h-full">
+                  <div className="flex flex-col justify-center items-center w-full h-full border border-[#ECEBEB] rounded p-5">
                     <div className="flex w-[60px] h-[60px] justify-center items-center border-[#ECEBEB] bg-[#ECEBEB] rounded">
                       <UploadResourceFileTextBigIcon />
                     </div>
@@ -208,7 +214,7 @@ export default function UploadResource() {
                     htmlFor="file"
                     className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 hover:border-gray-500 focus:outline-none focus:border-blue-500 transition duration-300"
                   >
-                    <div className="text-center">
+                    <div className="text-center cursor-pointer">
                       <SelectFileIcon />
                       <p className="mt-1 text-sm text-gray-600">
                         Select a file
@@ -222,15 +228,11 @@ export default function UploadResource() {
                   type="file"
                   className="hidden"
                   onChange={handleFileChange}
+                  ref={fileInputRef}
                 />
 
-                {uploadInProgress && (
-                  <div className="flex justify-center items-center">
-                    <CircularProgress variant="indeterminate" />
-                  </div>
-                )}
                 <div className="flex flex-col w-full h-[90px] mt-5">
-                  {filesUpload && !uploadInProgress && (
+                  {filesUpload && !uploadInProgress ? (
                     <div className="flex w-full h-full justify-center mt-3">
                       <button
                         disabled={uploadInProgress ? true : false}
@@ -239,6 +241,24 @@ export default function UploadResource() {
                       >
                         <p className="font-semibold leading-4 tracking-normal text-[#F2F2F2] text-center">
                           Upload and open
+                        </p>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex w-full h-full justify-center mt-3">
+                      <button className="flex flex-row justify-center items-center w-[153px] h-[36px] p-4 8 4 8 bg-[#3E49FF] rounded-full gap-4 ">
+                        <div className="flex justify-center items-center">
+                          <CircularProgress
+                            style={{
+                              color: "white",
+                              width: "25px",
+                              height: "25px",
+                            }}
+                            variant="indeterminate"
+                          />
+                        </div>
+                        <p className="font-semibold leading-4 tracking-normal text-white text-center">
+                          Uploading...
                         </p>
                       </button>
                     </div>

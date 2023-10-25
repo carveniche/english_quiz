@@ -1,0 +1,30 @@
+export default function UploadResourceDelete() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="trash">
+        <path
+          id="Vector"
+          d="M2 4H3.33333H14"
+          stroke="black"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          id="Vector_2"
+          d="M12.6668 4.00016V13.3335C12.6668 13.6871 12.5264 14.0263 12.2763 14.2763C12.0263 14.5264 11.6871 14.6668 11.3335 14.6668H4.66683C4.31321 14.6668 3.97407 14.5264 3.72402 14.2763C3.47397 14.0263 3.3335 13.6871 3.3335 13.3335V4.00016M5.3335 4.00016V2.66683C5.3335 2.31321 5.47397 1.97407 5.72402 1.72402C5.97407 1.47397 6.31321 1.3335 6.66683 1.3335H9.3335C9.68712 1.3335 10.0263 1.47397 10.2763 1.72402C10.5264 1.97407 10.6668 2.31321 10.6668 2.66683V4.00016"
+          stroke="black"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+    </svg>
+  );
+}

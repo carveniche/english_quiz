@@ -7,7 +7,10 @@ import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useDispatch } from "react-redux";
-import { openCloseUploadResourceModalTeacher } from "../../../redux/features/liveClassDetails";
+import {
+  openCloseUploadResourceModalTeacher,
+  toggleUploadResourceDeleteModal,
+} from "../../../redux/features/liveClassDetails";
 import UploadResource from "../UploadResource/UploadResource";
 import { getUploadResourcesList } from "../../../api";
 import Button from "@mui/material/Button";
@@ -21,6 +24,8 @@ import UploadFilesIcon from "../UploadResource/UploadResourceIcons/UploadFilesIc
 import FilesChevronDown from "../UploadResource/UploadResourceIcons/FilesChevronDown";
 import FilesUploadIcon from "../UploadResource/UploadResourceIcons/FilesUploadIcon";
 import UploadResourceFileTextIcon from "../UploadResource/UploadResourceIcons/UploadResourceFileTextIcon";
+import UploadResourceDelete from "../UploadResource/UploadResourceIcons/UploadResourceDelete";
+import UploadResourceDeleteModal from "../UploadResource/UploadResourceDeleteModal";
 
 export default function WhiteboardToolbar({
   handleClick,
@@ -45,6 +50,11 @@ export default function WhiteboardToolbar({
     useState(false);
   const [openPopup, setOpenPopup] = useState("");
   const [uploadResourceData, setUploadResourceData] = useState([]);
+  const [uploadResourceDeleteItemDetails, setUploadResourceDeleteIdDetails] =
+    useState({
+      id: 0,
+      name: "",
+    });
 
   const { liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -57,7 +67,7 @@ export default function WhiteboardToolbar({
     (state: RootState) => state.activeTabReducer.currentSelectedRouter
   );
 
-  const { openUploadResourceModal } = useSelector(
+  const { openUploadResourceModal, uploadResourceDeleteModal } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
 
@@ -78,6 +88,8 @@ export default function WhiteboardToolbar({
       .then((res) => {
         if (res.data.status) {
           setUploadResourceData(res?.data?.resource_data);
+        } else {
+          setUploadResourceData([]);
         }
       })
       .catch((e) => {
@@ -237,6 +249,18 @@ export default function WhiteboardToolbar({
   if (removeClearAllBtn) {
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
+
+  const openUploadResourceDeleteModal = (obj: { id: number; name: string }) => {
+    setUploadResourceDeleteIdDetails({
+      id: obj.id,
+      name: obj.name,
+    });
+    dispatch(toggleUploadResourceDeleteModal(!uploadResourceDeleteModal));
+  };
+
+  const handleUpdateUploadResourceApi = () => {
+    checkUploadResourceList();
+  };
 
   return (
     <>
@@ -410,22 +434,37 @@ export default function WhiteboardToolbar({
                     <>
                       <div
                         key={`uploadresource-${index}`}
-                        className="flex flex-row items-center pl-3 gap-2 mb-2"
+                        className="flex flex-row w-full h-full items-center pl-3 gap-2 hover:bg-[#ECEBEB] min-h-[40px] cursor-pointer"
                       >
-                        <div className="flex w-[28px] h-[28px] border border-[#ECEBEB] bg-[#ECEBEB] justify-center items-center">
-                          <UploadResourceFileTextIcon />
+                        <div className="flex w-[10%] h-full">
+                          <div className="flex w-[28px] h-[28px] border border-[#ECEBEB] bg-[#ECEBEB] justify-center items-center">
+                            <UploadResourceFileTextIcon />
+                          </div>
                         </div>
-                        <p
+                        <div className="flex w-[80%] h-full">
+                          <p
+                            onClick={() =>
+                              handleSelectPdf({
+                                images: item.image_data,
+                                id: item?.id,
+                              })
+                            }
+                            className="font-semibold leading-4 tracking-normal text-left"
+                          >
+                            {item?.name}
+                          </p>
+                        </div>
+                        <div
                           onClick={() =>
-                            handleSelectPdf({
-                              images: item.image_data,
-                              id: item?.id,
+                            openUploadResourceDeleteModal({
+                              id: item.id,
+                              name: item?.name,
                             })
                           }
-                          className="font-semibold leading-4 tracking-normal text-left cursor-pointer"
+                          className="flex w-[10%] h-full justify-center items-center cursor-pointer"
                         >
-                          {item?.name}
-                        </p>
+                          <UploadResourceDelete />
+                        </div>
                       </div>
                     </>
                   );
@@ -436,6 +475,13 @@ export default function WhiteboardToolbar({
       </div>
 
       {openUploadResourceModal && <UploadResource />}
+
+      {uploadResourceDeleteModal && (
+        <UploadResourceDeleteModal
+          uploadItemsDetails={uploadResourceDeleteItemDetails}
+          handleUpdateUploadResourceApi={handleUpdateUploadResourceApi}
+        />
+      )}
     </>
   );
 }

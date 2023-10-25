@@ -47,6 +47,7 @@ interface liveClassDetailsTypes {
   showFiveStarAnimation: boolean;
   openSafariModalForScreenShare: boolean;
   screenShareStatus: boolean;
+  uploadResourceDeleteModal: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -98,6 +99,7 @@ const initialState: liveClassDetailsTypes = {
   showFiveStarAnimation: false,
   openSafariModalForScreenShare: false,
   screenShareStatus: false,
+  uploadResourceDeleteModal: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -268,6 +270,10 @@ export const liveClassDetailsSlice = createSlice({
     setScreenShareStatus: (state, action) => {
       state.screenShareStatus = action.payload;
     },
+
+    toggleUploadResourceDeleteModal: (state, action) => {
+      state.uploadResourceDeleteModal = action.payload;
+    },
   },
 });
 
@@ -298,6 +304,7 @@ export const {
   setShowFiveStarAnimation,
   setSafariModalForScreenShare,
   setScreenShareStatus,
+  toggleUploadResourceDeleteModal,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

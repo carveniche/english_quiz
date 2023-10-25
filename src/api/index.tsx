@@ -470,6 +470,17 @@ export const getUploadResourcesList = async (live_class_id: number) =>
     },
   });
 
+export const removeUploadResources = async (
+  live_class_id: number,
+  resource_id: number
+) =>
+  axios.get(baseURL + "app_teachers/delete_resource", {
+    params: {
+      live_class_id,
+      resource_id,
+    },
+  });
+
 export const getDeviceInfoForTech = async (
   live_class_id: number,
   user_id: number
