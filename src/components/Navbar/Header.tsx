@@ -10,7 +10,7 @@ export default function Header() {
   const { role_name, teacher_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { parentJoinedClass, techJoinedClass } = useSelector(
+  const { parentJoinedClass } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
 

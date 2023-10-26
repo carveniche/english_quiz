@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import {
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
+  toggleSpeedMathAlreadyStarted,
 } from "../../../redux/features/liveClassDetails";
 import GameInProgressTeacher from "./GameInProgressTeacher";
 
@@ -28,7 +29,6 @@ export default function SpeedMath() {
   const [startQuestionTimer, setStartQuestionTimer] = useState(false);
   const [userAnswerData, setUserAnswerData] = useState([]);
   const [gameComputerScore, setGameComputerScore] = useState(0);
-  const [gameUserScore, setGameUserScore] = useState(0);
   const [showSpeedMathSummaryBoard, setShowSpeedMathSummaryBoard] =
     useState(false);
   const [speedMathScoreBoard, setFinalSpeedMathScoreBoard] = useState([]);
@@ -72,6 +72,7 @@ export default function SpeedMath() {
         resetScore: true,
       })
     );
+    dispatch(toggleSpeedMathAlreadyStarted(false));
   }, [speedMathGameLevel]);
 
   useEffect(() => {
@@ -99,6 +100,8 @@ export default function SpeedMath() {
                 speedMathGameLevel + 1,
                 playMode
               );
+
+              dispatch(toggleSpeedMathAlreadyStarted(true));
             }
           }
         );
@@ -141,21 +144,21 @@ export default function SpeedMath() {
   const onGameTimerEnd = (
     userAnswerData: Array<[]>,
     computerScore: number,
-    userScore: number,
     speedMathGameId: number
   ) => {
     setUserAnswerData(userAnswerData);
     setGameComputerScore(computerScore);
     setSpeedMathGameId(speedMathGameId);
-    setGameUserScore(userScore);
     setComponentNo(4);
     setShowSpeedMathSummaryBoard(true);
+    dispatch(toggleSpeedMathAlreadyStarted(false));
   };
 
   const onGameInProgressTimerEnd = (computerScore: number) => {
     setGameComputerScore(computerScore);
     setShowSpeedMathSummaryBoard(true);
     setComponentNo(4);
+    dispatch(toggleSpeedMathAlreadyStarted(false));
   };
 
   const questionTimerEndedCallback = () => {
