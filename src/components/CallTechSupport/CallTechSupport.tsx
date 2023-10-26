@@ -11,7 +11,6 @@ export default function CallTechSupport() {
   const [backgroundColor, setBackgroundColor] = useState("bg-header-black");
   const [activeLogo, setActiveLogo] = useState(false);
   const [connectingFlag, setConnectingFlag] = useState(false);
-  const [connectedFlag, setConnectedFlag] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [openAlertBox, setOpenAlertBox] = useState(true);
 
@@ -32,23 +31,14 @@ export default function CallTechSupport() {
 
   useEffect(() => {
     if (techJoinedClass) {
-      setConnectedFlag(true);
       setConnectingFlag(false);
       clearTimeout(timeoutIdRef.current);
-      setTimeout(() => {
-        setConnectedFlag(false);
-        setConnectingFlag(false);
-        setActiveLogo(false);
-      }, 2000);
+    } else {
+      setActiveLogo(false);
     }
   }, [techJoinedClass]);
 
   const requestTechSupport = async () => {
-    if (techJoinedClass) {
-      setAlertMessage("Tech Support has already joined the session");
-      return;
-    }
-
     try {
       await callTechSupport(userId, liveClassId).then((response) => {
         if (response.data.status) {
@@ -58,6 +48,7 @@ export default function CallTechSupport() {
           setAlertMessage(
             "You have already placed the request for the Support team. Please wait for them to join"
           );
+          setOpenAlertBox(true);
         }
       });
     } catch (error) {
@@ -78,7 +69,7 @@ export default function CallTechSupport() {
   return (
     <>
       <div className="relative ">
-        <button onClick={() => requestTechSupport()}>
+        <button disabled={techJoinedClass} onClick={() => requestTechSupport()}>
           <div
             className={`flex flex-row min-w-[100px] rounded-full gap-2 ${backgroundColor} hover:bg-black px-2 py-1`}
           >
@@ -88,12 +79,14 @@ export default function CallTechSupport() {
               <CallTechSupportInActiveLogo />
             )}
 
-            <span className="text-F2F2F2">Call support</span>
+            <span className="text-F2F2F2">
+              {techJoinedClass ? "Support" : "Call support"}
+            </span>
           </div>
         </button>
       </div>
 
-      {connectedFlag && (
+      {techJoinedClass && (
         <div className="flex absolute top-12 min-w-[115px] min-h-[20px] rounded px-2 py-1  bg-callTechSupportLineConnect justify-center ">
           <span className="text-white">Connected</span>
         </div>

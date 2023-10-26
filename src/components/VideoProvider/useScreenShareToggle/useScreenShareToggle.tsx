@@ -50,7 +50,7 @@ export default function useScreenShareToggle(
     );
   };
 
-  const handlePermissionDeniedDataTrack = (value) => {
+  const handlePermissionDeniedDataTrack = (value: boolean) => {
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
     ];

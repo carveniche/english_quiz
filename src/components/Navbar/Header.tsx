@@ -43,11 +43,6 @@ export default function Header() {
         <div className=" justify-center content-center items-center p-4 pr-[30px]">
           <div className="flex flex-row justify-between min-w-[180px] gap-2">
             <RecordingStartNotification />
-            {techJoinedClass && !isTech({ identity: String(role_name) }) && (
-              <div className="flex justify-center items-center bg-green-500 p-1 rounded">
-                <span className="text-white">Tech Joined...</span>
-              </div>
-            )}
             {!isTech({ identity: String(role_name) }) && <CallTechSupport />}
 
             <div className="h-px-[28px] w-[1px] bg-callTechSupportLine"></div>
