@@ -16,6 +16,7 @@ const eraserCursor = "/WhiteBoardToolbarAssets/Toolbar/Eraser.svg";
 const penCursor = "/static/cursor.png";
 const cursorUrl = "url({}) 1 16, auto";
 export default function WhiteBoard({
+  childRef,
   whiteBoardData,
   handleDataTrack,
   images,
@@ -28,6 +29,7 @@ export default function WhiteBoard({
   removeClearAllBtn = false,
   from,
 }: {
+  childRef: any;
   images: string;
   whiteBoardData: object;
   handleDataTrack: Function | undefined;
@@ -477,6 +479,18 @@ export default function WhiteBoard({
   useEffect(() => {
     if (images) handleLoadImage(images, handleAfterImageLoaded);
   }, [images]);
+
+  if (childRef) {
+    childRef.current = () => {
+      typeof handleDataTrack === "function" &&
+        throttleFn(
+          () => handleDataTrack({ type: "clearAll" }),
+          DELAY,
+          currentTimeStamp
+        );
+      handleClearAll();
+    };
+  }
 
   return (
     <div className="w-full h-full p-1">

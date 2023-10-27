@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   isStudentName,
@@ -17,6 +17,7 @@ import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/Lesso
 import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
 export default function Lesson() {
+  const childRef = useRef(null);
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
@@ -150,6 +151,12 @@ export default function Lesson() {
       </>
     );
 
+  const handleClearButton = () => {
+    if (childRef.current) {
+      childRef.current();
+    }
+  };
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div
@@ -166,6 +173,7 @@ export default function Lesson() {
         }}
       >
         <WhiteBoard
+          childRef={childRef}
           images={imageUrl[whiteBoardData.currentIndex]}
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
@@ -181,6 +189,7 @@ export default function Lesson() {
           removeClearAllBtn={
             isTutorTechBoth({ identity: role_name.toString() }) ? false : true
           }
+          from=""
         />
       </div>
       <div className="flex flex-row w-full h-[50px] justify-center items-center">

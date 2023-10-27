@@ -250,6 +250,10 @@ export default function WhiteboardToolbar({
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
 
+  if (isUploadResourceOpen || currentSelectedScreen === "/lesson") {
+    newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
+  }
+
   const openUploadResourceDeleteModal = (obj: { id: number; name: string }) => {
     setUploadResourceDeleteIdDetails({
       id: obj.id,

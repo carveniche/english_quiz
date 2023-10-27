@@ -12,6 +12,7 @@ import {
 } from "../../utils/participantIdentity";
 
 export default function HelperWhiteBoard({
+  childRef,
   dataTrackKey,
   pathName,
   key,
@@ -23,6 +24,7 @@ export default function HelperWhiteBoard({
   cbAfterImageRendered,
   from,
 }: {
+  childRef: any;
   dataTrackKey: string;
   pathName: string;
   key: string;
@@ -112,6 +114,7 @@ export default function HelperWhiteBoard({
         />
       ) : (
         <WhiteBoard
+          childRef={childRef}
           images={
             images?.length ? images[whiteBoardData.currentIndex] || "" : ""
           }

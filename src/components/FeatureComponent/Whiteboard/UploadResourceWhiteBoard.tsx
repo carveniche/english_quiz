@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -12,6 +12,7 @@ import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/Lesso
 import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 
 export default function UploadResourceWhiteBoard() {
+  const childRef = useRef(null);
   const { room } = useVideoContext();
   const { allWhiteBoardRelatedData, uploadResourceImagesId } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
@@ -69,7 +70,11 @@ export default function UploadResourceWhiteBoard() {
     }
   }, [whiteBoardData.currentIndex]);
 
-  const handleClearButton = () => {};
+  const handleClearButton = () => {
+    if (childRef.current) {
+      childRef.current();
+    }
+  };
   return (
     <div
       className={`${
@@ -112,6 +117,7 @@ export default function UploadResourceWhiteBoard() {
           </div>
         )}
       <HelperWhiteBoard
+        childRef={childRef}
         dataTrackKey={dataTrackKey}
         pathName={currentSelectedRouter}
         key={uploadResourceImages[whiteBoardData.currentIndex]}
