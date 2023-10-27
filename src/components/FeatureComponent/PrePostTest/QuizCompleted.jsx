@@ -19,7 +19,7 @@ export default function QuizCompleted({
           practiceId={liveClassPracticeId}
           reportsData={reportsData}
           student={student}
-          identity={"identity"}
+          identity={"tutor"}
         />
       ) : (
         <>
