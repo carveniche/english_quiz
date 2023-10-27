@@ -7,7 +7,7 @@ export default function LessonPreviousIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="Previous" clip-path="url(#clip0_1125_6370)">
+      <g id="Previous" clipPath="url(#clip0_1125_6370)">
         <circle id="Ellipse 211" cx="12" cy="12" r="12" fill="black" />
         <path
           id="Vector"

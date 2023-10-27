@@ -14,8 +14,6 @@ import {
 export default function HelperWhiteBoard({
   childRef,
   dataTrackKey,
-  pathName,
-  key,
   isCico,
   images,
   whiteBoardRef,
@@ -26,8 +24,6 @@ export default function HelperWhiteBoard({
 }: {
   childRef: any;
   dataTrackKey: string;
-  pathName: string;
-  key: string;
   isCico: boolean | undefined | null;
   images: [];
   isWritingDisabled: boolean | undefined | null;
@@ -35,9 +31,9 @@ export default function HelperWhiteBoard({
   cbAfterImageRendered: Function | undefined | null;
   from: string | undefined | null;
 }) {
-  const { activeTabArray, currentSelectedIndex } = useSelector(
-    (state: RootState) => state.activeTabReducer
-  );
+  // const { activeTabArray, currentSelectedIndex } = useSelector(
+  //   (state: RootState) => state.activeTabReducer
+  // );
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -62,8 +58,8 @@ export default function HelperWhiteBoard({
       ? role_name
       : isStudentName({ identity: `${role_name}` });
     let DataTrackObj = {
-      pathName: pathName,
-      key: key,
+      pathName: null,
+      key: null,
       value: {
         userName: role_name,
         identity: userId,
@@ -135,9 +131,3 @@ export default function HelperWhiteBoard({
     </>
   );
 }
-
-// same image render last line store
-
-//  remoteArray // saveRedux
-
-// mount remoteArray + localArray => remote
