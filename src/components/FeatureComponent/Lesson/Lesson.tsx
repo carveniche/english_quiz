@@ -155,7 +155,13 @@ export default function Lesson() {
       <div
         className={`${isImageLoaded ? "visible" : "invisible"} relative m-auto`}
         style={{
-          height: isImageLoaded ? "fit-content" : "calc(100% - 50px)",
+          height: isImageLoaded
+            ? "fit-content"
+            : `${
+                isTutorTechBoth({ identity: String(role_name) })
+                  ? "calc(100% - 50px)"
+                  : "100%"
+              }  `,
           width: isImageLoaded ? "fit-content" : "100%",
         }}
       >

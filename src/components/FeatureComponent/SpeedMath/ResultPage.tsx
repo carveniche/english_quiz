@@ -121,12 +121,12 @@ export default function ResultPage({
         <div className="flex flex-row w-[98%] h-[10%] justify-center items-start  rounded-full bg-white">
           <div className="flex w-1/2 h-full justify-around items-center  p-5">
             <div className="flex w-1/2 justify-center items-center">
-              <p className="text-speedMathTextColor font-bold text-xl">
+              <p className="text-speedMathTextColor font-bold text-sm">
                 Questions
               </p>
             </div>
             <div className="flex w-1/2 justify-center items-center">
-              <p className="text-speedMathTextColor font-bold text-xl">
+              <p className="text-speedMathTextColor font-bold text-sm">
                 Correct Answer
               </p>
             </div>
@@ -138,7 +138,7 @@ export default function ResultPage({
                   className="flex w-1/2 justify-center items-center"
                   key={index}
                 >
-                  <p className="text-speedMathTextColor font-bold text-xl">
+                  <p className="text-speedMathTextColor font-bold text-sm">
                     {student.name}
                   </p>
                 </div>
@@ -157,11 +157,11 @@ export default function ResultPage({
                   <div className="flex w-1/2 justify-center items-center">
                     <p
                       dangerouslySetInnerHTML={{ __html: obj.question }}
-                      className="text-speedMathTextColor font-bold text-xl"
+                      className="text-speedMathTextColor font-bold text-sm"
                     />
                   </div>
                   <div className="flex w-1/2 justify-center items-center ">
-                    <p className="text-speedMathTextColor font-bold text-xl">
+                    <p className="text-speedMathTextColor font-bold text-sm">
                       {obj.answer}
                     </p>
                   </div>
@@ -172,20 +172,20 @@ export default function ResultPage({
                       <div key={res.id}>
                         {res.player_question_data[index] !== undefined ? (
                           res.player_question_data[index].correct ? (
-                            <div className="flex min-w-[30px] min-h-[30px] w-auto h-auto justify-center items-center bg-green-400 rounded-full p-1">
-                              <p className="text-speedMathTextColor font-bold text-xl text-center">
+                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-green-400 rounded-full p-1">
+                              <p className="text-speedMathTextColor font-bold text-sm text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>
                             </div>
                           ) : (
-                            <div className="flex min-w-[30px] min-h-[30px] w-auto h-auto justify-center items-center bg-red-400 rounded-full p-1">
-                              <p className="text-speedMathTextColor font-bold text-xl text-center">
+                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-red-400 rounded-full p-1">
+                              <p className="text-speedMathTextColor font-bold text-sm text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>
                             </div>
                           )
                         ) : (
-                          <p className="text-speedMathTextColor font-bold text-xl">
+                          <p className="text-speedMathTextColor font-bold text-sm">
                             Na
                           </p>
                         )}
@@ -204,7 +204,7 @@ export default function ResultPage({
   const resultView = () => {
     return (
       <div className="flex flex-row w-full h-full justify-center items-center ">
-        <div className="flex w-4/5 h-[95%] max-h-[400px] justify-center items-center overflow-auto mt-5">
+        <div className="flex w-4/5 h-[95%] max-h-[350px] justify-center items-center overflow-auto mt-5">
           {gameResultData !== null && scoreBoard()}
         </div>
         <div className="flex w-1/5 h-full items-start mt-10"></div>
