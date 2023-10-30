@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import TabIcon from "./TabIcon";
 import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
 import { ROUTERKEYCONST } from "../../constants";
 

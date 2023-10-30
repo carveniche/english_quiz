@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   isStudentName,
@@ -13,7 +13,11 @@ import {
   saveAllWhiteBoardData,
 } from "../../../redux/features/ComponentLevelDataReducer";
 import WhiteBoard from "../../WhiteBoardHelper/WhiteBoard";
+import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
+import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
+import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
 export default function Lesson() {
+  const childRef = useRef(null);
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
@@ -35,7 +39,8 @@ export default function Lesson() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  const selectedTab = activeTabArray[currentSelectedIndex];
+  const { extraParams } = selectedTab || {};
   const { imageUrl, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
@@ -139,7 +144,11 @@ export default function Lesson() {
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       setIsImageLoaded(false);
     }
-  }, [whiteBoardData.currentIndex]);
+
+    if (tagId) {
+      setIsImageLoaded(false);
+    }
+  }, [whiteBoardData.currentIndex, tagId]);
   if (!imageUrl?.length)
     return (
       <>
@@ -147,37 +156,29 @@ export default function Lesson() {
       </>
     );
 
+  const handleClearButton = () => {
+    if (childRef.current) {
+      childRef.current();
+    }
+  };
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div
-        className={`${
-          isImageLoaded ? "w-fit h-fit visible" : "w-full h-full invisible"
-        } relative m-auto`}
+        className={`${isImageLoaded ? "visible" : "invisible"} relative m-auto`}
+        style={{
+          height: isImageLoaded
+            ? "fit-content"
+            : `${
+                isTutorTechBoth({ identity: String(role_name) })
+                  ? "calc(100% - 50px)"
+                  : "100%"
+              }  `,
+          width: isImageLoaded ? "fit-content" : "100%",
+        }}
       >
-        {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
-          <div
-            className="absolute top-1/2 left-[-40px] flex w-full justify-between"
-            style={{
-              width: "calc(100% + 80px)",
-            }}
-          >
-            <button
-              onClick={() => {
-                handlePdfChange(-1);
-              }}
-            >
-              <img src="/static/media/Previous-btn.svg" />
-            </button>
-            <button
-              onClick={() => {
-                handlePdfChange(1);
-              }}
-            >
-              <img src="/static/media/Next-btn.svg" />
-            </button>
-          </div>
-        )}
         <WhiteBoard
+          childRef={childRef}
           images={imageUrl[whiteBoardData.currentIndex]}
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
@@ -193,7 +194,40 @@ export default function Lesson() {
           removeClearAllBtn={
             isTutorTechBoth({ identity: role_name.toString() }) ? false : true
           }
+          from=""
         />
+      </div>
+      <div className="flex flex-row w-full h-[50px] justify-center items-center">
+        {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
+          <>
+            <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
+              <button
+                onClick={() => handleClearButton()}
+                className="flex justify-center items-center"
+              >
+                <LessonDeleteIcon />
+              </button>
+            </div>
+            <div className="flex gap-2 w-[56px] h-[28px] justify-center items-center ml-[5px] bg-[#000]  rounded-full">
+              <button
+                onClick={() => {
+                  handlePdfChange(-1);
+                }}
+                className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+              >
+                <LessonPreviousIcon />
+              </button>
+              <button
+                onClick={() => {
+                  handlePdfChange(1);
+                }}
+                className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+              >
+                <LessonNextIcon />
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </React.Fragment>
   );

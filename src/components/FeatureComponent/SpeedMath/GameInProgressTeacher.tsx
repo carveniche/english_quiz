@@ -18,7 +18,6 @@ export default function GameInProgressTeacher({
   startQuestionTimer,
   onGameInProgressTimerEnd,
 }: GameInProgressTeacherProps) {
-  const [completionPercentage, setCompletionPercentage] = useState("0%");
   const [computerScore, setComputerScore] = useState(0);
 
   useEffect(() => {
@@ -40,6 +39,17 @@ export default function GameInProgressTeacher({
       level_1_seconds[Math.floor(Math.random() * level_1_seconds.length)];
 
     return randomItemIndex;
+  };
+
+  const checkRemoteParticipantCompletion = (currentUserScore: number) => {
+    let finalScore = "";
+    if (currentUserScore < 34) {
+      finalScore = Math.floor((currentUserScore / 100) * 100) + "%";
+    } else {
+      finalScore = Math.floor((currentUserScore / 200) * 100) + "%";
+    }
+
+    return finalScore;
   };
 
   return (
@@ -71,7 +81,9 @@ export default function GameInProgressTeacher({
                   <div
                     className={`absolute bg-[#50CA95] h-[10%] rounded-full opacity-50`}
                     style={{
-                      width: completionPercentage, // Set the width as a percentage
+                      width: checkRemoteParticipantCompletion(
+                        studentData.currentUserScoreSpeedMath
+                      ),
                     }}
                   ></div>
                 </div>

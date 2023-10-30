@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -7,8 +7,12 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
 import { changePdfIndex } from "../../../redux/features/ComponentLevelDataReducer";
 import HelperWhiteBoard from "../../WhiteBoardHelper/HelperWhiteBoard";
+import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
+import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
+import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 
 export default function UploadResourceWhiteBoard() {
+  const childRef = useRef(null);
   const { room } = useVideoContext();
   const { allWhiteBoardRelatedData, uploadResourceImagesId } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
@@ -65,6 +69,12 @@ export default function UploadResourceWhiteBoard() {
       setIsImageLoaded(false);
     }
   }, [whiteBoardData.currentIndex]);
+
+  const handleClearButton = () => {
+    if (childRef.current) {
+      childRef.current();
+    }
+  };
   return (
     <div
       className={`${
@@ -75,29 +85,39 @@ export default function UploadResourceWhiteBoard() {
       {isTutorTechBoth({ identity: String(role_name) }) &&
         isImageLoaded &&
         uploadResourceImages.length > 1 && (
-          <div
-            className="absolute top-1/2 left-[-40px] flex w-full justify-between"
-            style={{
-              width: "calc(100% + 80px)",
-            }}
-          >
-            <button
-              onClick={() => {
-                handlePdfChange(-1);
-              }}
-            >
-              <img src="/static/media/Previous-btn.svg" />
-            </button>
-            <button
-              onClick={() => {
-                handlePdfChange(1);
-              }}
-            >
-              <img src="/static/media/Next-btn.svg" />
-            </button>
+          <div className="absolute bottom-0 right-1/2 flex justify-center items-center z-10 mb-2">
+            <>
+              <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
+                <button
+                  onClick={() => handleClearButton()}
+                  className="flex justify-center items-center"
+                >
+                  <LessonDeleteIcon />
+                </button>
+              </div>
+              <div className="flex gap-2 w-[56px] h-[28px] justify-center items-center ml-[5px] bg-[#000]  rounded-full">
+                <button
+                  onClick={() => {
+                    handlePdfChange(-1);
+                  }}
+                  className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+                >
+                  <LessonPreviousIcon />
+                </button>
+                <button
+                  onClick={() => {
+                    handlePdfChange(1);
+                  }}
+                  className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+                >
+                  <LessonNextIcon />
+                </button>
+              </div>
+            </>
           </div>
         )}
       <HelperWhiteBoard
+        childRef={childRef}
         dataTrackKey={dataTrackKey}
         pathName={currentSelectedRouter}
         key={uploadResourceImages[whiteBoardData.currentIndex]}

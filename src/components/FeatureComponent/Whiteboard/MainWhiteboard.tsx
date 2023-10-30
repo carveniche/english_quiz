@@ -13,9 +13,9 @@ export default function MainWhiteboard() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { currentSelectedRouter, currentSelectedKey } = useSelector(
-    (state: RootState) => state.activeTabReducer
-  );
+  // const { currentSelectedRouter, currentSelectedKey } = useSelector(
+  //   (state: RootState) => state.activeTabReducer
+  // );
 
   const { isUploadResourceOpen } = useSelector(
     (state: RootState) => state.ComponentLevelDataReducer
@@ -36,14 +36,15 @@ export default function MainWhiteboard() {
       ) : (
         <HelperWhiteBoard
           dataTrackKey={MAINWHITEBOARD.mainWhiteBoardData}
-          pathName={currentSelectedRouter}
-          key={currentSelectedKey}
+          // pathName={currentSelectedRouter}
+          // key={currentSelectedKey}
           isCico={false}
           isWritingDisabled={false}
           images={[]}
           removeClearAllBtn={
             isTutorTechBoth({ identity: role_name.toString() }) ? false : true
           }
+          from=""
         />
       )}
     </>

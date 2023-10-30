@@ -19,7 +19,6 @@ interface QuestionComponentProps {
   onGameTimerEnd: (
     userAnswerData: Array<[]>,
     computerScore: number,
-    userScore: number,
     gameId: number
   ) => void;
   speedMathScoreofAllParticipant: any;
@@ -72,7 +71,7 @@ export default function QuestionComponent({
 
   useEffect(() => {
     if (!startQuestionTimer) {
-      onGameTimerEnd(userAnswerData, computerScore, userScore, speedMathGameId);
+      onGameTimerEnd(userAnswerData, computerScore, speedMathGameId);
     }
   }, [startQuestionTimer]);
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -12,11 +12,16 @@ import { RootState } from "../../redux/store";
 import { getQueryParams } from "../../utils/getQueryParams";
 import CloseIconButton from "./CloseIconButton";
 import TabIcon from "./TabIcon";
-import { isTutor, isTutorTechBoth } from "../../utils/participantIdentity";
+import { isTutorTechBoth } from "../../utils/participantIdentity";
+import { ROUTERKEYCONST } from "../../constants";
+import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 
 export default function ActiveTabMenu() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [openAlertBox, setOpenAlertBox] = useState(true);
   const { room } = useVideoContext();
   const { activeTabArray, currentSelectedRouter } = useSelector(
     (state: RootState) => state.activeTabReducer
@@ -25,12 +30,26 @@ export default function ActiveTabMenu() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
+  const { speedMathAlreadyStarted } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const handleClick = (
     { path, key, name, icon, extraParams }: ActiveTabParams,
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
   ) => {
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       event.preventDefault();
+      return;
+    }
+
+    if (
+      currentSelectedRouter === ROUTERKEYCONST.speedmath &&
+      speedMathAlreadyStarted
+    ) {
+      setAlertMessage(
+        "Speed Math is already running you can't change the screen now"
+      );
+      setOpenAlertBox(true);
       return;
     }
 
@@ -87,7 +106,11 @@ export default function ActiveTabMenu() {
           <TabIcon src={item.icon} />
           <div>
             <NavLink
-              to={`${item.path}?${getQueryParams()}`}
+              to={
+                speedMathAlreadyStarted
+                  ? `/speedmath?${getQueryParams()}`
+                  : `${item.path}?${getQueryParams()}`
+              }
               onClick={(event) =>
                 handleClick(
                   {
@@ -107,6 +130,15 @@ export default function ActiveTabMenu() {
           <CloseIconButton onClick={() => handleCloseButton(item.key)} />
         </div>
       ))}
+
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
+      )}
     </>
   ) : (
     <></>
