@@ -157,6 +157,9 @@ export default function UploadResource() {
           console.log("response", response);
         })
         .catch(function (error) {
+          setUploadInProgress(false);
+          setAlertMessage("Please try again after some time");
+          setAlertWarningType("error");
           console.log("error response", error);
         });
     }

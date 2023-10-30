@@ -75,6 +75,10 @@ export default function WhiteboardToolbar({
     (state: RootState) => state.ComponentLevelDataReducer
   );
 
+  const { uploadResourceImages } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -217,6 +221,9 @@ export default function WhiteboardToolbar({
   };
 
   const handleKeyPress = (e: any) => {
+    if (!isTutorTechBoth({ identity: String(role_name) })) {
+      return;
+    }
     if (Number(e.target.value) === 0) {
       return;
     }
@@ -250,7 +257,10 @@ export default function WhiteboardToolbar({
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
 
-  if (isUploadResourceOpen || currentSelectedScreen === "/lesson") {
+  if (
+    (uploadResourceImages.length > 1 && isUploadResourceOpen) ||
+    currentSelectedScreen === "/lesson"
+  ) {
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
 

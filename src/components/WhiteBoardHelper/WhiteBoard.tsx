@@ -411,8 +411,8 @@ export default function WhiteBoard({
     }
   };
   const handleAfterImageLoaded = (image) => {
-    let containerWidth = whiteBoardContainerRef.current.clientWidth;
-    let containerHeight = whiteBoardContainerRef.current.clientHeight;
+    let containerWidth = whiteBoardContainerRef?.current?.clientWidth;
+    let containerHeight = whiteBoardContainerRef?.current?.clientHeight;
     let width = containerWidth;
     let height = containerHeight;
     if (image) {

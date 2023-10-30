@@ -39,7 +39,8 @@ export default function Lesson() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  const selectedTab = activeTabArray[currentSelectedIndex];
+  const { extraParams } = selectedTab || {};
   const { imageUrl, tagId } = extraParams || [];
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
