@@ -143,7 +143,11 @@ export default function Lesson() {
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       setIsImageLoaded(false);
     }
-  }, [whiteBoardData.currentIndex]);
+
+    if (tagId) {
+      setIsImageLoaded(false);
+    }
+  }, [whiteBoardData.currentIndex, tagId]);
   if (!imageUrl?.length)
     return (
       <>
