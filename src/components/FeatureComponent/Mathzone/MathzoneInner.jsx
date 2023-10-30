@@ -125,7 +125,6 @@ export default function MathzoneInner() {
       live_class_id,
     });
     if (data?.status) {
-      console.log(data);
       setObj({ ...data });
       setLoading(false);
       handleDataTrack({ data }, identity);
@@ -137,7 +136,6 @@ export default function MathzoneInner() {
     startPracticeQuestion(liveClassId, concept, tag, level, localParticipant);
   }, []);
   React.useEffect(() => {
-    console.log(mathzone);
     if (localParticipant !== "tutor") checkStudentData(mathzone);
   }, [JSON.stringify(mathzone)]);
   const checkStudentData = () => {
