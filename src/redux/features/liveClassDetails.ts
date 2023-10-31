@@ -49,6 +49,7 @@ interface liveClassDetailsTypes {
   screenShareStatus: boolean;
   uploadResourceDeleteModal: boolean;
   speedMathAlreadyStarted: boolean;
+  refreshNewCodingIframe: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -102,6 +103,7 @@ const initialState: liveClassDetailsTypes = {
   screenShareStatus: false,
   uploadResourceDeleteModal: false,
   speedMathAlreadyStarted: false,
+  refreshNewCodingIframe: false,
 };
 
 export const liveClassDetailsSlice = createSlice({
@@ -279,6 +281,9 @@ export const liveClassDetailsSlice = createSlice({
     toggleSpeedMathAlreadyStarted: (state, action) => {
       state.speedMathAlreadyStarted = action.payload;
     },
+    refreshNewCodingTeacher: (state, action) => {
+      state.refreshNewCodingIframe = action.payload;
+    },
   },
 });
 
@@ -311,6 +316,7 @@ export const {
   setScreenShareStatus,
   toggleUploadResourceDeleteModal,
   toggleSpeedMathAlreadyStarted,
+  refreshNewCodingTeacher,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

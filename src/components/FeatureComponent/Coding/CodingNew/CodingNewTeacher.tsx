@@ -13,8 +13,14 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
-import { ROUTERKEYCONST } from "../../../../constants";
+import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../../../constants";
 import { openClosedScratchWhiteBoard } from "../../../../redux/features/ComponentLevelDataReducer";
+import { NavLink } from "react-router-dom";
+import { getQueryParams } from "../../../../utils/getQueryParams";
+import {
+  ActiveTabParams,
+  addToActiveTab,
+} from "../../../../redux/features/addActiveTabLink";
 
 const activeProjectBgCss = "bg-gradient-to-r from-[#3bd7b1] to-[#a4ec9e]";
 const unactiveProjectBgCss = "bg-gradient-to-r from-[#eb3349] to-[#f45c43]";
@@ -105,7 +111,16 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   const callCodingLogsApi = (coding_learning_outcome_id: number) => {
     storeCodingLogNewCurriculam(liveClassId, coding_learning_outcome_id);
   };
-
+  const handleClick = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+    callCodingLogsApi(extraParams?.coding_learning_outcome_id);
+  };
   const showScratchProject = (
     item: newCodingData,
     coding_learning_outcome_id: number
@@ -121,20 +136,41 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
           key={`scratch-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
-            <a
-              target="_blank"
-              href={`https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`}
-              onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+            <NavLink
+              to={`/iframeCoding?${getQueryParams()}`}
+              onClick={() =>
+                handleClick({
+                  path: IFRAMENEWCODING.path,
+                  key: IFRAMENEWCODING.key,
+                  name: IFRAMENEWCODING.name,
+                  icon: IFRAMENEWCODING.icon,
+                  extraParams: {
+                    url: `https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`,
+                    coding_learning_outcome_id: coding_learning_outcome_id,
+                  },
+                })
+              }
             >
               <p className="text-white font-semibold text-sm">{item.name}</p>
-            </a>
+            </NavLink>
           ) : (
-            <a
-              target="_blank"
-              href={`https://www.coding.begalileo.com/?user_id=${userId}&project_i&env=${env} `}
+            <NavLink
+              to={`/iframeCoding?${getQueryParams()}`}
+              onClick={() =>
+                handleClick({
+                  path: IFRAMENEWCODING.path,
+                  key: IFRAMENEWCODING.key,
+                  name: IFRAMENEWCODING.name,
+                  icon: IFRAMENEWCODING.icon,
+                  extraParams: {
+                    url: `https://www.coding.begalileo.com/?user_id=${userId}&project_i&env=${env}`,
+                    coding_learning_outcome_id: coding_learning_outcome_id,
+                  },
+                })
+              }
             >
               <p className="text-white font-semibold text-sm">{item.name}</p>
-            </a>
+            </NavLink>
           )}
         </div>
       );
@@ -157,23 +193,44 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
           key={`python-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
-            <a
-              target="_blank"
-              href={`https://www.python.begalileo.com/?user_id=${userId}&coding_activity_id=${coding_activity_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&share=true&env=${env}`}
-              onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+            <NavLink
+              to={`/iframeCoding?${getQueryParams()}`}
+              onClick={() =>
+                handleClick({
+                  path: IFRAMENEWCODING.path,
+                  key: IFRAMENEWCODING.key,
+                  name: IFRAMENEWCODING.name,
+                  icon: IFRAMENEWCODING.icon,
+                  extraParams: {
+                    url: `https://www.python.begalileo.com/?user_id=${userId}&coding_activity_id=${coding_activity_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&share=true&env=${env}`,
+                    coding_learning_outcome_id: coding_learning_outcome_id,
+                  },
+                })
+              }
             >
               <p className="text-white font-semibold text-sm">{item.name}</p>
-            </a>
+            </NavLink>
           ) : (
-            <a
-              target="_blank"
-              href={`https://www.python.begalileo.com/?user_id=${crypt(
-                "saltsssds lagejfgjlaregjlfdgfajdglajadgljsdhgljggfdj lg",
-                item.student_id.toString()
-              )}&project_i&env=${env}`}
+            <NavLink
+              to={`/iframeCoding?${getQueryParams()}`}
+              onClick={() =>
+                handleClick({
+                  path: IFRAMENEWCODING.path,
+                  key: IFRAMENEWCODING.key,
+                  name: IFRAMENEWCODING.name,
+                  icon: IFRAMENEWCODING.icon,
+                  extraParams: {
+                    url: `https://www.python.begalileo.com/?user_id=${crypt(
+                      "saltsssds lagejfgjlaregjlfdgfajdglajadgljsdhgljggfdj lg",
+                      item.student_id.toString()
+                    )}&project_i&env=${env}`,
+                    coding_learning_outcome_id: coding_learning_outcome_id,
+                  },
+                })
+              }
             >
               <p className="text-white font-semibold text-sm">{item.name}</p>
-            </a>
+            </NavLink>
           )}
         </div>
       );
@@ -182,39 +239,69 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
 
   const showScratchProjectTeacher = (coding_learning_outcome_id: number) => {
     return (
-      <a
-        href={`https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`}
-        target="_blank"
+      <NavLink
         className="flex justify-center items-center"
-        onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+        to={`/iframeCoding?${getQueryParams()}`}
+        onClick={() =>
+          handleClick({
+            path: IFRAMENEWCODING.path,
+            key: IFRAMENEWCODING.key,
+            name: IFRAMENEWCODING.name,
+            icon: IFRAMENEWCODING.icon,
+            extraParams: {
+              url: `https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
+              coding_learning_outcome_id: coding_learning_outcome_id,
+            },
+          })
+        }
       >
         <img className="flex w-[100%] h-[100%]" src={ScratchLogo} />
-      </a>
+      </NavLink>
     );
   };
 
   const showPythonProjectTeacher = (coding_learning_outcome_id: number) => {
     return (
-      <a
-        href={`https://www.python.begalileo.com/?user_id=${userId}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`}
-        target="_blank"
+      <NavLink
         className="flex justify-center items-center"
-        onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+        to={`/iframeCoding?${getQueryParams()}`}
+        onClick={() =>
+          handleClick({
+            path: IFRAMENEWCODING.path,
+            key: IFRAMENEWCODING.key,
+            name: IFRAMENEWCODING.name,
+            icon: IFRAMENEWCODING.icon,
+            extraParams: {
+              url: `https://www.python.begalileo.com/?user_id=${userId}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
+              coding_learning_outcome_id: coding_learning_outcome_id,
+            },
+          })
+        }
       >
-        <img className="flex w-[100%] h-[100%]" src={PythonLogo} />
-      </a>
+        <img className="flex w-[35%] h-[20%]" src={PythonLogo} />
+      </NavLink>
     );
   };
 
   const showThukableProjectTeacher = () => {
     return (
-      <a
-        href={thunkableLink}
-        target="_blank"
+      <NavLink
         className="flex justify-center items-center"
+        to={`/iframeCoding?${getQueryParams()}`}
+        onClick={() =>
+          handleClick({
+            path: IFRAMENEWCODING.path,
+            key: IFRAMENEWCODING.key,
+            name: IFRAMENEWCODING.name,
+            icon: IFRAMENEWCODING.icon,
+            extraParams: {
+              url: { thunkableLink },
+            },
+          })
+        }
       >
         <img className="flex w-[100%] h-[100%]" src={ThunkableLogo} />
-      </a>
+      </NavLink>
     );
   };
 
@@ -230,7 +317,6 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     };
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
     dispatch(openClosedScratchWhiteBoard({ status: true, images: item }));
-    // openCloseScratchWhiteBoard
   };
 
   return (

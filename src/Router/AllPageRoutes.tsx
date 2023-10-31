@@ -1,8 +1,9 @@
 import { Navigate, Route, Routes, useLocation } from "react-router";
 import { getQueryParams } from "../utils/getQueryParams";
 import routerConfig from "./RouterConfig";
-import { CICO, GGB, ROUTERKEYCONST } from "../constants";
 import Geogebra from "../components/FeatureComponent/Lesson/GeogebraLesson/Geogebra";
+import { CICO, GGB, IFRAMENEWCODING, ROUTERKEYCONST } from "../constants";
+import CodingNewIframe from "../components/FeatureComponent/Coding/CodingNew/CodingNewIframe";
 export default function AllPageRoutes() {
   const params = getQueryParams();
   const { pathname } = useLocation();
@@ -40,6 +41,11 @@ export default function AllPageRoutes() {
           )
         )}
         <Route key={GGB.key} path={GGB.path} Component={Geogebra}></Route>
+        <Route
+          path={IFRAMENEWCODING.path}
+          Component={CodingNewIframe}
+          key={IFRAMENEWCODING.key}
+        ></Route>
       </Routes>
     </>
   );
