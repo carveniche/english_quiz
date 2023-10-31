@@ -60,8 +60,8 @@ export default function MathzoneWhiteBoard({
         justifyContent: "center",
         alignItems: "center",
         minWidth: 60,
-        height: "calc(100% - 2px)",
-        top: 0,
+        height: "calc(100% + 40px)",
+        top: -40,
       }}
     >
       <div style={{ width: 60, display: "flex", justifyContent: "center" }}>
