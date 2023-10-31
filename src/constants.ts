@@ -113,11 +113,12 @@ export const GGB = {
   icon: "/menu-icon/MathLessons.svg",
 };
 
-export const SCREENRECORDING = true;
-export const SHOWFLOATINGPARTICIPANT = true;
 export const IFRAMENEWCODING = {
   path: "/iframeCoding",
   key: "iframeCoding",
   name: "CodingNew",
   icon: "/menu-icon/CodingIcon.svg",
 };
+
+export const SCREENRECORDING = true;
+export const SHOWFLOATINGPARTICIPANT = true;
