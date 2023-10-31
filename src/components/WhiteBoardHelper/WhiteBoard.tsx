@@ -514,7 +514,7 @@ export default function WhiteBoard({
             ? from === "uploadResource"
               ? ""
               : "fit-content"
-            : "calc(100% - 60px)",
+            : "calc(100% - 40px)",
           width: currentLoadedImage ? "fit-content" : "100%",
           margin: "auto",
           cursor:

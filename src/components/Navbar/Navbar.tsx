@@ -11,7 +11,7 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CICO, LESSON, ROUTERKEYCONST } from "../../constants";
+import { CICO, LESSON, IFRAMENEWCODING, ROUTERKEYCONST } from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
@@ -186,6 +186,9 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     const [localDataTrackPublication] = [
       ...room!.localParticipant.dataTracks.values(),
     ];
+    if (key === IFRAMENEWCODING.key) {
+      return;
+    }
     let DataTrackObj = {
       pathName: path,
       key,

@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CICO, MAXIMUMACTIVETAB, ROUTERKEYCONST } from "../../constants";
+import {
+  CICO,
+  IFRAMENEWCODING,
+  MAXIMUMACTIVETAB,
+  ROUTERKEYCONST,
+} from "../../constants";
 import defaultRouter from "../../Router/defaultRouter";
 export interface ActiveTabParams {
   path: string;
@@ -66,8 +71,9 @@ const activeTabReducer = createSlice({
         activeTabArray[index] = action.payload;
       } else if (action.payload.key === ROUTERKEYCONST.speedmath) {
         activeTabArray[index] = action.payload;
-      }
-      else if(action.payload.key===ROUTERKEYCONST.miscellaneous.key){
+      } else if (action.payload.key === ROUTERKEYCONST.miscellaneous.key) {
+        activeTabArray[index] = action.payload;
+      } else if (action.payload.key === IFRAMENEWCODING.key) {
         activeTabArray[index] = action.payload;
       }
     },
