@@ -325,6 +325,7 @@ export default function PrePostTestInner() {
                     handleCheckLastQuestionBeforeSkipping={
                       handleCheckLastQuestionBeforeSkipping
                     }
+                    dataTrackKey={MATHZONEDATAKEY.mathzoneWhiteBoardData}
                   />
                 )}
               </QuizWhitePage>

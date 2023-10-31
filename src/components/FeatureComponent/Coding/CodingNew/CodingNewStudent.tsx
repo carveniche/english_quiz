@@ -12,6 +12,14 @@ import {
   showScratchTeacher,
   storeCodingLogNewCurriculam,
 } from "../../../../api";
+import {
+  ActiveTabParams,
+  addToActiveTab,
+} from "../../../../redux/features/addActiveTabLink";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { getQueryParams } from "../../../../utils/getQueryParams";
+import { IFRAMENEWCODING } from "../../../../constants";
 
 interface CodingNewStudentProps {
   env: string;
@@ -44,6 +52,7 @@ interface studentSpecificData {
 export default function CodingNewStudent({ env }: CodingNewStudentProps) {
   const [thunkableLink, setThunkableLink] = useState("");
   const [newCodingData, setNewCodingData] = useState([]);
+  const dispatch = useDispatch();
 
   const { userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -80,21 +89,42 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
     storeCodingLogNewCurriculam(liveClassId, coding_learning_outcome_id);
   };
 
+  const handleClick = ({
+    path,
+    key,
+    name,
+    icon,
+    extraParams,
+  }: ActiveTabParams) => {
+    dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
+    callCodingLogsApi(extraParams?.coding_learning_outcome_id);
+  };
+
   const showScratchProject = (
     item: newCodingData,
     coding_learning_outcome_id: number
   ) => {
     return item.students.map((item: studentSpecificData, index) => {
       return (
-        <a
-          href={`https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`}
-          target="_blank"
+        <NavLink
           className="flex justify-center items-center"
-          onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
+          to={`/iframeCoding?${getQueryParams()}`}
+          onClick={() =>
+            handleClick({
+              path: IFRAMENEWCODING.path,
+              key: IFRAMENEWCODING.key,
+              name: IFRAMENEWCODING.name,
+              icon: IFRAMENEWCODING.icon,
+              extraParams: {
+                url: `https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`,
+                coding_learning_outcome_id: coding_learning_outcome_id,
+              },
+            })
+          }
           key={`scratch-${index}`}
         >
           <img className="flex w-[100%] h-[100%]" src={ScratchLogo} />
-        </a>
+        </NavLink>
       );
     });
   };
@@ -106,27 +136,47 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
   ) => {
     return item.students.map((item: studentSpecificData, index) => {
       return (
-        <a
-          href={`https://www.python.begalileo.com/?user_id=${userId}&coding_activity_id=${coding_activity_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`}
-          target="_blank"
+        <NavLink
+          to={`/iframeCoding?${getQueryParams()}`}
+          onClick={() =>
+            handleClick({
+              path: IFRAMENEWCODING.path,
+              key: IFRAMENEWCODING.key,
+              name: IFRAMENEWCODING.name,
+              icon: IFRAMENEWCODING.icon,
+              extraParams: {
+                url: `https://www.python.begalileo.com/?user_id=${userId}&coding_activity_id=${coding_activity_id}&student_activity_id=${item.student_activity_id}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}`,
+                coding_learning_outcome_id: coding_learning_outcome_id,
+              },
+            })
+          }
           className="flex justify-center items-center"
-          onClick={() => callCodingLogsApi(coding_learning_outcome_id)}
           key={`python-${index}`}
         >
-          <img className="flex w-[100%] h-[100%]" src={PythonLogo} />
-        </a>
+          <img className="flex w-[35%] h-[20%]" src={PythonLogo} />
+        </NavLink>
       );
     });
   };
   const showThukableProject = () => {
     return (
-      <a
-        href={thunkableLink}
-        target="_blank"
+      <NavLink
         className="flex justify-center items-center"
+        to={`/iframeCoding?${getQueryParams()}`}
+        onClick={() =>
+          handleClick({
+            path: IFRAMENEWCODING.path,
+            key: IFRAMENEWCODING.key,
+            name: IFRAMENEWCODING.name,
+            icon: IFRAMENEWCODING.icon,
+            extraParams: {
+              url: { thunkableLink },
+            },
+          })
+        }
       >
         <img className="flex w-[100%] h-[100%]" src={ThunkableLogo} />
-      </a>
+      </NavLink>
     );
   };
 
