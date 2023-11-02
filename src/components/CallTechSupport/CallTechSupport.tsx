@@ -13,6 +13,7 @@ export default function CallTechSupport() {
   const [connectingFlag, setConnectingFlag] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [openAlertBox, setOpenAlertBox] = useState(true);
+  const [isApiCallInProgress, setApiCallInProgress] = useState(false);
 
   const { techJoinedClass, userId, liveClassId } = useSelector(
     (state: RootState) => state.liveClassDetails
@@ -40,6 +41,10 @@ export default function CallTechSupport() {
 
   const requestTechSupport = async () => {
     try {
+      if (isApiCallInProgress) {
+        return;
+      }
+      setApiCallInProgress(true);
       await callTechSupport(userId, liveClassId).then((response) => {
         if (response.data.status) {
           sendNotificationToTech();
@@ -49,20 +54,24 @@ export default function CallTechSupport() {
             "You have already placed the request for the Support team. Please wait for them to join"
           );
           setOpenAlertBox(true);
+          setActiveLogo(true);
+          setConnectingFlag(true);
         }
       });
     } catch (error) {
       console.error("API request error:", error);
-    }
+    } finally {
+      setApiCallInProgress(false);
 
-    if (!techSupportBtnClicked.current) {
-      if (activeLogo) {
-        setBackgroundColor("bg-header-black");
-      } else {
-        setBackgroundColor("bg-black");
+      if (!techSupportBtnClicked.current) {
+        if (activeLogo) {
+          setBackgroundColor("bg-header-black");
+        } else {
+          setBackgroundColor("bg-black");
+        }
+        setActiveLogo(true);
+        setConnectingFlag(true);
       }
-      setActiveLogo(true);
-      setConnectingFlag(true);
     }
   };
 
