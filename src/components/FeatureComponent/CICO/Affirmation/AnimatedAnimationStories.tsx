@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { cicoComponentLevelDataTrack } from "../../../../redux/features/ComponentLevelDataReducer";
 import "flipping-pages/dist/style.css";
 import { CICO } from "../../../../constants";
+import LessonNextIcon from "../../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
+import LessonPreviousIcon from "../../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
 export interface stories {
   story: string;
 }
@@ -69,10 +71,14 @@ export default function AnimatedAnimationStories({
       className={styles.parent}
       style={{ position: "relative", clear: "both" }}
     >
-      {identity === "tutor" && (
+      {/* {identity === "tutor" && (
         <div
           className={styles.arrowButtonContainer}
-          style={{ width: "80%", background: "red", zIndex: 1 }}
+          style={{
+            width: "80%",
+            background: "red",
+            zIndex: 1,
+          }}
         >
           {currentPage > 0 && !isTeacherEndCheckInActivity && (
             <button onClick={back} className={styles.leftArrow}>
@@ -98,7 +104,7 @@ export default function AnimatedAnimationStories({
               </button>
             )}
         </div>
-      )}
+      )} */}
       <div className="pages">
         <FlippingPages
           direction="right-to-left"
@@ -113,6 +119,34 @@ export default function AnimatedAnimationStories({
             </div>
           ))}
         </FlippingPages>
+        {identity === "tutor" && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 20,
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div className="flex gap-2  justify-center items-center ml-[5px] bg-[#000]  rounded-full">
+              {currentPage > 0 && !isTeacherEndCheckInActivity && (
+                <button onClick={back} className={styles.leftArrow}>
+                  <LessonPreviousIcon />
+                </button>
+              )}
+              {currentPage < stories?.length - 1 &&
+                !isTeacherEndCheckInActivity && (
+                  <button onClick={next}>
+                    <LessonNextIcon />
+                  </button>
+                )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
