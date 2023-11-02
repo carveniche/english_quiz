@@ -198,38 +198,6 @@ export default function AllScreen() {
       ) : (
         <>
           {TeacherViewFirst()}
-          {/* {speakerViewParticipants.map((participant) => {
-            return excludeParticipantTechSmParent.includes(
-              participant.identity
-            ) ? (
-              <React.Fragment key={participant.sid}>
-                <Participant
-                  key={participant.sid}
-                  participant={participant}
-                  fromScreen={"allscreen"}
-                  remoteParticipantIdentity={participant.identity}
-                />
-              </React.Fragment>
-            ) : (
-              <Item remotepcount={remotePCount} key={participant.sid}>
-                {!allExcludedParticipant({
-                  identity: participant.identity,
-                }) && (
-                  <ParticipantsAnimationBar
-                    localParticipant={localParticipant}
-                    participant={participant}
-                    screen={"allscreen"}
-                  />
-                )}
-                <Participant
-                  key={participant.sid}
-                  participant={participant}
-                  fromScreen={"allscreen"}
-                  remoteParticipantIdentity={participant.identity}
-                />
-              </Item>
-            );
-          })} */}
 
           {!excludeParticipantTechSmParent.includes(
             localParticipant.identity
