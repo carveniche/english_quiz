@@ -5,7 +5,10 @@ import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipant
 import { finalRemoteParticipantCount } from "../../../utils/common";
 import { Participant } from "../../Participant/Participant";
 import ParticipantsAnimationBar from "../../ParticipantsAnimationBar/ParticipantsAnimationBar";
-import { allExcludedParticipant } from "../../../utils/participantIdentity";
+import {
+  allExcludedParticipant,
+  isTutor,
+} from "../../../utils/participantIdentity";
 import { excludeParticipantTechSmParent } from "../../../utils/excludeParticipant";
 
 interface remotePCountInterface {
@@ -53,60 +56,205 @@ export default function AllScreen() {
     localParticipant.identity
   );
 
-  return (
-    <ContainerAllScreen>
-      {!excludeParticipantTechSmParent.includes(localParticipant.identity) ? (
-        <Item remotepcount={remotePCount} key={localParticipant.sid}>
-          {!allExcludedParticipant({
-            identity: localParticipant.identity,
-          }) && (
-            <>
-              <ParticipantsAnimationBar
-                localParticipant={localParticipant}
-                participant={localParticipant}
-                screen={"allscreen"}
-              />
-            </>
-          )}
+  const isTutorLocalParticipant = isTutor({
+    identity: localParticipant.identity,
+  });
 
+  const TeacherViewFirst = () => {
+    const tutorParticipants = speakerViewParticipants.filter((participant) =>
+      isTutor({ identity: participant.identity })
+    );
+
+    const otherParticipants = speakerViewParticipants.filter(
+      (participant) => !isTutor({ identity: participant.identity })
+    );
+
+    const mappedTutors = tutorParticipants.map((participant) => {
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
           <Participant
-            participant={localParticipant}
-            isLocalParticipant={true}
+            key={participant.sid}
+            participant={participant}
             fromScreen={"allscreen"}
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : (
+        <Item remotepcount={remotePCount} key={participant.sid}>
+          {!allExcludedParticipant({
+            identity: participant.identity,
+          }) && (
+            <ParticipantsAnimationBar
+              localParticipant={localParticipant}
+              participant={participant}
+              screen={"allscreen"}
+            />
+          )}
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen={"allscreen"}
+            remoteParticipantIdentity={participant.identity}
           />
         </Item>
-      ) : null}
+      );
+    });
 
-      {speakerViewParticipants.map((participant) => {
-        return excludeParticipantTechSmParent.includes(participant.identity) ? (
-          <React.Fragment key={participant.sid}>
-            <Participant
-              key={participant.sid}
+    const mappedOtherParticipants = otherParticipants.map((participant) => {
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen={"allscreen"}
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : (
+        <Item remotepcount={remotePCount} key={participant.sid}>
+          {!allExcludedParticipant({
+            identity: participant.identity,
+          }) && (
+            <ParticipantsAnimationBar
+              localParticipant={localParticipant}
               participant={participant}
-              fromScreen={"allscreen"}
-              remoteParticipantIdentity={participant.identity}
+              screen={"allscreen"}
             />
-          </React.Fragment>
-        ) : (
-          <Item remotepcount={remotePCount} key={participant.sid}>
-            {!allExcludedParticipant({
-              identity: participant.identity,
-            }) && (
-              <ParticipantsAnimationBar
-                localParticipant={localParticipant}
-                participant={participant}
-                screen={"allscreen"}
+          )}
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen={"allscreen"}
+            remoteParticipantIdentity={participant.identity}
+          />
+        </Item>
+      );
+    });
+
+    const finalMapping = mappedTutors.concat(mappedOtherParticipants);
+
+    return finalMapping;
+  };
+
+  return (
+    <ContainerAllScreen>
+      {isTutorLocalParticipant ? (
+        <>
+          {!excludeParticipantTechSmParent.includes(
+            localParticipant.identity
+          ) ? (
+            <Item remotepcount={remotePCount} key={localParticipant.sid}>
+              {!allExcludedParticipant({
+                identity: localParticipant.identity,
+              }) && (
+                <>
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={localParticipant}
+                    screen={"allscreen"}
+                  />
+                </>
+              )}
+              <Participant
+                participant={localParticipant}
+                isLocalParticipant={true}
+                fromScreen={"allscreen"}
               />
-            )}
-            <Participant
-              key={participant.sid}
-              participant={participant}
-              fromScreen={"allscreen"}
-              remoteParticipantIdentity={participant.identity}
-            />
-          </Item>
-        );
-      })}
+            </Item>
+          ) : null}
+          {speakerViewParticipants.map((participant) => {
+            return excludeParticipantTechSmParent.includes(
+              participant.identity
+            ) ? (
+              <React.Fragment key={participant.sid}>
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  fromScreen={"allscreen"}
+                  remoteParticipantIdentity={participant.identity}
+                />
+              </React.Fragment>
+            ) : (
+              <Item remotepcount={remotePCount} key={participant.sid}>
+                {!allExcludedParticipant({
+                  identity: participant.identity,
+                }) && (
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={participant}
+                    screen={"allscreen"}
+                  />
+                )}
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  fromScreen={"allscreen"}
+                  remoteParticipantIdentity={participant.identity}
+                />
+              </Item>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          {TeacherViewFirst()}
+          {/* {speakerViewParticipants.map((participant) => {
+            return excludeParticipantTechSmParent.includes(
+              participant.identity
+            ) ? (
+              <React.Fragment key={participant.sid}>
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  fromScreen={"allscreen"}
+                  remoteParticipantIdentity={participant.identity}
+                />
+              </React.Fragment>
+            ) : (
+              <Item remotepcount={remotePCount} key={participant.sid}>
+                {!allExcludedParticipant({
+                  identity: participant.identity,
+                }) && (
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={participant}
+                    screen={"allscreen"}
+                  />
+                )}
+                <Participant
+                  key={participant.sid}
+                  participant={participant}
+                  fromScreen={"allscreen"}
+                  remoteParticipantIdentity={participant.identity}
+                />
+              </Item>
+            );
+          })} */}
+
+          {!excludeParticipantTechSmParent.includes(
+            localParticipant.identity
+          ) ? (
+            <Item remotepcount={remotePCount} key={localParticipant.sid}>
+              {!allExcludedParticipant({
+                identity: localParticipant.identity,
+              }) && (
+                <>
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={localParticipant}
+                    screen={"allscreen"}
+                  />
+                </>
+              )}
+              <Participant
+                participant={localParticipant}
+                isLocalParticipant={true}
+                fromScreen={"allscreen"}
+              />
+            </Item>
+          ) : null}
+        </>
+      )}
     </ContainerAllScreen>
   );
 }

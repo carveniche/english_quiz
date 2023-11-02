@@ -120,7 +120,7 @@ const routerConfig: routerConfig[] = [
     component: null,
     key: ROUTERKEYCONST.miscellaneous.key,
     exact: true,
-    name: "Miscellenous",
+    name: "Miscellaneous",
     icon: "/menu-icon/Whiteboard.svg",
     hasChildren: false,
     hasSubRoute: true,

@@ -167,12 +167,12 @@ export default function FloatingParticipant({
         }}
       >
         <div className="z-10 absolute fit max-h-full cursor-pointer overflow-x-hidden overflow-y-auto">
+          {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
           {screenName !== "/myscreen"
             ? showSelfParticipantView()
             : screenName === "/myscreen" &&
               !isTutor({ identity: localParticipant.identity }) &&
               showSelfParticipantView()}
-          {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
         </div>
       </Draggable>
     </>
