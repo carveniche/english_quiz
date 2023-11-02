@@ -5,6 +5,8 @@ import { isTutor } from "../../../utils/participantIdentity";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { useDispatch } from "react-redux";
 import { updateMathVideoCurrentTime } from "../../../redux/features/liveClassDetails";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import {
   isSafariBrowser,
   iPadDevice,
@@ -39,7 +41,6 @@ export default function MathVideoLesson() {
   const { extraParams } = activeTabArray[currentSelectedIndex];
 
   useEffect(() => {
-    console.log("videoPlayState", videoPlayState);
     if (videoPlayState) {
       handleVideoAction("play");
       setMutedForSafari(true);
@@ -137,14 +138,17 @@ export default function MathVideoLesson() {
           <>
             <button
               style={{
-                background: videoPlaying ? "red" : "blue",
+                display: "flex",
+                // background: "black",
                 color: "white",
                 padding: 10,
                 borderRadius: "5px",
                 fontSize: "bold",
                 marginTop: "10px",
-                width: "70px",
+                width: "40px",
                 height: "40px",
+                justifyContent: "center",
+                alignItems: "center",
               }}
               onClick={() => {
                 if (videoPlaying) {
@@ -154,7 +158,23 @@ export default function MathVideoLesson() {
                 }
               }}
             >
-              {videoPlaying ? "Pause" : "Play"}
+              {videoPlaying ? (
+                <>
+                  <PauseCircleIcon
+                    style={{
+                      color: "black",
+                      fontSize: "40",
+                    }}
+                  />
+                </>
+              ) : (
+                <PlayCircleIcon
+                  style={{
+                    color: "black",
+                    fontSize: "40",
+                  }}
+                />
+              )}
             </button>
           </>
         ) : null}
