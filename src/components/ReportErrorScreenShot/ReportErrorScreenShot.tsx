@@ -93,12 +93,8 @@ export default function ReportErrorScreenShot() {
 
     setScreenShotProgress(true);
     navigator.mediaDevices
-      .getDisplayMedia({
-        video: true,
-      })
+      .getDisplayMedia()
       .then((stream) => {
-        console.log("stream", stream);
-        // Grab frame from stream
         captureScreenShotSafari(stream);
       })
       .catch((err) => {
@@ -114,11 +110,7 @@ export default function ReportErrorScreenShot() {
     videoElement.srcObject = stream;
 
     videoElement.onloadedmetadata = async () => {
-      // const canvasCapture = document.createElement("canvas");
-      // document.body.appendChild(canvasCapture);
-
       const canvasCapture = canvas.current;
-
       canvasCapture.width = videoElement.videoWidth;
       canvasCapture.height = videoElement.videoHeight;
 
@@ -138,11 +130,7 @@ export default function ReportErrorScreenShot() {
       uploadScreenShotToServer(blob);
 
       document.body.removeChild(videoElement);
-      // document.body.removeChild(canvasCapture);
     };
-
-    // Start playing the video to capture a frame
-    // videoElement.play();
   };
 
   const uploadScreenShotToServer = async (blob: Blob) => {
@@ -160,6 +148,7 @@ export default function ReportErrorScreenShot() {
         setAlertMessage(
           "Your error report has been submitted to the beGalileo team."
         );
+        setOpenAlertBox(true);
       } else {
         setAlertMessage(
           "Unable to send screen shot : " +
