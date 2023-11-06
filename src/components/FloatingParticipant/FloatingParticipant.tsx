@@ -1,5 +1,4 @@
 import React from "react";
-import { Rnd } from "react-rnd";
 import useSpeakerViewParticipants from "../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import { Participant } from "../Participant/Participant";
 import ParticipantsAnimationBar from "../ParticipantsAnimationBar/ParticipantsAnimationBar";
@@ -53,7 +52,15 @@ export default function FloatingParticipant({
   }, [screenName, screen]);
 
   const showViewWithTeacher = () => {
-    return speakerViewParticipants.map((participant) => {
+    const tutorParticipants = speakerViewParticipants.filter((participant) =>
+      isTutor({ identity: participant.identity })
+    );
+
+    const otherParticipants = speakerViewParticipants.filter(
+      (participant) => !isTutor({ identity: participant.identity })
+    );
+
+    const mappedTutors = tutorParticipants.map((participant) => {
       return excludeParticipantTechSmParent.includes(participant.identity) ? (
         <React.Fragment key={participant.sid}>
           <Participant
@@ -86,6 +93,44 @@ export default function FloatingParticipant({
         </div>
       );
     });
+
+    const mappedOtherParticipants = otherParticipants.map((participant) => {
+      return excludeParticipantTechSmParent.includes(participant.identity) ? (
+        <React.Fragment key={participant.sid}>
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+        </React.Fragment>
+      ) : (
+        <div
+          className="relative max-h-[225px] max-w-[290px]"
+          key={participant.sid}
+        >
+          <Participant
+            key={participant.sid}
+            participant={participant}
+            fromScreen="allOtherScreens"
+            remoteParticipantIdentity={participant.identity}
+          />
+          {!allExcludedParticipant({
+            identity: participant.identity,
+          }) && (
+            <ParticipantsAnimationBar
+              localParticipant={localParticipant}
+              participant={participant}
+              screen="myscreen"
+            />
+          )}
+        </div>
+      );
+    });
+
+    const finalMapping = mappedTutors.concat(mappedOtherParticipants);
+
+    return finalMapping;
   };
 
   const showViewWithoutTeacher = () => {
@@ -167,12 +212,29 @@ export default function FloatingParticipant({
         }}
       >
         <div className="z-10 absolute fit max-h-full cursor-pointer overflow-x-hidden overflow-y-auto">
-          {screenName !== "/myscreen"
-            ? showSelfParticipantView()
-            : screenName === "/myscreen" &&
-              !isTutor({ identity: localParticipant.identity }) &&
-              showSelfParticipantView()}
-          {showTeacherView ? showViewWithTeacher() : showViewWithoutTeacher()}
+          {isTutor({ identity: localParticipant.identity }) ? (
+            <>
+              {screenName !== "/myscreen"
+                ? showSelfParticipantView()
+                : screenName === "/myscreen" &&
+                  !isTutor({ identity: localParticipant.identity }) &&
+                  showSelfParticipantView()}
+              {showTeacherView
+                ? showViewWithTeacher()
+                : showViewWithoutTeacher()}
+            </>
+          ) : (
+            <>
+              {showTeacherView
+                ? showViewWithTeacher()
+                : showViewWithoutTeacher()}
+              {screenName !== "/myscreen"
+                ? showSelfParticipantView()
+                : screenName === "/myscreen" &&
+                  !isTutor({ identity: localParticipant.identity }) &&
+                  showSelfParticipantView()}
+            </>
+          )}
         </div>
       </Draggable>
     </>

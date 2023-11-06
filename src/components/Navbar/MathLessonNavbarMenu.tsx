@@ -165,10 +165,10 @@ export default function MathLessonNavbarMenu({
                                             },
                                           })
                                         }
-                                        className={"w-48"}
+                                        className="min-w-48 w-98"
                                         style={{ display: "block" }}
                                       >
-                                        <div>
+                                        <div className="whitespace-nowrap">
                                           {tag?.today_class ? (
                                             <div className="flex">
                                               {tag?.name}
@@ -206,10 +206,10 @@ export default function MathLessonNavbarMenu({
                                             },
                                           })
                                         }
-                                        className={"w-48"}
+                                        className="min-w-48 w-98"
                                         style={{ display: "block" }}
                                       >
-                                        <div>
+                                        <div className="whitespace-nowrap">
                                           {tag?.today_class ? (
                                             <div className="flex">
                                               {tag?.name}
