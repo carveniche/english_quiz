@@ -52,6 +52,19 @@ export default function HelperWhiteBoard({
   );
 
   const handleDataTrack = (coordinates) => {
+    if (coordinates?.type === "toggleGraph") {
+      let DataTrackObj = {
+        pathName: null,
+        key: null,
+        value: {
+          datatrackName: WHITEBOARD.openGraph,
+          openGraphState: coordinates?.openGraphState,
+          dataTrackKey: dataTrackKey,
+        },
+      };
+      localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+      return;
+    }
     coordinates.index = whiteBoardData.currentIndex;
     coordinates.identity = userId;
     coordinates.userName = isTutorTechBoth({ identity: `${role_name}` })

@@ -7,7 +7,10 @@ import UserCursor from "./UserCursor";
 import WhiteboardToolbar from "./WhiteBoardToolbar/WhiteboardToolbar";
 import { handleLoadImage } from "./WhiteboardImageRenderer/LoadImage";
 import { useDispatch } from "react-redux";
-import { changeWhiteBoardToolBarValue } from "../../redux/features/ComponentLevelDataReducer";
+import {
+  changeWhiteBoardToolBarValue,
+  toggleGraphWhiteboard,
+} from "../../redux/features/ComponentLevelDataReducer";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
 const TEXTAREAWIDTH = 200;
 const TEXTAREAHEIGHT = 50;
@@ -64,6 +67,10 @@ export default function WhiteBoard({
   } = useSelector(
     (state: RootState) =>
       state.ComponentLevelDataReducer.allWhiteBoardRelatedData.whiteboardToolbar
+  );
+
+  const { openGraphWhiteboard } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
   );
   const DELAY = 200;
   const currentTimeStamp = useRef(Date.now());
@@ -346,6 +353,15 @@ export default function WhiteBoard({
         dispatch(
           changeWhiteBoardToolBarValue({ key: "eraserSelect", value: true })
         );
+        break;
+      case 8:
+        dispatch(toggleGraphWhiteboard(!openGraphWhiteboard));
+        typeof handleDataTrack === "function" &&
+          handleDataTrack({
+            type: "toggleGraph",
+            openGraphState: !openGraphWhiteboard,
+          });
+
         break;
       default:
         dispatch(
@@ -635,13 +651,13 @@ export default function WhiteBoard({
             }}
             scale={{ x: scaleRef.current.scaleX, y: scaleRef.current.scaleY }}
           >
-            {isScaled && false && (
+            {isScaled && openGraphWhiteboard && (
               <Layer>
                 <UrlImage
                   x={0}
                   width={canvasCalculatedDimension.current.width}
                   height={canvasCalculatedDimension.current.height}
-                  src={"/static/whiteboard/GRAPH_PAPER.png"}
+                  src={"/static/media/GraphImage.png"}
                   scaleRef={scaleRef}
                 />
               </Layer>

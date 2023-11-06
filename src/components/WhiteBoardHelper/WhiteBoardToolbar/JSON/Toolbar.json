@@ -37,6 +37,12 @@
     "image": "/WhiteBoardToolbarAssets/Toolbar/Line.svg",
     "key": "Line"
   },
+  {
+    "id": 8,
+    "name": "Graph",
+    "image": "/WhiteBoardToolbarAssets/Toolbar/Graph.png",
+    "key": "Graph"
+  },
 
   {
     "id": 7,

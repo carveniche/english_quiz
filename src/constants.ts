@@ -86,6 +86,7 @@ export const LESSON = {
 export const WHITEBOARD = {
   whiteBoardData: "whiteBoardData",
   pdfIndex: "pdfIndex",
+  openGraph: "openGraph",
 };
 export const SCRATCHLESSON = {
   scratchWhiteBoardData: "scratchWhiteBoardData",
