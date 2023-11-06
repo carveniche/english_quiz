@@ -41,6 +41,15 @@ export default function MathzoneNavbar({
     }
   };
 
+  function convertToLevel1(inputString: string) {
+    const capitalized =
+      inputString.charAt(0).toUpperCase() + inputString.slice(1);
+
+    const result = capitalized.replace(/(\d)/, " $1");
+
+    return result;
+  }
+
   return (
     <>
       {
@@ -182,7 +191,7 @@ export default function MathzoneNavbar({
                                               className={"w-48"}
                                               style={{ display: "block" }}
                                             >
-                                              {level}
+                                              {convertToLevel1(level)}
                                             </NavLink>
                                           </div>
                                         ))}

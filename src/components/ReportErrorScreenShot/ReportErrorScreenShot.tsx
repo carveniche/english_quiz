@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { createLiveClassTicket } from "../../api";
 import { Tooltip } from "@material-ui/core";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
+import { isSafariBrowser } from "../../utils/devices";
 
 export default function ReportErrorScreenShot() {
   const [openAlertBox, setOpenAlertBox] = useState(true);
@@ -85,6 +86,53 @@ export default function ReportErrorScreenShot() {
     }, 500);
   };
 
+  const reportErrorSafari = () => {
+    if (screenShotProgress) {
+      return;
+    }
+
+    setScreenShotProgress(true);
+    navigator.mediaDevices
+      .getDisplayMedia()
+      .then((stream) => {
+        captureScreenShotSafari(stream);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        setScreenShotProgress(false);
+      });
+  };
+
+  const captureScreenShotSafari = (stream) => {
+    const videoElement = document.createElement("video");
+    document.body.appendChild(videoElement);
+
+    videoElement.srcObject = stream;
+
+    videoElement.onloadedmetadata = async () => {
+      const canvasCapture = canvas.current;
+      canvasCapture.width = videoElement.videoWidth;
+      canvasCapture.height = videoElement.videoHeight;
+
+      const context = canvasCapture.getContext("2d");
+      context.drawImage(
+        videoElement,
+        0,
+        0,
+        canvasCapture.width,
+        canvasCapture.height
+      );
+
+      const blob = await new Promise((resolve) =>
+        canvasCapture.toBlob(resolve)
+      );
+
+      uploadScreenShotToServer(blob);
+
+      document.body.removeChild(videoElement);
+    };
+  };
+
   const uploadScreenShotToServer = async (blob: Blob) => {
     let screenName = getCurrentScreenName(String(currentSelectedScreen));
     const bodyFormData = new FormData();
@@ -100,6 +148,7 @@ export default function ReportErrorScreenShot() {
         setAlertMessage(
           "Your error report has been submitted to the beGalileo team."
         );
+        setOpenAlertBox(true);
       } else {
         setAlertMessage(
           "Unable to send screen shot : " +
@@ -119,7 +168,11 @@ export default function ReportErrorScreenShot() {
     <>
       <canvas ref={canvas} style={{ display: "none" }} />
       <Tooltip title="Take ScreenShot and Submit Error" arrow>
-        <button onClick={() => reportErrorSS()}>
+        <button
+          onClick={() =>
+            isSafariBrowser ? reportErrorSafari() : reportErrorSS()
+          }
+        >
           <div className="flex justify-center items-center min-w-[35px] p-1  rounded-full gap-2 bg-header-black hover:bg-black">
             <ReportErrorLogo />
           </div>
