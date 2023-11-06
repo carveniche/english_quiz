@@ -112,17 +112,17 @@ export default function WhiteBoard({
     let containerWidth = whiteBoardContainerRef.current.clientWidth;
     let containerHeight = whiteBoardContainerRef.current.clientHeight;
     // calculating ratio width by height
-    let actualHeight =
-      (containerWidth * WHITEBOARDSTANDARDSCREENSIZE.height) /
-      WHITEBOARDSTANDARDSCREENSIZE.width;
-    let actualWidth = containerWidth;
-    if (actualHeight > containerHeight) {
-      actualWidth =
-        (containerHeight * WHITEBOARDSTANDARDSCREENSIZE.width) /
-        WHITEBOARDSTANDARDSCREENSIZE.height;
-      actualHeight = containerHeight;
-    }
-    actualHeight = containerHeight;
+    // let actualHeight =
+    //   (containerWidth * WHITEBOARDSTANDARDSCREENSIZE.height) /
+    //   WHITEBOARDSTANDARDSCREENSIZE.width;
+    // let actualWidth = containerWidth;
+    // if (actualHeight > containerHeight) {
+    //   actualWidth =
+    //     (containerHeight * WHITEBOARDSTANDARDSCREENSIZE.width) /
+    //     WHITEBOARDSTANDARDSCREENSIZE.height;
+    //   actualHeight = containerHeight;
+    // }
+    // actualHeight = containerHeight;
     scaleRef.current = {
       scaleX: containerWidth / WHITEBOARDSTANDARDSCREENSIZE.width,
       scaleY: containerHeight / WHITEBOARDSTANDARDSCREENSIZE.height,
