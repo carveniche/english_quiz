@@ -149,6 +149,12 @@ export default function WhiteboardToolbar({
         handleCommonClick(6, "Eraser");
         break;
       }
+      case 8: {
+        setId(id);
+        setKey(key);
+        handleCommonClick(8, "Graph");
+        break;
+      }
     }
   };
 
@@ -262,6 +268,14 @@ export default function WhiteboardToolbar({
     currentSelectedScreen === "/lesson"
   ) {
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
+  }
+
+  if (
+    currentSelectedScreen === "/lesson" ||
+    isUploadResourceOpen ||
+    !isTutorTechBoth({ identity: String(role_name) })
+  ) {
+    newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 8);
   }
 
   const openUploadResourceDeleteModal = (obj: { id: number; name: string }) => {

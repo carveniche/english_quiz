@@ -47,6 +47,7 @@ import {
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
   resetWhiteBoardData,
+  toggleGraphWhiteboard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
 
@@ -246,6 +247,10 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         dispatch(changeGGbMode(parseMessage?.value?.currentMode || "tutor"));
       } else if (parseMessage?.value?.datatrackName === WHITEBOARD.pdfIndex) {
         dispatch(changePdfIndex(parseMessage?.value || {}));
+      } else if (parseMessage?.value?.datatrackName === WHITEBOARD.openGraph) {
+        dispatch(
+          toggleGraphWhiteboard(parseMessage?.value?.openGraphState || false)
+        );
       } else if (
         parseMessage?.value?.type ===
         HOMEWORKQUESTIONKEY.homeWorkQuestionDataTrack

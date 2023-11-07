@@ -47,17 +47,17 @@ const initialState = {
   isScratchOpenStatus: false,
   scratchPdfsImages: [],
   uploadResourceImages: [],
-  uploadResourceImagesId:0,
+  uploadResourceImagesId: 0,
   isUploadResourceOpen: false,
+  openGraphWhiteboard: false,
   allWhiteBoardRelatedData: {
-    whiteboardToolbar:{
-      colorCode:"#000000" as string,
-      strokeWidth:5 as number,
-      cursor:"crosshair" as string,
-      selectedPen:"FreeDrawing" as string,
-      eraserSelect:false,
-      eraserSize:5
-  
+    whiteboardToolbar: {
+      colorCode: "#000000" as string,
+      strokeWidth: 5 as number,
+      cursor: "crosshair" as string,
+      selectedPen: "FreeDrawing" as string,
+      eraserSelect: false,
+      eraserSize: 5,
     },
     lessonWhiteBoardData: {
       currentIndex: 0,
@@ -156,7 +156,6 @@ const ComponentLevelDataReducer = createSlice({
     openClosedScratchWhiteBoard: (state, action) => {
       state.isScratchOpenStatus = action.payload.status;
       state.scratchPdfsImages = action.payload.images || [];
-      
     },
     openClosedMathzoneWhiteBoard: (state, action) => {
       console.log(action.payload);
@@ -166,12 +165,12 @@ const ComponentLevelDataReducer = createSlice({
     openClosedUploadResourceWhiteBoard: (state, action) => {
       state.isUploadResourceOpen = true;
       state.uploadResourceImages = action.payload?.images || [];
-      state.uploadResourceImagesId=action.payload?.id
-      let key=`${UPLOADRESOURCE.uploadResourceWhiteboardData}${action.payload?.id}`
-      if(!state.allWhiteBoardRelatedData[key]){
-        state.allWhiteBoardRelatedData[key]=JSON.parse(
+      state.uploadResourceImagesId = action.payload?.id;
+      let key = `${UPLOADRESOURCE.uploadResourceWhiteboardData}${action.payload?.id}`;
+      if (!state.allWhiteBoardRelatedData[key]) {
+        state.allWhiteBoardRelatedData[key] = JSON.parse(
           JSON.stringify(defaultParameterWhiteBoard)
-        )
+        );
       }
     },
     resetWhiteBoardData: (state, action) => {
@@ -202,10 +201,18 @@ const ComponentLevelDataReducer = createSlice({
       const { payload } = action;
       state.ggbData.currentSelectedStudentId = payload;
     },
-    changeWhiteBoardToolBarValue:(state,action:PayloadAction<{key:string,value:string}>)=>{
-      const {payload}=action
-      state.allWhiteBoardRelatedData.whiteboardToolbar[payload.key]=payload.value
-    }
+    changeWhiteBoardToolBarValue: (
+      state,
+      action: PayloadAction<{ key: string; value: string }>
+    ) => {
+      const { payload } = action;
+      state.allWhiteBoardRelatedData.whiteboardToolbar[payload.key] =
+        payload.value;
+    },
+    toggleGraphWhiteboard: (state, action) => {
+      const { payload } = action;
+      state.openGraphWhiteboard = payload;
+    },
   },
 });
 export const {
@@ -224,6 +231,7 @@ export const {
   changeGGbMode,
   changeGgbStudent,
   closeUploadResourceWhiteboard,
-  changeWhiteBoardToolBarValue
+  changeWhiteBoardToolBarValue,
+  toggleGraphWhiteboard,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;
