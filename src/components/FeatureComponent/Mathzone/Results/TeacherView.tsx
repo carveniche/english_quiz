@@ -5,6 +5,10 @@ import { ViewStatusContext } from "../mathzone";
 import styles from "../component/OnlineQuiz.module.css";
 import { StudentResultMathZone } from "../../../../api";
 import ViewIncorrectQuestion from "./ViewIncorrectQuestion";
+import { MATHZONEDATAKEY } from "../../../../constants";
+import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
 export default function TeacherView({
   practiceId,
   conceptName,
@@ -12,6 +16,7 @@ export default function TeacherView({
   userId,
 }) {
   const [data, setData] = useState([]);
+  const { room } = useVideoContext();
   useEffect(() => {
     getStudentResult(practiceId, userId);
     handleCloseReviewResultStatus();
@@ -27,17 +32,66 @@ export default function TeacherView({
       console.log("error in api", e);
     }
   };
-  const [state, setState] = useState(false);
+  const {
+    currentSelectedRouter,
+    currentSelectedIndex,
+    currentSelectedKey,
+    activeTabArray,
+  } = useSelector((state: RootState) => state.activeTabReducer);
   const handleClose = () => {
+    let obj = {
+      openCurrentQuestion: false,
+      practiceId: "",
+      tutorId: "",
+      currentUserId: "",
+      mathzoneKeys: MATHZONEDATAKEY.viewIncorrectQuestion,
+    };
+    handleDataTrack({ data: obj }, "");
     handleCloseReviewResultStatus();
     setCurrentUserId("");
   };
+  const handleDataTrack = (data, identity) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+    let activeTabData = activeTabArray[currentSelectedIndex];
+    console.log(data);
+    let DataTrackObj = {
+      pathName: currentSelectedRouter,
+      key: currentSelectedKey,
+      value: {
+        type: MATHZONEDATAKEY.viewIncorrectQuestion,
+        identity: null,
+        data: data?.data || {},
+        activeTabData,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
   const handleOpenResponse = (id) => {
-    console.log(id);
     setCurrentUserId(id);
+    let obj = {
+      openCurrentQuestion: true,
+      practiceId: practiceId,
+      tutorId: userId,
+      currentUserId: id,
+      mathzoneKeys: MATHZONEDATAKEY.viewIncorrectQuestion,
+    };
+    handleDataTrack({ data: obj }, "");
     handleOpenReviewResultStatus();
   };
-
+  const handleDataTrackForPageChange = (currentIndex: number) => {
+    let obj = {
+      openCurrentQuestion: true,
+      practiceId: practiceId,
+      tutorId: userId,
+      currentUserId: currentUserId,
+      mathzoneKeys: MATHZONEDATAKEY.viewIncorrectQuestion,
+      currentIndex: currentIndex,
+    };
+    handleDataTrack({ data: obj }, "");
+  };
   const [currentUserId, setCurrentUserId] = useState("");
   const {
     handleCloseReviewResultStatus,
@@ -93,6 +147,8 @@ export default function TeacherView({
       id={currentUserId}
       user_id={userId}
       onClick={handleClose}
+      identity="tutor"
+      handleDataTrack={handleDataTrackForPageChange}
     />
   );
 }

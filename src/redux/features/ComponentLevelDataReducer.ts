@@ -213,6 +213,16 @@ const ComponentLevelDataReducer = createSlice({
       const { payload } = action;
       state.openGraphWhiteboard = payload;
     },
+    openCloseIncorrectMathzoneQuestion:(state,action)=>{
+      const {payload}=action
+      state.otherData[payload.mathzoneKeys]={
+        isOpenViewIncorrectResult:payload?.openCurrentQuestion||"",
+        tutorId:payload?.tutorId||"",
+        currentUserId:payload?.currentUserId||"",
+        practiceId:payload?.practiceId||"",
+        currentIndex:payload?.currentIndex||0
+      }
+    }
   },
 });
 export const {
@@ -233,5 +243,6 @@ export const {
   closeUploadResourceWhiteboard,
   changeWhiteBoardToolBarValue,
   toggleGraphWhiteboard,
+  openCloseIncorrectMathzoneQuestion
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

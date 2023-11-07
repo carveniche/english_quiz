@@ -12,6 +12,9 @@ export default function ViewIncorrectQuestion({
   practiceId,
   onClick,
   user_id,
+  identity,
+  handleDataTrack,
+  currentIndex = 0,
 }) {
   const [datas, setDatas] = useState([]);
 
@@ -53,7 +56,19 @@ export default function ViewIncorrectQuestion({
     questionDemount,
     totalReviewResult,
     setTotalQuestion,
+    handlePaginationRevieResult,
   } = useContext(ViewStatusContext);
+  useEffect(() => {
+    if (identity === "tutor" && currentQuestionReview > -1) {
+      handleDataTrack(currentQuestionReview);
+    }
+  }, [currentQuestionReview]);
+  useEffect(() => {
+    if (identity === "tutor") {
+      return;
+    }
+    handlePaginationRevieResult(currentIndex);
+  }, [currentIndex]);
   return (
     <div className={styles.resultReview}>
       <div style={{ clear: "both", float: "right" }}>

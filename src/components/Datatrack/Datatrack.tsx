@@ -43,6 +43,7 @@ import {
   flagQuestionDetailsStore,
   ggbDataTrack,
   homeWorkQuestionDataTrack,
+  openCloseIncorrectMathzoneQuestion,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
@@ -131,6 +132,12 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           openClosedMathzoneWhiteBoard(
             parseMessage.value.isMathZoneWhiteBoard || false
           )
+        );
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.viewIncorrectQuestion
+      ) {
+        dispatch(
+          openCloseIncorrectMathzoneQuestion(parseMessage.value?.data || {})
         );
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
