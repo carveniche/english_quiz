@@ -48,7 +48,6 @@ export const symbolCollection = () => {
   };
 };
 export default function replaceJsonData(data) {
-  console.log(data);
   let notIncluded = [
     "tenframes",
     "questiontextoptions",

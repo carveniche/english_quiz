@@ -50,6 +50,7 @@ export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
   mathzoneWhiteBoardData: "mathzoneWhiteBoardData",
   openClosedWhiteBoard: "openClosedWhiteBoard",
+  viewIncorrectQuestion:"viewIncorrectQuestion"
 };
 
 export const MAINWHITEBOARD = {
@@ -65,6 +66,7 @@ export const HOMEWORKQUESTIONKEY = {
 export const PREPOSTTESTKEY = {
   preTest: "pre_test",
   postTest: "post_test",
+  viewIncorrectQuestion:"viewIncorrectQuestion"
 };
 export const CICO = {
   path: "/cico",

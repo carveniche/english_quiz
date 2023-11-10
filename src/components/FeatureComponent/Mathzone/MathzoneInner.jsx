@@ -221,8 +221,14 @@ export default function MathzoneInner() {
             ) : (
               <StudentsTitle
                 isQuizCompleted={obj?.quiz_completed}
-                currentQuestion={obj?.question_no}
-                totalQuestion={obj?.total}
+                currentQuestion={
+                  obj?.quiz_completed
+                    ? currentQuestionReview + 1
+                    : obj?.question_no
+                }
+                totalQuestion={
+                  obj?.quiz_completed ? totalReviewResult : obj?.total
+                }
                 obj={obj}
               />
             )}

@@ -12,6 +12,9 @@ export default function ViewIncorrectQuestion({
   practiceId,
   onClick,
   user_id,
+  identity,
+  handleDataTrack,
+  currentIndex = 0,
 }) {
   const [datas, setDatas] = useState([]);
 
@@ -53,27 +56,41 @@ export default function ViewIncorrectQuestion({
     questionDemount,
     totalReviewResult,
     setTotalQuestion,
+    handlePaginationRevieResult,
   } = useContext(ViewStatusContext);
+  useEffect(() => {
+    if (identity === "tutor" && currentQuestionReview > -1) {
+      handleDataTrack(currentQuestionReview);
+    }
+  }, [currentQuestionReview]);
+  useEffect(() => {
+    if (identity === "tutor") {
+      return;
+    }
+    handlePaginationRevieResult(currentIndex);
+  }, [currentIndex]);
   return (
     <div className={styles.resultReview}>
-      <div style={{ clear: "both", float: "right" }}>
-        <button
-          className={styles.NextButton2}
-          onClick={onClick}
-          style={{
-            marginTop: "0.4rem",
-            marginRight: "0.4rem",
-            minHeight: "24px",
-            height: "24px",
-            background: "none",
-            color: "black",
-            float: "right",
-            "&:hover": { background: "darkred" },
-          }}
-        >
-          X
-        </button>
-      </div>
+      {identity === "tutor" && (
+        <div style={{ clear: "both", float: "right" }}>
+          <button
+            className={styles.NextButton2}
+            onClick={onClick}
+            style={{
+              marginTop: "0.4rem",
+              marginRight: "0.4rem",
+              minHeight: "24px",
+              height: "24px",
+              background: "none",
+              color: "black",
+              float: "right",
+              "&:hover": { background: "darkred" },
+            }}
+          >
+            X
+          </button>
+        </div>
+      )}
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (

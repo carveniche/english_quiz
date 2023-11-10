@@ -30,6 +30,7 @@ import {
   GGB,
   HOMEWORKQUESTIONKEY,
   MATHZONEDATAKEY,
+  PREPOSTTESTKEY,
   ROUTERKEYCONST,
   UPLOADRESOURCE,
   WHITEBOARD,
@@ -43,6 +44,8 @@ import {
   flagQuestionDetailsStore,
   ggbDataTrack,
   homeWorkQuestionDataTrack,
+  openCloseIncorrectMathzoneQuestion,
+  openCloseIncorrectPrePostQuestion,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
@@ -132,6 +135,19 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             parseMessage.value.isMathZoneWhiteBoard || false
           )
         );
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.viewIncorrectQuestion ||
+        parseMessage?.value?.type === PREPOSTTESTKEY.viewIncorrectQuestion
+      ) {
+        if (parseMessage.value?.data?.fromPrePostTest) {
+          dispatch(
+            openCloseIncorrectPrePostQuestion(parseMessage.value?.data || {})
+          );
+        } else {
+          dispatch(
+            openCloseIncorrectMathzoneQuestion(parseMessage.value?.data || {})
+          );
+        }
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
