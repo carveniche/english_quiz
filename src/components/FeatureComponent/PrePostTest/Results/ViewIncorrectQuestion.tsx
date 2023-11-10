@@ -14,6 +14,9 @@ interface ViewIncorrectQuestionParams {
   user_id: number | string;
   exerciseId: string | number;
   prepostId: string | number;
+  identity: string;
+  currentIndex: number;
+  handleDataTrack: Function;
 }
 interface ViewIncorrectViewStatusContextParams {
   updateTotalQuestionReview: Function;
@@ -29,6 +32,9 @@ export default function ViewIncorrectQuestion({
   user_id,
   exerciseId,
   prepostId,
+  identity,
+  currentIndex,
+  handleDataTrack,
 }: ViewIncorrectQuestionParams) {
   console.log(exerciseId);
   const [datas, setDatas] = useState([]);
@@ -78,28 +84,43 @@ export default function ViewIncorrectQuestion({
     questionDemount,
     totalReviewResult,
     setTotalQuestion,
+    handlePaginationRevieResult,
   } = useContext(ViewStatusContext);
+  useEffect(() => {
+    if (identity === "tutor" && currentQuestionReview > -1) {
+      typeof handleDataTrack === "function" &&
+        handleDataTrack(currentQuestionReview);
+    }
+  }, [currentQuestionReview]);
+  useEffect(() => {
+    if (identity === "tutor") {
+      return;
+    }
+    handlePaginationRevieResult(currentIndex);
+  }, [currentIndex]);
   return (
     <div className={styles.resultReview}>
-      <div style={{ clear: "both" }}>
-        {" "}
-        <button
-          className={styles.NextButton2}
-          onClick={() => onClick()}
-          style={{
-            marginTop: "0.4rem",
-            marginRight: "0.4rem",
-            minHeight: "24px",
-            height: "24px",
-            background: "none",
-            color: "black",
-            float: "right",
-            "&:hover": { background: "darkred" },
-          }}
-        >
-          X
-        </button>
-      </div>
+      {identity === "tutor" && (
+        <div style={{ clear: "both" }}>
+          {" "}
+          <button
+            className={styles.NextButton2}
+            onClick={() => onClick()}
+            style={{
+              marginTop: "0.4rem",
+              marginRight: "0.4rem",
+              minHeight: "24px",
+              height: "24px",
+              background: "none",
+              color: "black",
+              float: "right",
+              "&:hover": { background: "darkred" },
+            }}
+          >
+            X
+          </button>
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -126,7 +147,7 @@ export default function ViewIncorrectQuestion({
                   ) {
                     let type1 = datas[currentQuestionReview]?.question_data;
                     if (Array.isArray(type1)) {
-                      count = type1[1]?.time_spent;
+                      count = type1[1]?.time_spent || 0;
                     }
                   }
                   let mm = Math.floor(count / 60);

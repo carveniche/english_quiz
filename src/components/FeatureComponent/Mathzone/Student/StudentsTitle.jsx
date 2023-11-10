@@ -29,12 +29,18 @@ export default function StudentsTitle({
       </div>
       {isPrepostTest ? (
         <>
-          <div
-            onClick={() => onClick()}
-            className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2"
-          >
-            Skip
-          </div>
+          {isQuizCompleted ? (
+            <div className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2 invisible">
+              Skip
+            </div>
+          ) : (
+            <div
+              onClick={() => onClick()}
+              className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2"
+            >
+              Skip
+            </div>
+          )}
         </>
       ) : (
         <div style={{ minWidth: 10, visibility: "hidden" }}>dddd</div>

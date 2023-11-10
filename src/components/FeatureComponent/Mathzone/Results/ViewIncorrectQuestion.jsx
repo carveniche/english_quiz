@@ -71,24 +71,26 @@ export default function ViewIncorrectQuestion({
   }, [currentIndex]);
   return (
     <div className={styles.resultReview}>
-      <div style={{ clear: "both", float: "right" }}>
-        <button
-          className={styles.NextButton2}
-          onClick={onClick}
-          style={{
-            marginTop: "0.4rem",
-            marginRight: "0.4rem",
-            minHeight: "24px",
-            height: "24px",
-            background: "none",
-            color: "black",
-            float: "right",
-            "&:hover": { background: "darkred" },
-          }}
-        >
-          X
-        </button>
-      </div>
+      {identity === "tutor" && (
+        <div style={{ clear: "both", float: "right" }}>
+          <button
+            className={styles.NextButton2}
+            onClick={onClick}
+            style={{
+              marginTop: "0.4rem",
+              marginRight: "0.4rem",
+              minHeight: "24px",
+              height: "24px",
+              background: "none",
+              color: "black",
+              float: "right",
+              "&:hover": { background: "darkred" },
+            }}
+          >
+            X
+          </button>
+        </div>
+      )}
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (

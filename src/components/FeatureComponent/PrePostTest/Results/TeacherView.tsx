@@ -4,6 +4,12 @@ import styled from "styled-components";
 import { ViewStatusContext } from "../../Mathzone/mathzone";
 import styles from "../../Mathzone/component/OnlineQuiz.module.css";
 import ViewIncorrectQuestion from "./ViewIncorrectQuestion";
+import { PREPOSTTESTKEY } from "../../../../constants";
+import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
+import { RootState } from "../../../../redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { openCloseIncorrectPrePostQuestion } from "../../../../redux/features/ComponentLevelDataReducer";
 export default function TeacherView({
   practiceId,
   conceptName,
@@ -16,17 +22,67 @@ export default function TeacherView({
   useEffect(() => {
     handleCloseReviewResultStatus();
   }, []);
+  const { room } = useVideoContext();
   const [exerciseId, setExcerciseId] = useState("");
+  const {
+    currentSelectedRouter,
+    currentSelectedIndex,
+    currentSelectedKey,
+    activeTabArray,
+  } = useSelector((state: RootState) => state.activeTabReducer);
+  const { otherData } = useSelector(
+    (state: RootState) => state.ComponentLevelDataReducer
+  );
+  const viewResultData = otherData[PREPOSTTESTKEY.viewIncorrectQuestion] || {};
   const handleClose = () => {
     handleCloseReviewResultStatus();
     setCurrentUserId("");
+    let obj = {
+      openCurrentQuestion: false,
+      exerciseId: "",
+      tutorId: "",
+      currentUserId: "",
+      prePostTestId: "",
+      mathzoneKeys: PREPOSTTESTKEY.viewIncorrectQuestion,
+      fromPrePostTest: true,
+    };
+    handleDataTrack({ data: obj }, "");
+  };
+  const handleDataTrack = (data, identity) => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+    let activeTabData = activeTabArray[currentSelectedIndex];
+    let DataTrackObj = {
+      pathName: currentSelectedRouter,
+      key: currentSelectedKey,
+      value: {
+        type: PREPOSTTESTKEY.viewIncorrectQuestion,
+        identity: null,
+        data: data?.data || {},
+        activeTabData,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
   const handleOpenResponse = (id: string) => {
     if (identity == "tutor") {
       setExcerciseId(id);
       handleOpenReviewResultStatus(student);
+      let obj = {
+        openCurrentQuestion: true,
+        exerciseId: id,
+        tutorId: userId,
+        currentUserId: student?.id,
+        prePostTestId: lastData?.pre_post_test_id || "",
+        mathzoneKeys: PREPOSTTESTKEY.viewIncorrectQuestion,
+        fromPrePostTest: true,
+      };
+      handleDataTrack({ data: obj }, "");
     }
   };
+  const dispatch = useDispatch();
   const [lastData, setLastData] = useState({});
   const [currentUserId, setCurrentUserId] = useState("");
   const {
@@ -37,9 +93,46 @@ export default function TeacherView({
   useEffect(() => {
     filterReportData();
   }, []);
+
+  useEffect(() => {
+    if (identity === "tutor") return;
+    if (viewResultData?.isOpenViewIncorrectResult)
+      handleOpenReviewResultStatus();
+    else {
+      handleCloseReviewResultStatus();
+    }
+  }, [viewResultData?.isOpenViewIncorrectResult]);
   const filterReportData = () => {
     if (reportsData.length) setLastData(reportsData[reportsData.length - 1]);
   };
+  const handleDataTrackForPageChange = (currentIndex: number) => {
+    let obj = {
+      openCurrentQuestion: true,
+      exerciseId: viewResultData?.exerciseId,
+      tutorId: userId,
+      currentUserId: student?.id,
+      prePostTestId: lastData?.pre_post_test_id || "",
+      mathzoneKeys: PREPOSTTESTKEY.viewIncorrectQuestion,
+      fromPrePostTest: true,
+      currentIndex,
+    };
+    handleDataTrack({ data: obj }, "");
+  };
+  useEffect(() => {
+    return () => {
+      let obj = {
+        openCurrentQuestion: false,
+        exerciseId: "",
+        tutorId: "",
+        currentUserId: "",
+        prePostTestId: "",
+        mathzoneKeys: PREPOSTTESTKEY.viewIncorrectQuestion,
+        fromPrePostTest: true,
+      };
+      if (identity !== "tutor")
+        dispatch(openCloseIncorrectPrePostQuestion(obj));
+    };
+  }, []);
   return !reviewResultStatus ? (
     <div>
       <div className={styles.title2}>
@@ -152,7 +245,7 @@ export default function TeacherView({
                     }}
                     onClick={() => handleOpenResponse(item.id)}
                   >
-                    View
+                    {identity === "tutor" ? "View" : ""}
                   </div>
                 ) : (
                   <div
@@ -167,13 +260,29 @@ export default function TeacherView({
         )}
       </Grid>
     </div>
-  ) : (
+  ) : identity === "tutor" ? (
     <ViewIncorrectQuestion
       studentId={student?.id || ""}
       user_id={userId}
       onClick={handleClose}
       exerciseId={exerciseId}
       prepostId={lastData?.pre_post_test_id || ""}
+      identity={"tutor"}
+      currentIndex={0}
+      handleDataTrack={handleDataTrackForPageChange}
+    />
+  ) : (
+    <ViewIncorrectQuestion
+      studentId={viewResultData?.currentUserId || ""}
+      user_id={viewResultData?.tutorId || ""}
+      onClick={() => {}}
+      exerciseId={viewResultData?.exerciseId || ""}
+      prepostId={viewResultData?.prePostTestId || ""}
+      identity={"student"}
+      currentIndex={viewResultData?.currentIndex || 0}
+      handleDataTrack={() => {
+        null;
+      }}
     />
   );
 }

@@ -30,6 +30,7 @@ import {
   GGB,
   HOMEWORKQUESTIONKEY,
   MATHZONEDATAKEY,
+  PREPOSTTESTKEY,
   ROUTERKEYCONST,
   UPLOADRESOURCE,
   WHITEBOARD,
@@ -44,6 +45,7 @@ import {
   ggbDataTrack,
   homeWorkQuestionDataTrack,
   openCloseIncorrectMathzoneQuestion,
+  openCloseIncorrectPrePostQuestion,
   openClosedMathzoneWhiteBoard,
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
@@ -134,11 +136,18 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           )
         );
       } else if (
-        parseMessage?.value?.type === MATHZONEDATAKEY.viewIncorrectQuestion
+        parseMessage?.value?.type === MATHZONEDATAKEY.viewIncorrectQuestion ||
+        parseMessage?.value?.type === PREPOSTTESTKEY.viewIncorrectQuestion
       ) {
-        dispatch(
-          openCloseIncorrectMathzoneQuestion(parseMessage.value?.data || {})
-        );
+        if (parseMessage.value?.data?.fromPrePostTest) {
+          dispatch(
+            openCloseIncorrectPrePostQuestion(parseMessage.value?.data || {})
+          );
+        } else {
+          dispatch(
+            openCloseIncorrectMathzoneQuestion(parseMessage.value?.data || {})
+          );
+        }
       } else if (
         parseMessage?.value?.type === FLAGGEDQUESTIONKEY.flaggedQuestionMenu
       ) {
