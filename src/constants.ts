@@ -123,5 +123,5 @@ export const IFRAMENEWCODING = {
   icon: "/menu-icon/CodingIcon.svg",
 };
 
-export const SCREENRECORDING = false;
-export const SHOWFLOATINGPARTICIPANT = false;
+export const SCREENRECORDING = true;
+export const SHOWFLOATINGPARTICIPANT = true;
