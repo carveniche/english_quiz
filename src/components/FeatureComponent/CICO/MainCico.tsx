@@ -105,8 +105,10 @@ function Cico() {
             msg: data?.message || "No activity assigned To this batch",
           });
         }
+        setLoading(false);
       } catch (e) {
         setApiData({ msg: "No activity assigned To this batch" });
+        setLoading(false);
       }
     } else {
       let { data } = await fetchCheckOutData(
@@ -121,6 +123,7 @@ function Cico() {
           msg: data?.message || "No activity assigned To this batch",
         });
       }
+      setLoading(false);
       setTimeout(() => {
         handleDataTrack({ key: CICO.checkOut, data: { apiData: data } });
       }, 1000);
@@ -130,6 +133,7 @@ function Cico() {
     if (otherData?.apiData?.status) {
       setApiData(otherData?.apiData || {});
     }
+    setLoading(false);
   };
   useEffect(() => {
     if (allExcludedParticipants.includes(identity ?? "")) {
@@ -141,120 +145,134 @@ function Cico() {
     if (allExcludedParticipants.includes(identity ?? "")) {
       return;
     }
-    updateStudentData();
+    if (cico_type === CICO.checkIn) updateStudentData();
   }, [cico_type, otherData?.apiData?.status]);
+  useEffect(() => {
+    if (allExcludedParticipants.includes(identity ?? "")) {
+      return;
+    }
+    if (cico_type === CICO.checkOut) updateStudentData();
+  }, [
+    cico_type,
+    otherData?.apiData?.status,
+    otherData?.apiData?.hasOwnProperty("student_activity_data"),
+  ]);
   return (
     <>
-      <div
-        className={`${styles.mainPage} h-full w-full m-0`}
-        style={{ margin: 0, padding: 0, width: "100%" }}
-        key={cico_type}
-      >
+      {loading ? (
+        <h1>Loading....</h1>
+      ) : (
         <div
-          style={{
-            width: "100%",
-            padding: 0,
-            margin: 0,
-            height: "fit-content",
-          }}
-          ref={heightRef}
-        ></div>
-        <QuizPageLayout key={"1"} height={currentHeight}>
+          className={`${styles.mainPage} h-full w-full m-0`}
+          style={{ margin: 0, padding: 0, width: "100%" }}
+          key={cico_type}
+        >
           <div
             style={{
-              position: "relative",
-              margin: "0 auto",
-              width: "calc(100% - 100px)",
-              maxHeight: `calc(100% - ${true ? 0 : 18}px)`,
-              minHeight: `calc(100% - ${true ? 0 : 18}px)`,
+              width: "100%",
+              padding: 0,
+              margin: 0,
+              height: "fit-content",
             }}
-          >
-            {apiData?.name === "Affirmation" ? (
-              <div
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "indigo",
-                }}
-              >
-                CICO:&nbsp;&nbsp; Self-Affirmation
-              </div>
-            ) : apiData?.name === "Feeling" ? (
-              <div
-                style={{
-                  marginTop: "0.4rem",
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "indigo",
-                }}
-              >
-                CICO:&nbsp;&nbsp; Feeling-Chart
-              </div>
-            ) : apiData?.name === "Shape" ? (
-              <div
-                style={{
-                  marginTop: "0.4rem",
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "indigo",
-                }}
-              >
-                CICO:&nbsp;&nbsp; Shape-Challenge
-              </div>
-            ) : (
-              ""
-            )}
-            <QuizWhitePage
-              key={apiData?.activity_id}
-              style={
-                apiData?.name === "Shape"
-                  ? {
-                      clear: "both",
-                      width: "100%",
-                      minHeight: "100%",
-                      maxHeight: "100%",
-                      height: "100%",
-                    }
-                  : ""
-              }
+            ref={heightRef}
+          ></div>
+          <QuizPageLayout key={"1"} height={currentHeight}>
+            <div
+              style={{
+                position: "relative",
+                margin: "0 auto",
+                width: "calc(100% - 100px)",
+                maxHeight: `calc(100% - ${true ? 0 : 18}px)`,
+                minHeight: `calc(100% - ${true ? 0 : 18}px)`,
+              }}
             >
               {apiData?.name === "Affirmation" ? (
-                <Affirmation
-                  apiData={apiData}
-                  identity={identity}
-                  userId={userId}
-                  liveClassID={liveClassId}
-                  students={students}
-                  activityType={cico_type}
-                  handleDataTrack={handleDataTrack}
-                />
+                <div
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "indigo",
+                  }}
+                >
+                  CICO:&nbsp;&nbsp; Self-Affirmation
+                </div>
               ) : apiData?.name === "Feeling" ? (
-                <FeelingChart
-                  identity={identity}
-                  apiData={apiData}
-                  userId={userId}
-                  liveClassId={liveClassId}
-                  students={students}
-                  activityType={cico_type}
-                  handleDataTrack={handleDataTrack}
-                />
+                <div
+                  style={{
+                    marginTop: "0.4rem",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "indigo",
+                  }}
+                >
+                  CICO:&nbsp;&nbsp; Feeling-Chart
+                </div>
               ) : apiData?.name === "Shape" ? (
-                <MainShapeChallenge
-                  identity={identity}
-                  apiData={apiData}
-                  userId={userId}
-                  liveClassId={liveClassId}
-                  students={students}
-                  activityType={cico_type}
-                  handleDataTrack={handleDataTrack}
-                />
+                <div
+                  style={{
+                    marginTop: "0.4rem",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "indigo",
+                  }}
+                >
+                  CICO:&nbsp;&nbsp; Shape-Challenge
+                </div>
               ) : (
-                <h3>{apiData?.msg || ""}</h3>
+                ""
               )}
-            </QuizWhitePage>
-          </div>
-        </QuizPageLayout>
-      </div>
+              <QuizWhitePage
+                key={apiData?.activity_id}
+                style={
+                  apiData?.name === "Shape"
+                    ? {
+                        clear: "both",
+                        width: "100%",
+                        minHeight: "100%",
+                        maxHeight: "100%",
+                        height: "100%",
+                      }
+                    : ""
+                }
+              >
+                {apiData?.name === "Affirmation" ? (
+                  <Affirmation
+                    apiData={apiData}
+                    identity={identity}
+                    userId={userId}
+                    liveClassID={liveClassId}
+                    students={students}
+                    activityType={cico_type}
+                    handleDataTrack={handleDataTrack}
+                  />
+                ) : apiData?.name === "Feeling" ? (
+                  <FeelingChart
+                    identity={identity}
+                    apiData={apiData}
+                    userId={userId}
+                    liveClassId={liveClassId}
+                    students={students}
+                    activityType={cico_type}
+                    handleDataTrack={handleDataTrack}
+                  />
+                ) : apiData?.name === "Shape" ? (
+                  <MainShapeChallenge
+                    identity={identity}
+                    apiData={apiData}
+                    userId={userId}
+                    liveClassId={liveClassId}
+                    students={students}
+                    activityType={cico_type}
+                    handleDataTrack={handleDataTrack}
+                  />
+                ) : (
+                  <h3>{apiData?.msg || ""}</h3>
+                )}
+              </QuizWhitePage>
+            </div>
+          </QuizPageLayout>
+        </div>
+      )}
     </>
   );
 }

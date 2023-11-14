@@ -850,7 +850,7 @@ export default function Affirmation({
       clearTimeout(id);
     };
   }, [otherData?.showCheckOutAnimation]);
-  console.log(liveClassID);
+
   return (
     <>
       {otherData?.showCheckInAnimation && (

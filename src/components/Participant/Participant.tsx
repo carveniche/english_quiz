@@ -2,7 +2,7 @@ import React from "react";
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 import { Participant as IParticipant } from "twilio-video";
 import ParticipantInfo from "../ParticipantInfo/ParticipantInfo";
-import { allExcludedParticipant } from "../../utils/participantIdentity";
+import { allExcludedParticipants } from "../../utils/excludeParticipant";
 
 interface ParticipantProps {
   participant: IParticipant;
@@ -26,7 +26,7 @@ export function Participant({
   fromScreen,
   remoteParticipantIdentity,
 }: ParticipantProps) {
-  let isStudent = !allExcludedParticipant({ identity: participant.identity });
+  let isStudent = !allExcludedParticipants.includes(participant.identity);
   return (
     <ParticipantInfo
       participant={participant}

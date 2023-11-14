@@ -24,8 +24,8 @@ export default function StudentsTitle({
 
       <div>
         {extraParams?.conceptName} - {extraParams?.tagName}{" "}
-        {isPrepostTest ? "" : "Level-"}
-        {isPrepostTest ? "" : extraParams?.level}
+        {isPrepostTest ? "" : "(Level "}
+        {isPrepostTest ? "" : `${extraParams?.level})`}
       </div>
       {isPrepostTest ? (
         <>

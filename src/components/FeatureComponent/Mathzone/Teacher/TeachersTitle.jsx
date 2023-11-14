@@ -43,8 +43,8 @@ export default function TeachersTitle({
       </div>
 
       <div className={styles.mathzoneTitle}>
-        {extraParams?.conceptName} - {extraParams?.tagName} Level-
-        {extraParams?.level}
+        {extraParams?.conceptName} - {extraParams?.tagName} (Level&nbsp;
+        {extraParams?.level})
       </div>
       {!isQuizCompleted ? (
         <div className="flex items-center justify-center gap-x-4">
