@@ -214,20 +214,20 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
                     <p className="text-speedMathTextColor font-semibold text-lg text-center">
                       {item.learning_outcome}
                     </p>
-                  </div>
-                  <div className="flex flex-row gap-4 flex-wrap">
-                    {item.project_type === "scratch"
-                      ? showScratchProject(
-                          item,
-                          item.coding_learning_outcome_id
-                        )
-                      : item.project_type === "python"
-                      ? showPythonProject(
-                          item,
-                          item.coding_activity_id,
-                          item.coding_learning_outcome_id
-                        )
-                      : showThukableProject()}
+                    <div className="flex flex-row gap-4 flex-wrap">
+                      {item.project_type === "scratch"
+                        ? showScratchProject(
+                            item,
+                            item.coding_learning_outcome_id
+                          )
+                        : item.project_type === "python"
+                        ? showPythonProject(
+                            item,
+                            item.coding_activity_id,
+                            item.coding_learning_outcome_id
+                          )
+                        : showThukableProject()}
+                    </div>
                   </div>
                 </div>
               </div>

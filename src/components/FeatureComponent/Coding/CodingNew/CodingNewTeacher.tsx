@@ -320,7 +320,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded">
+    <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded overflow-auto">
       {newCodingData.length === 0 && (
         <div>
           <p className="text-black font-semibold text-2xl">
