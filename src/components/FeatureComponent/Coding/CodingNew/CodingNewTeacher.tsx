@@ -10,7 +10,7 @@ import {
   showScratchTeacher,
   storeCodingLogNewCurriculam,
 } from "../../../../api";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
 import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../../../constants";
@@ -128,11 +128,11 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
-          className={`flex w-full h-[80%] justify-center items-center border border-gray-200 rounded-full ${
+          className={`border border-gray-200 rounded-full ${
             item.status === "active" || item.status === "In progress"
               ? activeProjectBgCss
               : unactiveProjectBgCss
-          }`}
+          } p-1`}
           key={`scratch-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
@@ -185,11 +185,11 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
-          className={`flex w-full h-[80%] justify-center items-center border border-gray-200 rounded-full ${
+          className={`border border-gray-200 rounded-full ${
             item.status === "active" || item.status === "In progress"
               ? activeProjectBgCss
               : unactiveProjectBgCss
-          }`}
+          } p-1`}
           key={`python-${index}`}
         >
           {item.status === "active" || item.status === "In progress" ? (
@@ -320,7 +320,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded">
+    <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded overflow-auto">
       {newCodingData.length === 0 && (
         <div>
           <p className="text-black font-semibold text-2xl">
@@ -332,101 +332,90 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
       {newCodingData.length > 0 &&
         newCodingData.map((item: newCodingData, index) => {
           return (
-            <div
-              className="flex w-[98%] h-[38%] justify-center items-center border border-gray-300 p-1 rounded"
-              key={index}
-            >
-              <div className="flex w-[10%] h-full justify-center items-center">
-                <div className="flex w-16 h-16 justify-center items-center bg-white border rounded-full">
-                  <p className="text-speedMathTextColor font-semibold text-2xl">
-                    {item.day}
-                  </p>
-                </div>
-              </div>
-              <div className="flex w-[10%] h-full justify-center items-center">
-                {item.today_class && (
-                  <img className="flex w-[50%] h-[50%]" src={todayClassFlag} />
-                )}
-              </div>
-              <div className="flex w-[10%] h-full justify-center items-center">
-                <a
-                  onClick={() => openScratchLesson(item.lesson_data.pdfs)}
-                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
+            <React.Fragment key={index}>
+              <div className="coding-content-inner relative mt-2">
+                <div
+                  className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
+                "
+                  style={{
+                    borderRadius: "50%",
+                    boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
+                    fontSize: 18,
+                  }}
                 >
-                  <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.lesson_data.length > 0 &&
-                    item.lesson_data.pdfs.length > 0
-                      ? "View Lesson"
-                      : "No Lesson"}
-                  </p>
-                </a>
-              </div>
-              <div className="flex flex-col w-[20%] h-full justify-center items-center gap-1 ">
-                <div className="flex w-full  justify-center items-center flex-wrap ">
-                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
-                    {item.class_title}
-                  </p>
+                  Day-{item?.day}
                 </div>
-                <div className="flex w-full  justify-center items-center flex-wrap ">
-                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
-                    {item.learning_outcome}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col w-[25%] h-full justify-center items-center ml-[2.5%] mr-[2.5%]">
-                <div className="flex w-full h-[50%] justify-center items-center">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
-                    Student Project
-                  </p>
-                </div>
-                <div className="flex w-full h-[50%] justify-center items-center">
-                  {item.project_type === "scratch" ? (
-                    <div className="flex flex-row w-full h-full justify-between items-center gap-2">
-                      {showScratchProject(
-                        item,
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : item.project_type === "python" ? (
-                    <div className="flex flex-row w-full h-full justify-between items-center gap-2">
-                      {showPythonProject(
-                        item,
-                        item.coding_activity_id,
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col w-[20%] h-full justify-center items-center">
-                <div className="flex w-full h-[50%] justify-center items-center">
-                  <p className="text-speedMathTextColor font-semibold text-lg text-center">
-                    Teacher Project
-                  </p>
-                </div>
-                <div className="flex w-full h-[50%] justify-center items-center">
-                  {item.project_type === "scratch" ? (
-                    <div className="flex flex-row w-full h-full justify-center items-center">
-                      {showScratchProjectTeacher(
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : item.project_type === "python" ? (
-                    <div className="flex flex-row w-full h-full justify-center items-center">
-                      {showPythonProjectTeacher(
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex flex-row w-full h-full justify-center items-center ">
-                      {showThukableProjectTeacher()}
+                <div className="flex flex-col">
+                  {item.today_class && (
+                    <div>
+                      <img style={{ maxHeight: 40 }} src={todayClassFlag} />
                     </div>
                   )}
+
+                  <div className="flex flex-row justify-between">
+                    <h4 className="coding-heading-title">{item.class_title}</h4>
+                    <div title="Teacher Project">
+                      {item.project_type === "scratch" ? (
+                        <>
+                          {showScratchProjectTeacher(
+                            item.coding_learning_outcome_id
+                          )}
+                        </>
+                      ) : item.project_type === "python" ? (
+                        <>
+                          {showPythonProjectTeacher(
+                            item.coding_learning_outcome_id
+                          )}
+                        </>
+                      ) : (
+                        <>{showThukableProjectTeacher()}</>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-between mt-2">
+                    <p className="text-speedMathTextColor font-semibold text-lg text-center">
+                      {item.learning_outcome}
+                    </p>
+                    <div className="flex flex-row gap-4 flex-wrap">
+                      <div title="Student Project">
+                        {item.project_type === "scratch"
+                          ? showScratchProject(
+                              item,
+                              item.coding_learning_outcome_id
+                            )
+                          : item.project_type === "python"
+                          ? showPythonProject(
+                              item,
+                              item.coding_activity_id,
+                              item.coding_learning_outcome_id
+                            )
+                          : ""}
+                      </div>
+                      <div>
+                        {item.lesson_data.length > 0 &&
+                          item.lesson_data.pdfs.length > 0 && (
+                            <div>
+                              <a
+                                onClick={() =>
+                                  openScratchLesson(item.lesson_data.pdfs)
+                                }
+                                className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                              >
+                                <p className="text-speedMathTextColor font-semibold text-lg">
+                                  {item.lesson_data.length > 0 &&
+                                  item.lesson_data.pdfs.length > 0
+                                    ? "View Lesson"
+                                    : "No Lesson"}
+                                </p>
+                              </a>
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </React.Fragment>
           );
         })}
     </div>

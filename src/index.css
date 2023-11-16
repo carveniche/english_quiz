@@ -63,3 +63,17 @@ svg {
 .closebuttonclass:hover {
   background-image: url("/menu-icon/WhiteCloseIcon.svg");
 }
+
+.coding-content-inner {
+  border-bottom: 10px solid #82e4e4;
+  border-radius: 0px 0px 8px 8px;
+  background-color: white;
+  padding: 22px;
+  width: 100%;
+}
+.coding-heading-title {
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 17px;
+  color: #444444;
+}
