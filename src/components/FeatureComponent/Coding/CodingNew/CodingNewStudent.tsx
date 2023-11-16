@@ -2,7 +2,7 @@ import ScratchLogo from "./assets/images/Scratchlogo.png";
 import PythonLogo from "./assets/images/PythonImage.png";
 import ThunkableLogo from "./assets/images/ThunkableLogo.png";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { RootState } from "../../../../redux/store";
 import { useSelector } from "react-redux";
@@ -193,55 +193,45 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
       {newCodingData.length > 0 &&
         newCodingData.map((item: newCodingData, index) => {
           return (
-            <div
-              className="flex w-[98%] h-[28%] justify-center items-center border border-gray-300 p-1 rounded"
-              key={index}
-            >
-              <div className="flex w-[10%] h-full justify-center items-center">
-                <div className="flex w-16 h-16 justify-center items-center bg-white border rounded-full">
-                  <p className="text-speedMathTextColor font-semibold text-2xl">
-                    {item.day}
-                  </p>
+            <React.Fragment key={index}>
+              <div className="coding-content-inner relative mt-2">
+                <div
+                  className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
+                "
+                  style={{
+                    borderRadius: "50%",
+                    boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
+                    fontSize: 18,
+                  }}
+                >
+                  Day-{item?.day}
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex flex-row justify-between">
+                    <h4 className="coding-heading-title">{item.class_title}</h4>
+                  </div>
+                  <div className="flex flex-row justify-between mt-2">
+                    <p className="text-speedMathTextColor font-semibold text-lg text-center">
+                      {item.learning_outcome}
+                    </p>
+                  </div>
+                  <div className="flex flex-row gap-4 flex-wrap">
+                    {item.project_type === "scratch"
+                      ? showScratchProject(
+                          item,
+                          item.coding_learning_outcome_id
+                        )
+                      : item.project_type === "python"
+                      ? showPythonProject(
+                          item,
+                          item.coding_activity_id,
+                          item.coding_learning_outcome_id
+                        )
+                      : showThukableProject()}
+                  </div>
                 </div>
               </div>
-
-              <div className="flex flex-col w-[70%] h-full justify-center items-center ">
-                <div className="flex w-full h-[50%] justify-center items-center flex-wrap overflow-auto ">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.class_title}
-                  </p>
-                </div>
-                <div className="flex w-full h-[50%] justify-center items-center flex-wrap overflow-auto">
-                  <p className="text-speedMathTextColor font-semibold text-lg">
-                    {item.learning_outcome}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col w-[20%] h-full justify-center items-center">
-                <div className="flex w-full h-[100%] justify-center items-center">
-                  {item.project_type === "scratch" ? (
-                    <div className="flex flex-row w-full h-full justify-center items-center">
-                      {showScratchProject(
-                        item,
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : item.project_type === "python" ? (
-                    <div className="flex flex-row w-full h-full justify-center items-center">
-                      {showPythonProject(
-                        item,
-                        item.coding_activity_id,
-                        item.coding_learning_outcome_id
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex flex-row w-full h-full justify-center items-center ">
-                      {showThukableProject()}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            </React.Fragment>
           );
         })}
     </div>
