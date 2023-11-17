@@ -52,7 +52,7 @@ export default function MathzoneWhiteBoard({
   return (
     <div
       style={{
-        position: "absolute",
+        position: "relative",
         zIndex: 1,
         left: 0,
         width: isMathZoneWhiteBoard ? "100%" : "fit-content",
@@ -60,11 +60,20 @@ export default function MathzoneWhiteBoard({
         justifyContent: "center",
         alignItems: "center",
         minWidth: 60,
-        height: "calc(100% + 40px)",
-        top: -40,
+        height: "calc(100% + 30px)",
+        top: -30,
       }}
     >
-      <div style={{ width: 60, display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          width: 60,
+          display: "flex",
+          justifyContent: "center",
+          minWidth: 60,
+          position: "absolute",
+          left: -50,
+        }}
+      >
         {isTutorTechBoth({
           identity: `${room?.localParticipant.identity}`,
         }) && (
@@ -93,7 +102,7 @@ export default function MathzoneWhiteBoard({
         <div
           className=""
           style={{
-            width: "calc(100% - 60px)",
+            width: "calc(100%) ",
             position: "relative",
             height: "calc(100%)",
           }}

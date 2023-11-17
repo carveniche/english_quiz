@@ -29,7 +29,7 @@ export default function StudentsTitle({
       </div>
       {isPrepostTest ? (
         <>
-          {isQuizCompleted ? (
+          {isQuizCompleted || obj?.questions_from === "skipped" ? (
             <div className="cursor-pointer h-7 flex justify-center items-center py-1 px-3 border-black rounded-2xl bg-white border-black border-solid border-2 invisible">
               Skip
             </div>

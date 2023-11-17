@@ -215,12 +215,6 @@ export default function DisplayHomeWorkQuestion({
           identity={identity}
           height={0}
         >
-          <MathzoneWhiteBoard
-            currentSelectedRouter={currentSelectedRouter}
-            currentSelectedKey={currentSelectedKey}
-            dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
-          />
-
           {identity === "tutor" && (
             <Button>
               <button onClick={() => setShowQuestion(false)}>Close</button>
@@ -253,6 +247,18 @@ export default function DisplayHomeWorkQuestion({
               minHeight: `calc(100% - ${"tutor" ? 60 : 60}px)`,
             }}
           >
+            <div
+              className={`h-full w-full  absolute top-[${
+                "tutor" === "tutor" ? 0 : 58
+              }px] z-1`}
+              style={{ height: "100%" }}
+            >
+              {" "}
+              <MathzoneWhiteBoard
+                currentSelectedRouter={currentSelectedRouter}
+                currentSelectedKey={currentSelectedKey}
+              />
+            </div>
             <QuizWhitePage>
               <ValidationContextProvider>
                 <RenderedStudentResponse datas={questionData} />

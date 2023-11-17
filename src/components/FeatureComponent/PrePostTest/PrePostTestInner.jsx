@@ -199,7 +199,7 @@ export default function PrePostTestInner() {
       if (typeof cb === "function") lastCallBackRef.current = cb;
     } else if (obj?.questions_from == "skipped") {
       console.log("not same but questions_from is skipped");
-      handleNextQuestion(true, practiceId);
+      cb(true);
     } else {
       console.log("not same");
       if (typeof cb === "function") {
@@ -280,25 +280,33 @@ export default function PrePostTestInner() {
           </div>
 
           <QuizPageLayout key={key} height={currentHeight}>
-            {!obj?.quiz_completed && (
-              <MathzoneWhiteBoard
-                currentSelectedRouter={currentSelectedRouter}
-                currentSelectedKey={currentSelectedKey}
-              />
-            )}
             <div
               style={{
                 position: "relative",
                 margin: "0 auto",
                 width: "calc(100% - 160px)",
                 maxHeight: `calc(100% - ${
-                  !obj?.quiz_completed && localParticipant !== "tutor" ? 78 : 58
+                  !obj?.quiz_completed && localParticipant !== "tutor" ? 58 : 8
                 }px)`,
                 minHeight: `calc(100% - ${
-                  !obj?.quiz_completed && localParticipant !== "tutor" ? 78 : 58
+                  !obj?.quiz_completed && localParticipant !== "tutor" ? 58 : 8
                 }px)`,
               }}
             >
+              {!obj?.quiz_completed && (
+                <div
+                  className={`h-full w-full  absolute top-[${
+                    localParticipant === "tutor" ? 0 : 58
+                  }px] z-1`}
+                  style={{ height: "100%" }}
+                >
+                  {" "}
+                  <MathzoneWhiteBoard
+                    currentSelectedRouter={currentSelectedRouter}
+                    currentSelectedKey={currentSelectedKey}
+                  />
+                </div>
+              )}
               {!obj?.quiz_completed && localParticipant !== "tutor" && (
                 <div style={{ width: "100%", height: 58 }}></div>
               )}

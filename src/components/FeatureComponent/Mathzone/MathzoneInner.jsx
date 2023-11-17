@@ -234,12 +234,6 @@ export default function MathzoneInner() {
             )}
           </div>
           <QuizPageLayout key={key} height={currentHeight}>
-            {!obj?.quiz_completed && (
-              <MathzoneWhiteBoard
-                currentSelectedRouter={currentSelectedRouter}
-                currentSelectedKey={currentSelectedKey}
-              />
-            )}
             <div
               style={{
                 position: "relative",
@@ -253,6 +247,20 @@ export default function MathzoneInner() {
                 }px)`,
               }}
             >
+              {!obj?.quiz_completed && (
+                <div
+                  className={`h-full w-full  absolute top-[${
+                    localParticipant === "tutor" ? 0 : 58
+                  }px] z-1`}
+                  style={{ height: "100%" }}
+                >
+                  {" "}
+                  <MathzoneWhiteBoard
+                    currentSelectedRouter={currentSelectedRouter}
+                    currentSelectedKey={currentSelectedKey}
+                  />
+                </div>
+              )}
               {!obj?.quiz_completed && localParticipant !== "tutor" && (
                 <div style={{ width: "100%", height: 58 }}></div>
               )}
