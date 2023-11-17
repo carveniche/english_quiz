@@ -6,7 +6,7 @@ export default function TimerClock({ count }) {
       {" "}
       <div
         className={styles.timerContainer}
-        style={{ position: "absolute", top: 0 }}
+        style={{ position: "absolute", top: -5 }}
       >
         <div className={styles.timerCircle}>
           <span className={styles.timerTime} id={styles.timerDisplay}>

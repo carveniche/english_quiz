@@ -5,7 +5,7 @@ import { FlagQuestionContext } from "../ContextProvider/FlagQuestionContextProvi
 import useThrottle from "../CustomHooks/UseThrottle";
 
 export default function FlagQuestionPagination({ handleFlagQuestionChange }) {
-  const [inprogressThrottle, handleThrottle] = useThrottle(5000);
+  const [inprogressThrottle, handleThrottle] = useThrottle(1000);
   const handleChange = (event, value) => {
     if (inprogressThrottle()) return;
     handlePaginationRevieResult(value - 1);
