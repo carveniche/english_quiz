@@ -199,7 +199,7 @@ export default function PrePostTestInner() {
       if (typeof cb === "function") lastCallBackRef.current = cb;
     } else if (obj?.questions_from == "skipped") {
       console.log("not same but questions_from is skipped");
-      handleNextQuestion(true, practiceId);
+      cb(true);
     } else {
       console.log("not same");
       if (typeof cb === "function") {
