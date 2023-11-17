@@ -78,6 +78,7 @@ export default function ViewQuestionStatus({
           (() => {
             let backgroundColor = "";
             let textColor = "";
+            let borderColor = "border-828282";
             let result_data = item?.result_data || [];
             let objResponse = result_data[0] || {};
             let isCorrect = objResponse.hasOwnProperty("correct");
@@ -86,15 +87,18 @@ export default function ViewQuestionStatus({
               case 0: {
                 backgroundColor = "bg-F24A4A";
                 textColor = "text-white";
+                borderColor = "border-none";
                 break;
               }
               case 1: {
                 backgroundColor = "bg-27AE60";
                 textColor = "text-white";
+                borderColor = "border-none";
                 break;
               }
               default: {
                 backgroundColor = "";
+                borderColor = "border-828282";
                 textColor =
                   item?.current_question === i + 1
                     ? "text-828282"
@@ -108,7 +112,7 @@ export default function ViewQuestionStatus({
                 className={`${backgroundColor} ${textColor} w-7 h-7 rounded-full flex justify-center items-center ${
                   item?.current_question === i + 1
                     ? "border-white"
-                    : "border-828282"
+                    : borderColor
                 } ${
                   item?.current_question === i + 1 ? "border-2" : "border-2"
                 } border-solid`}

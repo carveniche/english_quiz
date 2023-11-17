@@ -28,7 +28,7 @@ export default function CicoNavbar({
     <>
       <ul
         className={`bg-header-black text-white transform absolute scale-
-          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[80px] items-center right-0
+          transition duration-150 ease-in-out origin-top flex min-w-[260px] flex-col min-h-[80px] items-center -right-[1px]
           `}
         style={{
           maxHeight: `calc(100vh - 72px - 45.28px - 61.61px - ${

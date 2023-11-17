@@ -25,10 +25,13 @@ export default function CodingNew({ identity, env }: CodingNew) {
         </>
       ) : (
         <>
-          <div className="flex w-full h-1/5 justify-center items-center">
+          <div className="flex w-full justify-center items-center py-4">
             <CodingHeader />
           </div>
-          <div className="flex w-full h-full justify-center items-center">
+          <div
+            className="flex w-full h-full justify-center items-center"
+            style={{ height: "calc(100% - 72px" }}
+          >
             {isTutor({ identity: identity }) ? (
               <CodingNewTeacher env={env} />
             ) : (
