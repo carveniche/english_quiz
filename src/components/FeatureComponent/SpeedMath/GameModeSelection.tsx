@@ -20,7 +20,7 @@ const singleUserModeOfPlay = [
   {
     name: "sm-mode",
     id: "speedmath-teacher",
-    label: "Play with teacher",
+    label: "Play with Coach",
     value: "teacher",
   },
 ];
@@ -35,7 +35,7 @@ const multipleUserModeOfPlay = [
   {
     name: "sm-mode",
     id: "speedmath-teacher",
-    label: "Play with teacher",
+    label: "Play with Coach",
     value: "teacher",
   },
 ];
