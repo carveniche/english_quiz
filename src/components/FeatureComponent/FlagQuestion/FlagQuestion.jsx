@@ -229,7 +229,16 @@ const FlagQuestionViewer = (props) => {
                 </button>
               </div>
             )}
-            <QuizWhitePage>
+            <QuizWhitePage
+              style={{
+                clear: "both",
+                width: "100%",
+                minHeight: `calc(100% - ${
+                  props?.identity === "tutor" || showSolution ? 0 : 40
+                }px)`,
+                maxHeight: "100%",
+              }}
+            >
               {props?.identity === "tutor" && (
                 <div
                   style={{ position: "relative", marginBottom: 26 }}

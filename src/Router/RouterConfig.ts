@@ -85,7 +85,7 @@ const routerConfig: routerConfig[] = [
     key: ROUTERKEYCONST.mathvideolesson,
     exact: true,
     component: MathVideoLesson,
-    name: "Math videos",
+    name: "Math Videos",
     icon: "/menu-icon/MathVideoLessons.svg",
     hasChildren: false,
     hasSubRoute: false,
@@ -127,7 +127,7 @@ const routerConfig: routerConfig[] = [
     subRoute: [
       {
         key: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
-        name: "Flagged Question",
+        name: "Flagged Questions",
         path: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route,
         exact: true,
         icon: "/menu-icon/Whiteboard.svg",
@@ -137,7 +137,7 @@ const routerConfig: routerConfig[] = [
 
       {
         key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
-        name: "HomeWork",
+        name: "Homework",
         path: ROUTERKEYCONST.miscellaneous.subRoute.homework.route,
         exact: true,
         icon: "/menu-icon/Whiteboard.svg",

@@ -50,7 +50,7 @@ export default function CicoNavbar({
                 handleClick({
                   path: `${CICO.path}/${CICO.checkIn}`,
                   key: `${CICO.key}`,
-                  name: `Cico:Check-In`,
+                  name: `CiCO:Check-In`,
                   icon: "",
                   extraParams: {},
                 })
@@ -74,7 +74,7 @@ export default function CicoNavbar({
                 handleClick({
                   path: `${CICO.path}/${CICO.checkOut}`,
                   key: `${CICO.key}`,
-                  name: `Cico:Check-Out`,
+                  name: `CiCO:Check-Out`,
                   icon: "",
                   extraParams: {},
                 })

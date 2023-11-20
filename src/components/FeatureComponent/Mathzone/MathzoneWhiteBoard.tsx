@@ -59,24 +59,24 @@ export default function MathzoneWhiteBoard({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: 60,
         height: "calc(100% + 30px)",
         top: -30,
       }}
     >
-      <div
-        style={{
-          width: 60,
-          display: "flex",
-          justifyContent: "center",
-          minWidth: 60,
-          position: "absolute",
-          left: -50,
-        }}
-      >
-        {isTutorTechBoth({
-          identity: `${room?.localParticipant.identity}`,
-        }) && (
+      {isTutorTechBoth({
+        identity: `${room?.localParticipant.identity}`,
+      }) && (
+        <div
+          style={{
+            width: 60,
+            display: "flex",
+            justifyContent: "center",
+            minWidth: 60,
+            position: "absolute",
+            left: -50,
+          }}
+        >
+          (
           <p
             className="pt-3"
             onClick={onShowRoughBoard}
@@ -96,8 +96,9 @@ export default function MathzoneWhiteBoard({
           >
             {isMathZoneWhiteBoard ? "CLOSE WHITEBOARD" : "OPEN WHITEBOARD"}
           </p>
-        )}
-      </div>
+          )
+        </div>
+      )}
       {isMathZoneWhiteBoard && (
         <div
           className=""

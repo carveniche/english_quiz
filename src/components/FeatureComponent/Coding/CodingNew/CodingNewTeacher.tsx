@@ -10,7 +10,7 @@ import {
   showScratchTeacher,
   storeCodingLogNewCurriculam,
 } from "../../../../api";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import useVideoContext from "../../../../hooks/useVideoContext/useVideoContext";
 import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../../../constants";
@@ -21,6 +21,7 @@ import {
   ActiveTabParams,
   addToActiveTab,
 } from "../../../../redux/features/addActiveTabLink";
+import { maxHeightCalculate } from "../Utility/maxHeightCalculate";
 
 const activeProjectBgCss = "bg-gradient-to-r from-[#3bd7b1] to-[#a4ec9e]";
 const unactiveProjectBgCss = "bg-gradient-to-r from-[#eb3349] to-[#f45c43]";
@@ -57,6 +58,8 @@ interface studentSpecificData {
 export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   const [thunkableLink, setThunkableLink] = useState("");
   const [newCodingData, setNewCodingData] = useState([]);
+  const [minHeight, setMinHeight] = useState("initial");
+  const containerRef = useRef([]);
   const dispatch = useDispatch();
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
@@ -318,6 +321,11 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
     dispatch(openClosedScratchWhiteBoard({ status: true, images: item }));
   };
+  useEffect(() => {
+    if (!newCodingData.length) return;
+    let height = maxHeightCalculate(containerRef.current || []);
+    setMinHeight(height);
+  }, [newCodingData.length]);
 
   return (
     <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded overflow-auto">
@@ -333,21 +341,32 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
         newCodingData.map((item: newCodingData, index) => {
           return (
             <React.Fragment key={index}>
-              <div className="coding-content-inner relative mt-2">
-                <div
-                  className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
+              <div
+                ref={(el) => (containerRef.current[index] = el)}
+                className="coding-content-inner relative"
+                style={{
+                  marginTop: index === 0 ? 20 : 20,
+                  minHeight: minHeight,
+                }}
+              >
+                <div className="flex flex-col" style={{ maxWidth: "700px" }}>
+                  <div
+                    className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
                 "
-                  style={{
-                    borderRadius: "50%",
-                    boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
-                    fontSize: 18,
-                  }}
-                >
-                  Day-{item?.day}
-                </div>
-                <div className="flex flex-col">
-                  {item.today_class && (
+                    style={{
+                      borderRadius: "50%",
+                      boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
+                      fontSize: 18,
+                    }}
+                  >
+                    Day-{item?.day}
+                  </div>
+                  {item.today_class ? (
                     <div>
+                      <img style={{ maxHeight: 40 }} src={todayClassFlag} />
+                    </div>
+                  ) : (
+                    <div className="invisible">
                       <img style={{ maxHeight: 40 }} src={todayClassFlag} />
                     </div>
                   )}

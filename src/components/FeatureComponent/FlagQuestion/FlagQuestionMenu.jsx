@@ -235,7 +235,9 @@ export default function FlagQuestionMenu(props) {
                       </div>
                     ))
                   ) : (
-                    <h3>No Question has Flagged</h3>
+                    <h3>
+                      There are no flagged questions available for discussion
+                    </h3>
                   )}
                 </div>
               </QuizWhitePage>
