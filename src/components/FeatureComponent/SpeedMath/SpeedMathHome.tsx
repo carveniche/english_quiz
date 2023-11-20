@@ -12,6 +12,7 @@ import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import QuestionComponent from "./QuestionComponent";
 import ResultPage from "./ResultPage";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useDispatch } from "react-redux";
 import {
   addSpeedMathGameStartDetails,
@@ -251,7 +252,14 @@ export default function SpeedMath() {
               remoteParticipantCount={remoteParticipantCount}
             />
           ) : (
-            <></>
+            <div className="flex w-full h-full justify-center items-center">
+              <CircularProgress
+                variant="indeterminate"
+                style={{
+                  color: "white",
+                }}
+              />
+            </div>
           )}
           {componentNo === 2 && <GameStartingTimer onTimerEnd={onTimerEnd} />}
           {componentNo === 3 && questionComponent()}
