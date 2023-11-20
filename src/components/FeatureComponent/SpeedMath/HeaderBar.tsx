@@ -50,7 +50,7 @@ export default function HeaderBar({
           className="w-full h-16 flex justify-center items-center bg-center bg-cover rounded-full"
         >
           <h1 className="text-center text-white m-0 text-base overflow-hidden overflow-ellipsis">
-            Play Mode - With {playMode}
+            Play Mode - With {playMode === "teacher" ? "Coach" : playMode}
           </h1>
         </div>
       </div>

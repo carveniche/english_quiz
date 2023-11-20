@@ -72,16 +72,19 @@ export default function SpeedMathNavbarMenu({
                         <NavLink
                           key={index}
                           to={`/speedmath?${queryParams}`}
-                          onClick={() =>
-                            handleClickSpeedMath({
-                              path: ROUTERKEYCONST.speedmath,
-                              key: ROUTERKEYCONST.speedmath,
-                              name: "Speed Math",
-                              icon: item.icon,
-                              extraParams: {
-                                speedMathLevel: index + 1,
+                          onClick={(e) =>
+                            handleClickSpeedMath(
+                              {
+                                path: ROUTERKEYCONST.speedmath,
+                                key: ROUTERKEYCONST.speedmath,
+                                name: "Speed Math",
+                                icon: item.icon,
+                                extraParams: {
+                                  speedMathLevel: index + 1,
+                                },
                               },
-                            })
+                              e
+                            )
                           }
                           className={"w-48"}
                           style={{ display: "block" }}

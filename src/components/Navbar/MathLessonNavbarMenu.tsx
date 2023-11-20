@@ -151,19 +151,22 @@ export default function MathLessonNavbarMenu({
                                       <NavLink
                                         key={tagIndex}
                                         to={`${GGB.key}?${queryParams}`}
-                                        onClick={() =>
-                                          handleClickMathLesson({
-                                            path: GGB.path,
-                                            key: GGB.key,
-                                            name: "Geogebra",
-                                            icon: GGB.icon,
-                                            extraParams: {
-                                              imageUrl: tag.images,
-                                              tagId: tag?.id || 1,
-                                              tagType: tag.type,
-                                              ggbLink: tag?.link || "",
+                                        onClick={(e) =>
+                                          handleClickMathLesson(
+                                            {
+                                              path: GGB.path,
+                                              key: GGB.key,
+                                              name: "Geogebra",
+                                              icon: GGB.icon,
+                                              extraParams: {
+                                                imageUrl: tag.images,
+                                                tagId: tag?.id || 1,
+                                                tagType: tag.type,
+                                                ggbLink: tag?.link || "",
+                                              },
                                             },
-                                          })
+                                            e
+                                          )
                                         }
                                         className="min-w-48 w-98"
                                         style={{ display: "block" }}
@@ -192,19 +195,22 @@ export default function MathLessonNavbarMenu({
                                       <NavLink
                                         key={tagIndex}
                                         to={`${item.key}?${queryParams}`}
-                                        onClick={() =>
-                                          handleClickMathLesson({
-                                            path: ROUTERKEYCONST.lesson,
-                                            key: ROUTERKEYCONST.lesson,
-                                            name: "Math Lesson",
-                                            icon: item.icon,
-                                            extraParams: {
-                                              imageUrl: tag.images,
-                                              tagId: tag?.id || 1,
-                                              tagType: tag.type,
-                                              ggbLink: tag?.link || "",
+                                        onClick={(e) =>
+                                          handleClickMathLesson(
+                                            {
+                                              path: ROUTERKEYCONST.lesson,
+                                              key: ROUTERKEYCONST.lesson,
+                                              name: "Math Lesson",
+                                              icon: item.icon,
+                                              extraParams: {
+                                                imageUrl: tag.images,
+                                                tagId: tag?.id || 1,
+                                                tagType: tag.type,
+                                                ggbLink: tag?.link || "",
+                                              },
                                             },
-                                          })
+                                            e
+                                          )
                                         }
                                         className="min-w-48 w-98"
                                         style={{ display: "block" }}

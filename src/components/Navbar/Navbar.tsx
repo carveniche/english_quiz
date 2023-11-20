@@ -27,10 +27,17 @@ import {
 } from "../../utils/classTypesMenus";
 import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 import { isGradeAllowed } from "../../utils/isGradeAllowed";
+import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
+  );
+  const { speedMathAlreadyStarted, isCodingIframeOpened } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
+  const { currentSelectedRouter } = useSelector(
+    (state: RootState) => state.activeTabReducer
   );
   const { class_type, demo, group_class, grade } = useSelector(
     (state: RootState) => state.videoCallTokenData
@@ -40,6 +47,8 @@ export default function Navbar({ onClick }: { onClick: Function }) {
   const [mathzoneKeys, setMathzoneKeys] = useState(0);
   const queryParams = getQueryParams();
   const { room } = useVideoContext();
+  const [alertMessage, setAlertMessage] = useState("");
+  const [openAlertBox, setOpenAlertBox] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -84,13 +93,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
 
   const filterRouterConfig = filterMenuByClassType();
 
-  const handleClickMathVideoLesson = ({
-    path,
-    key,
-    name,
-    icon,
-    extraParams,
-  }: ActiveTabParams) => {
+  const handleClickMathVideoLesson = (
+    { path, key, name, icon, extraParams }: ActiveTabParams,
+    e
+  ) => {
+    if (speedMathAlreadyStarted || isCodingIframeOpened) {
+      if (typeof e.preventDefault === "function") e.preventDefault();
+      if (
+        currentSelectedRouter === ROUTERKEYCONST.speedmath &&
+        speedMathAlreadyStarted
+      ) {
+        setAlertMessage(
+          "Speed Math is already running you can't change the screen now"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+
+      if (
+        currentSelectedRouter === IFRAMENEWCODING.path &&
+        isCodingIframeOpened
+      ) {
+        setAlertMessage(
+          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+    }
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
@@ -112,13 +142,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handleClickSpeedMath = ({
-    path,
-    key,
-    name,
-    icon,
-    extraParams,
-  }: ActiveTabParams) => {
+  const handleClickSpeedMath = (
+    { path, key, name, icon, extraParams }: ActiveTabParams,
+    e
+  ) => {
+    if (speedMathAlreadyStarted || isCodingIframeOpened) {
+      if (typeof e.preventDefault === "function") e.preventDefault();
+      if (
+        currentSelectedRouter === ROUTERKEYCONST.speedmath &&
+        speedMathAlreadyStarted
+      ) {
+        setAlertMessage(
+          "Speed Math is already running you can't change the screen now"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+
+      if (
+        currentSelectedRouter === IFRAMENEWCODING.path &&
+        isCodingIframeOpened
+      ) {
+        setAlertMessage(
+          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+    }
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
@@ -140,13 +191,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handleClickMathLesson = ({
-    path,
-    key,
-    name,
-    icon,
-    extraParams,
-  }: ActiveTabParams) => {
+  const handleClickMathLesson = (
+    { path, key, name, icon, extraParams }: ActiveTabParams,
+    e
+  ) => {
+    if (speedMathAlreadyStarted || isCodingIframeOpened) {
+      if (typeof e.preventDefault === "function") e.preventDefault();
+      if (
+        currentSelectedRouter === ROUTERKEYCONST.speedmath &&
+        speedMathAlreadyStarted
+      ) {
+        setAlertMessage(
+          "Speed Math is already running you can't change the screen now"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+
+      if (
+        currentSelectedRouter === IFRAMENEWCODING.path &&
+        isCodingIframeOpened
+      ) {
+        setAlertMessage(
+          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+    }
     dispatch(
       resetWhiteBoardData({ dataTrackKey: LESSON.lessonWhiteBoardData })
     );
@@ -174,13 +246,34 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const handleClick = ({
-    path,
-    key,
-    name,
-    icon,
-    extraParams,
-  }: ActiveTabParams) => {
+  const handleClick = (
+    { path, key, name, icon, extraParams }: ActiveTabParams,
+    e
+  ) => {
+    if (speedMathAlreadyStarted || isCodingIframeOpened) {
+      if (typeof e.preventDefault === "function") e.preventDefault();
+      if (
+        currentSelectedRouter === ROUTERKEYCONST.speedmath &&
+        speedMathAlreadyStarted
+      ) {
+        setAlertMessage(
+          "Speed Math is already running you can't change the screen now"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+
+      if (
+        currentSelectedRouter === IFRAMENEWCODING.path &&
+        isCodingIframeOpened
+      ) {
+        setAlertMessage(
+          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+        );
+        setOpenAlertBox(true);
+        return;
+      }
+    }
     dispatch(addToActiveTab({ path, key, name, icon, extraParams }));
     typeof onClick === "function" && onClick();
     const [localDataTrackPublication] = [
@@ -396,14 +489,17 @@ export default function Navbar({ onClick }: { onClick: Function }) {
               >
                 <NavLink
                   to={`${item.path}?${queryParams}`}
-                  onClick={() =>
-                    handleClick({
-                      path: item.path,
-                      key: item.key,
-                      name: item.name,
-                      icon: item.icon,
-                      extraParams: {},
-                    })
+                  onClick={(e) =>
+                    handleClick(
+                      {
+                        path: item.path,
+                        key: item.key,
+                        name: item.name,
+                        icon: item.icon,
+                        extraParams: {},
+                      },
+                      e
+                    )
                   }
                   className={"w-48"}
                   style={{ display: "block" }}
@@ -419,6 +515,14 @@ export default function Navbar({ onClick }: { onClick: Function }) {
             );
           })}
       </ul>
+      {alertMessage !== "" && (
+        <CustomAlert
+          variant="info"
+          headline={alertMessage}
+          open={openAlertBox}
+          handleClose={() => setOpenAlertBox(false)}
+        />
+      )}
     </>
   );
 }

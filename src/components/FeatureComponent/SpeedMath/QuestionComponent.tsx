@@ -228,7 +228,7 @@ export default function QuestionComponent({
   return (
     <div className="flex flex-row w-full h-full justify-between items-center">
       <div className="flex flex-col w-full h-full justify-center items-center p-5 gap-4">
-        <div className="flex flex-col w-full h-[40%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
+        <div className="flex flex-col w-full h-[35%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
           <div className="flex h-2/5 w-full justify-center items-center">
             <p className="text-speedMathTextColor font-bold text-xl">
               Keep answering as quickly as you can
@@ -238,7 +238,6 @@ export default function QuestionComponent({
             {gameQuestionsData.length > 0 && questionCount < 50 && (
               <p className="text-speedMathTextColor font-bold text-4xl">
                 <div
-                  style={{ padding: "0px 0px 0px 44px" }}
                   dangerouslySetInnerHTML={{
                     __html: gameQuestionsData[questionCount].question,
                   }}
@@ -247,7 +246,7 @@ export default function QuestionComponent({
             )}
           </div>
         </div>
-        <div className="flex w-full h-[40%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
+        <div className="flex w-full h-[35%] justify-center items-center  bg-speedMathGameSelectionModeYelloBg rounded-full">
           <input
             autoFocus
             placeholder="Answer and Enter"
@@ -265,7 +264,7 @@ export default function QuestionComponent({
       </div>
       {!iPadDevice && !isIpadDeviceChrome ? (
         <div className="flex w-full h-full justify-center items-center">
-          <div className="flex flex-col w-[90%] h-full items-center">
+          <div className="flex flex-col w-[90%] h-full items-center mt-7">
             <div className="flex flex-row w-[80%] h-[15%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-14 p-5">
               <div>
                 <img src={CorrectMark} alt="Correct" />

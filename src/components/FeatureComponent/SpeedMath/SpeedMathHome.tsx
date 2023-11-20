@@ -252,14 +252,16 @@ export default function SpeedMath() {
               remoteParticipantCount={remoteParticipantCount}
             />
           ) : (
-            <div className="flex w-full h-full justify-center items-center">
-              <CircularProgress
-                variant="indeterminate"
-                style={{
-                  color: "white",
-                }}
-              />
-            </div>
+            componentNo === 1 && (
+              <div className="flex w-full h-full justify-center items-center">
+                <CircularProgress
+                  variant="indeterminate"
+                  style={{
+                    color: "white",
+                  }}
+                />
+              </div>
+            )
           )}
           {componentNo === 2 && <GameStartingTimer onTimerEnd={onTimerEnd} />}
           {componentNo === 3 && questionComponent()}

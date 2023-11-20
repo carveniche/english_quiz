@@ -46,14 +46,17 @@ export default function CicoNavbar({
             <NavLink
               key={`${CICO.key}-${CICO.checkIn}`}
               to={`${CICO.path}/${CICO.checkIn}?${queryParams}`}
-              onClick={() =>
-                handleClick({
-                  path: `${CICO.path}/${CICO.checkIn}`,
-                  key: `${CICO.key}`,
-                  name: `CiCO:Check-In`,
-                  icon: "",
-                  extraParams: {},
-                })
+              onClick={(e) =>
+                handleClick(
+                  {
+                    path: `${CICO.path}/${CICO.checkIn}`,
+                    key: `${CICO.key}`,
+                    name: `CiCO:Check-In`,
+                    icon: "",
+                    extraParams: {},
+                  },
+                  e
+                )
               }
               className={"w-48"}
               style={{ display: "block" }}
@@ -70,14 +73,17 @@ export default function CicoNavbar({
             <NavLink
               key={`${CICO.key}-${CICO.checkOut}`}
               to={`${CICO.path}/${CICO.checkOut}?${queryParams}`}
-              onClick={() =>
-                handleClick({
-                  path: `${CICO.path}/${CICO.checkOut}`,
-                  key: `${CICO.key}`,
-                  name: `CiCO:Check-Out`,
-                  icon: "",
-                  extraParams: {},
-                })
+              onClick={(e) =>
+                handleClick(
+                  {
+                    path: `${CICO.path}/${CICO.checkOut}`,
+                    key: `${CICO.key}`,
+                    name: `CiCO:Check-Out`,
+                    icon: "",
+                    extraParams: {},
+                  },
+                  e
+                )
               }
               className={"w-48"}
               style={{ display: "block" }}

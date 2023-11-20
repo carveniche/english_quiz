@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { isTutor } from "../../../../utils/participantIdentity";
+import { useDispatch } from "react-redux";
+import { toggleCodingIframeAlreadyOpened } from "../../../../redux/features/liveClassDetails";
 export default function CodingNewIframe() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
-
+  const dispatch = useDispatch();
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
@@ -33,7 +35,12 @@ export default function CodingNewIframe() {
       }, 2000);
     }
   }, [refreshNewCodingIframe]);
-
+  useEffect(() => {
+    dispatch(toggleCodingIframeAlreadyOpened(true));
+    return () => {
+      dispatch(toggleCodingIframeAlreadyOpened(false));
+    };
+  }, []);
   return (
     <>
       {!iframeLoaded ? (

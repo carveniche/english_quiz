@@ -16,7 +16,7 @@ export default function ComputerPlay({ computerScore }: ComputerPlayProps) {
   }, [computerScore]);
 
   return (
-    <div className="flex flex-row w-[80%] h-[20%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
+    <div className="flex flex-row w-[80%] h-[15%] justify-between items-center bg-speedMathGameSelectionModeYelloBg rounded-full mt-5 p-5">
       <div>
         <img src={CorrectMark} alt="Correct" />
       </div>

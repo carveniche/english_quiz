@@ -50,6 +50,7 @@ interface liveClassDetailsTypes {
   uploadResourceDeleteModal: boolean;
   speedMathAlreadyStarted: boolean;
   refreshNewCodingIframe: boolean;
+  isCodingIframeOpened:boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -103,6 +104,7 @@ const initialState: liveClassDetailsTypes = {
   screenShareStatus: false,
   uploadResourceDeleteModal: false,
   speedMathAlreadyStarted: false,
+  isCodingIframeOpened:false,
   refreshNewCodingIframe: false,
 };
 
@@ -284,6 +286,9 @@ export const liveClassDetailsSlice = createSlice({
     refreshNewCodingTeacher: (state, action) => {
       state.refreshNewCodingIframe = action.payload;
     },
+    toggleCodingIframeAlreadyOpened: (state, action) => {
+      state.isCodingIframeOpened = action.payload;
+    },
   },
 });
 
@@ -317,6 +322,7 @@ export const {
   toggleUploadResourceDeleteModal,
   toggleSpeedMathAlreadyStarted,
   refreshNewCodingTeacher,
+  toggleCodingIframeAlreadyOpened
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

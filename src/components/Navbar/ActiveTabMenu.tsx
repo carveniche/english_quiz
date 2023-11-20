@@ -13,7 +13,7 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import CloseIconButton from "./CloseIconButton";
 import TabIcon from "./TabIcon";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
-import { ROUTERKEYCONST } from "../../constants";
+import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../constants";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
 
 export default function ActiveTabMenu() {
@@ -30,7 +30,7 @@ export default function ActiveTabMenu() {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
-  const { speedMathAlreadyStarted } = useSelector(
+  const { speedMathAlreadyStarted, isCodingIframeOpened } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
   const handleClick = (
@@ -48,6 +48,17 @@ export default function ActiveTabMenu() {
     ) {
       setAlertMessage(
         "Speed Math is already running you can't change the screen now"
+      );
+      setOpenAlertBox(true);
+      return;
+    }
+
+    if (
+      currentSelectedRouter === IFRAMENEWCODING.path &&
+      isCodingIframeOpened
+    ) {
+      setAlertMessage(
+        "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
       );
       setOpenAlertBox(true);
       return;
@@ -109,6 +120,8 @@ export default function ActiveTabMenu() {
               to={
                 speedMathAlreadyStarted
                   ? `/speedmath?${getQueryParams()}`
+                  : isCodingIframeOpened
+                  ? `${IFRAMENEWCODING.path}?${getQueryParams()}`
                   : `${item.path}?${getQueryParams()}`
               }
               onClick={(event) =>

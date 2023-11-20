@@ -172,13 +172,13 @@ export default function ResultPage({
                       <div key={res.id}>
                         {res.player_question_data[index] !== undefined ? (
                           res.player_question_data[index].correct ? (
-                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-green-400 rounded-full p-1">
+                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-green-400 rounded-full p-1.5 aspect-square">
                               <p className="text-speedMathTextColor font-bold text-sm text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>
                             </div>
                           ) : (
-                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-red-400 rounded-full p-1">
+                            <div className="flex min-w-[20px] min-h-[20px] w-auto h-auto justify-center items-center bg-red-400 rounded-full p-1.5 aspect-square">
                               <p className="text-speedMathTextColor font-bold text-sm text-center">
                                 {res.player_question_data[index].player_answer}
                               </p>

@@ -47,14 +47,17 @@ export default function MiscelleneousNavbar({
                   <div className={"w-48"} style={{ display: "block" }}>
                     <div
                       className="flex gap-2"
-                      onClick={() =>
-                        handleClick({
-                          path: `${item.path}${subRouteItem.key}`,
-                          key: item.key,
-                          name: `${item.name}:${subRouteItem.name} `,
-                          icon: item.icon,
-                          extraParams: {},
-                        })
+                      onClick={(e) =>
+                        handleClick(
+                          {
+                            path: `${item.path}${subRouteItem.key}`,
+                            key: item.key,
+                            name: `${item.name}:${subRouteItem.name} `,
+                            icon: item.icon,
+                            extraParams: {},
+                          },
+                          e
+                        )
                       }
                     >
                       <div> {subRouteItem?.name}</div>

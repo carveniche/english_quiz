@@ -127,17 +127,20 @@ export default function MathVideoNavbarMenu({
                                     <NavLink
                                       key={tagIndex}
                                       to={`/mathvideolesson?${queryParams}`}
-                                      onClick={() =>
-                                        handleClickMathVideoLesson({
-                                          path: ROUTERKEYCONST.mathvideolesson,
-                                          key: ROUTERKEYCONST.mathvideolesson,
-                                          name: "Play Video",
-                                          icon: item.icon,
-                                          extraParams: {
-                                            videoUrl: tag.url,
-                                            videoTagId: tag.id,
+                                      onClick={(e) =>
+                                        handleClickMathVideoLesson(
+                                          {
+                                            path: ROUTERKEYCONST.mathvideolesson,
+                                            key: ROUTERKEYCONST.mathvideolesson,
+                                            name: "Play Video",
+                                            icon: item.icon,
+                                            extraParams: {
+                                              videoUrl: tag.url,
+                                              videoTagId: tag.id,
+                                            },
                                           },
-                                        })
+                                          e
+                                        )
                                       }
                                       className={"w-48"}
                                       style={{ display: "block" }}

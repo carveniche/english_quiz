@@ -28,8 +28,8 @@ export default function GameStartingTimer({
       </div>
       <div className="flex h-2/5 w-[50%] justify-center mt-10">
         <p className="text-speedMathTextColor text-2xl font-semibold">
-          You have 60 sec to answer as many question as you can. Don't miss the
-          chance to get ahead of your teacher
+          You have 60 sec to answer as much questions as you can . Don't miss
+          the chance to get ahead of your teacher
         </p>
         <img
           style={{

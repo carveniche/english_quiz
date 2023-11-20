@@ -170,23 +170,26 @@ export default function MathzoneNavbar({
                                               }/${
                                                 level.split("level")[1]
                                               }?${queryParams}`}
-                                              onClick={() =>
-                                                handleClick({
-                                                  path: `${item.path}/${
-                                                    math.id
-                                                  }/${tag.tag_id}/${
-                                                    level.split("level")[1]
-                                                  }`,
-                                                  key: item.key,
-                                                  name: `${item.name}:${math.name} - ${tag.name}`,
-                                                  icon: item.icon,
-                                                  extraParams: {
-                                                    conceptName: math.name,
-                                                    tagName: tag.name,
-                                                    level:
-                                                      level.split("level")[1],
+                                              onClick={(e) =>
+                                                handleClick(
+                                                  {
+                                                    path: `${item.path}/${
+                                                      math.id
+                                                    }/${tag.tag_id}/${
+                                                      level.split("level")[1]
+                                                    }`,
+                                                    key: item.key,
+                                                    name: `${item.name}:${math.name} - ${tag.name}`,
+                                                    icon: item.icon,
+                                                    extraParams: {
+                                                      conceptName: math.name,
+                                                      tagName: tag.name,
+                                                      level:
+                                                        level.split("level")[1],
+                                                    },
                                                   },
-                                                })
+                                                  e
+                                                )
                                               }
                                               className={"w-48"}
                                               style={{ display: "block" }}
@@ -211,18 +214,21 @@ export default function MathzoneNavbar({
                                     <NavLink
                                       to={`${item.path}/${math.id}/${tag.tag_id}/0
                                     }?${queryParams}`}
-                                      onClick={() =>
-                                        handleClick({
-                                          path: `${item.path}/${math.id}/${tag.tag_id}/0`,
-                                          key: item.key,
-                                          name: `${item.name}:${math.name} - ${tag.name}`,
-                                          icon: item.icon,
-                                          extraParams: {
-                                            conceptName: math.name,
-                                            tagName: tag.name,
-                                            level: 0,
+                                      onClick={(e) =>
+                                        handleClick(
+                                          {
+                                            path: `${item.path}/${math.id}/${tag.tag_id}/0`,
+                                            key: item.key,
+                                            name: `${item.name}:${math.name} - ${tag.name}`,
+                                            icon: item.icon,
+                                            extraParams: {
+                                              conceptName: math.name,
+                                              tagName: tag.name,
+                                              level: 0,
+                                            },
                                           },
-                                        })
+                                          e
+                                        )
                                       }
                                       className={"w-48"}
                                       style={{

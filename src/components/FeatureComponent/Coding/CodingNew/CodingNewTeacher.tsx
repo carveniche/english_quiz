@@ -242,69 +242,81 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
 
   const showScratchProjectTeacher = (coding_learning_outcome_id: number) => {
     return (
-      <NavLink
-        className="flex justify-center items-center"
-        to={`/iframeCoding?${getQueryParams()}`}
-        onClick={() =>
-          handleClick({
-            path: IFRAMENEWCODING.path,
-            key: IFRAMENEWCODING.key,
-            name: IFRAMENEWCODING.name,
-            icon: IFRAMENEWCODING.icon,
-            extraParams: {
-              url: `https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
-              coding_learning_outcome_id: coding_learning_outcome_id,
-            },
-          })
-        }
+      <div
+        className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
       >
-        <img className="flex w-[100%] h-[100%]" src={ScratchLogo} />
-      </NavLink>
+        <NavLink
+          className="flex justify-center items-center"
+          to={`/iframeCoding?${getQueryParams()}`}
+          onClick={() =>
+            handleClick({
+              path: IFRAMENEWCODING.path,
+              key: IFRAMENEWCODING.key,
+              name: IFRAMENEWCODING.name,
+              icon: IFRAMENEWCODING.icon,
+              extraParams: {
+                url: `https://www.coding.begalileo.com/?user_id=${userId}&project_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
+                coding_learning_outcome_id: coding_learning_outcome_id,
+              },
+            })
+          }
+        >
+          <p className="text-white font-semibold text-sm">Teacher</p>
+        </NavLink>
+      </div>
     );
   };
 
   const showPythonProjectTeacher = (coding_learning_outcome_id: number) => {
     return (
-      <NavLink
-        className="flex justify-center items-center"
-        to={`/iframeCoding?${getQueryParams()}`}
-        onClick={() =>
-          handleClick({
-            path: IFRAMENEWCODING.path,
-            key: IFRAMENEWCODING.key,
-            name: IFRAMENEWCODING.name,
-            icon: IFRAMENEWCODING.icon,
-            extraParams: {
-              url: `https://www.python.begalileo.com/?user_id=${userId}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
-              coding_learning_outcome_id: coding_learning_outcome_id,
-            },
-          })
-        }
+      <div
+        className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
       >
-        <img className="flex w-[35%] h-[20%]" src={PythonLogo} />
-      </NavLink>
+        <NavLink
+          className="flex justify-center items-center"
+          to={`/iframeCoding?${getQueryParams()}`}
+          onClick={() =>
+            handleClick({
+              path: IFRAMENEWCODING.path,
+              key: IFRAMENEWCODING.key,
+              name: IFRAMENEWCODING.name,
+              icon: IFRAMENEWCODING.icon,
+              extraParams: {
+                url: `https://www.python.begalileo.com/?user_id=${userId}&coding_learning_outcome_id=${coding_learning_outcome_id}&env=${env}&teacher_copy=yes`,
+                coding_learning_outcome_id: coding_learning_outcome_id,
+              },
+            })
+          }
+        >
+          <p className="text-white font-semibold text-sm">Teacher</p>
+        </NavLink>
+      </div>
     );
   };
 
   const showThukableProjectTeacher = () => {
     return (
-      <NavLink
-        className="flex justify-center items-center"
-        to={`/iframeCoding?${getQueryParams()}`}
-        onClick={() =>
-          handleClick({
-            path: IFRAMENEWCODING.path,
-            key: IFRAMENEWCODING.key,
-            name: IFRAMENEWCODING.name,
-            icon: IFRAMENEWCODING.icon,
-            extraParams: {
-              url: { thunkableLink },
-            },
-          })
-        }
+      <div
+        className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
       >
-        <img className="flex w-[100%] h-[100%]" src={ThunkableLogo} />
-      </NavLink>
+        <NavLink
+          className="flex justify-center items-center"
+          to={`/iframeCoding?${getQueryParams()}`}
+          onClick={() =>
+            handleClick({
+              path: IFRAMENEWCODING.path,
+              key: IFRAMENEWCODING.key,
+              name: IFRAMENEWCODING.name,
+              icon: IFRAMENEWCODING.icon,
+              extraParams: {
+                url: { thunkableLink },
+              },
+            })
+          }
+        >
+          <p className="text-white font-semibold text-sm">Teacher</p>
+        </NavLink>
+      </div>
     );
   };
 
@@ -323,8 +335,10 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
   };
   useEffect(() => {
     if (!newCodingData.length) return;
+
     let height = maxHeightCalculate(containerRef.current || []);
-    setMinHeight(height);
+    console.log(height);
+    // setMinHeight(height);
   }, [newCodingData.length]);
 
   return (
@@ -345,7 +359,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 ref={(el) => (containerRef.current[index] = el)}
                 className="coding-content-inner relative"
                 style={{
-                  marginTop: index === 0 ? 20 : 20,
+                  marginTop: index === 0 ? 38 : 36,
                   minHeight: minHeight,
                 }}
               >
@@ -374,13 +388,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                   <div className="flex flex-row justify-between">
                     <h4 className="coding-heading-title">{item.class_title}</h4>
                     <div title="Teacher Project">
-                      {item.project_type === "scratch" ? (
+                      {item.project_type !== "scratch" ? (
                         <>
                           {showScratchProjectTeacher(
                             item.coding_learning_outcome_id
                           )}
                         </>
-                      ) : item.project_type === "python" ? (
+                      ) : item.project_type === "scratch" ? (
                         <>
                           {showPythonProjectTeacher(
                             item.coding_learning_outcome_id
@@ -396,23 +410,9 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                       {item.learning_outcome}
                     </p>
                     <div className="flex flex-row gap-4 flex-wrap">
-                      <div title="Student Project">
-                        {item.project_type === "scratch"
-                          ? showScratchProject(
-                              item,
-                              item.coding_learning_outcome_id
-                            )
-                          : item.project_type === "python"
-                          ? showPythonProject(
-                              item,
-                              item.coding_activity_id,
-                              item.coding_learning_outcome_id
-                            )
-                          : ""}
-                      </div>
-                      <div>
-                        {item.lesson_data.length > 0 &&
-                          item.lesson_data.pdfs.length > 0 && (
+                      {item.lesson_data.length > 0 &&
+                        item.lesson_data.pdfs.length > 0 && (
+                          <div>
                             <div>
                               <a
                                 onClick={() =>
@@ -428,9 +428,34 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                                 </p>
                               </a>
                             </div>
-                          )}
+                          </div>
+                        )}
+                      <div title="Student Project">
+                        {item.project_type === "scratch"
+                          ? showScratchProject(
+                              item,
+                              item.coding_learning_outcome_id
+                            )
+                          : item.project_type === "python"
+                          ? showPythonProject(
+                              item,
+                              item.coding_activity_id,
+                              item.coding_learning_outcome_id
+                            )
+                          : ""}
                       </div>
                     </div>
+                  </div>
+                  <div className="flex flex-row justify-between mt-2">
+                    <p
+                      style={{
+                        fontSize: 10,
+                        fontFamily: "Montserrat",
+                        color: "black",
+                      }}
+                    >
+                      {item?.project_type?.toUpperCase()}
+                    </p>
                   </div>
                 </div>
               </div>
