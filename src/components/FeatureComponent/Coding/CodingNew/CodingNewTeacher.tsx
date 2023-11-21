@@ -388,13 +388,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                   <div className="flex flex-row justify-between">
                     <h4 className="coding-heading-title">{item.class_title}</h4>
                     <div title="Teacher Project">
-                      {item.project_type !== "scratch" ? (
+                      {item.project_type === "scratch" ? (
                         <>
                           {showScratchProjectTeacher(
                             item.coding_learning_outcome_id
                           )}
                         </>
-                      ) : item.project_type === "scratch" ? (
+                      ) : item.project_type === "python" ? (
                         <>
                           {showPythonProjectTeacher(
                             item.coding_learning_outcome_id
