@@ -59,15 +59,19 @@ export default function UploadResource() {
   const handleFileChange = (e: any) => {
     if (filesUpload.length > 0) {
       setAlertMessage("You can only upload one file at a time");
+      setOpenAlertBox(true);
       return;
     }
 
     let verifyExtensionFirst = getExtension(e.target.files[0]?.name);
 
+    console.log("verifyExtensionFirst", verifyExtensionFirst);
+
     let checkFileSize = bytesToMB(e.target.files[0]?.size);
 
     if (checkFileSize > 10) {
       setAlertMessage("Please upload files below 10 MB");
+      setOpenAlertBox(true);
       return;
     }
 
@@ -83,16 +87,24 @@ export default function UploadResource() {
         fileInputRef.current.value = "";
       }
     } else {
+      setOpenAlertBox(true);
       setAlertMessage("Please upload only Images and Pdf");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
       return;
     }
   };
 
   const checkFilesBeforeUploading = () => {
+    console.log("filesUpload", filesUpload.length);
     if (filesUpload.length == 0) {
+      setOpenAlertBox(true);
       setAlertMessage("Please choose atleast one file to upload");
       return false;
     } else if (filesUpload.length > 1) {
+      setOpenAlertBox(true);
       setAlertMessage("Please choose one file to upload");
       return false;
     } else {
@@ -136,6 +148,7 @@ export default function UploadResource() {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then(function (response) {
+          console.log("response", response);
           if (response.data.status) {
             setUploadInProgress(false);
             setFilesUpload([]);
@@ -149,8 +162,10 @@ export default function UploadResource() {
             handleDataTrack(response?.data?.uploaded_images);
           } else {
             setAlertMessage(response.data.message);
+            setFilesUpload([]);
             setAlertWarningType("error");
             setUploadInProgress(false);
+            setOpenAlertBox(true);
             setFilesUpload([]);
           }
 
@@ -158,13 +173,13 @@ export default function UploadResource() {
         })
         .catch(function (error) {
           setUploadInProgress(false);
+          setFilesUpload([]);
+          setOpenAlertBox(true);
           setAlertMessage("Please try again after some time");
           setAlertWarningType("error");
           console.log("error response", error);
         });
     }
-
-    console.log("hehh");
   };
 
   const removeFileByName = (fileName) => {
