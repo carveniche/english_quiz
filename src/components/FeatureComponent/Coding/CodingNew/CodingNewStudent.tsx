@@ -2,6 +2,7 @@ import ScratchLogo from "./assets/images/Scratchlogo.png";
 import PythonLogo from "./assets/images/PythonImage.png";
 import ThunkableLogo from "./assets/images/ThunkableLogo.png";
 
+import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect, useState } from "react";
 
 import { RootState } from "../../../../redux/store";
@@ -52,6 +53,7 @@ interface studentSpecificData {
 export default function CodingNewStudent({ env }: CodingNewStudentProps) {
   const [thunkableLink, setThunkableLink] = useState("");
   const [newCodingData, setNewCodingData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const { userId, liveClassId } = useSelector(
@@ -64,9 +66,11 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
   }, []);
 
   const fetchCodingData = () => {
+    setLoading(true);
     showScratchTeacher(liveClassId, userId)
       .then((res) => {
         if (res.data.status) {
+          setLoading(false);
           setNewCodingData(res.data.activities);
         }
       })
@@ -182,58 +186,70 @@ export default function CodingNewStudent({ env }: CodingNewStudentProps) {
 
   return (
     <div className="flex flex-col gap-5 w-[98%] h-[98%] items-center border border-gray-300 p-5 rounded">
-      {newCodingData.length === 0 && (
-        <div>
-          <p className="text-black font-semibold text-2xl">
-            There is no coding activity for this class. Please check the day
-            wise plan for the next coding activity
-          </p>
-        </div>
-      )}
-      {newCodingData.length > 0 &&
-        newCodingData.map((item: newCodingData, index) => {
-          return (
-            <React.Fragment key={index}>
-              <div className="coding-content-inner relative mt-2">
-                <div
-                  className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
-                "
-                  style={{
-                    borderRadius: "50%",
-                    boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
-                    fontSize: 18,
-                  }}
-                >
-                  Day-{item?.day}
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row justify-between">
-                    <h4 className="coding-heading-title">{item.class_title}</h4>
-                  </div>
-                  <div className="flex flex-row justify-between mt-2">
-                    <p className="text-speedMathTextColor font-semibold text-lg text-center">
-                      {item.learning_outcome}
-                    </p>
-                    <div className="flex flex-row gap-4 flex-wrap">
-                      {item.project_type === "scratch"
-                        ? showScratchProject(
-                            item,
-                            item.coding_learning_outcome_id
-                          )
-                        : item.project_type === "python"
-                        ? showPythonProject(
-                            item,
-                            item.coding_activity_id,
-                            item.coding_learning_outcome_id
-                          )
-                        : showThukableProject()}
-                    </div>
-                  </div>
-                </div>
+      <>
+        {loading ? (
+          <div>
+            <CircularProgress variant="indeterminate" />
+          </div>
+        ) : (
+          <>
+            {newCodingData.length === 0 && (
+              <div>
+                <p className="text-black font-semibold text-2xl">
+                  There is no coding activity for this class. Please check the
+                  day wise plan for the next coding activity
+                </p>
               </div>
-            </React.Fragment>
-          );
-        })}
+            )}
+            {newCodingData.length > 0 &&
+              newCodingData.map((item: newCodingData, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <div className="coding-content-inner relative mt-2">
+                      <div
+                        className="absolute -top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 bg-white aspect-square p-2 font-bold flex items-center justify-center
+                "
+                        style={{
+                          borderRadius: "50%",
+                          boxShadow: "5px 5px 5px 0px rgba(0,0,0,0.2)",
+                          fontSize: 18,
+                        }}
+                      >
+                        Day-{item?.day}
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex flex-row justify-between">
+                          <h4 className="coding-heading-title">
+                            {item.class_title}
+                          </h4>
+                        </div>
+                        <div className="flex flex-row justify-between mt-2">
+                          <p className="text-speedMathTextColor font-semibold text-lg text-center">
+                            {item.learning_outcome}
+                          </p>
+                          <div className="flex flex-row gap-4 flex-wrap">
+                            {item.project_type === "scratch"
+                              ? showScratchProject(
+                                  item,
+                                  item.coding_learning_outcome_id
+                                )
+                              : item.project_type === "python"
+                              ? showPythonProject(
+                                  item,
+                                  item.coding_activity_id,
+                                  item.coding_learning_outcome_id
+                                )
+                              : showThukableProject()}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+          </>
+        )}
+      </>
     </div>
   );
 }

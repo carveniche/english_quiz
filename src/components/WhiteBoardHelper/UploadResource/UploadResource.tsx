@@ -168,8 +168,6 @@ export default function UploadResource() {
             setOpenAlertBox(true);
             setFilesUpload([]);
           }
-
-          console.log("response", response);
         })
         .catch(function (error) {
           setUploadInProgress(false);
@@ -177,7 +175,9 @@ export default function UploadResource() {
           setOpenAlertBox(true);
           setAlertMessage("Please try again after some time");
           setAlertWarningType("error");
-          console.log("error response", error);
+          setTimeout(() => {
+            dispatch(openCloseUploadResourceModalTeacher(false));
+          }, 1500);
         });
     }
   };

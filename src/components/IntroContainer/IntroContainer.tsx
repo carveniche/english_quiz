@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles, Theme, Typography } from "@material-ui/core";
 import Swoosh from "./swoosh";
 import VideoLogo from "./VideoLogo";
-import TwilioLogo from "./TwilioLogo";
+import BegalileoLogoIcon from "../../icons/BegalileoLogoIcon";
 
 const useStyles = makeStyles((theme: Theme) => ({
   background: {
@@ -100,7 +100,8 @@ const IntroContainer = (props: IntroContainerProps) => {
         <div className={classes.innerContainer}>
           <div className={classes.swooshContainer}>
             <div className={classes.logoContainer}>
-              <VideoLogo />
+              {/* <VideoLogo /> */}
+              <BegalileoLogoIcon />
               <Typography variant="h6" className={classes.title}>
                 beGalileo Online Class
               </Typography>
