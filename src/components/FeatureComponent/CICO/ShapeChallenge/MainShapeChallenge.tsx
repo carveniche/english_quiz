@@ -98,6 +98,7 @@ const StudentScreen = ({
     (state: RootState) => state.activeTabReducer
   );
   const timerRef = useRef({ count: 0, id: 0 });
+  const [mounted, setMounted] = useState(false);
   const instruction =
     activityType === CICO.checkIn
       ? StudentCheckInInstruction()
@@ -106,7 +107,6 @@ const StudentScreen = ({
   const savedAnswerRef = useRef(false);
   const whiteBoardRef = useRef(null);
   const handleSubmit = () => {
-    console.log("");
     if (savedAnswerRef.current || checkInImg) return;
     savedAnswerRef.current = true;
     const uri = whiteBoardRef.current.toDataURL();
@@ -123,6 +123,7 @@ const StudentScreen = ({
     formData.append("checkin_ativity_id", checkin_ativity_id);
     formData.append("response", data, "image.png");
     formData.append("duration", timerRef?.current.count);
+
     animationRef.current = setTimeout(() => {
       setBalloonLottie(false);
       clearTimeout(animationRef.current);
@@ -137,6 +138,14 @@ const StudentScreen = ({
       handleSubmit();
     }
     return () => clearTimeout(animationRef.current);
+  }, [otherData?.endCheckInResponse]);
+  useEffect(() => {
+    if (CICO.checkIn) {
+      if (otherData?.endCheckInResponse && mounted) {
+        handleSubmit();
+      }
+      setMounted(true);
+    }
   }, [otherData?.endCheckInResponse]);
   return (
     <>

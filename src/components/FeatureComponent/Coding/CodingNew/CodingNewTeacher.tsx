@@ -243,10 +243,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     });
   };
 
-  const showScratchProjectTeacher = (coding_learning_outcome_id: number) => {
+  const showScratchProjectTeacher = (
+    coding_learning_outcome_id: number,
+    studentName: string
+  ) => {
     return (
       <div
-        className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
+        className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c] relative`}
       >
         <NavLink
           className="flex justify-center items-center"
@@ -264,13 +267,19 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
             })
           }
         >
-          <p className="text-white font-semibold text-sm">Teacher</p>
+          <p className="text-white font-semibold text-sm invisible">
+            {studentName}
+          </p>
+          <p className="text-white font-semibold text-sm absolute">Teacher</p>
         </NavLink>
       </div>
     );
   };
 
-  const showPythonProjectTeacher = (coding_learning_outcome_id: number) => {
+  const showPythonProjectTeacher = (
+    coding_learning_outcome_id: number,
+    studentName: string
+  ) => {
     return (
       <div
         className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
@@ -291,13 +300,16 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
             })
           }
         >
-          <p className="text-white font-semibold text-sm">Teacher</p>
+          <p className="text-white font-semibold text-sm invisible">
+            {studentName}
+          </p>
+          <p className="text-white font-semibold text-sm absolute">Teacher</p>
         </NavLink>
       </div>
     );
   };
 
-  const showThukableProjectTeacher = () => {
+  const showThukableProjectTeacher = (studentName: string) => {
     return (
       <div
         className={`border border-gray-200 rounded-full active p-1 bg-gradient-to-r bg-[#33eb3c]`}
@@ -317,7 +329,10 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
             })
           }
         >
-          <p className="text-white font-semibold text-sm">Teacher</p>
+          <p className="text-white font-semibold text-sm invisible">
+            {studentName}
+          </p>
+          <p className="text-white font-semibold text-sm absolute">Teacher</p>
         </NavLink>
       </div>
     );
@@ -408,21 +423,31 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                           <h4 className="coding-heading-title">
                             {item.class_title}
                           </h4>
-                          <div title="Teacher Project">
+                          <div
+                            title="Teacher Project"
+                            style={{ minWidth: 221, maxWidth: 221 }}
+                            className="flex justify-end"
+                          >
                             {item.project_type === "scratch" ? (
                               <>
                                 {showScratchProjectTeacher(
-                                  item.coding_learning_outcome_id
+                                  item.coding_learning_outcome_id,
+                                  item?.students[0]?.name
                                 )}
                               </>
                             ) : item.project_type === "python" ? (
                               <>
                                 {showPythonProjectTeacher(
-                                  item.coding_learning_outcome_id
+                                  item.coding_learning_outcome_id,
+                                  item?.students[0]?.name
                                 )}
                               </>
                             ) : (
-                              <>{showThukableProjectTeacher()}</>
+                              <>
+                                {showThukableProjectTeacher(
+                                  item?.students[0]?.name
+                                )}
+                              </>
                             )}
                           </div>
                         </div>
@@ -431,7 +456,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                             {item.learning_outcome}
                           </p>
                           <div
-                            className="flex flex-row gap-4 flex-wrap"
+                            className="flex flex-row gap-4 flex-wrap justify-end"
                             style={{ minWidth: 221, maxWidth: 221 }}
                           >
                             {item?.lesson_data?.pdfs?.length > 0 && (
