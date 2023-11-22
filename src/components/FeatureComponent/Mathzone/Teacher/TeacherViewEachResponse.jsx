@@ -15,6 +15,7 @@ export default function TeacherViewEachResponse({
   hideCloseButton,
   questionDatas,
   showSkippedQuestion,
+  showExtraDom,
 }) {
   const { handleModalOff } = useContext(ViewStatusContext);
   return (
@@ -43,6 +44,7 @@ export default function TeacherViewEachResponse({
         studentResponseData={studentResponseData}
         questionData={questionDatas}
         showSkippedQuestion={showSkippedQuestion}
+        showExtraDom={showExtraDom}
       />
     </Modal>
   );

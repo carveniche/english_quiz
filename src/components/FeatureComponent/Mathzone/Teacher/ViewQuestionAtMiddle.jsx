@@ -16,7 +16,11 @@ export default function ViewQuestionAtMiddle() {
     <>
       {questionStatus && Object.keys(currentViewQuestion).length ? (
         <>
-          <div style={{ marginBottom: 10 }}>Q. {currentIndex.index + 1}</div>
+          {currentViewQuestion?.response ? (
+            <div style={{ marginBottom: 10 }}>Q. {currentIndex.index + 1}</div>
+          ) : (
+            ""
+          )}
           <TeacherViewEachResponse
             response={currentViewQuestion?.response}
             type={currentViewQuestion?.type}
@@ -25,6 +29,7 @@ export default function ViewQuestionAtMiddle() {
             questionDatas={currentViewQuestion?.questionDatas}
             showSkippedQuestion={true}
             key={currentIndex.index + 1}
+            showExtraDom={<span>Q.{currentIndex.index + 1}&nbsp;&nbsp;</span>}
           />
         </>
       ) : (
