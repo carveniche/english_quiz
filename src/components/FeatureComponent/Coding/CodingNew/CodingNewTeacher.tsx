@@ -405,31 +405,32 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-row justify-between mt-2">
-                    <p className="text-speedMathTextColor font-semibold text-lg text-center">
+                  <div className="flex flex-row justify-between mt-2 gap-1">
+                    <p className="text-speedMathTextColor font-semibold text-lg text-left">
                       {item.learning_outcome}
                     </p>
-                    <div className="flex flex-row gap-4 flex-wrap">
-                      {item.lesson_data.length > 0 &&
-                        item.lesson_data.pdfs.length > 0 && (
+                    <div
+                      className="flex flex-row gap-4 flex-wrap"
+                      style={{ minWidth: 221, maxWidth: 221 }}
+                    >
+                      {item?.lesson_data?.pdfs?.length > 0 && (
+                        <div>
                           <div>
-                            <div>
-                              <a
-                                onClick={() =>
-                                  openScratchLesson(item.lesson_data.pdfs)
-                                }
-                                className="text-blue-500 hover:text-blue-700 cursor-pointer"
-                              >
-                                <p className="text-speedMathTextColor font-semibold text-lg">
-                                  {item.lesson_data.length > 0 &&
-                                  item.lesson_data.pdfs.length > 0
-                                    ? "View Lesson"
-                                    : "No Lesson"}
-                                </p>
-                              </a>
-                            </div>
+                            <a
+                              onClick={() =>
+                                openScratchLesson(item?.lesson_data?.pdfs)
+                              }
+                              className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                            >
+                              <p className="text-speedMathTextColor font-semibold text-lg">
+                                {item?.lesson_data?.pdfs?.length > 0
+                                  ? "View Lesson"
+                                  : "No Lesson"}
+                              </p>
+                            </a>
                           </div>
-                        )}
+                        </div>
+                      )}
                       <div title="Student Project">
                         {item.project_type === "scratch"
                           ? showScratchProject(
