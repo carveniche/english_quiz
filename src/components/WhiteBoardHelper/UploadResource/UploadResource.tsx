@@ -1,6 +1,6 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BaseUrl from "../../../api/ApiConfig";
 
@@ -23,7 +23,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
+  width: 550,
   height: "auto",
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -143,23 +143,33 @@ export default function UploadResource() {
 
       axios({
         method: "post",
-        url: `${BaseUrl}/app_teachers/upload_resource`,
+        url: `${BaseUrl}/app_teachers/upload_resource_new`,
         data: formdata,
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then(function (response) {
           console.log("response", response);
           if (response.data.status) {
-            setUploadInProgress(false);
-            setFilesUpload([]);
-            dispatch(
-              openClosedUploadResourceWhiteBoard({
-                images: response?.data?.uploaded_images,
-                id: 0,
-              })
-            );
-            dispatch(openCloseUploadResourceModalTeacher(false));
-            handleDataTrack(response?.data?.uploaded_images);
+            if (response.data.converted_status) {
+              setUploadInProgress(false);
+              setFilesUpload([]);
+              dispatch(
+                openClosedUploadResourceWhiteBoard({
+                  images: response?.data?.uploaded_images,
+                  id: 0,
+                })
+              );
+              dispatch(openCloseUploadResourceModalTeacher(false));
+              handleDataTrack(response?.data?.uploaded_images);
+            } else {
+              setUploadInProgress(false);
+              setAlertMessage(
+                "File are uploading please wait for sometime to get them uploaded"
+              );
+              setOpenAlertBox(true);
+              setAlertWarningType("info");
+              setFilesUpload([]);
+            }
           } else {
             setAlertMessage(response.data.message);
             setFilesUpload([]);
@@ -169,7 +179,7 @@ export default function UploadResource() {
             setFilesUpload([]);
           }
         })
-        .catch(function (error) {
+        .catch(function () {
           setUploadInProgress(false);
           setFilesUpload([]);
           setOpenAlertBox(true);
@@ -194,6 +204,20 @@ export default function UploadResource() {
     setFilesUpload(filterData);
   };
 
+  useEffect(() => {
+    if (
+      alertMessage ===
+      "File are uploading please wait for sometime to get them uploaded"
+    ) {
+      dispatch(openCloseUploadResourceModalTeacher(false));
+    }
+  }, [openAlertBox]);
+
+  const closeModalFn = () => {
+    setClose(false);
+    dispatch(openCloseUploadResourceModalTeacher(false));
+  };
+
   return (
     <div>
       <Modal
@@ -208,7 +232,7 @@ export default function UploadResource() {
               size="medium"
               aria-label="close"
               color="inherit"
-              onClick={() => setClose(false)}
+              onClick={() => closeModalFn()}
             >
               <CloseIcon fontSize="small" />
             </IconButton>
@@ -247,6 +271,7 @@ export default function UploadResource() {
                   className="hidden"
                   onChange={handleFileChange}
                   ref={fileInputRef}
+                  accept=".pdf, .jpeg, .jpg, .png"
                 />
 
                 <div className="flex flex-col w-full h-[90px] mt-5">

@@ -7,6 +7,7 @@ import { isTutor, isTutorTechBoth } from "../../../utils/participantIdentity";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useDispatch } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   openCloseUploadResourceModalTeacher,
   toggleUploadResourceDeleteModal,
@@ -455,7 +456,12 @@ export default function WhiteboardToolbar({
             {uploadResourceData?.length > 0 &&
               uploadResourceData?.map(
                 (
-                  item: { name: string; id: number; image_data: string[] },
+                  item: {
+                    name: string;
+                    id: number;
+                    image_data: string[];
+                    converted_status: boolean;
+                  },
                   index
                 ) => {
                   return (
@@ -471,28 +477,46 @@ export default function WhiteboardToolbar({
                         </div>
                         <div className="flex w-[80%] h-full">
                           <p
-                            onClick={() =>
-                              handleSelectPdf({
-                                images: item.image_data,
-                                id: item?.id,
-                              })
+                            onClick={
+                              item.converted_status
+                                ? () =>
+                                    handleSelectPdf({
+                                      images: item.image_data,
+                                      id: item?.id,
+                                    })
+                                : undefined
                             }
-                            className="font-semibold leading-4 tracking-normal text-left"
+                            className={`font-semibold leading-4 tracking-normal text-left ${
+                              !item.converted_status ? "opacity-50" : ""
+                            }`}
                           >
                             {item?.name}
                           </p>
                         </div>
-                        <div
-                          onClick={() =>
-                            openUploadResourceDeleteModal({
-                              id: item.id,
-                              name: item?.name,
-                            })
-                          }
-                          className="flex w-[10%] h-full justify-center items-center cursor-pointer"
-                        >
-                          <UploadResourceDelete />
-                        </div>
+                        {item.converted_status ? (
+                          <div
+                            onClick={() =>
+                              openUploadResourceDeleteModal({
+                                id: item.id,
+                                name: item?.name,
+                              })
+                            }
+                            className="flex w-[10%] h-full justify-center items-center cursor-pointer"
+                          >
+                            <UploadResourceDelete />
+                          </div>
+                        ) : (
+                          <div className="flex w-[10%] h-full justify-center items-center cursor-pointer">
+                            <CircularProgress
+                              style={{
+                                color: "blue",
+                                width: "25px",
+                                height: "25px",
+                              }}
+                              variant="indeterminate"
+                            />
+                          </div>
+                        )}
                       </div>
                     </>
                   );
