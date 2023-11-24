@@ -115,7 +115,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         isCodingIframeOpened
       ) {
         setAlertMessage(
-          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+          "You have to close the coding tab to navigate to other options"
         );
         setOpenAlertBox(true);
         return;
@@ -164,7 +164,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         isCodingIframeOpened
       ) {
         setAlertMessage(
-          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+          "You have to close the coding tab to navigate to other options"
         );
         setOpenAlertBox(true);
         return;
@@ -213,7 +213,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         isCodingIframeOpened
       ) {
         setAlertMessage(
-          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+          "You have to close the coding tab to navigate to other options"
         );
         setOpenAlertBox(true);
         return;
@@ -268,7 +268,7 @@ export default function Navbar({ onClick }: { onClick: Function }) {
         isCodingIframeOpened
       ) {
         setAlertMessage(
-          "Coding is running you can't navigate to other tab instead of you can close this tab (CodingNew)"
+          "You have to close the coding tab to navigate to other options"
         );
         setOpenAlertBox(true);
         return;
