@@ -48,10 +48,6 @@ export default function UploadResource() {
     "info" | "error" | "warning" | undefined
   >("info");
 
-  function getExtension(filename: string) {
-    return filename?.split(".").pop();
-  }
-
   function bytesToMB(bytes) {
     return Number((bytes / (1024 * 1024)).toFixed(2));
   }
@@ -63,10 +59,6 @@ export default function UploadResource() {
       return;
     }
 
-    let verifyExtensionFirst = getExtension(e.target.files[0]?.name);
-
-    console.log("verifyExtensionFirst", verifyExtensionFirst);
-
     let checkFileSize = bytesToMB(e.target.files[0]?.size);
 
     if (checkFileSize > 10) {
@@ -75,25 +67,10 @@ export default function UploadResource() {
       return;
     }
 
-    if (
-      verifyExtensionFirst == "png" ||
-      verifyExtensionFirst == "jpeg" ||
-      verifyExtensionFirst == "jpg" ||
-      verifyExtensionFirst == "pdf"
-    ) {
-      setFilesUpload([...filesUpload, e.target.files[0]]);
+    setFilesUpload([...filesUpload, e.target.files[0]]);
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-    } else {
-      setOpenAlertBox(true);
-      setAlertMessage("Please upload only Images and Pdf");
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-
-      return;
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -222,7 +199,6 @@ export default function UploadResource() {
     <div>
       <Modal
         open={open}
-        // onClose={() => setClose(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

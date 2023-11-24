@@ -74,6 +74,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
     "@types/d3-timer": "^3.0.0",
     "@types/enzyme": "^3.10.13",
     "@types/is-plain-object": "^2.0.4",

@@ -15,5 +15,10 @@ export default {
   ],
   reporters: ["default", "jest-junit"],
   globals: { "ts-jest": { diagnostics: false } },
-  transform: {},
+  moduleNameMapper: {
+    "\\.(svg|png|jpg)$": "<rootDir>/jestFileMock.js",
+  },
+  transform: {
+    "^.+\\.(ts|tsx)$": "ts-jest",
+  },
 };
