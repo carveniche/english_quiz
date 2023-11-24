@@ -103,7 +103,7 @@ const IntroContainer = (props: IntroContainerProps) => {
               {/* <VideoLogo /> */}
               <BegalileoLogoIcon />
               <Typography variant="h6" className={classes.title}>
-                beGalileo Online Class
+                beGalileo ProLearn
               </Typography>
             </div>
           </div>
