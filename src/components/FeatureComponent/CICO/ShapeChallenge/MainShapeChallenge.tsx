@@ -684,7 +684,8 @@ export default function MainShapeChallenge({
           <h1>
             Look like you did'nt submit checkin response, without submitting
             check-in response you cannot go checkout activity so please complete
-            checkin activity first.
+            checkin activity first- Please submit the Check-In activity and then
+            do to the Check-out activity.
           </h1>
         </div>
       )}
