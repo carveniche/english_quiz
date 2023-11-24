@@ -134,7 +134,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
-          className={`border border-gray-200 rounded-full ${
+          className={` relative border border-gray-200 rounded-full ${
             item.status === "active" || item.status === "In progress"
               ? activeProjectBgCss
               : unactiveProjectBgCss
@@ -143,6 +143,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
         >
           {item.status === "active" || item.status === "In progress" ? (
             <NavLink
+              className="flex justify-center items-center"
               to={`/iframeCoding?${getQueryParams()}`}
               onClick={() =>
                 handleClick({
@@ -157,10 +158,18 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 })
               }
             >
-              <p className="text-white font-semibold text-sm">{item.name}</p>
+              <p className="text-white font-semibold text-sm invisible">
+                {item.name.toString().length > "Teacher".length
+                  ? item.name
+                  : "Teacher"}
+              </p>
+              <p className="text-white  font-semibold text-sm absolute">
+                {item.name}
+              </p>
             </NavLink>
           ) : (
             <NavLink
+              className="flex justify-center items-center"
               to={`/iframeCoding?${getQueryParams()}`}
               onClick={() =>
                 handleClick({
@@ -175,7 +184,14 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 })
               }
             >
-              <p className="text-white font-semibold text-sm">{item.name}</p>
+              <p className="text-white font-semibold text-sm invisible">
+                {item.name.toString().length > "Teacher".length
+                  ? item.name
+                  : "Teacher"}
+              </p>
+              <p className="text-white  font-semibold text-sm absolute">
+                {item.name}
+              </p>
             </NavLink>
           )}
         </div>
@@ -191,7 +207,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     return item.students.map((item: studentSpecificData, index) => {
       return (
         <div
-          className={`border border-gray-200 rounded-full ${
+          className={`relative border border-gray-200 rounded-full ${
             item.status === "active" || item.status === "In progress"
               ? activeProjectBgCss
               : unactiveProjectBgCss
@@ -200,6 +216,7 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
         >
           {item.status === "active" || item.status === "In progress" ? (
             <NavLink
+              className="flex justify-center items-center"
               to={`/iframeCoding?${getQueryParams()}`}
               onClick={() =>
                 handleClick({
@@ -214,10 +231,18 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 })
               }
             >
-              <p className="text-white font-semibold text-sm">{item.name}</p>
+              <p className="text-white font-semibold text-sm invisible">
+                {item.name.toString().length > "Teacher".length
+                  ? item.name
+                  : "Teacher"}
+              </p>
+              <p className="text-white  font-semibold text-sm absolute">
+                {item.name}
+              </p>
             </NavLink>
           ) : (
             <NavLink
+              className="flex justify-center items-center"
               to={`/iframeCoding?${getQueryParams()}`}
               onClick={() =>
                 handleClick({
@@ -235,7 +260,14 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                 })
               }
             >
-              <p className="text-white font-semibold text-sm">{item.name}</p>
+              <p className="text-white font-semibold text-sm invisible">
+                {item.name.toString().length > "Teacher".length
+                  ? item.name
+                  : "Teacher"}
+              </p>
+              <p className="text-white  font-semibold text-sm absolute">
+                {item.name}
+              </p>
             </NavLink>
           )}
         </div>
@@ -268,9 +300,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
           }
         >
           <p className="text-white font-semibold text-sm invisible">
-            {studentName}
+            {studentName.toString().length > "Teacher".length
+              ? studentName
+              : "Teacher"}
           </p>
-          <p className="text-white font-semibold text-sm absolute">Teacher</p>
+          <p className="text-white font-semibold text-sm absolute">
+            {"Teacher"}
+          </p>
         </NavLink>
       </div>
     );
@@ -301,9 +337,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
           }
         >
           <p className="text-white font-semibold text-sm invisible">
-            {studentName}
+            {studentName.toString().length > "Teacher".length
+              ? studentName
+              : "Teacher"}
           </p>
-          <p className="text-white font-semibold text-sm absolute">Teacher</p>
+          <p className="text-white font-semibold text-sm absolute">
+            {"Teacher"}
+          </p>
         </NavLink>
       </div>
     );
@@ -330,9 +370,13 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
           }
         >
           <p className="text-white font-semibold text-sm invisible">
-            {studentName}
+            {studentName.toString().length > "Teacher".length
+              ? studentName
+              : "Teacher"}
           </p>
-          <p className="text-white font-semibold text-sm absolute">Teacher</p>
+          <p className="text-white font-semibold text-sm absolute">
+            {"Teacher"}
+          </p>
         </NavLink>
       </div>
     );

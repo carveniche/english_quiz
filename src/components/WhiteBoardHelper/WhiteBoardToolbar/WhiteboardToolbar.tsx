@@ -17,6 +17,7 @@ import { getUploadResourcesList } from "../../../api";
 import Button from "@mui/material/Button";
 import {
   closeUploadResourceWhiteboard,
+  openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
 } from "../../../redux/features/ComponentLevelDataReducer";
 import { ROUTERKEYCONST, UPLOADRESOURCE } from "../../../constants";
@@ -228,6 +229,9 @@ export default function WhiteboardToolbar({
   };
 
   const handleKeyPress = (e: any) => {
+    if (Number(e.target.value) > totalImageLength) {
+      return;
+    }
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       return;
     }
@@ -259,6 +263,24 @@ export default function WhiteboardToolbar({
 
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
+
+  const goBackToCoding = () => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: ROUTERKEYCONST.coding,
+      key: ROUTERKEYCONST.coding,
+      value: {
+        status: false,
+        datatrackName: "openCloseScratchWhiteBoard",
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    dispatch(openClosedScratchWhiteBoard({ status: false }));
+  };
+
   let newToolbar = Toolbar;
   if (removeClearAllBtn) {
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
@@ -318,19 +340,20 @@ export default function WhiteboardToolbar({
             </button>
           ))}
 
-          {currentSelectedScreen === "/lesson" && (
-            <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
-              <input
-                onKeyDown={handleKeyPress}
-                type="text"
-                className="border border-gray w-[35px]  pl-2
+          {currentSelectedScreen === "/lesson" ||
+            (currentSelectedScreen === ROUTERKEYCONST.coding && (
+              <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
+                <input
+                  onKeyDown={handleKeyPress}
+                  type="text"
+                  className="border border-gray w-[35px]  pl-2
                 "
-                defaultValue={currentPdfIndex + 1}
-              ></input>
-              <p>OF</p>
-              <div>{totalImageLength}</div>
-            </div>
-          )}
+                  defaultValue={currentPdfIndex + 1}
+                ></input>
+                <p>OF</p>
+                <div>{totalImageLength}</div>
+              </div>
+            ))}
 
           {isUploadResourceOpen &&
             isTutorTechBoth({ identity: String(role_name) }) &&
@@ -343,6 +366,20 @@ export default function WhiteboardToolbar({
                   style={{ fontSize: "10px" }}
                 >
                   Back to Whiteboard
+                </Button>
+              </div>
+            )}
+
+          {currentSelectedScreen === ROUTERKEYCONST.coding &&
+            isTutorTechBoth({ identity: String(role_name) }) && (
+              <div>
+                <Button
+                  onClick={goBackToCoding}
+                  variant="contained"
+                  color="primary"
+                  style={{ fontSize: "10px" }}
+                >
+                  Back to Coding
                 </Button>
               </div>
             )}

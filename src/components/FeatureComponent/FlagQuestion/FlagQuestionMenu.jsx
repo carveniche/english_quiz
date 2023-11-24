@@ -186,7 +186,7 @@ export default function FlagQuestionMenu(props) {
                     color: "indigo",
                   }}
                 >
-                  Flagged Question
+                  Flagged Questions
                 </div>
                 <div
                   style={{
