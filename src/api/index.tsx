@@ -464,7 +464,7 @@ export const createLiveClassTicket = async (formData: object) =>
   });
 
 export const getUploadResourcesList = async (live_class_id: number) =>
-  axios.get(baseURL + "app_teachers/view_resources", {
+  axios.get(baseURL + "app_teachers/view_resources_new", {
     params: {
       live_class_id,
     },
