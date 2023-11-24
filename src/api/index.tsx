@@ -429,6 +429,52 @@ export const storeCodingLogNewCurriculam = async (
       }
     });
 
+export const storeAllLessonLogs = async (
+  live_class_id: number,
+  lesson_id: any,
+  video_id: any
+) =>
+  axios
+    .get(baseURL + "app_students/live_class_video_lesson_logs", {
+      params: {
+        live_class_id,
+        lesson_id,
+        video_id,
+      },
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data, "h1");
+      } else if (error.request) {
+        console.log(error.request, "h2");
+      } else {
+        console.log("Error", error.message, "h3");
+      }
+    });
+
+export const storeGGBLessonLogs = async (
+  live_class_id: number,
+  lesson_id: any,
+  simulation_id: any
+) =>
+  axios
+    .get(baseURL + "app_students/live_class_video_lesson_logs", {
+      params: {
+        live_class_id,
+        lesson_id,
+        simulation_id,
+      },
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data, "h1");
+      } else if (error.request) {
+        console.log(error.request, "h2");
+      } else {
+        console.log("Error", error.message, "h3");
+      }
+    });
+
 export const showScratchTeacher = async (
   live_class_id: number,
   user_id: number

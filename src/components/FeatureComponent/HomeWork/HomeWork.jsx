@@ -282,7 +282,7 @@ export default function HomeWork() {
                       }}
                       id={styles.titleStatus}
                     >
-                      Home Work
+                      Homework
                     </div>
                   </div>
                   <div
