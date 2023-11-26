@@ -11,7 +11,13 @@ import { getQueryParams } from "../../utils/getQueryParams";
 import TabIcon from "./TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CICO, LESSON, IFRAMENEWCODING, ROUTERKEYCONST } from "../../constants";
+import {
+  CICO,
+  LESSON,
+  IFRAMENEWCODING,
+  ROUTERKEYCONST,
+  GGB,
+} from "../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
@@ -28,14 +34,15 @@ import {
 import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
 import { isGradeAllowed } from "../../utils/isGradeAllowed";
 import CustomAlert from "../DisplayCustomAlert/CustomAlert";
+import { storeAllLessonLogs, storeGGBLessonLogs } from "../../api";
 
 export default function Navbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
-  const { speedMathAlreadyStarted, isCodingIframeOpened } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
+  const { speedMathAlreadyStarted, isCodingIframeOpened, liveClassId } =
+    useSelector((state: RootState) => state.liveClassDetails);
+
   const { currentSelectedRouter } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
@@ -140,6 +147,8 @@ export default function Navbar({ onClick }: { onClick: Function }) {
 
     console.log("Data message send");
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+
+    storeAllLessonLogs(liveClassId, "", extraParams?.videoTagId);
   };
 
   const handleClickSpeedMath = (
@@ -244,6 +253,11 @@ export default function Navbar({ onClick }: { onClick: Function }) {
 
     console.log("Data message send");
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    if (extraParams?.tagType === GGB.type) {
+      storeGGBLessonLogs(liveClassId, "", extraParams?.tagId);
+    } else {
+      storeAllLessonLogs(liveClassId, extraParams?.tagId, "");
+    }
   };
 
   const handleClick = (
