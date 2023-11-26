@@ -371,7 +371,7 @@ export function RenderingQuizPage({
 }) {
   const { setTotalQuestion } = useContext(ViewStatusContext);
   if (obj?.question_data && obj?.question_data[0]?.operation) {
-    obj = replaceJsonData({ ...obj });
+    obj = replaceJsonData(JSON.parse(JSON.stringify(obj)));
   }
   const { currentSelectedRouter, currentSelectedKey } = useSelector(
     (state) => state.activeTabReducer

@@ -42,10 +42,10 @@ export default function StudentSolution({
           temp={temp}
         />
 
-        <ExplanationBoxContainer
+        {/* <ExplanationBoxContainer
           questionData={obj?.question_data[0]}
           temp={temp}
-        />
+        /> */}
       </div>
     </>
   );
