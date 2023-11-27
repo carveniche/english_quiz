@@ -35,7 +35,7 @@ function Cico() {
   const remoteParticipant = speakerViewParticipants.filter((item) => {
     return !allExcludedParticipants.includes(item.identity);
   });
-
+  const [mounting, setMounting] = useState(false);
   const { liveClassId, userId } = useSelector(
     (state: RootState) => state?.liveClassDetails
   );
@@ -136,18 +136,23 @@ function Cico() {
     setLoading(false);
   };
   useEffect(() => {
+    console.log(remoteParticipant.length);
+    if (mounting) return;
+    if (!remoteParticipant.length) return;
     if (allExcludedParticipants.includes(identity ?? "")) {
-      console.log("hello");
       fetchCicoData(cico_type);
+      setMounting(true);
     }
-  }, [cico_type]);
+  }, [cico_type, remoteParticipant.length]);
   useEffect(() => {
+    if (localParticipant?.identity === "tutor") return;
     if (allExcludedParticipants.includes(identity ?? "")) {
       return;
     }
     if (cico_type === CICO.checkIn) updateStudentData();
   }, [cico_type, otherData?.apiData?.status]);
   useEffect(() => {
+    if (localParticipant?.identity === "tutor") return;
     if (allExcludedParticipants.includes(identity ?? "")) {
       return;
     }
@@ -157,7 +162,7 @@ function Cico() {
     otherData?.apiData?.status,
     otherData?.apiData?.hasOwnProperty("student_activity_data"),
   ]);
-  return (
+  return mounting || localParticipant?.identity !== "tutor" ? (
     <>
       {loading ? (
         <h1>Loading....</h1>
@@ -228,11 +233,16 @@ function Cico() {
                     ? {
                         clear: "both",
                         width: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
+                        minHeight: "calc(100% - 40px)",
+                        maxHeight: "calc(100% - 40px)",
                         height: "100%",
                       }
-                    : ""
+                    : {
+                        clear: "both",
+                        width: "100%",
+                        minHeight: "calc(100% - 40px)",
+                        maxHeight: "calc(100% - 40px)",
+                      }
                 }
               >
                 {apiData?.name === "Affirmation" ? (
@@ -273,6 +283,46 @@ function Cico() {
           </QuizPageLayout>
         </div>
       )}
+    </>
+  ) : (
+    <>
+      <div
+        className={`${styles.mainPage} h-full w-full m-0`}
+        style={{ margin: 0, padding: 0, width: "100%" }}
+      >
+        <div
+          style={{
+            width: "100%",
+            padding: 0,
+            margin: 0,
+            height: "fit-content",
+          }}
+          ref={heightRef}
+        >
+          {" "}
+        </div>
+        <QuizPageLayout key={"1"} height={currentHeight}>
+          <div
+            style={{
+              position: "relative",
+              margin: "0 auto",
+              width: "calc(100% - 100px)",
+              maxHeight: `calc(100% - ${true ? 0 : 18}px)`,
+              minHeight: `calc(100% - ${true ? 0 : 18}px)`,
+            }}
+          >
+            <QuizWhitePage>
+              <div className="w-full h-full flex justify-center items-center">
+                <div>
+                  {" "}
+                  Check-in/Check-out activity can be started after the student
+                  has joined in
+                </div>
+              </div>
+            </QuizWhitePage>
+          </div>
+        </QuizPageLayout>
+      </div>
     </>
   );
 }
