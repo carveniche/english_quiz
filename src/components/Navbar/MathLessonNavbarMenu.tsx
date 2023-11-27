@@ -156,7 +156,7 @@ export default function MathLessonNavbarMenu({
                                             {
                                               path: GGB.path,
                                               key: GGB.key,
-                                              name: "Geogebra",
+                                              name: GGB.name,
                                               icon: GGB.icon,
                                               extraParams: {
                                                 imageUrl: tag.images,

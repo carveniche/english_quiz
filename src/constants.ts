@@ -112,7 +112,7 @@ export const GGB = {
   ggbChangeMode: "ggbChangeMode",
   key: "geogebra",
   path: "/geogebra",
-  Name: "Geogebra",
+  name: "Simulation",
   icon: "/menu-icon/MathLessons.svg",
 };
 
