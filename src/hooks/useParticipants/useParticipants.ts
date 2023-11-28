@@ -5,8 +5,12 @@ import { useDispatch } from "react-redux";
 import {
   addParentJoinedClass,
   addTechJoinedClass,
+  setScreenSharePermission,
+  setScreenShareStatus,
 } from "../../redux/features/liveClassDetails";
 import { isParent, isTech } from "../../utils/participantIdentity";
+import { allExcludedParticipants } from "../../utils/excludeParticipant";
+
 /**
  * This hook returns an array of the video room's participants. Unlike the hooks
  * "useSpeakerViewParticipants" and "useGalleryViewParticipants", this hook does not reorder
@@ -47,6 +51,16 @@ export default function useParticipants() {
 
         if (isParent({ identity: participant.identity })) {
           dispatch(addParentJoinedClass(false));
+        }
+
+        if (!allExcludedParticipants.includes(participant.identity)) {
+          dispatch(
+            setScreenSharePermission({
+              status: false,
+              identity: participant.identity,
+            })
+          );
+          dispatch(setScreenShareStatus(false));
         }
 
         setParticipants((prevParticipants) =>
