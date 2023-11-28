@@ -9,8 +9,6 @@ import {
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
 import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
-import { RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 import Draggable from "react-draggable";
 import { ROUTERKEYCONST } from "../../constants";
 
@@ -24,13 +22,9 @@ export default function FloatingParticipant({
   parentRef,
 }: FloatingParticipantProps) {
   const [screenName, setScreenName] = useState("");
-  const [showTeacherView, setShowTeacherView] = useState(false);
+
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-
-  const { remoteParticipantCount } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
 
   const speakerViewParticipants = useSpeakerViewParticipants();
 
@@ -40,20 +34,7 @@ export default function FloatingParticipant({
     }
   }, [screen]);
 
-  // useEffect(() => {
-  //   if (
-  //     screenName !== "/allscreen" &&
-  //     screenName !== "/myscreen" &&
-  //     screenName !== ""
-  //   ) {
-  //     setShowTeacherView(true);
-  //   } else {
-  //     setShowTeacherView(false);
-  //   }
-  // }, [screenName, screen]);
-
   const calculateYPosition = (index: number) => {
-    console.log("index", index);
     if (parentRef.current?.offsetHeight - index * 220 < 0) {
       return 0;
     } else {
@@ -72,8 +53,6 @@ export default function FloatingParticipant({
         return true;
       });
     }
-
-    console.log("finalParticipants", finalParticipants);
 
     return (
       <React.Fragment key={finalParticipants.length + screenName}>
