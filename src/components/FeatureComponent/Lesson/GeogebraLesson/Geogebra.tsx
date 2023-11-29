@@ -78,7 +78,8 @@ export default function Geogebra() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  let currentSelectedItem = activeTabArray[currentSelectedIndex] || {};
+  const { extraParams } = currentSelectedItem;
   const { ggbLink, tagId } = extraParams;
   const [isEnabledWriting, setIsEnabledWriting] = useState(false);
   const elementRef = useRef<typeof Element>(null);
@@ -160,8 +161,7 @@ export default function Geogebra() {
       (students?.length || 0) > 1 &&
       isTutorTechBoth({ identity: role_name.toString() })
     ) {
-      containerHeight = containerHeight;
-      -40 - 16;
+      containerHeight = containerHeight - 40 - 16;
     }
 
     let heightWidthProportion = appletWidth / appletHeight;

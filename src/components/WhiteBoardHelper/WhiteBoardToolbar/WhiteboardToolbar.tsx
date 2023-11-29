@@ -340,20 +340,20 @@ export default function WhiteboardToolbar({
             </button>
           ))}
 
-          {currentSelectedScreen === "/lesson" ||
-            (currentSelectedScreen === ROUTERKEYCONST.coding && (
-              <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
-                <input
-                  onKeyDown={handleKeyPress}
-                  type="text"
-                  className="border border-gray w-[35px]  pl-2
+          {(currentSelectedScreen === "/lesson" ||
+            currentSelectedScreen === ROUTERKEYCONST.coding) && (
+            <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
+              <input
+                onKeyDown={handleKeyPress}
+                type="text"
+                className="border border-gray w-[35px]  pl-2
                 "
-                  defaultValue={currentPdfIndex + 1}
-                ></input>
-                <p>OF</p>
-                <div>{totalImageLength}</div>
-              </div>
-            ))}
+                defaultValue={currentPdfIndex + 1}
+              ></input>
+              <p>OF</p>
+              <div>{totalImageLength}</div>
+            </div>
+          )}
 
           {isUploadResourceOpen &&
             isTutorTechBoth({ identity: String(role_name) }) &&
