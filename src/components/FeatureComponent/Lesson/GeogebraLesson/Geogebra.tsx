@@ -8,6 +8,7 @@ import { isTutorTechBoth } from "../../../../utils/participantIdentity";
 import { useDispatch } from "react-redux";
 import { changeGGbStatus } from "../../../../redux/features/liveClassDetails";
 import UserTab from "../UserTab";
+import { getAppletDetails } from "./utility/GetGeogebraParameterValue";
 const VIEWS = {
   is3D: 1,
   AV: 1,
@@ -197,13 +198,28 @@ export default function Geogebra() {
     applet.inject("geogebra");
     setLoading(false);
   };
+  const loadGeogebra = async (app: any) => {
+    // var applet = new app("5.0", parameter, VIEWS);
+    // // setTimeout(() => {
+    // //   calculateWidthAndHeight(app, applet.getParameters());
+    // // }, 1000);
+    try {
+      let parameterDetails = await getAppletDetails(parameter.material_id);
+      parameterDetails = await parameterDetails.json();
+      let response = parameterDetails?.responses?.response || [];
+      response = response[1];
+      calculateWidthAndHeight(app, response?.item);
+    } catch {
+      var applet = new app("5.0", parameter, VIEWS);
+      setTimeout(() => {
+        calculateWidthAndHeight(app, applet.getParameters());
+        console.log(applet.getParameters());
+      }, 1000);
+    }
+  };
   useEffect(() => {
     const app = window.GGBApplet;
-    var applet = new app("5.0", parameter, VIEWS);
-
-    setTimeout(() => {
-      calculateWidthAndHeight(app, applet.getParameters());
-    }, 1000);
+    loadGeogebra(app);
     return () => {
       appletRef.current?.unregisterClientListener((event) => {
         clientListener(event, appletRef.current);
