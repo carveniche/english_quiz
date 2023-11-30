@@ -9,9 +9,8 @@ import {
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { useEffect, useState } from "react";
 import { excludeParticipantTechSmParent } from "../../utils/excludeParticipant";
-import { RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 import Draggable from "react-draggable";
+import { ROUTERKEYCONST } from "../../constants";
 
 interface FloatingParticipantProps {
   screen: any;
@@ -23,13 +22,9 @@ export default function FloatingParticipant({
   parentRef,
 }: FloatingParticipantProps) {
   const [screenName, setScreenName] = useState("");
-  const [showTeacherView, setShowTeacherView] = useState(false);
+
   const { room } = useVideoContext();
   const localParticipant = room!.localParticipant;
-
-  const { remoteParticipantCount } = useSelector(
-    (state: RootState) => state.liveClassDetails
-  );
 
   const speakerViewParticipants = useSpeakerViewParticipants();
 
@@ -39,204 +34,156 @@ export default function FloatingParticipant({
     }
   }, [screen]);
 
-  useEffect(() => {
+  const calculateYPosition = (index: number, identity?: any) => {
     if (
-      screenName !== "/allscreen" &&
-      screenName !== "/myscreen" &&
-      screenName !== ""
+      parentRef.current?.offsetHeight -
+        index *
+          (isTutor({ identity: identity }) ||
+          (isTutor({ identity: localParticipant.identity }) &&
+            screenName !== ROUTERKEYCONST.myScreen)
+            ? 200
+            : 220) <
+      0
     ) {
-      setShowTeacherView(true);
+      return 0;
     } else {
-      setShowTeacherView(false);
+      return (
+        parentRef.current?.offsetHeight -
+        index *
+          ((isTutor({ identity: identity }) ||
+            isTutor({ identity: localParticipant.identity })) &&
+          screenName !== ROUTERKEYCONST.myScreen
+            ? 200
+            : 220)
+      );
     }
-  }, [screenName, screen]);
-
-  const showViewWithTeacher = () => {
-    const tutorParticipants = speakerViewParticipants.filter((participant) =>
-      isTutor({ identity: participant.identity })
-    );
-
-    const otherParticipants = speakerViewParticipants.filter(
-      (participant) => !isTutor({ identity: participant.identity })
-    );
-
-    const mappedTutors = tutorParticipants.map((participant) => {
-      return excludeParticipantTechSmParent.includes(participant.identity) ? (
-        <React.Fragment key={participant.sid}>
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-        </React.Fragment>
-      ) : (
-        <div
-          className="relative max-h-[225px] max-w-[290px]"
-          key={participant.sid}
-        >
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-          {!allExcludedParticipant({
-            identity: participant.identity,
-          }) && (
-            <ParticipantsAnimationBar
-              localParticipant={localParticipant}
-              participant={participant}
-              screen="myscreen"
-            />
-          )}
-        </div>
-      );
-    });
-
-    const mappedOtherParticipants = otherParticipants.map((participant) => {
-      return excludeParticipantTechSmParent.includes(participant.identity) ? (
-        <React.Fragment key={participant.sid}>
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-        </React.Fragment>
-      ) : (
-        <div
-          className="relative max-h-[225px] max-w-[290px]"
-          key={participant.sid}
-        >
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-          {!allExcludedParticipant({
-            identity: participant.identity,
-          }) && (
-            <ParticipantsAnimationBar
-              localParticipant={localParticipant}
-              participant={participant}
-              screen="myscreen"
-            />
-          )}
-        </div>
-      );
-    });
-
-    const finalMapping = mappedTutors.concat(mappedOtherParticipants);
-
-    return finalMapping;
   };
 
-  const showViewWithoutTeacher = () => {
-    return speakerViewParticipants.map((participant) => {
-      return excludeParticipantTechSmParent.includes(participant.identity) ? (
-        <React.Fragment key={participant.sid}>
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-        </React.Fragment>
-      ) : !isTutor({ identity: participant.identity }) ? (
-        <div
-          className="relative max-h-[225px] max-w-[290px]"
-          key={participant.sid}
-        >
-          <Participant
-            key={participant.sid}
-            participant={participant}
-            fromScreen="allOtherScreens"
-            remoteParticipantIdentity={participant.identity}
-          />
-          {!allExcludedParticipant({
-            identity: participant.identity,
-          }) && (
-            <ParticipantsAnimationBar
-              localParticipant={localParticipant}
-              participant={participant}
-              screen="myscreen"
-            />
-          )}
-        </div>
-      ) : null;
-    });
-  };
+  const commonMappingAllParticipants = () => {
+    let finalParticipants = speakerViewParticipants;
+    if (screenName === ROUTERKEYCONST.myScreen) {
+      finalParticipants = speakerViewParticipants.filter((participant) => {
+        console.log("asa", isTutor({ identity: participant.identity }));
+        if (isTutor({ identity: participant.identity })) {
+          return false;
+        }
+        return true;
+      });
+    }
 
-  const showSelfParticipantView = () => {
+    finalParticipants.sort((a, b) => {
+      if (isTutor({ identity: a.identity })) {
+        return 1;
+      } else if (isTutor({ identity: b.identity })) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
     return (
-      <div className="relative max-h-[225px] max-w-[290px]">
-        <Participant
-          participant={localParticipant}
-          isLocalParticipant={true}
-          remoteParticipantIdentity={localParticipant.identity}
-          fromScreen="allOtherScreens"
-        />
-        {!allExcludedParticipant({
-          identity: localParticipant.identity,
-        }) && (
-          <ParticipantsAnimationBar
-            localParticipant={localParticipant}
-            participant={localParticipant}
-            screen="myscreen"
-          />
+      <React.Fragment key={finalParticipants.length + screenName}>
+        {screenName === ROUTERKEYCONST.myScreen &&
+        isTutor({ identity: localParticipant.identity }) ? null : (
+          <Draggable
+            key={`localParticipant${1}`}
+            defaultPosition={{
+              x: parentRef.current?.clientWidth - 200,
+              y: calculateYPosition(1, localParticipant.identity),
+            }}
+            offsetParent={parentRef.current}
+            bounds={{
+              left: 0,
+              right: parentRef.current?.clientWidth - 200,
+              top: 0,
+              bottom: calculateYPosition(1, localParticipant.identity),
+            }}
+          >
+            <div className="z-10 absolute  max-h-full cursor-pointer ">
+              <div className="relative max-h-[225px] max-w-[290px]">
+                <Participant
+                  participant={localParticipant}
+                  isLocalParticipant={true}
+                  remoteParticipantIdentity={localParticipant.identity}
+                  fromScreen="allOtherScreens"
+                />
+                {!allExcludedParticipant({
+                  identity: localParticipant.identity,
+                }) && (
+                  <ParticipantsAnimationBar
+                    localParticipant={localParticipant}
+                    participant={localParticipant}
+                    screen="myscreen"
+                  />
+                )}
+              </div>
+            </div>
+          </Draggable>
         )}
-      </div>
+
+        {finalParticipants.map((participant, index) => {
+          return excludeParticipantTechSmParent.includes(
+            participant.identity
+          ) ? (
+            <React.Fragment key={participant.sid}>
+              <Participant
+                key={participant.sid}
+                participant={participant}
+                fromScreen="allOtherScreens"
+                remoteParticipantIdentity={participant.identity}
+              />
+            </React.Fragment>
+          ) : (
+            <Draggable
+              key={participant.sid}
+              defaultPosition={{
+                x: parentRef.current?.clientWidth - 200,
+                y:
+                  screenName === ROUTERKEYCONST.myScreen &&
+                  isTutor({ identity: localParticipant.identity })
+                    ? calculateYPosition(index + 1, participant.identity)
+                    : calculateYPosition(index + 2, participant.identity),
+              }}
+              offsetParent={parentRef.current}
+              bounds={{
+                left: 0,
+                right: parentRef.current?.clientWidth - 200,
+                top: 0,
+                bottom:
+                  screenName === ROUTERKEYCONST.myScreen &&
+                  !isTutor({ identity: localParticipant.identity })
+                    ? calculateYPosition(1, participant.identity)
+                    : calculateYPosition(1, participant.identity),
+              }}
+            >
+              <div className="z-10 absolute  max-h-full cursor-pointer">
+                <div
+                  className="relative max-h-[225px] max-w-[290px]"
+                  key={participant.sid}
+                >
+                  <Participant
+                    key={participant.sid}
+                    participant={participant}
+                    fromScreen="allOtherScreens"
+                    remoteParticipantIdentity={participant.identity}
+                  />
+                  {!allExcludedParticipant({
+                    identity: participant.identity,
+                  }) && (
+                    <ParticipantsAnimationBar
+                      localParticipant={localParticipant}
+                      participant={participant}
+                      screen="myscreen"
+                    />
+                  )}
+                </div>
+              </div>
+            </Draggable>
+          );
+        })}
+      </React.Fragment>
     );
   };
 
-  let y =
-    parentRef.current?.clientHeight - (remoteParticipantCount + 1) * 200 < 0
-      ? 0
-      : parentRef.current?.clientHeight - (remoteParticipantCount + 1) * 200;
-  return (
-    <>
-      <Draggable
-        key={remoteParticipantCount + 1}
-        defaultPosition={{
-          x: parentRef.current?.clientWidth - 200,
-          y: y,
-        }}
-        offsetParent={parentRef.current}
-        bounds={{
-          left: 0,
-          right: parentRef.current?.clientWidth - 200,
-          top: 0,
-          bottom: y,
-        }}
-      >
-        <div className="z-10 absolute fit max-h-full cursor-pointer overflow-x-hidden overflow-y-auto">
-          {isTutor({ identity: localParticipant.identity }) ? (
-            <>
-              {screenName !== "/myscreen"
-                ? showSelfParticipantView()
-                : screenName === "/myscreen" &&
-                  !isTutor({ identity: localParticipant.identity }) &&
-                  showSelfParticipantView()}
-              {showTeacherView
-                ? showViewWithTeacher()
-                : showViewWithoutTeacher()}
-            </>
-          ) : (
-            <>
-              {showTeacherView
-                ? showViewWithTeacher()
-                : showViewWithoutTeacher()}
-              {screenName !== "/myscreen"
-                ? showSelfParticipantView()
-                : screenName === "/myscreen" &&
-                  !isTutor({ identity: localParticipant.identity }) &&
-                  showSelfParticipantView()}
-            </>
-          )}
-        </div>
-      </Draggable>
-    </>
-  );
+  return <>{commonMappingAllParticipants()}</>;
 }
