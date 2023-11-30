@@ -34,11 +34,28 @@ export default function FloatingParticipant({
     }
   }, [screen]);
 
-  const calculateYPosition = (index: number) => {
-    if (parentRef.current?.offsetHeight - index * 220 < 0) {
+  const calculateYPosition = (index: number, identity?: any) => {
+    if (
+      parentRef.current?.offsetHeight -
+        index *
+          (isTutor({ identity: identity }) ||
+          (isTutor({ identity: localParticipant.identity }) &&
+            screenName !== ROUTERKEYCONST.myScreen)
+            ? 200
+            : 220) <
+      0
+    ) {
       return 0;
     } else {
-      return parentRef.current?.offsetHeight - index * 220;
+      return (
+        parentRef.current?.offsetHeight -
+        index *
+          ((isTutor({ identity: identity }) ||
+            isTutor({ identity: localParticipant.identity })) &&
+          screenName !== ROUTERKEYCONST.myScreen
+            ? 200
+            : 220)
+      );
     }
   };
 
@@ -54,6 +71,16 @@ export default function FloatingParticipant({
       });
     }
 
+    finalParticipants.sort((a, b) => {
+      if (isTutor({ identity: a.identity })) {
+        return 1;
+      } else if (isTutor({ identity: b.identity })) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
     return (
       <React.Fragment key={finalParticipants.length + screenName}>
         {screenName === ROUTERKEYCONST.myScreen &&
@@ -62,14 +89,14 @@ export default function FloatingParticipant({
             key={`localParticipant${1}`}
             defaultPosition={{
               x: parentRef.current?.clientWidth - 200,
-              y: calculateYPosition(1),
+              y: calculateYPosition(1, localParticipant.identity),
             }}
             offsetParent={parentRef.current}
             bounds={{
               left: 0,
               right: parentRef.current?.clientWidth - 200,
               top: 0,
-              bottom: calculateYPosition(1),
+              bottom: calculateYPosition(1, localParticipant.identity),
             }}
           >
             <div className="z-10 absolute  max-h-full cursor-pointer ">
@@ -114,8 +141,8 @@ export default function FloatingParticipant({
                 y:
                   screenName === ROUTERKEYCONST.myScreen &&
                   isTutor({ identity: localParticipant.identity })
-                    ? calculateYPosition(index + 1)
-                    : calculateYPosition(index + 2),
+                    ? calculateYPosition(index + 1, participant.identity)
+                    : calculateYPosition(index + 2, participant.identity),
               }}
               offsetParent={parentRef.current}
               bounds={{
@@ -125,8 +152,8 @@ export default function FloatingParticipant({
                 bottom:
                   screenName === ROUTERKEYCONST.myScreen &&
                   !isTutor({ identity: localParticipant.identity })
-                    ? calculateYPosition(1)
-                    : calculateYPosition(1),
+                    ? calculateYPosition(1, participant.identity)
+                    : calculateYPosition(1, participant.identity),
               }}
             >
               <div className="z-10 absolute  max-h-full cursor-pointer">
