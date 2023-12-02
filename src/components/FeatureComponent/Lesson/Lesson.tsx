@@ -16,12 +16,15 @@ import WhiteBoard from "../../WhiteBoardHelper/WhiteBoard";
 import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
 import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
+import CommentIcon from "@mui/icons-material/Comment";
+
 export default function Lesson() {
   const childRef = useRef(null);
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -41,7 +44,23 @@ export default function Lesson() {
   );
   const selectedTab = activeTabArray[currentSelectedIndex];
   const { extraParams } = selectedTab || {};
-  const { imageUrl, tagId } = extraParams || [];
+  const { tagId } = extraParams || [];
+
+  let imageUrl = [
+    {
+      comments: "testing1",
+      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
+    },
+    {
+      comments: "testing2",
+      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
+    },
+    {
+      comments: "",
+      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/3.jpg",
+    },
+  ];
+
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
       if (coordinates?.value - 1 === whiteBoardData.currentIndex) {
@@ -162,6 +181,10 @@ export default function Lesson() {
     }
   };
 
+  const handleCollapsibleToggle = () => {
+    setIsCollapsibleOpen(!isCollapsibleOpen);
+  };
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div
@@ -179,7 +202,7 @@ export default function Lesson() {
       >
         <WhiteBoard
           childRef={childRef}
-          images={imageUrl[whiteBoardData.currentIndex]}
+          images={imageUrl[whiteBoardData.currentIndex].url}
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
           }
@@ -226,6 +249,24 @@ export default function Lesson() {
                 <LessonNextIcon />
               </button>
             </div>
+            <div
+              className={`${
+                isCollapsibleOpen ? "visible" : "invisible"
+              } transition-all ease-in-out duration-300 border border-black-500 bg-white absolute bottom-12 min-w-[50px] min-h-[50px] p-5`}
+            >
+              <p> {imageUrl[whiteBoardData.currentIndex].comments}</p>
+            </div>
+            {imageUrl[whiteBoardData.currentIndex].comments !== "" && (
+              <div style={{ marginLeft: 10 }}>
+                <button onClick={handleCollapsibleToggle}>
+                  <CommentIcon
+                    style={{
+                      color: "black",
+                    }}
+                  />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
