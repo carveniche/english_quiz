@@ -3,8 +3,10 @@ import {
   Button,
   FormControl,
   MenuItem,
+  Popover,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { getDemoStudentDetails } from "../../../../api";
@@ -57,6 +59,7 @@ export default function CompletedDemoFeedback({
           showError: false,
           isDisabled: true,
           isEditable: true,
+
           key: "name",
           options: [
             {
@@ -206,6 +209,31 @@ export default function CompletedDemoFeedback({
           isMultiSelect: false,
           isDisabled: false,
           isEditable: false,
+          showKeyIcon: true,
+          buttonRef: null,
+          isOpen: false,
+          popoverData: [
+            {
+              title: "Grasped the Concept Quickly:",
+              description:
+                "The student quickly understood the math concept (e.g., loops asmultiplication) and was able to apply it effectively in the coding activity.",
+            },
+            {
+              title: "Understood with Some Assistance:",
+              description:
+                "The student understood the math concept when guided and was able to apply it in the coding activity with some assistance.",
+            },
+            {
+              title: "Needed Additional Explanation:",
+              description:
+                "The student required additional explanations to understand the math concept and its application in coding.",
+            },
+            {
+              title: "Found it Challenging:",
+              description:
+                "The student found the concept challenging and struggled to apply it in the coding activity.",
+            },
+          ],
           options: [
             {
               label: "Select one of the following",
@@ -287,6 +315,31 @@ export default function CompletedDemoFeedback({
           isMultiSelect: false,
           isDisabled: false,
           isEditable: false,
+          showKeyIcon: true,
+          buttonRef: null,
+          isOpen: false,
+          popoverData: [
+            {
+              title: "Actively Engaged and Conversant:",
+              description:
+                "The student is highly interactive, regularly initiates conversations, asks questions, and actively contributes to discussions without needing prompting.",
+            },
+            {
+              title: "Responsive and Participative on Prompt:",
+              description:
+                "Prompt: The student participates willingly when prompted bythe teacher, responds to questions, and engages in discussions, although they do not typically initiate interactions.",
+            },
+            {
+              title: "Attentive Observer but Rarely Participative:",
+              description:
+                "observes the session with interest, but participates in the discussions infrequently and usually only when directly addressed.",
+            },
+            {
+              title: "Disengaged and No Interest:",
+              description:
+                "The student shows minimal to no interest in the session, rarely interacts, and displays a lack of engagement in both conversations and activities.",
+            },
+          ],
           options: [
             {
               label: "Select one of the following",
@@ -642,6 +695,14 @@ export default function CompletedDemoFeedback({
       setUpdate(!update);
     }
   };
+  const handleOpenPopover = (obj) => {
+    obj.isOpen = true;
+    setUpdate(!update);
+  };
+  const handleClosePopover = (obj) => {
+    obj.isOpen = false;
+    setUpdate(!update);
+  };
   return (
     <>
       {loading ? (
@@ -686,6 +747,53 @@ export default function CompletedDemoFeedback({
                                     >
                                       <img src="/menu-icon/Whiteboard.svg" />
                                     </Button>
+                                  )}
+                                  {subItem?.showKeyIcon && (
+                                    <>
+                                      {" "}
+                                      <Button
+                                        style={{
+                                          paddingLeft: 4,
+                                          minWidth: 20,
+                                          maxWidth: 20,
+                                          boxSizing: "content-box",
+                                        }}
+                                        aria-describedby={subItem.key}
+                                        ref={(el) => (subItem.buttonRef = el)}
+                                        onClick={() =>
+                                          handleOpenPopover(subItem)
+                                        }
+                                      >
+                                        <img src="/menu-icon/letteri.png" />
+                                      </Button>
+                                      {subItem?.isOpen && (
+                                        <Popover
+                                          id={subItem.key}
+                                          open={subItem?.isOpen || false}
+                                          anchorEl={subItem.buttonRef}
+                                          onClose={() =>
+                                            handleClosePopover(subItem)
+                                          }
+                                          anchorOrigin={{
+                                            vertical: "bottom",
+                                            horizontal: "left",
+                                          }}
+                                        >
+                                          <Typography sx={{ p: 2 }}>
+                                            {subItem?.popoverData?.map(
+                                              (popoverItem, popoverKey) => (
+                                                <>
+                                                  <p>
+                                                    <b>{popoverItem?.title}</b>
+                                                    {popoverItem?.description}
+                                                  </p>
+                                                </>
+                                              )
+                                            )}
+                                          </Typography>
+                                        </Popover>
+                                      )}
+                                    </>
                                   )}
                                 </div>
                                 <div>
@@ -747,6 +855,55 @@ export default function CompletedDemoFeedback({
                                       >
                                         <img src="/menu-icon/Whiteboard.svg" />
                                       </Button>
+                                    )}
+                                    {subItem?.showKeyIcon && (
+                                      <>
+                                        {" "}
+                                        <Button
+                                          style={{
+                                            paddingLeft: 4,
+                                            minWidth: 20,
+                                            maxWidth: 20,
+                                            boxSizing: "content-box",
+                                          }}
+                                          aria-describedby={subItem.key}
+                                          ref={(el) => (subItem.buttonRef = el)}
+                                          onClick={() =>
+                                            handleOpenPopover(subItem)
+                                          }
+                                        >
+                                          <img src="/menu-icon/letteri.png" />
+                                        </Button>
+                                        {subItem?.isOpen && (
+                                          <Popover
+                                            id={subItem.key}
+                                            open={subItem?.isOpen || false}
+                                            anchorEl={subItem.buttonRef}
+                                            onClose={() =>
+                                              handleClosePopover(subItem)
+                                            }
+                                            anchorOrigin={{
+                                              vertical: "bottom",
+                                              horizontal: "left",
+                                            }}
+                                          >
+                                            <Typography sx={{ p: 2 }}>
+                                              {subItem?.popoverData?.map(
+                                                (popoverItem, popoverKey) => (
+                                                  <>
+                                                    <p>
+                                                      <b>
+                                                        {popoverItem?.title}
+                                                      </b>
+                                                      {popoverItem?.description}
+                                                    </p>
+                                                  </>
+                                                )
+                                              )}
+                                            </Typography>
+                                          </Popover>
+                                        )}
+                                      </>
                                     )}
                                   </div>
                                 </div>
@@ -879,6 +1036,64 @@ export default function CompletedDemoFeedback({
                                       <img src="/menu-icon/Whiteboard.svg" />
                                     </Button>
                                   )}
+                                  {subItem?.showKeyIcon && (
+                                    <>
+                                      {" "}
+                                      <Button
+                                        style={{
+                                          paddingLeft: 4,
+                                          minWidth: 20,
+                                          maxWidth: 20,
+                                          boxSizing: "content-box",
+                                        }}
+                                        aria-describedby={subItem.key}
+                                        ref={(el) => (subItem.buttonRef = el)}
+                                        onClick={() =>
+                                          handleOpenPopover(subItem)
+                                        }
+                                      >
+                                        <img src="/menu-icon/letteri.png" />
+                                      </Button>
+                                      {subItem?.isOpen && (
+                                        <Popover
+                                          id={subItem.key}
+                                          open={subItem?.isOpen || false}
+                                          anchorEl={subItem.buttonRef}
+                                          onClose={() =>
+                                            handleClosePopover(subItem)
+                                          }
+                                          anchorOrigin={{
+                                            vertical: "bottom",
+                                            horizontal: "left",
+                                          }}
+                                        >
+                                          <Typography
+                                            sx={{
+                                              p: 2,
+                                              maxWidth: 600,
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              gap: "10px",
+                                            }}
+                                          >
+                                            {console.log({ subItem })}
+                                            {subItem?.popoverData?.map(
+                                              (popoverItem, popoverKey) => (
+                                                <React.Fragment
+                                                  key={popoverKey}
+                                                >
+                                                  <p>
+                                                    <b>{popoverItem?.title}</b>
+                                                    {popoverItem?.description}
+                                                  </p>
+                                                </React.Fragment>
+                                              )
+                                            )}
+                                          </Typography>
+                                        </Popover>
+                                      )}
+                                    </>
+                                  )}
                                 </div>
                               </div>
                               {subItem.options?.length ? (
@@ -971,6 +1186,55 @@ export default function CompletedDemoFeedback({
                                         <img src="/menu-icon/Whiteboard.svg" />
                                       </Button>
                                     )}
+                                    {subItem?.showKeyIcon && (
+                                      <>
+                                        {" "}
+                                        <Button
+                                          style={{
+                                            paddingLeft: 4,
+                                            minWidth: 20,
+                                            maxWidth: 20,
+                                            boxSizing: "content-box",
+                                          }}
+                                          aria-describedby={subItem.key}
+                                          ref={(el) => (subItem.buttonRef = el)}
+                                          onClick={() =>
+                                            handleOpenPopover(subItem)
+                                          }
+                                        >
+                                          <img src="/menu-icon/letteri.png" />
+                                        </Button>
+                                        {subItem?.isOpen && (
+                                          <Popover
+                                            id={subItem.key}
+                                            open={subItem?.isOpen || false}
+                                            anchorEl={subItem.buttonRef}
+                                            onClose={() =>
+                                              handleClosePopover(subItem)
+                                            }
+                                            anchorOrigin={{
+                                              vertical: "bottom",
+                                              horizontal: "left",
+                                            }}
+                                          >
+                                            <Typography sx={{ p: 2 }}>
+                                              {subItem?.popoverData?.map(
+                                                (popoverItem, popoverKey) => (
+                                                  <>
+                                                    <p>
+                                                      <b>
+                                                        {popoverItem?.title}
+                                                      </b>
+                                                      {popoverItem?.description}
+                                                    </p>
+                                                  </>
+                                                )
+                                              )}
+                                            </Typography>
+                                          </Popover>
+                                        )}
+                                      </>
+                                    )}
                                   </div>
                                   <div>
                                     <TextField
@@ -1023,6 +1287,59 @@ export default function CompletedDemoFeedback({
                                         >
                                           <img src="/menu-icon/Whiteboard.svg" />
                                         </Button>
+                                      )}
+                                      {subItem?.showKeyIcon && (
+                                        <>
+                                          {" "}
+                                          <Button
+                                            style={{
+                                              paddingLeft: 4,
+                                              minWidth: 20,
+                                              maxWidth: 20,
+                                              boxSizing: "content-box",
+                                            }}
+                                            aria-describedby={subItem.key}
+                                            ref={(el) =>
+                                              (subItem.buttonRef = el)
+                                            }
+                                            onClick={() =>
+                                              handleOpenPopover(subItem)
+                                            }
+                                          >
+                                            <img src="/menu-icon/letteri.png" />
+                                          </Button>
+                                          {subItem?.isOpen && (
+                                            <Popover
+                                              id={subItem.key}
+                                              open={subItem?.isOpen || false}
+                                              anchorEl={subItem.buttonRef}
+                                              onClose={() =>
+                                                handleClosePopover(subItem)
+                                              }
+                                              anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "left",
+                                              }}
+                                            >
+                                              <Typography sx={{ p: 2 }}>
+                                                {subItem?.popoverData?.map(
+                                                  (popoverItem, popoverKey) => (
+                                                    <>
+                                                      <p>
+                                                        <b>
+                                                          {popoverItem?.title}
+                                                        </b>
+                                                        {
+                                                          popoverItem?.description
+                                                        }
+                                                      </p>
+                                                    </>
+                                                  )
+                                                )}
+                                              </Typography>
+                                            </Popover>
+                                          )}
+                                        </>
                                       )}
                                     </div>
                                   </div>
