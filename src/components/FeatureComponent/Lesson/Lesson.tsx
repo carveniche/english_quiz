@@ -4,6 +4,8 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { IconButton } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import {
   isStudentName,
   isTutorTechBoth,
@@ -16,12 +18,15 @@ import WhiteBoard from "../../WhiteBoardHelper/WhiteBoard";
 import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
 import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
+import CommentIcon from "@mui/icons-material/Comment";
+
 export default function Lesson() {
   const childRef = useRef(null);
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
     ...room!.localParticipant.dataTracks.values(),
@@ -42,6 +47,7 @@ export default function Lesson() {
   const selectedTab = activeTabArray[currentSelectedIndex];
   const { extraParams } = selectedTab || {};
   const { imageUrl, tagId } = extraParams || [];
+
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
       if (coordinates?.value - 1 === whiteBoardData.currentIndex) {
@@ -90,6 +96,8 @@ export default function Lesson() {
   };
 
   const handlePdfChange = (val: number) => {
+    setIsCollapsibleOpen(false);
+
     if (
       whiteBoardData.currentIndex + val < imageUrl.length &&
       whiteBoardData.currentIndex + val >= 0
@@ -162,6 +170,10 @@ export default function Lesson() {
     }
   };
 
+  const handleCollapsibleToggle = () => {
+    setIsCollapsibleOpen(!isCollapsibleOpen);
+  };
+
   return (
     <React.Fragment key={`${tagId}`}>
       <div
@@ -179,7 +191,7 @@ export default function Lesson() {
       >
         <WhiteBoard
           childRef={childRef}
-          images={imageUrl[whiteBoardData.currentIndex]}
+          images={imageUrl[whiteBoardData.currentIndex].url}
           whiteBoardData={
             whiteBoardData.whiteBoardData[whiteBoardData.currentIndex] || []
           }
@@ -226,6 +238,36 @@ export default function Lesson() {
                 <LessonNextIcon />
               </button>
             </div>
+            <div
+              className={`${
+                isCollapsibleOpen ? "visible" : "invisible"
+              } transition-all ease-in-out duration-300 border border-black-500 bg-white absolute bottom-12 min-w-[50px] min-h-[50px] max-w-[500px]`}
+            >
+              <div className="flex items-center justify-end">
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCollapsibleToggle}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </div>
+              <div className="p-5">
+                <p> {imageUrl[whiteBoardData.currentIndex].comments}</p>
+              </div>
+            </div>
+            {imageUrl[whiteBoardData.currentIndex].comments !== "" && (
+              <div style={{ marginLeft: 10 }}>
+                <button onClick={handleCollapsibleToggle}>
+                  <CommentIcon
+                    style={{
+                      color: "black",
+                    }}
+                  />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
