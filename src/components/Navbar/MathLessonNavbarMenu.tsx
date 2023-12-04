@@ -266,7 +266,7 @@ export default function MathLessonNavbarMenu({
           }}
         >
           <li className="rounded-sm px-3 pl-6 pr-3 py-3  relative item-center">
-            No Videos Present
+            No Lessons Present
           </li>
         </ul>
       )}

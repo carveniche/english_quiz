@@ -44,22 +44,7 @@ export default function Lesson() {
   );
   const selectedTab = activeTabArray[currentSelectedIndex];
   const { extraParams } = selectedTab || {};
-  const { tagId } = extraParams || [];
-
-  let imageUrl = [
-    {
-      comments: "testing1",
-      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/1.jpg",
-    },
-    {
-      comments: "testing2",
-      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/2.jpg",
-    },
-    {
-      comments: "",
-      url: "https://www.begalileo.com/system/whiteboard_lessons/Grade4/G4_T5_IV_MAT0303/01_IV_MAT0303/3.jpg",
-    },
-  ];
+  const { imageUrl, tagId } = extraParams || [];
 
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
