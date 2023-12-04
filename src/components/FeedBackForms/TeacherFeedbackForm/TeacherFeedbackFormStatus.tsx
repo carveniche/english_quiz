@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { submitStudentFeedbackForm } from "../../../api";
 import RegularFeedback from "./RegularFeedback";
+import CompletedDemoFeedback from "./CompletedDemoFeedbackForm/CompletedDemoFeedback";
 export default function TeacherFeedbackFormStatus() {
   const style = {
     width: "fit-content",
@@ -31,6 +32,8 @@ export default function TeacherFeedbackFormStatus() {
     minHeight: 300,
     borderRadius: 5,
   };
+  const [currentSelectedStudentIndex, setCurrentSelectedStudentIndex] =
+    useState(0);
   const videoCallTokenData = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
@@ -66,90 +69,13 @@ export default function TeacherFeedbackFormStatus() {
     grade: true,
   });
   const [loading, setLoading] = useState(false);
-  const [completedClass, setCompletedClass] = useState({
-    learningStyle: {
-      value: " ",
-      key1: "learning_style",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "learningStyle",
-    },
-    communication: {
-      value: " ",
-      key1: "communication",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "communication",
-    },
-    conceptualKnowledge: {
-      value: " ",
-      key1: "knowledge",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "conceptualKnowledge",
-    },
-    mostLikedFeature: {
-      value: " ",
-      key1: "interest",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "mostLikedFeature",
-    },
-    inClassBehaviour: {
-      value: " ",
-      key1: "behaviour",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "inClassBehaviour",
-    },
-    childCurrentMathLevel: {
-      value: " ",
-      key1: " childCurrentMathLevel",
-      errorMsg: "Please Enter above details",
-      showError: false,
-      key: "childCurrentMathLevel",
-    },
-    comments: {
-      inputForSalesTeam: {
-        key1: "internal_comments",
-        value: "",
-        errorMsg: "Please Enter above details",
-        showError: false,
-        key: "inputForSalesTeam",
-      },
-      pointDiscussed: {
-        key1: "parent_discussion",
-        value: "",
-        errorMsg: "Please Enter above details",
-        showError: false,
-        key: "pointDiscussed",
-      },
-    },
-  });
+
   const [demoStatus, setDemoStatus] = useState("");
   const [selectedReason, setSelectedReason] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name == "reason") {
       setSelectedReason(value);
-    }
-    if (completedClass[name]) {
-      completedClass[name].value = value;
-      completedClass[name].showError = false;
-      setCompletedClass({ ...completedClass });
-    } else if (
-      name === completedClass.comments.inputForSalesTeam.key ||
-      name === completedClass.comments.pointDiscussed.key
-    ) {
-      console.log("right");
-      console.log(completedClass.comments[name], name);
-      completedClass.comments[name].value = value;
-      completedClass.comments[name].showError = false;
-      setCompletedClass({ ...completedClass });
-    } else if (childDetails[name]) {
-      childDetails[name].value = value;
-      childDetails[name].showError = false;
-      setChildDetails({ ...childDetails });
     }
   };
   const handleEnabledDisabledBtn = (name) => {
@@ -158,67 +84,49 @@ export default function TeacherFeedbackFormStatus() {
     setDisabledField({ ...disabledField });
   };
 
-  const handleSubmit = async () => {
-    let isValidated = true;
-    for (let key in childDetails) {
-      if (!childDetails[key].value.trim() && key !== "grade") {
-        isValidated = false;
-        childDetails[key].showError = true;
-      }
-    }
-    for (let key in completedClass) {
-      if (key === "comments") {
-        for (let key1 in completedClass[key]) {
-          if (!completedClass[key][key1].value.trim()) {
-            completedClass[key][key1].showError = true;
-            isValidated = false;
+  const handleSubmit = async (data, studentId) => {
+    let obj = {};
+    for (let information of data) {
+      let details = information?.details || [];
+      for (let item of details) {
+        if (item?.type === "selectchoice") {
+          let value = "";
+          let options = item?.options;
+
+          for (let option of options) {
+            if (option.selected) {
+              value = option.value;
+              if (item.key === "demo_topic") {
+                obj["demo_topic_id"] = option?.id;
+              }
+              break;
+            }
           }
-        }
-      } else {
-        if (!completedClass[key].value.trim()) {
-          completedClass[key].showError = true;
-          isValidated = false;
+          obj[item.key] = value;
+        } else if (item?.type === "keying") {
+          obj[item.key] = item?.options[0]?.value;
         }
       }
     }
-    if (!isValidated) {
-      setChildDetails({ ...childDetails });
-      setCompletedClass({ ...completedClass });
+    obj.user_id = userId;
+    obj.live_class_id = liveClassId;
+    obj.student_id = studentId;
+    obj.last_student =
+      currentSelectedStudentIndex + 1 < videoCallTokenData.students?.length
+        ? "no"
+        : "yes";
+    if (demo) obj.demo_status = "Completed";
+
+    await submitStudentFeedbackForm(obj);
+    if (currentSelectedStudentIndex + 1 < videoCallTokenData.students?.length) {
+      setCurrentSelectedStudentIndex(currentSelectedStudentIndex + 1);
     } else {
-      let paramsObj: any = {};
-      for (let key in childDetails) {
-        if (key != "grade") {
-          // formData.append(childDetails[key].key, childDetails[key].value);
-          paramsObj[childDetails[key].key1] = childDetails[key].value;
-        }
-      }
-      for (let key in completedClass) {
-        if (key === "comments") {
-          for (let key1 in completedClass[key]) {
-            // formData.append(
-            //   completedClass[key][key1].key,
-            //   completedClass[key][key1].value
-            // );
-            paramsObj[completedClass[key][key1].key1] =
-              completedClass[key][key1].value;
-          }
-        } else {
-          // formData.append(completedClass[key].key, completedClass[key].value);
-          paramsObj[completedClass[key].key1] = completedClass[key].value;
-        }
-      }
-      // formData.append("user_id", `${userId}`);
-      // formData.append("live_class_id", `${liveClassId}`);
-      paramsObj.user_id = userId;
-      paramsObj.live_class_id = liveClassId;
-      if (demo) paramsObj.demo_status = "Completed";
-      setLoading(true);
-      await submitStudentFeedbackForm(paramsObj);
       window.close();
       window.location.href = "https://www.begalileo.com/online_teachers";
+      setLoading(true);
     }
   };
-  const handleSubmitIncompleteClass = () => {
+  const handleSubmitIncompleteClass = async () => {
     let isValidated = true;
     for (let key in childDetails) {
       if (!childDetails[key].value.trim()) {
@@ -226,8 +134,19 @@ export default function TeacherFeedbackFormStatus() {
         isValidated = false;
       }
     }
+    let obj = {};
     if (isValidated)
       if (selectedReason) {
+        setLoading(true);
+        obj.student_id = videoCallTokenData.students[0]?.id || "";
+        obj.live_class_id = liveClassId;
+        obj.user_id = userId;
+        obj.demo_status = "incompleted";
+        obj.reason = selectedReason;
+        obj.last_student = "yes";
+        await submitStudentFeedbackForm(obj);
+        window.close();
+        window.location.href = "https://www.begalileo.com/online_teachers";
       } else {
         alert("Please choose the reason");
       }
@@ -293,471 +212,168 @@ export default function TeacherFeedbackFormStatus() {
                       </RadioGroup>
                     </div>
 
-                    {demoStatus && (
-                      <div className="flex gap-2 flex-wrap justify-between">
-                        <div
-                          className="flex flex-col justify-center gap-2"
-                          style={{ flex: 0.33 }}
-                        >
-                          <div style={{ width: "100%" }}>
-                            <label>Child's Name</label>
-                            <Button
-                              sx={{
-                                minWidth: 20,
-                                boxSizing: "content-box",
-                              }}
-                              disabled={!disabledField["name"]}
-                              onClick={() => handleEnabledDisabledBtn("name")}
-                            >
-                              <img src="/menu-icon/Whiteboard.svg" />
-                            </Button>
-                          </div>
-                          <div>
-                            <TextField
-                              type="text"
-                              required={true}
-                              variant="outlined"
-                              disabled={disabledField["name"]}
-                              name="name"
-                              value={childDetails.name.value}
-                              onChange={handleChange}
-                              sx={{ width: "100%" }}
-                            />
-                          </div>
-                          {childDetails.name.showError && (
-                            <p
-                              className="feedback_error_msg"
-                              style={{ color: "red" }}
-                            >
-                              {childDetails.name.errorMsg}
-                            </p>
-                          )}
+                    {demoStatus === "incompleted" && (
+                      <>
+                        <div className="flex gap-2 flex-wrap justify-between">
+                          <h3 className="feedbackformsubtitle">
+                            STUDENT INFORMATION
+                          </h3>
                         </div>
-                        <div
-                          className="flex flex-col justify-center gap-2"
-                          style={{ flex: 0.33 }}
-                        >
-                          <div>
-                            <label>Child's Gender</label>
-                            <Button
-                              style={{
-                                paddingLeft: 4,
-                                minWidth: 20,
-                                boxSizing: "content-box",
-                              }}
-                              disabled={!disabledField["gender"]}
-                              onClick={() => handleEnabledDisabledBtn("gender")}
-                            >
-                              <img src="/menu-icon/Whiteboard.svg" />
-                            </Button>
-                          </div>
-                          <Box sx={{ minWidth: 220 }}>
-                            <FormControl fullWidth>
-                              <InputLabel
-                                id="demo-simple-select-label"
-                                style={{ minWidth: 220 }}
-                                disabled={disabledField["name"]}
-                              >
-                                Gender
-                              </InputLabel>
-                              <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Gender"
-                                required={true}
-                                value={childDetails.gender.value}
-                                disabled={disabledField["gender"]}
-                                name="gender"
-                                onChange={handleChange}
-                              >
-                                <MenuItem value={"boy"}>Boy</MenuItem>
-                                <MenuItem value={"girl"}>Girl</MenuItem>
-                              </Select>
-                            </FormControl>
-                          </Box>
-                          {childDetails.gender.showError && (
-                            <p
-                              className="feedback_error_msg"
-                              style={{ color: "red" }}
-                            >
-                              {childDetails.gender.errorMsg}
-                            </p>
-                          )}
-                        </div>
-                        <div
-                          className="flex flex-col justify-center gap-2"
-                          style={{ flex: 0.33 }}
-                        >
+                        <div className="flex gap-2 flex-wrap justify-between">
                           <div
-                            style={{
-                              minHeight: 32,
-                              display: "flex",
-                              alignItems: "center",
-                            }}
+                            className="flex flex-col justify-center gap-2"
+                            style={{ flex: 0.33 }}
                           >
-                            <label>Child's Grade</label>
-                          </div>
-                          <Box sx={{ minWidth: 220 }}>
-                            <FormControl fullWidth>
+                            <div style={{ width: "100%" }}>
+                              <label>Child's Name</label>
+                              <Button
+                                sx={{
+                                  minWidth: 20,
+                                  boxSizing: "content-box",
+                                }}
+                                disabled={!disabledField["name"]}
+                                onClick={() => handleEnabledDisabledBtn("name")}
+                              >
+                                <img src="/menu-icon/Whiteboard.svg" />
+                              </Button>
+                            </div>
+                            <div>
                               <TextField
                                 type="text"
+                                required={true}
                                 variant="outlined"
-                                label="Grade"
-                                disabled={disabledField["grade"]}
-                                name="grade"
+                                disabled={disabledField["name"]}
+                                name="name"
+                                value={childDetails.name.value}
                                 onChange={handleChange}
-                                value={childDetails.grade.value}
+                                sx={{ width: "100%" }}
                               />
-                            </FormControl>
-                          </Box>
-                          {childDetails.grade.showError && (
-                            <p
-                              className="feedback_error_msg"
-                              style={{ color: "red" }}
+                            </div>
+                            {childDetails.name.showError && (
+                              <p
+                                className="feedback_error_msg"
+                                style={{ color: "red" }}
+                              >
+                                {childDetails.name.errorMsg}
+                              </p>
+                            )}
+                          </div>
+                          <div
+                            className="flex flex-col justify-center gap-2"
+                            style={{ flex: 0.33 }}
+                          >
+                            <div>
+                              <label>Child's Gender</label>
+                              <Button
+                                style={{
+                                  paddingLeft: 4,
+                                  minWidth: 20,
+                                  boxSizing: "content-box",
+                                }}
+                                disabled={!disabledField["gender"]}
+                                onClick={() =>
+                                  handleEnabledDisabledBtn("gender")
+                                }
+                              >
+                                <img src="/menu-icon/Whiteboard.svg" />
+                              </Button>
+                            </div>
+                            <Box sx={{ minWidth: 220 }}>
+                              <FormControl fullWidth>
+                                <InputLabel
+                                  id="demo-simple-select-label"
+                                  style={{ minWidth: 220 }}
+                                  disabled={disabledField["name"]}
+                                >
+                                  Gender
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="demo-simple-select"
+                                  label="Gender"
+                                  required={true}
+                                  value={childDetails.gender.value}
+                                  disabled={disabledField["gender"]}
+                                  name="gender"
+                                  onChange={handleChange}
+                                >
+                                  <MenuItem value={"boy"}>Boy</MenuItem>
+                                  <MenuItem value={"girl"}>Girl</MenuItem>
+                                </Select>
+                              </FormControl>
+                            </Box>
+                            {childDetails.gender.showError && (
+                              <p
+                                className="feedback_error_msg"
+                                style={{ color: "red" }}
+                              >
+                                {childDetails.gender.errorMsg}
+                              </p>
+                            )}
+                          </div>
+                          <div
+                            className="flex flex-col justify-center gap-2"
+                            style={{ flex: 0.33 }}
+                          >
+                            <div
+                              style={{
+                                minHeight: 32,
+                                display: "flex",
+                                alignItems: "center",
+                              }}
                             >
-                              {childDetails.grade.errorMsg}
-                            </p>
-                          )}
+                              <label>Child's Grade</label>
+                            </div>
+                            <Box sx={{ minWidth: 220 }}>
+                              <FormControl fullWidth>
+                                <TextField
+                                  type="text"
+                                  variant="outlined"
+                                  label="Grade"
+                                  disabled={disabledField["grade"]}
+                                  name="grade"
+                                  onChange={handleChange}
+                                  value={childDetails.grade.value}
+                                />
+                              </FormControl>
+                            </Box>
+                            {childDetails.grade.showError && (
+                              <p
+                                className="feedback_error_msg"
+                                style={{ color: "red" }}
+                              >
+                                {childDetails.grade.errorMsg}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )}
                     {demoStatus === "completed" ? (
                       <>
-                        <div className="flex gap-2 flex-wrap justify-between">
-                          <div
-                            className="flex flex-col justify-center gap-2"
-                            style={{ flex: 0.33 }}
-                          >
-                            <div>
-                              <label>Learning Style</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={completedClass.learningStyle.value}
-                                  required={true}
-                                  name={completedClass.learningStyle.key}
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select Learning Style
-                                  </MenuItem>
-                                  <MenuItem value={"Keen listener"}>
-                                    Keen listener
-                                  </MenuItem>
-                                  <MenuItem value={"Quick learner"}>
-                                    Quick learner
-                                  </MenuItem>
-                                  <MenuItem value={"Social learner"}>
-                                    Social learner
-                                  </MenuItem>
-                                  <MenuItem value={"Active learner"}>
-                                    Active learner
-                                  </MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.learningStyle.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.learningStyle.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                          <div
-                            className="flex flex-col justify-center gap-2 "
-                            style={{ flex: 0.33 }}
-                          >
-                            <div>
-                              <label>Communication</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={completedClass.communication.value}
-                                  name={completedClass.communication.key}
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select Communication
-                                  </MenuItem>
-                                  <MenuItem value={"Open & Friendly"}>
-                                    Open & Friendly
-                                  </MenuItem>
-                                  <MenuItem value={"Shy & Quiet"}>
-                                    Shy & Quiet
-                                  </MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.communication.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.communication.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                          <div
-                            className="flex flex-col justify-center gap-2"
-                            style={{ flex: 0.33 }}
-                          >
-                            <div>
-                              <label>Conceptual Knowledge</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={
-                                    completedClass.conceptualKnowledge.value
-                                  }
-                                  name={completedClass.conceptualKnowledge.key}
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select Conceptual Knowledge
-                                  </MenuItem>
-                                  <MenuItem value={"Strong"}>Strong</MenuItem>
-                                  <MenuItem value={"Needs Support"}>
-                                    Needs Support
-                                  </MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.conceptualKnowledge.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.conceptualKnowledge.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex gap-2 flex-wrap justify-between">
-                          <div
-                            className="flex flex-col justify-center gap-2"
-                            style={{ flex: 0.33, maxWidth: "33%" }}
-                          >
-                            <div>
-                              <label>Feature most liked by the child</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={completedClass.mostLikedFeature.value}
-                                  name={completedClass.mostLikedFeature.key}
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select Feature most liked by the child
-                                  </MenuItem>
-                                  <MenuItem value={"Whiteboard lesson"}>
-                                    Whiteboard lesson
-                                  </MenuItem>
-                                  <MenuItem value={"Math game"}>
-                                    Math game
-                                  </MenuItem>
-                                  <MenuItem value={"Speed math"}>
-                                    Speed math
-                                  </MenuItem>
-                                  <MenuItem value={"Video"}>Video</MenuItem>
-                                  <MenuItem value={"Coding"}>Coding</MenuItem>
-                                  <MenuItem value={"Logical"}>Logical</MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.mostLikedFeature.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.mostLikedFeature.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                          <div
-                            className="flex flex-col justify-center gap-2"
-                            style={{ flex: 0.33, maxWidth: "33%" }}
-                          >
-                            <div>
-                              <label>In class behaviour</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={completedClass.inClassBehaviour.value}
-                                  name={completedClass.inClassBehaviour.key}
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select In class behaviour
-                                  </MenuItem>
-                                  <MenuItem value={"Open to challenges"}>
-                                    Open to challenges
-                                  </MenuItem>
-                                  <MenuItem
-                                    value={"Inclined to be in comfort zone"}
-                                  >
-                                    Inclined to be in comfort zone
-                                  </MenuItem>
-                                  <MenuItem value={"Bored and Distracted"}>
-                                    Bored and Distracted
-                                  </MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.inClassBehaviour.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.inClassBehaviour.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                          <div
-                            className="flex flex-col justify-center gap-2"
-                            style={{ flex: 0.33, maxWidth: "33%" }}
-                          >
-                            <div>
-                              <label>Child’s current math level</label>
-                            </div>
-                            <Box sx={{ minWidth: 220 }}>
-                              <FormControl fullWidth>
-                                <Select
-                                  value={
-                                    completedClass.childCurrentMathLevel.value
-                                  }
-                                  name={
-                                    completedClass.childCurrentMathLevel.key
-                                  }
-                                  onChange={handleChange}
-                                >
-                                  <MenuItem value=" ">
-                                    Select child’s current math level
-                                  </MenuItem>
-                                  <MenuItem value={"Above Grade Level"}>
-                                    Above Grade Level
-                                  </MenuItem>
-                                  <MenuItem value={"Grade Level"}>
-                                    Grade Level
-                                  </MenuItem>
-                                  <MenuItem value={"Below Grade Level"}>
-                                    Below Grade Level
-                                  </MenuItem>
-                                </Select>
-                              </FormControl>
-                            </Box>
-                            {completedClass.childCurrentMathLevel.showError && (
-                              <p
-                                className="feedback_error_msg"
-                                style={{ color: "red" }}
-                              >
-                                {completedClass.childCurrentMathLevel.errorMsg}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div>
-                          <h5
-                            style={{
-                              fontSize: 20,
-                              fontWeight: "bold",
-                              textAlign: "center",
-                            }}
-                          >
-                            Comments for Internal Team
-                          </h5>
-                        </div>
-                        <div>
-                          <div className="flex gap-2 items-center">
-                            <div style={{ width: 190, minWidth: 190 }}>
-                              <label>Points discussed with parents</label>
-                            </div>
-                            <div className="w-full">
-                              <TextareaAutosize
-                                minRows={3}
-                                style={{
-                                  width: "100%",
-                                  border: "1px solid black",
-                                  padding: 5,
-                                  borderRadius: 5,
-                                  maxWidth: 350,
-                                }}
-                                placeholder="Your Comments"
-                                name={
-                                  completedClass.comments.pointDiscussed.key
-                                }
-                                value={
-                                  completedClass.comments.pointDiscussed.value
-                                }
-                                onChange={handleChange}
-                              />
-                              {completedClass.comments.pointDiscussed
-                                .showError && (
-                                <p
-                                  className="feedback_error_msg"
-                                  style={{ color: "red" }}
-                                >
-                                  {
-                                    completedClass.comments.pointDiscussed
-                                      .errorMsg
-                                  }
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div className="flex gap-2 items-center">
-                            <div style={{ width: 190, minWidth: 190 }}>
-                              <label>Any inputs for the sales team?</label>
-                            </div>
-                            <div className="w-full">
-                              <TextareaAutosize
-                                minRows={3}
-                                style={{
-                                  width: "100%",
-                                  border: "1px solid black",
-                                  padding: 5,
-                                  borderRadius: 5,
-                                  maxWidth: 350,
-                                }}
-                                placeholder="Your Comments"
-                                name={
-                                  completedClass.comments.inputForSalesTeam.key
-                                }
-                                value={
-                                  completedClass.comments.inputForSalesTeam
-                                    .value
-                                }
-                                onChange={handleChange}
-                              />
-                              {completedClass.comments.inputForSalesTeam
-                                .showError && (
-                                <p
-                                  className="feedback_error_msg"
-                                  style={{ color: "red" }}
-                                >
-                                  {
-                                    completedClass.comments.inputForSalesTeam
-                                      .errorMsg
-                                  }
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <hr />
-                        <div style={{ textAlign: "center" }}>
-                          <Button variant="contained" onClick={handleSubmit}>
-                            Submit
-                          </Button>
-                        </div>
+                        <CompletedDemoFeedback
+                          key={`${videoCallTokenData.students[currentSelectedStudentIndex]?.id}`}
+                          student_id={`${
+                            videoCallTokenData.students[
+                              currentSelectedStudentIndex
+                            ]?.id || ""
+                          }`}
+                          liveClassId={`${liveClassId}`}
+                          handleSubmit={handleSubmit}
+                          studentGrade={videoCallTokenData.grade}
+                          studentGender={`${
+                            videoCallTokenData.students[
+                              currentSelectedStudentIndex
+                            ]?.gender || ""
+                          }`}
+                          studentName={`${videoCallTokenData.students[currentSelectedStudentIndex]?.name}`}
+                          last_student={
+                            currentSelectedStudentIndex + 1 ===
+                            videoCallTokenData.students?.length
+                              ? true
+                              : false
+                          }
+                        />
                       </>
                     ) : demoStatus === "incompleted" ? (
                       <>

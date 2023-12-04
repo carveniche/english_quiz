@@ -552,3 +552,11 @@ export const getGGbResponse = (params: object) => {
     },
   });
 };
+
+export const getDemoStudentDetails = (params: object) => {
+  return axios(baseURL + "app_students/demo_feedback_form_data", {
+    params: {
+      ...params,
+    },
+  });
+};

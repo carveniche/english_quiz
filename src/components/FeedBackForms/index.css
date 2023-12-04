@@ -25,3 +25,8 @@
   background: linear-gradient(90deg, #3e74ff, #3e46ff);
   color: #fff;
 }
+h3.feedbackformsubtitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
