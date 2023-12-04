@@ -4,6 +4,8 @@ import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { LESSON, ROUTERKEYCONST, WHITEBOARD } from "../../../constants";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { IconButton } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import {
   isStudentName,
   isTutorTechBoth,
@@ -94,6 +96,8 @@ export default function Lesson() {
   };
 
   const handlePdfChange = (val: number) => {
+    setIsCollapsibleOpen(false);
+
     if (
       whiteBoardData.currentIndex + val < imageUrl.length &&
       whiteBoardData.currentIndex + val >= 0
@@ -237,9 +241,21 @@ export default function Lesson() {
             <div
               className={`${
                 isCollapsibleOpen ? "visible" : "invisible"
-              } transition-all ease-in-out duration-300 border border-black-500 bg-white absolute bottom-12 min-w-[50px] min-h-[50px] p-5`}
+              } transition-all ease-in-out duration-300 border border-black-500 bg-white absolute bottom-12 min-w-[50px] min-h-[50px] max-w-[500px]`}
             >
-              <p> {imageUrl[whiteBoardData.currentIndex].comments}</p>
+              <div className="flex items-center justify-end">
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={handleCollapsibleToggle}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </div>
+              <div className="p-5">
+                <p> {imageUrl[whiteBoardData.currentIndex].comments}</p>
+              </div>
             </div>
             {imageUrl[whiteBoardData.currentIndex].comments !== "" && (
               <div style={{ marginLeft: 10 }}>
