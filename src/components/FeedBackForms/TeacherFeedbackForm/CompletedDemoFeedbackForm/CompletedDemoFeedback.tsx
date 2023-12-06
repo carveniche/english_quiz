@@ -20,7 +20,7 @@ const functionMathzoneLevelObject = (
 ) => {
   return {
     label: label,
-    type: "selectchoice",
+    type: "keying",
     isMultiSelect: false,
     options: [{ value: value, selected: true, label: optionLabel }],
     isDisabled: true,
@@ -176,7 +176,7 @@ export default function CompletedDemoFeedback({
       details: [
         {
           label: "Highest Level Attempted",
-          type: "selectchoice",
+          type: "keying",
           isMultiSelect: false,
           options: [],
           isDisabled: true,
@@ -185,7 +185,7 @@ export default function CompletedDemoFeedback({
         },
         {
           label: "Number of Correct Answers",
-          type: "selectchoice",
+          type: "keying",
           isMultiSelect: false,
           options: [
             {
@@ -306,7 +306,7 @@ export default function CompletedDemoFeedback({
           ],
           showError: false,
           errorMsg: "This field is required",
-          key: "learing_attitude",
+          key: "learning_attitute",
           selectedIndex: 0,
         },
         {
@@ -345,11 +345,6 @@ export default function CompletedDemoFeedback({
               label: "Select one of the following",
               value: " ",
               selected: true,
-            },
-            {
-              label: "Actively Engaged and Conversant",
-              value: "Actively Engaged and Conversant",
-              selected: false,
             },
             {
               label: "Actively Engaged and Conversant",
@@ -397,7 +392,7 @@ export default function CompletedDemoFeedback({
         {
           type: "keying",
           label: "Key points to discuss with parent",
-          key: "parent_discussion",
+          key: "points_discussed_with_parent",
           isDisabled: false,
           isEditable: false,
           showError: false,
@@ -463,6 +458,7 @@ export default function CompletedDemoFeedback({
       {
         label: data?.speed_math_correct || "",
         value: data?.speed_math_correct || "",
+        total: data?.speed_math_total || "",
         selected: true,
       },
     ];
@@ -528,6 +524,13 @@ export default function CompletedDemoFeedback({
         `${selectedObect?.level2_count || 0}`,
         "level2_count",
         `${selectedObect?.level2_count || 0}`,
+        ""
+      );
+      details[4] = functionMathzoneLevelObject(
+        "Higher Order",
+        `${selectedObect?.higher_order_count || 0}`,
+        "higher_order_count",
+        `${selectedObect?.higher_order_count || 0}`,
         ""
       );
       for (let item of details) {
@@ -981,21 +984,23 @@ export default function CompletedDemoFeedback({
                               className="flex flex-col justify-center gap-2"
                               style={{ flex: 1 / item?.details?.length }}
                             >
-                              <div style={{ width: "100%" }}>
-                                <label>{subItem?.label}</label>
-                                <Button
-                                  style={{
-                                    paddingLeft: 4,
-                                    minWidth: 20,
-                                    boxSizing: "content-box",
-                                  }}
-                                  onClick={() =>
-                                    handleEnabledDisabledBtn(key, subKey)
-                                  }
-                                >
-                                  <img src="/menu-icon/Whiteboard.svg" />
-                                </Button>
-                              </div>
+                              {subItem?.isEditable && (
+                                <div style={{ width: "100%" }}>
+                                  <label>{subItem?.label}</label>
+                                  <Button
+                                    style={{
+                                      paddingLeft: 4,
+                                      minWidth: 20,
+                                      boxSizing: "content-box",
+                                    }}
+                                    onClick={() =>
+                                      handleEnabledDisabledBtn(key, subKey)
+                                    }
+                                  >
+                                    <img src="/menu-icon/Whiteboard.svg" />
+                                  </Button>
+                                </div>
+                              )}
                               <div>
                                 <TextField
                                   type="text"

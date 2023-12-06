@@ -91,19 +91,14 @@ export default function TeacherFeedbackFormStatus() {
       for (let item of details) {
         if (item?.type === "selectchoice") {
           let value = "";
-          let options = item?.options;
-
-          for (let option of options) {
-            if (option.selected) {
-              value = option.value;
-              if (item.key === "demo_topic") {
-                obj["demo_topic_id"] = option?.id;
-              }
-              break;
-            }
-          }
+          let option = item?.options[item?.selectedIndex || 0] || {};
+          value = option?.value || "";
+          if (item?.key === "demo_topic") obj["demo_topic_id"] = option?.id;
           obj[item.key] = value;
         } else if (item?.type === "keying") {
+          if (item?.key === "speed_math_correct") {
+            obj["speed_math_total"] = item?.options[0]?.total;
+          }
           obj[item.key] = item?.options[0]?.value;
         }
       }
