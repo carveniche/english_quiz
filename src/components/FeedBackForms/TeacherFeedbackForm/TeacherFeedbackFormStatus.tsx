@@ -202,7 +202,7 @@ export default function TeacherFeedbackFormStatus() {
                         <FormControlLabel
                           value="incompleted"
                           control={<Radio />}
-                          label="InComplete"
+                          label="Incomplete"
                         />
                       </RadioGroup>
                     </div>

@@ -60,7 +60,7 @@ export default function CompletedDemoFeedback({
           isDisabled: true,
           isEditable: true,
 
-          key: "name",
+          key: "student_name",
           options: [
             {
               value: studentName,
@@ -352,6 +352,11 @@ export default function CompletedDemoFeedback({
               selected: false,
             },
             {
+              label: "Responsive and Participative on Prompt",
+              value: "Responsive and Participative on Prompt",
+              selected: false,
+            },
+            {
               label: "Attentive Observer but Rarely Participative",
               value: "Attentive Observer but Rarely Participative",
               selected: false,
@@ -391,7 +396,7 @@ export default function CompletedDemoFeedback({
         },
         {
           type: "keying",
-          label: "Key points to discuss with parent",
+          label: "Key points discussed with the parent",
           key: "points_discussed_with_parent",
           isDisabled: false,
           isEditable: false,
@@ -984,9 +989,9 @@ export default function CompletedDemoFeedback({
                               className="flex flex-col justify-center gap-2"
                               style={{ flex: 1 / item?.details?.length }}
                             >
-                              {subItem?.isEditable && (
-                                <div style={{ width: "100%" }}>
-                                  <label>{subItem?.label}</label>
+                              <div style={{ width: "100%" }}>
+                                <label>{subItem?.label}</label>
+                                {subItem?.isEditable && (
                                   <Button
                                     style={{
                                       paddingLeft: 4,
@@ -999,8 +1004,9 @@ export default function CompletedDemoFeedback({
                                   >
                                     <img src="/menu-icon/Whiteboard.svg" />
                                   </Button>
-                                </div>
-                              )}
+                                )}
+                              </div>
+
                               <div>
                                 <TextField
                                   type="text"
@@ -1407,13 +1413,13 @@ export default function CompletedDemoFeedback({
               })}
             </>
           )}
+          <div style={{ textAlign: "center" }}>
+            <Button variant="contained" onClick={handleValidationAndSubmit}>
+              {last_student ? "Submit" : "Submit and Next"}
+            </Button>
+          </div>
         </>
       )}
-      <div style={{ textAlign: "center" }}>
-        <Button variant="contained" onClick={handleValidationAndSubmit}>
-          {last_student ? "Submit" : "Submit and Next"}
-        </Button>
-      </div>
     </>
   );
 }
