@@ -28,6 +28,7 @@ export const math_ClassType = [
 export const coding_ClassType = [
   ROUTERKEYCONST.allScreen,
   ROUTERKEYCONST.myScreen,
+  ROUTERKEYCONST.whiteboard.key,
   ROUTERKEYCONST.coding,
   CICO.key,
   ROUTERKEYCONST.miscellaneous.key,
