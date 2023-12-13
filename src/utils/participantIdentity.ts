@@ -5,10 +5,20 @@ interface IdentityObject {
 }
 
 export function isStudentName({ identity }: IdentityObject) {
-  let studentName = identity?.split("-")[1];
+  let studentName = "";
 
-  studentName = studentName.split(" ");
-  studentName = studentName.slice(0, 2).join(" ");
+  if (identity) {
+    const splitIdentity = identity.split("-");
+    if (splitIdentity.length > 1) {
+      studentName = splitIdentity[1].split(" ").slice(0, 2).join(" ");
+    } else {
+      // Handle the case when there is no hyphen in the identity
+      studentName = "Nil";
+    }
+  } else {
+    // Handle the case when identity is undefined
+    studentName = "Nil";
+  }
 
   return studentName;
 }
