@@ -12,9 +12,11 @@ import { submitStudentFeedbackForm } from "../../../api";
 export default function RegularFeedback({
   userId,
   liveClassId,
+  student_id,
 }: {
   userId: string;
   liveClassId: string;
+  student_id: string;
 }) {
   let [choices, setChoices] = useState<number[]>([]);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -111,6 +113,8 @@ export default function RegularFeedback({
     let paramsObj = {
       user_id: userId,
       live_class_id: liveClassId,
+      student_id: student_id,
+      last_student: "yes",
       feedback: feedback.join(","),
       comments: comments,
       is_completed: isCompleted ? "yes" : "no",

@@ -76,7 +76,6 @@ export default function MathzoneWhiteBoard({
             left: -50,
           }}
         >
-          (
           <p
             className="pt-3"
             onClick={onShowRoughBoard}
@@ -96,7 +95,6 @@ export default function MathzoneWhiteBoard({
           >
             {isMathZoneWhiteBoard ? "CLOSE WHITEBOARD" : "OPEN WHITEBOARD"}
           </p>
-          )
         </div>
       )}
       {isMathZoneWhiteBoard && (

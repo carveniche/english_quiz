@@ -112,6 +112,7 @@ export const TeacherQuizDisplay = ({ obj, showSolution }) => {
             obj={obj}
             temp={temp}
             showCorrectIncorrectImage={false}
+            showExplanation={true}
           />
         )}
       </div>

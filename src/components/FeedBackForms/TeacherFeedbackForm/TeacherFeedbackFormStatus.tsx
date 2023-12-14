@@ -432,7 +432,11 @@ export default function TeacherFeedbackFormStatus() {
           </div>
         </Modal>
       ) : (
-        <RegularFeedback userId={`${userId}`} liveClassId={`${liveClassId}`} />
+        <RegularFeedback
+          userId={`${userId}`}
+          liveClassId={`${liveClassId}`}
+          student_id={`${videoCallTokenData.students[0]?.id || ""}`}
+        />
       )}
     </>
   );

@@ -9,6 +9,7 @@ export default function StudentSolution({
   obj,
   temp,
   showCorrectIncorrectImage,
+  showExplanation,
 }) {
   const scrollRef = useRef(null);
   useEffect(() => {
@@ -42,10 +43,12 @@ export default function StudentSolution({
           temp={temp}
         />
 
-        {/* <ExplanationBoxContainer
-          questionData={obj?.question_data[0]}
-          temp={temp}
-        /> */}
+        {showExplanation && (
+          <ExplanationBoxContainer
+            questionData={obj?.question_data[0]}
+            temp={temp}
+          />
+        )}
       </div>
     </>
   );

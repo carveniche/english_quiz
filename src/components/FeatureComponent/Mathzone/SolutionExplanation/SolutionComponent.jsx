@@ -16,6 +16,7 @@ export default function SolutionComponent({
   showStudentSolution,
   showTeacherSolution,
   showCorrectIncorrectImage,
+  showExplanation,
 }) {
   return (
     <>
@@ -26,6 +27,7 @@ export default function SolutionComponent({
             obj={obj}
             temp={temp}
             showCorrectIncorrectImage={showCorrectIncorrectImage}
+            showExplanation={showExplanation}
           />
         )}
       </>
