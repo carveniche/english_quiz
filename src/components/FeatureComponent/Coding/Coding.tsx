@@ -28,7 +28,7 @@ export default function Coding() {
   };
 
   const renderCoding = () => {
-    if (class_type === "math_coding") {
+    if (class_type === "math_coding" || class_type === "coding") {
       if (demo) {
         if (show_new_codings) {
           return showNewCoding();
