@@ -84,9 +84,6 @@ export default function Geogebra() {
   let { extraParams } = currentSelectedItem;
   extraParams = extraParams || {};
   const { ggbLink, tagId } = extraParams;
-  if (!ggbLink) {
-    return <h3>GGb project is not found</h3>;
-  }
 
   const [isEnabledWriting, setIsEnabledWriting] = useState(false);
   const elementRef = useRef<typeof Element>(null);
@@ -313,6 +310,11 @@ export default function Geogebra() {
       }
     }
   }, [ggbData.currentSelectedStudentId]);
+
+  if (!ggbLink) {
+    return <h3>GGb project is not found</h3>;
+  }
+
   return (
     <div ref={elementRef} className="w-full h-full">
       <div className="w-fit m-auto">
