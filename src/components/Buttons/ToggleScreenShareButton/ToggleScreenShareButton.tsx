@@ -33,8 +33,19 @@ export default function ToggleScreenShareButton(props: { disabled?: boolean }) {
   const screenShareParticipant = useScreenShareParticipant();
   const { toggleScreenShare } = useVideoContext();
   const disableScreenShareButton = Boolean(screenShareParticipant);
-  const isScreenShareSupported =
-    navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+  let isScreenShareSupported = false;
+
+  try {
+    isScreenShareSupported = !!(
+      navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
+    );
+  } catch (error) {
+    // Handle the error, log it, or take appropriate action
+    console.error("Error checking screen share support:", error);
+  }
+
+  // const isScreenShareSupported =
+  //   navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
   const isDisabled =
     props.disabled || disableScreenShareButton || !isScreenShareSupported;
 

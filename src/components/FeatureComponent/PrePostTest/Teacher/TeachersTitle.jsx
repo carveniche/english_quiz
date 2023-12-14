@@ -15,7 +15,8 @@ export default function TeachersTitle({
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
   );
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  let selectedActiveTab = activeTabArray[currentSelectedIndex];
+  const { extraParams } = selectedActiveTab || {};
   const totalQuestionArray = new Array(totalQuestion || 5).fill(1);
   const [selectedStudent, setSelectedStudent] = useState("");
   const handleSelectedStudent = (identity) => {

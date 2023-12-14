@@ -48,7 +48,9 @@ export default function SpeedMath() {
     speedMathScoreofAllParticipant,
   } = useSelector((state: RootState) => state.liveClassDetails);
 
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  const selectedTab = activeTabArray[currentSelectedIndex];
+
+  const { extraParams } = selectedTab || {};
 
   const speedMathGameLevel = Number(extraParams.speedMathLevel);
 

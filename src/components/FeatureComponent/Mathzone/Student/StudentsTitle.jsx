@@ -11,7 +11,9 @@ export default function StudentsTitle({
     (state) => state.activeTabReducer
   );
 
-  const { extraParams } = activeTabArray[currentSelectedIndex];
+  const selectedTab = activeTabArray[currentSelectedIndex];
+
+  const { extraParams } = selectedTab || {};
   return (
     <div
       className={`flex bg-F5F5F5 ${

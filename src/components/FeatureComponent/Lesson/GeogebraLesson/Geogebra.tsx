@@ -80,8 +80,14 @@ export default function Geogebra() {
     (state: RootState) => state.activeTabReducer
   );
   let currentSelectedItem = activeTabArray[currentSelectedIndex] || {};
-  const { extraParams } = currentSelectedItem;
+
+  let { extraParams } = currentSelectedItem;
+  extraParams = extraParams || {};
   const { ggbLink, tagId } = extraParams;
+  if (!ggbLink) {
+    return <h3>GGb project is not found</h3>;
+  }
+
   const [isEnabledWriting, setIsEnabledWriting] = useState(false);
   const elementRef = useRef<typeof Element>(null);
   let link = ggbLink?.split("/");
