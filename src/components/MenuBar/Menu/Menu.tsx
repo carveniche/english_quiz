@@ -44,9 +44,6 @@ export default function Menu(props: { buttonClassName?: string }) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
-
-  //   const { setIsGalleryViewActive, isGalleryViewActive } = useAppState();
-
   const { room, setIsBackgroundSelectionOpen } = useVideoContext();
 
   const anchorRef = useRef<HTMLButtonElement>(null);

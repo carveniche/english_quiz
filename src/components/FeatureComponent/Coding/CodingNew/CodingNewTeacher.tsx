@@ -131,7 +131,8 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     item: newCodingData,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData, index) => {
+    let students = item?.students || [];
+    return students.map((item: studentSpecificData, index) => {
       return (
         <div
           className={` relative border border-gray-200 rounded-full ${
@@ -204,7 +205,8 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
     coding_activity_id: number,
     coding_learning_outcome_id: number
   ) => {
-    return item.students.map((item: studentSpecificData, index) => {
+    let students = item?.students || [];
+    return students.map((item: studentSpecificData, index) => {
       return (
         <div
           className={`relative border border-gray-200 rounded-full ${
@@ -476,20 +478,20 @@ export default function CodingNewTeacher({ env }: CodingNewTeacherProps) {
                               <>
                                 {showScratchProjectTeacher(
                                   item.coding_learning_outcome_id,
-                                  item?.students[0]?.name
+                                  item?.students[0]?.name || ""
                                 )}
                               </>
                             ) : item.project_type === "python" ? (
                               <>
                                 {showPythonProjectTeacher(
                                   item.coding_learning_outcome_id,
-                                  item?.students[0]?.name
+                                  item?.students[0]?.name || ""
                                 )}
                               </>
                             ) : (
                               <>
                                 {showThukableProjectTeacher(
-                                  item?.students[0]?.name
+                                  item?.students[0]?.name || ""
                                 )}
                               </>
                             )}

@@ -46,6 +46,8 @@ export default function StudentFeedbackForm2({
     let obj = {
       live_class_id: liveClassId,
       user_id: userId,
+      student_id: userId,
+      last_student: "yes",
       feedback: selectedValue?.text || "",
       comments: "",
     };
