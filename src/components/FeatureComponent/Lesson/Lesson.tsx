@@ -164,11 +164,11 @@ export default function Lesson() {
       </>
     );
 
-  const handleClearButton = () => {
-    if (childRef.current) {
-      childRef.current();
-    }
-  };
+  // const handleClearButton = () => {
+  //   if (childRef.current) {
+  //     childRef.current();
+  //   }
+  // };
 
   const handleCollapsibleToggle = () => {
     setIsCollapsibleOpen(!isCollapsibleOpen);
@@ -212,14 +212,14 @@ export default function Lesson() {
       <div className="flex flex-row w-full h-[50px] justify-center items-center">
         {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
           <>
-            <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
+            {/* <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
               <button
                 onClick={() => handleClearButton()}
                 className="flex justify-center items-center"
               >
                 <LessonDeleteIcon />
               </button>
-            </div>
+            </div> */}
             <div className="flex gap-2 w-[56px] h-[28px] justify-center items-center ml-[5px] bg-[#000]  rounded-full">
               <button
                 onClick={() => {

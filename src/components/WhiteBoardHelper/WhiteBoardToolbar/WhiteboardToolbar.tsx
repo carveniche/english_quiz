@@ -286,12 +286,12 @@ export default function WhiteboardToolbar({
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
 
-  if (
-    (uploadResourceImages.length > 1 && isUploadResourceOpen) ||
-    currentSelectedScreen === "/lesson"
-  ) {
-    newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
-  }
+  // if (
+  //   (uploadResourceImages.length > 1 && isUploadResourceOpen) ||
+  //   currentSelectedScreen === "/lesson"
+  // ) {
+  //   newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
+  // }
 
   if (
     currentSelectedScreen === "/lesson" ||
