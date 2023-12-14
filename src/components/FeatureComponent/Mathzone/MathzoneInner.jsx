@@ -58,12 +58,11 @@ export default function MathzoneInner() {
     currentSelectedKey,
     activeTabArray,
   } = useSelector((state) => state.activeTabReducer);
-
+  let activeTabData = activeTabArray[currentSelectedIndex];
   const handleDataTrack = (data, identity) => {
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
     ];
-    let activeTabData = activeTabArray[currentSelectedIndex];
     let DataTrackObj = {
       pathName: currentSelectedRouter,
       key: currentSelectedKey,
@@ -89,10 +88,6 @@ export default function MathzoneInner() {
     level,
     identity
   ) => {
-    let isAuthorizedUser = isTutorTechBoth({ identity });
-    if (!isAuthorizedUser) {
-      return;
-    }
     let { data } = await startPracticeMathzone({
       live_class_id: live_class_id,
       sub_concept_id: concept,
@@ -103,7 +98,6 @@ export default function MathzoneInner() {
       setLoading(false);
       setObj({ ...data });
       setPracticeId(data?.live_class_practice_id || "");
-      handleDataTrack({ data }, identity);
     }
   };
   const handleNextQuestion = async (
@@ -132,7 +126,6 @@ export default function MathzoneInner() {
     }
   };
   React.useEffect(() => {
-    setLoading(true);
     startPracticeQuestion(liveClassId, concept, tag, level, localParticipant);
   }, []);
   React.useEffect(() => {
