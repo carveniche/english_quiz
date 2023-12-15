@@ -508,6 +508,26 @@ export default function WhiteBoard({
     };
   }
 
+  const handleScrollUp = () => {
+    if (whiteBoardContainerRef.current) {
+      whiteBoardContainerRef.current.scrollTop -= 100; // Adjust the value as needed
+    }
+  };
+
+  const handleScrollDown = () => {
+    if (whiteBoardContainerRef.current) {
+      whiteBoardContainerRef.current.scrollTop += 100; // Adjust the value as needed
+    }
+  };
+
+  const handleScrollIpadUploadResource = (value: string) => {
+    if (value === "UP") {
+      handleScrollUp();
+    } else {
+      handleScrollDown();
+    }
+  };
+
   return (
     <div className="w-full h-full p-1">
       <WhiteboardToolbar
@@ -517,6 +537,7 @@ export default function WhiteBoard({
         currentPdfIndex={currentPdfIndex}
         handleDataTrackPdfChange={handleDataTrack}
         removeClearAllBtn={removeClearAllBtn}
+        handleScrollIpadUploadResource={handleScrollIpadUploadResource}
       />
       <div
         className={`${

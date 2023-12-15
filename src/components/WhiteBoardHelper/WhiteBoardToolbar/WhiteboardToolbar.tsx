@@ -28,6 +28,9 @@ import FilesUploadIcon from "../UploadResource/UploadResourceIcons/FilesUploadIc
 import UploadResourceFileTextIcon from "../UploadResource/UploadResourceIcons/UploadResourceFileTextIcon";
 import UploadResourceDelete from "../UploadResource/UploadResourceIcons/UploadResourceDelete";
 import UploadResourceDeleteModal from "../UploadResource/UploadResourceDeleteModal";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import { iPadDevice, isIpadDeviceChrome } from "../../../utils/devices";
 
 export default function WhiteboardToolbar({
   handleClick,
@@ -36,6 +39,7 @@ export default function WhiteboardToolbar({
   currentPdfIndex,
   handleDataTrackPdfChange,
   removeClearAllBtn,
+  handleScrollIpadUploadResource,
 }: {
   handleClick: Function;
   closeToolbarPopup: boolean;
@@ -43,6 +47,7 @@ export default function WhiteboardToolbar({
   currentPdfIndex: number;
   removeClearAllBtn: boolean;
   handleDataTrackPdfChange: Function | undefined;
+  handleScrollIpadUploadResource: Function;
 }) {
   const { room } = useVideoContext();
   const [id, setId] = useState(0);
@@ -313,6 +318,10 @@ export default function WhiteboardToolbar({
     checkUploadResourceList();
   };
 
+  const scrollIpadUploadResources = (value: string) => {
+    handleScrollIpadUploadResource(value);
+  };
+
   return (
     <>
       <div className="relative z-[1]">
@@ -354,6 +363,32 @@ export default function WhiteboardToolbar({
               <div>{totalImageLength}</div>
             </div>
           )}
+
+          {isUploadResourceOpen &&
+            !isTutorTechBoth({ identity: String(role_name) }) &&
+            currentSelectedScreen === ROUTERKEYCONST.whiteboard.path &&
+            (iPadDevice || isIpadDeviceChrome) && (
+              <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
+                <div>
+                  <button onClick={() => scrollIpadUploadResources("UP")}>
+                    <KeyboardDoubleArrowUpIcon
+                      style={{
+                        color: "blue",
+                      }}
+                    />
+                  </button>
+                </div>
+                <div>
+                  <button onClick={() => scrollIpadUploadResources("DOWN")}>
+                    <KeyboardDoubleArrowDownIcon
+                      style={{
+                        color: "blue",
+                      }}
+                    />
+                  </button>
+                </div>
+              </div>
+            )}
 
           {isUploadResourceOpen &&
             isTutorTechBoth({ identity: String(role_name) }) &&
