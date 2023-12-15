@@ -157,6 +157,7 @@ export default function DisplayHomeWorkQuestion({
         homeWorkId
       );
       handleChangeHomeQuestionReview(0);
+      handleFlagQuestionChange(0);
       handleShowQuestion({
         val: true,
         studentName: homewWorkStudentName,
