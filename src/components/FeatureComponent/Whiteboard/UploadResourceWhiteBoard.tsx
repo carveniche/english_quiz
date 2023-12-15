@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import { changePdfIndex } from "../../../redux/features/ComponentLevelDataReducer";
 import HelperWhiteBoard from "../../WhiteBoardHelper/HelperWhiteBoard";
 import LessonPreviousIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
-import LessonDeleteIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
 import LessonNextIcon from "../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
+import { Tooltip } from "@material-ui/core";
 
 export default function UploadResourceWhiteBoard() {
   const childRef = useRef(null);
@@ -27,12 +27,27 @@ export default function UploadResourceWhiteBoard() {
   );
   const dispatch = useDispatch();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
   const { currentSelectedRouter } = useSelector(
     (state: RootState) => state.activeTabReducer
   );
+
+  const showUploadResourceLessonThrottleTooltip =
+    isButtonDisabled && [0, 1].includes(whiteBoardData?.currentIndex);
+
+  const handlePdfChangeThrottled = (val: number) => {
+    if (!isButtonDisabled) {
+      handlePdfChange(val);
+      setIsButtonDisabled(true);
+
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
+    }
+  };
 
   const handlePdfChange = (val: number) => {
     if (
@@ -70,11 +85,12 @@ export default function UploadResourceWhiteBoard() {
     }
   }, [whiteBoardData.currentIndex]);
 
-  const handleClearButton = () => {
-    if (childRef.current) {
-      childRef.current();
-    }
-  };
+  // const handleClearButton = () => {
+  //   if (childRef.current) {
+  //     childRef.current();
+  //   }
+  // };
+
   return (
     <div
       className={`${
@@ -87,26 +103,27 @@ export default function UploadResourceWhiteBoard() {
         uploadResourceImages.length > 1 && (
           <div className="absolute bottom-0 right-1/2 flex justify-center items-center z-10 mb-2">
             <>
-              <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
-                <button
-                  onClick={() => handleClearButton()}
-                  className="flex justify-center items-center"
-                >
-                  <LessonDeleteIcon />
-                </button>
-              </div>
               <div className="flex gap-2 w-[56px] h-[28px] justify-center items-center ml-[5px] bg-[#000]  rounded-full">
-                <button
-                  onClick={() => {
-                    handlePdfChange(-1);
-                  }}
-                  className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+                <Tooltip
+                  title="Wait for 5 seconds before pressing again"
+                  open={showUploadResourceLessonThrottleTooltip}
+                  placement="top"
                 >
-                  <LessonPreviousIcon />
-                </button>
+                  <span>
+                    <button
+                      onClick={() => {
+                        handlePdfChangeThrottled(-1);
+                      }}
+                      className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+                    >
+                      <LessonPreviousIcon />
+                    </button>
+                  </span>
+                </Tooltip>
+
                 <button
                   onClick={() => {
-                    handlePdfChange(1);
+                    handlePdfChangeThrottled(1);
                   }}
                   className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
                 >

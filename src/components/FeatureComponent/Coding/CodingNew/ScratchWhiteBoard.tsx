@@ -12,16 +12,17 @@ import {
   SCRATCHLESSON,
   WHITEBOARD,
 } from "../../../../constants";
-import WhiteboardImageRender from "../../../WhiteBoardHelper/WhiteboardImageRenderer/WhiteboardImageRender";
+
 import WhiteBoard from "../../../WhiteBoardHelper/WhiteBoard";
 
-import LessonDeleteIcon from "../../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonDeleteIcon";
 import LessonNextIcon from "../../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonNextIcon";
 import LessonPreviousIcon from "../../../WhiteBoardHelper/WhiteBoardLessonIcons/LessonPreviousIcon";
 import { useEffect, useRef, useState } from "react";
+import { Tooltip } from "@material-ui/core";
 
 export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const childRef = useRef(null);
   const { room } = useVideoContext();
   const [localDataTrackPublication] = [
@@ -41,6 +42,10 @@ export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
     (state: RootState) => state.videoCallTokenData
   );
   const imageUrl = pdfImages || [];
+
+  const showLessonThrottleTooltip =
+    isButtonDisabled && [0, 1].includes(whiteBoardData?.currentIndex);
+
   const handleDataTrack = (coordinates) => {
     if (coordinates?.type === "pageChange") {
       if (coordinates?.value - 1 === whiteBoardData.currentIndex) {
@@ -81,6 +86,17 @@ export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
       },
     };
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
+  const handlePdfChangeThrottled = (val: number) => {
+    if (!isButtonDisabled) {
+      handlePdfChange(val);
+      setIsButtonDisabled(true);
+
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 5000);
+    }
   };
 
   const handlePdfChange = (val: number) => {
@@ -158,14 +174,12 @@ export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
       <div
         className={`${isImageLoaded ? "visible" : "invisible"} relative m-auto`}
         style={{
-          height: isImageLoaded
-            ? "fit-content"
-            : `${
-                isTutorTechBoth({ identity: String(role_name) })
-                  ? "calc(100% - 50px)"
-                  : "100%"
-              }  `,
-          width: isImageLoaded ? "fit-content" : "100%",
+          height: `${
+            isTutorTechBoth({ identity: String(role_name) })
+              ? "calc(100% - 50px)"
+              : "100%"
+          }  `,
+          width: "100%",
         }}
       >
         <WhiteBoard
@@ -191,26 +205,27 @@ export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
       <div className="flex flex-row w-full h-[50px] justify-center items-center">
         {isTutorTechBoth({ identity: String(role_name) }) && isImageLoaded && (
           <>
-            {/* <div className="flex w-[28px] h-[28px] justify-center items-center bg-[#000] hover:bg-[#292929] rounded-full">
-              <button
-                onClick={() => handleClearButton()}
-                className="flex justify-center items-center"
-              >
-                <LessonDeleteIcon />
-              </button>
-            </div> */}
             <div className="flex gap-2 w-[56px] h-[28px] justify-center items-center ml-[5px] bg-[#000]  rounded-full">
-              <button
-                onClick={() => {
-                  handlePdfChange(-1);
-                }}
-                className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+              <Tooltip
+                title="Wait for 5 seconds before pressing again"
+                open={showLessonThrottleTooltip}
+                placement="top"
               >
-                <LessonPreviousIcon />
-              </button>
+                <span>
+                  <button
+                    onClick={() => {
+                      handlePdfChangeThrottled(-1);
+                    }}
+                    className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
+                  >
+                    <LessonPreviousIcon />
+                  </button>
+                </span>
+              </Tooltip>
+
               <button
                 onClick={() => {
-                  handlePdfChange(1);
+                  handlePdfChangeThrottled(1);
                 }}
                 className="flex hover:bg-[#292929] w-[24px] h-[24px] rounded-full"
               >

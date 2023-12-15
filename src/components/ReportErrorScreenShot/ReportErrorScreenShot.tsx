@@ -20,9 +20,16 @@ export default function ReportErrorScreenShot() {
     (state: RootState) => state.liveClassDetails
   );
 
-  const currentSelectedScreen = useSelector(
-    (state: RootState) => state.activeTabReducer.currentSelectedRouter
-  );
+  const {
+    activeTabArray,
+    currentSelectedKey,
+    currentSelectedIndex,
+    currentSelectedRouter,
+  } = useSelector((state: RootState) => state.activeTabReducer);
+
+  const selectedTab = activeTabArray[currentSelectedIndex];
+  const { extraParams } = selectedTab || {};
+  const { tagId, videoTagId } = extraParams || [];
 
   const canvas = useRef(null);
 
@@ -36,8 +43,23 @@ export default function ReportErrorScreenShot() {
       case "/myscreen":
         screenName = "My Screen";
         break;
+      case "whiteboard":
+        screenName = "Whiteboard";
+        break;
+      case "/lesson":
+        screenName = "Lesson PDF";
+        break;
+      case "/mathvideolesson":
+        screenName = "Lesson Video";
+        break;
+      case "/mathzone":
+        screenName = "Quiz";
+        break;
       case "/speedmath":
         screenName = "Speed Math";
+        break;
+      case "/coding":
+        screenName = "Coding";
         break;
     }
 
@@ -133,13 +155,48 @@ export default function ReportErrorScreenShot() {
     };
   };
 
+  const extractSubConceptAndExerciseIdMathZone = () => {
+    let value = String(currentSelectedRouter);
+
+    const parts = value.split("/");
+
+    // Extract the values from the appropriate positions
+    const subConceptId = parts[2] || null;
+    const exerciseId = parts[3] || null;
+    let exercise_id;
+
+    if (exerciseId === "pre_test" || exerciseId === "post_test") {
+      exercise_id = subConceptId;
+    } else {
+      exercise_id = exerciseId;
+    }
+
+    return { subConceptId, exercise_id };
+  };
+
   const uploadScreenShotToServer = async (blob: Blob) => {
-    let screenName = getCurrentScreenName(String(currentSelectedScreen));
+    let screenName = getCurrentScreenName(String(currentSelectedKey));
     const bodyFormData = new FormData();
     bodyFormData.append("live_class_id", String(liveClassId));
     bodyFormData.append("user_id", String(userId));
     bodyFormData.append("screenshot", blob, "image.png");
-    bodyFormData.append("from_page", screenName);
+
+    if (screenName === "Lesson PDF") {
+      bodyFormData.append("concept_resource_id", tagId);
+      bodyFormData.append("from_page", screenName);
+    } else if (screenName === "Lesson Video") {
+      bodyFormData.append("sub_concept_video_id", videoTagId);
+      bodyFormData.append("from_page", screenName);
+    } else if (screenName === "Quiz") {
+      const { subConceptId, exercise_id } =
+        extractSubConceptAndExerciseIdMathZone();
+
+      bodyFormData.append("sub_concept_id", String(subConceptId));
+      bodyFormData.append("exercise_id", String(exercise_id));
+      bodyFormData.append("from_page", screenName);
+    } else {
+      bodyFormData.append("from_page", screenName);
+    }
 
     try {
       const response = await createLiveClassTicket(bodyFormData);
