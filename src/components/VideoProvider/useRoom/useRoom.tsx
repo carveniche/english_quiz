@@ -56,6 +56,7 @@ export default function useRoom(
         ...optionsRef.current,
         tracks: tracksToConnect,
         logLevel: "error",
+        insights: true,
       }).then(
         (newRoom) => {
           setRoom(newRoom);
