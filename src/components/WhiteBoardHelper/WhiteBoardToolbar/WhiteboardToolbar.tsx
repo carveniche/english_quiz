@@ -319,7 +319,8 @@ export default function WhiteboardToolbar({
   };
 
   const scrollIpadUploadResources = (value: string) => {
-    handleScrollIpadUploadResource(value);
+    typeof handleScrollIpadUploadResource == "function" &&
+      handleScrollIpadUploadResource(value);
   };
 
   return (
