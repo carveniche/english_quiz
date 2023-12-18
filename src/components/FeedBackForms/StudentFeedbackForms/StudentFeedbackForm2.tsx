@@ -20,6 +20,8 @@ export default function StudentFeedbackForm2({
     margin: "10px auto",
     minHeight: 320,
     borderRadius: 5,
+    maxHeight: "calc(100% - 40px)",
+    overflow: "auto",
   };
   let [choices, setChoices] = useState([]);
   const [open, setOpen] = useState(true);

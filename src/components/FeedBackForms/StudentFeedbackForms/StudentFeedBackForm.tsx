@@ -15,6 +15,8 @@ export default function StudentFeedBackForm() {
     margin: "10px auto",
     minHeight: 300,
     borderRadius: 5,
+    maxHeight: "calc(100% - 40px)",
+    overflow: "auto",
   };
   const [open, setOpen] = useState(true);
   const [value, setValue] = React.useState(0);

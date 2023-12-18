@@ -26,7 +26,7 @@ export const callTechSupport = async (
 export const getLessonAndMathZoneConceptDetails = (prop: {
   live_class_id: string;
 }) => {
-  return axios.get(BaseUrl + "app_students/concept_list", {
+  return axios.get(BaseUrl + "app_students/concept_list_new", {
     params: {
       ...prop,
     },
@@ -397,7 +397,7 @@ export const submitErrorLog = async (
     });
 
 export const submitStudentFeedbackForm = (obj: object) => {
-  return axios.get(baseURL + "/app_students/update_student_feedback", {
+  return axios.get(baseURL + "/app_students/update_student_feedback_new", {
     params: { ...obj },
   });
 };
