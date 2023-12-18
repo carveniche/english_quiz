@@ -12,6 +12,7 @@ interface HeaderBarProps {
   questionTimerEndedCallback: () => void;
   showSpeedMathSummaryBoard: boolean;
   speedMathScoreBoard: object[];
+  group_class: boolean;
 }
 
 export default function HeaderBar({
@@ -21,10 +22,16 @@ export default function HeaderBar({
   questionTimerEndedCallback,
   showSpeedMathSummaryBoard,
   speedMathScoreBoard,
+  group_class,
 }: HeaderBarProps) {
   return (
     <div className="flex flex-row justify-between items-center">
-      <div className="flex flex-row w-full h-full justify-around items-center p-2">
+      <div
+        className="flex flex-row w-full h-full justify-around items-center p-2"
+        style={{
+          flexBasis: group_class ? "30%" : "auto",
+        }}
+      >
         <div
           style={{
             background: `url(${SpeedMathLevelLogo}) no-repeat center center`,
@@ -54,10 +61,15 @@ export default function HeaderBar({
           </h1>
         </div>
       </div>
-      <div className="flex flex-row w-full h-full justify-center items-center">
+      <div
+        className="flex flex-row w-full h-full justify-center items-center"
+        style={{
+          flexBasis: group_class ? "60%" : "auto",
+        }}
+      >
         {startQuestionTimer && (
           <QuestionTimer
-            duration={60}
+            duration={30}
             questionTimerEndedCallback={questionTimerEndedCallback}
           />
         )}
@@ -69,7 +81,12 @@ export default function HeaderBar({
           />
         )}
       </div>
-      <div className="flex flex-row w-full h-full justify-end ">
+      <div
+        className="flex flex-row w-full h-full justify-end "
+        style={{
+          flexBasis: group_class ? "10%" : "auto",
+        }}
+      >
         <img className="w-[100px] h-[100px]" src={SpeedMathSpatio} />
       </div>
     </div>

@@ -32,17 +32,6 @@ export default function SpeedMathScoreBoard({
                   </div>
                 </div>
               </div>
-              {/* <div className="flex w-[60%] flex-wrap bg-[#58DCA3] rounded-full p-2 h-[64px]">
-                <p className="text-speedMathTextColor font-bold text-lg">
-               
-                </p>
-              </div> */}
-
-              {/* <div className="flex w-[20%] flex-wrap justify-center">
-                <p className="text-speedMathTextColor font-bold text-lg">
-                  {item.correct}/{item.total}
-                </p>
-              </div> */}
             </div>
             <div className="flex w-1/3 h-[10%] justify-center items-center ml-[37px]  p-1">
               {item.game_result === "winner" ? (
@@ -90,21 +79,6 @@ export default function SpeedMathScoreBoard({
               </div>
             </div>
           </div>
-          {/* <div className="flex w-2/3 h-[10%] justify-between items-center  p-1">
-            <div className="flex w-[60%] flex-wrap">
-              <p className="text-speedMathTextColor font-bold text-lg">
-                Computer Score
-              </p>
-            </div>
-            <div className="flex w-[20%] flex-wrap justify-center">
-              <p className="text-speedMathTextColor font-bold text-lg">-</p>
-            </div>
-            <div className="flex w-[20%] flex-wrap justify-center">
-              <p className="text-speedMathTextColor font-bold text-lg">
-                {speedMathScoreBoard?.computer_score || 0}
-              </p>
-            </div>
-          </div> */}
         </div>
       )}
     </>

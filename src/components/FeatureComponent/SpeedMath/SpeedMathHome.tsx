@@ -37,7 +37,7 @@ export default function SpeedMath() {
   const { activeTabArray, currentSelectedIndex } = useSelector(
     (state) => state.activeTabReducer
   );
-  const { role_name } = useSelector(
+  const { role_name, group_class } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
   const {
@@ -57,6 +57,8 @@ export default function SpeedMath() {
   const { remoteParticipantCount } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
+
+  const isGroupClass: boolean = !!group_class;
 
   useEffect(() => {
     if (speedMathGameIdStudent !== 0) {
@@ -242,6 +244,7 @@ export default function SpeedMath() {
             questionTimerEndedCallback={questionTimerEndedCallback}
             showSpeedMathSummaryBoard={showSpeedMathSummaryBoard}
             speedMathScoreBoard={speedMathScoreBoard}
+            group_class={isGroupClass}
           />
         </div>
         <div className="h-full w-full justify-center">
