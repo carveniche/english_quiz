@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { allExcludedParticipants } from "../../../../utils/excludeParticipant";
 import {
   StudentActivityResponseSave,
+  StudentActivityTeacherResponseSave,
   baseURL,
   getStudentActivityResponse,
   submitErrorLog,
@@ -136,7 +137,8 @@ const CheckOutAffirmationActivity = ({
         formData.append("live_class_id", liveClassId);
         formData.append("duration", timerCountRef.current);
         formData.append("response", blob, "image.png");
-        StudentActivityResponseSave(formData)
+
+        StudentActivityTeacherResponseSave(formData)
           .then((res) => {
             dispatch(
               cicoComponentLevelDataTrack({
