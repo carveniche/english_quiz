@@ -125,19 +125,9 @@ export default function ScratchWhiteBoard({ pdfImages }: { pdfImages: [] }) {
     }
   };
   const handleUpdateLocalAndRemoteData = (localArray) => {
-    let coordinates = {
-      coordinates: localArray,
-      cursorPoints: [],
-      identity: userId,
-      isDrawing: false,
-    };
     let arr = localArray.map((item) => {
       return { ...item };
     });
-    if (localArray.length) {
-      arr.push(coordinates);
-    }
-
     dispatch(
       saveAllWhiteBoardData({
         index: whiteBoardData.currentIndex,
