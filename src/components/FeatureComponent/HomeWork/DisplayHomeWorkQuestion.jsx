@@ -239,6 +239,7 @@ export default function DisplayHomeWorkQuestion({
               </div>
             </Button>
           )}
+
           <div
             style={{
               position: "relative",
@@ -249,13 +250,15 @@ export default function DisplayHomeWorkQuestion({
             }}
           >
             <div
-              className={`h-full w-full  absolute top-[${
-                "tutor" === "tutor" ? 0 : 58
-              }px] z-1`}
-              style={{ height: "100%" }}
+              className={`h-full w-full  absolute z-1`}
+              style={{
+                height: "100%",
+                top: identity === "tutor" ? "0" : "20px",
+              }}
             >
               {" "}
               <MathzoneWhiteBoard
+                dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
                 currentSelectedRouter={currentSelectedRouter}
                 currentSelectedKey={currentSelectedKey}
               />

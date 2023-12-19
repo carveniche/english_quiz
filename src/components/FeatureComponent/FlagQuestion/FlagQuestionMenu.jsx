@@ -34,7 +34,7 @@ export default function FlagQuestionMenu(props) {
   const { flaggedQuestion } = useSelector(
     (state) => state.ComponentLevelDataReducer
   );
-  console.log(flaggedQuestion);
+  // console.log(flaggedQuestion);
   let activeTabData = activeTabArray[currentSelectedIndex];
   const handleDataTrack = (payload) => {
     const [localDataTrackPublication] = [
@@ -121,7 +121,7 @@ export default function FlagQuestionMenu(props) {
     flaggedQuestion?.selectedConceptId,
   ]);
   const handleFlagQuestionChange = (val, fetchAgain) => {
-    console.log("calling", fetchAgain);
+    // console.log("calling", fetchAgain);
     let payload = {
       showQuestion: true,
       currentQuestion: val,

@@ -34,7 +34,7 @@ const FlagQuestionViewer = (props) => {
       setLoading(true);
       const { data } = await fetchFlagQuestion(conceptId, liveClassId, tagId);
       setLoading(false);
-      console.log(data);
+      // console.log(data);
       if (data?.status) {
         setData(data?.result_data || []);
         updateTotalQuestionReview(data?.result_data?.length || 0);
@@ -48,7 +48,7 @@ const FlagQuestionViewer = (props) => {
     } catch (e) {
       setData([]);
       setLoading(false);
-      console.log(e);
+      // console.log(e);
       // typeof props?.fetchFlaggedQuestionList === "function" &&
       //   props.fetchFlaggedQuestionList();
       return [];
@@ -62,13 +62,13 @@ const FlagQuestionViewer = (props) => {
   }, []);
   useEffect;
   const studentFetchingDatas = async () => {
-    console.log("calling");
+    // console.log("calling");
     await fetchData(props?.conceptId, props?.liveClassId, props?.flagTagId);
 
     // handlePaginationRevieResult(props?.currentFlagQuestion);
   };
   useEffect(() => {
-    console.log(props?.isFetchAgain);
+    // console.log(props?.isFetchAgain);
     if (props.identity !== "tutor" && props?.isFetchAgain) {
       studentFetchingDatas();
     }
@@ -79,7 +79,7 @@ const FlagQuestionViewer = (props) => {
       setLoading(true);
       let flagged_question_id =
         data[currentQuestionReview]?.flagged_question_id;
-      console.log(flagged_question_id);
+      // console.log(flagged_question_id);
       await markAsResolvedFlagQuestion(
         flagged_question_id,
         props?.currentUserId
@@ -89,13 +89,13 @@ const FlagQuestionViewer = (props) => {
         props?.liveClassId,
         props?.flagTagId
       );
-      console.log(datas);
+      // console.log(datas);
       if (datas?.length <= currentQuestionReview) {
         handlePaginationRevieResult(datas?.length - 1 || 0);
       } else {
         handlePaginationRevieResult(currentQuestionReview);
       }
-      console.log(props?.handleFlagQuestionChange == "function");
+      // console.log(props?.handleFlagQuestionChange == "function");
       typeof props?.handleFlagQuestionChange == "function" &&
         props?.handleFlagQuestionChange(
           datas?.length <= currentQuestionReview
@@ -105,7 +105,7 @@ const FlagQuestionViewer = (props) => {
         );
       setLoading(false);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       setLoading(false);
     }
   };
@@ -149,6 +149,8 @@ const FlagQuestionViewer = (props) => {
               {totalReviewResult ? (
                 <FlagQuestionPagination
                   handleFlagQuestionChange={props?.handleFlagQuestionChange}
+                  currentSelectedRouter={currentSelectedRouter}
+                  currentSelectedKey={currentSelectedKey}
                 />
               ) : (
                 ""
@@ -195,11 +197,17 @@ const FlagQuestionViewer = (props) => {
           )}
         </div>
         <QuizPageLayout height={currentHeight}>
-          <MathzoneWhiteBoard
-            dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
-            currentSelectedKey={currentSelectedKey}
-            currentSelectedRouter={currentSelectedRouter}
-          />
+          <div
+            className={`h-full w-full absolute top-0 left-12
+             z-1`}
+            style={{ height: "100%" }}
+          >
+            <MathzoneWhiteBoard
+              dataTrack={MISCELLANEOUS.miscellaneousDataWhiteBoard}
+              currentSelectedKey={currentSelectedKey}
+              currentSelectedRouter={currentSelectedRouter}
+            />
+          </div>
           <div
             style={{
               position: "relative",

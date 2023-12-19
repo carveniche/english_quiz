@@ -103,7 +103,7 @@ function MultipleChoiceCorrectAnswer({ data }) {
   );
 }
 function MultipleChoiceQuestionCorrectAnswer({ choices }) {
-  console.log(choices);
+  // console.log(choices);
   return (
     <div className={styles.correctAnswerBox}>
       <div className={styles.correctAnswer}>
