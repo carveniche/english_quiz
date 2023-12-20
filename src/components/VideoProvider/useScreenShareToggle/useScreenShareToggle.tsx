@@ -14,12 +14,19 @@ import { useDispatch } from "react-redux";
 
 import { addScreenShareDatatrack } from "../../../redux/features/dataTrackStore";
 import { setSafariModalForScreenShare } from "../../../redux/features/liveClassDetails";
+import { isTutorTechBoth } from "../../../utils/participantIdentity";
+import { submitErrorLog } from "../../../api";
+import { RootState } from "../../../redux/store";
+import { useSelector } from "react-redux";
 
 export default function useScreenShareToggle(
   room: Room | null,
   onError: ErrorCallback
 ) {
   const [isSharing, setIsSharing] = useState(false);
+  const { userId, liveClassId } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const stopScreenShareRef = useRef<() => void>(null!);
   const alreadyGetScreenShareRequestRef = useRef<boolean | undefined>(false);
   const dispatch = useDispatch();
@@ -67,6 +74,13 @@ export default function useScreenShareToggle(
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
+  const callApiWhenStudentScreenShareStopped = () => {
+    if (!isTutorTechBoth({ identity: room?.localParticipant.identity || "" })) {
+      let errorName = "Student screen share stopped";
+      submitErrorLog(userId, liveClassId, errorName, 0, 0);
+    }
+  };
+
   const shareScreen = useCallback(() => {
     if (alreadyGetScreenShareRequestRef.current) {
       return;
@@ -102,6 +116,7 @@ export default function useScreenShareToggle(
               sendScreenShareDatatrack(false);
               alreadyGetScreenShareRequestRef.current = false;
               handlePermissionDeniedDataTrack(true);
+              callApiWhenStudentScreenShareStopped();
             };
 
             track.onended = stopScreenShareRef.current;
