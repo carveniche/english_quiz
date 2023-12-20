@@ -250,16 +250,7 @@ export default function WhiteBoard({
     }
   };
 
-  const handleMouseUp = (e) => {
-    drawingRef.current = false;
-    typeof handleDataTrack === "function" &&
-      handleDataTrack({
-        identity: userId,
-        isDrawing: false,
-      });
-  };
-
-  const handleMouseLeave = () => {
+  const handleMouseOutCommon = () => {
     setCloseToolbarPopup(false);
     drawingRef.current = false;
     typeof handleDataTrack === "function" &&
@@ -268,6 +259,15 @@ export default function WhiteBoard({
         isDrawing: false,
       });
   };
+
+  const handleMouseUp = () => {
+    handleMouseOutCommon();
+  };
+
+  const handleMouseLeave = () => {
+    handleMouseOutCommon();
+  };
+
   const handleToolBarSelect = (json: {
     id: number;
     value: any;

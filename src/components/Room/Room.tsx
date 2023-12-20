@@ -8,10 +8,12 @@ import ScreenShareEffect from "../ScreenShareEffect/ScreenShareEffect";
 import VitalDataHandler from "../RemoteCountAndLessonDataEffect/VitalDataHandler";
 import ShowDeviceInfoModalTech from "../ShowDeviceInfoModalTech/ShowDeviceInfoModalTech";
 import { isTech } from "../../utils/participantIdentity";
-import { SHOWFLOATINGPARTICIPANT } from "../../constants";
+import { ROUTERKEYCONST, SHOWFLOATINGPARTICIPANT } from "../../constants";
 
 import FiveStarAnimation from "../LottieAnimations/FiveStarAnimation";
 import SafariScreenShareModal from "../SafariScreenShareModal/SafariScreenShareModal";
+import { useEffect } from "react";
+import { iPadDevice } from "../../utils/devices";
 
 interface RoomProps {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -19,7 +21,7 @@ interface RoomProps {
 
 export default function Room({ parentRef }: RoomProps) {
   const currentSelectedScreen = useSelector(
-    (state: RootState) => state.activeTabReducer.currentSelectedRouter
+    (state: RootState) => state.activeTabReducer.currentSelectedKey
   );
 
   const {
@@ -31,6 +33,23 @@ export default function Room({ parentRef }: RoomProps) {
   const { role_name } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
+
+  useEffect(() => {
+    // This useEffect is solving the Scroll bug in Ipad Safari Browser
+
+    const preventDefaultScroll = function (e) {
+      e.preventDefault();
+    };
+    if (iPadDevice && currentSelectedScreen !== ROUTERKEYCONST.mathzone) {
+      window.addEventListener("touchmove", preventDefaultScroll, {
+        passive: false,
+      });
+
+      return () => {
+        window.removeEventListener("touchmove", preventDefaultScroll);
+      };
+    }
+  }, [currentSelectedScreen, iPadDevice]);
 
   console.log("room component mouting");
 
@@ -53,7 +72,7 @@ export default function Room({ parentRef }: RoomProps) {
 
       {openSafariModalForScreenShare && <SafariScreenShareModal />}
 
-      {currentSelectedScreen === "/allscreen" ? (
+      {currentSelectedScreen === ROUTERKEYCONST.allScreen ? (
         <AllScreen />
       ) : (
         <div style={{ display: SHOWFLOATINGPARTICIPANT ? "block" : "none" }}>
