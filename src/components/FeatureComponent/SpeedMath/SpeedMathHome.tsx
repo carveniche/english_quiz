@@ -170,6 +170,21 @@ export default function SpeedMath() {
     setStartQuestionTimer(false);
   };
 
+  const handleUpdateComputerScoreStudent = (score: number) => {
+    const [localDataTrackPublication] = [
+      ...room!.localParticipant.dataTracks.values(),
+    ];
+    let DataTrackObj = {
+      pathName: null,
+      value: {
+        datatrackName: "SpeedMathComputerScoreUpdate",
+        identity: room?.localParticipant.identity,
+        computerScore: score,
+      },
+    };
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   const questionComponent = () => {
     if (isTutor({ identity: String(role_name) })) {
       if (playMode === "teacher") {
@@ -194,6 +209,7 @@ export default function SpeedMath() {
             speedMathScoreofAllParticipant={speedMathScoreofAllParticipant}
             startQuestionTimer={startQuestionTimer}
             onGameInProgressTimerEnd={onGameInProgressTimerEnd}
+            handleUpdateComputerScoreStudent={handleUpdateComputerScoreStudent}
           />
         );
       }

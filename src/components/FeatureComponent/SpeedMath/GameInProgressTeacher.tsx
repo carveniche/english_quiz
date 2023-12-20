@@ -8,6 +8,7 @@ interface GameInProgressTeacherProps {
   speedMathScoreofAllParticipant: any;
   startQuestionTimer: boolean;
   onGameInProgressTimerEnd: (computerScore: number) => void;
+  handleUpdateComputerScoreStudent: (score: number) => void;
 }
 
 const level_1_seconds = [2, 2, 2, 3, 3, 3, 4, 3, 3, 2];
@@ -17,6 +18,7 @@ export default function GameInProgressTeacher({
   speedMathScoreofAllParticipant,
   startQuestionTimer,
   onGameInProgressTimerEnd,
+  handleUpdateComputerScoreStudent,
 }: GameInProgressTeacherProps) {
   const [computerScore, setComputerScore] = useState(0);
 
@@ -31,6 +33,7 @@ export default function GameInProgressTeacher({
   useEffect(() => {
     if (!startQuestionTimer) {
       onGameInProgressTimerEnd(computerScore);
+      // handleUpdateComputerScoreStudent(computerScore);
     }
   }, [startQuestionTimer]);
 

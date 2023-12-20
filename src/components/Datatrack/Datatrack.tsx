@@ -23,6 +23,7 @@ import {
   updateMathVideoCurrentTime,
   setScreenSharePermission,
   setStudentScreenShareReceived,
+  addSpeedMathComputerScore,
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
@@ -229,6 +230,14 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             speedMathGameId: parseMessage?.value?.speedMathGameId,
             speedMathGameLevel: parseMessage?.value?.speedMathGameLevel,
             speedMathPlayMode: parseMessage?.value?.speedMathPlayMode,
+          })
+        );
+      } else if (
+        parseMessage?.value?.datatrackName === "SpeedMathComputerScoreUpdate"
+      ) {
+        dispatch(
+          addSpeedMathComputerScore({
+            computerScore: parseMessage?.value?.computerScore,
           })
         );
       } else if (parseMessage?.value?.datatrackName === "techJoinedClass") {

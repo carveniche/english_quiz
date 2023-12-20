@@ -33,6 +33,7 @@ interface liveClassDetailsTypes {
   speedMathGameLevel: number;
   speedMathPlayMode: string;
   speedMathScoreofAllParticipant: any;
+  speedMathComputerScore: number;
   isRecordingEnabled: boolean;
   isClassHasDisconnected: boolean;
   muteIndividualParticipant: any;
@@ -50,7 +51,7 @@ interface liveClassDetailsTypes {
   uploadResourceDeleteModal: boolean;
   speedMathAlreadyStarted: boolean;
   refreshNewCodingIframe: boolean;
-  isCodingIframeOpened:boolean;
+  isCodingIframeOpened: boolean;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -82,6 +83,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathGameLevel: 0,
   speedMathPlayMode: "",
   speedMathScoreofAllParticipant: [],
+  speedMathComputerScore: 0,
   isRecordingEnabled: false,
   isClassHasDisconnected: false,
   muteIndividualParticipant: [],
@@ -104,7 +106,7 @@ const initialState: liveClassDetailsTypes = {
   screenShareStatus: false,
   uploadResourceDeleteModal: false,
   speedMathAlreadyStarted: false,
-  isCodingIframeOpened:false,
+  isCodingIframeOpened: false,
   refreshNewCodingIframe: false,
 };
 
@@ -190,6 +192,12 @@ export const liveClassDetailsSlice = createSlice({
         }
       }
     },
+
+    addSpeedMathComputerScore: (state, action) => {
+      const { computerScore } = action.payload;
+      state.speedMathComputerScore = computerScore;
+    },
+
     startAndStopRecordingRecording: (state, action) => {
       const { payload } = action;
       state.isRecordingEnabled = payload;
@@ -305,6 +313,7 @@ export const {
   addRemoteParticipantCount,
   addSpeedMathGameStartDetails,
   addSpeedMathScoreOfAllParticipant,
+  addSpeedMathComputerScore,
   startAndStopRecordingRecording,
   endRoomRequest,
   addMuteIndividualParticipant,
@@ -322,7 +331,7 @@ export const {
   toggleUploadResourceDeleteModal,
   toggleSpeedMathAlreadyStarted,
   refreshNewCodingTeacher,
-  toggleCodingIframeAlreadyOpened
+  toggleCodingIframeAlreadyOpened,
 } = liveClassDetailsSlice.actions;
 
 export default liveClassDetailsSlice.reducer;

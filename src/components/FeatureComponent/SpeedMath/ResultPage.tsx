@@ -31,6 +31,9 @@ export default function ResultPage({
   const { students } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
+  const { speedMathComputerScore } = useSelector(
+    (state: RootState) => state.liveClassDetails
+  );
   const [counter, setCounter] = useState(10);
   const [gameResultData, setGameResultData] = useState(null);
   const [studentScore, setStudentScore] = useState([]);
@@ -93,6 +96,7 @@ export default function ResultPage({
   }
 
   function getSpeedMathResult() {
+    // We can pass speedMathComputerScore to get the same score for computer
     getGameResult(gameId, liveClassId, playerId, computerScore).then((res) => {
       if (res.data.status) {
         setGameResultData(res.data);
