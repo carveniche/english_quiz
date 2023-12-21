@@ -13,7 +13,10 @@ import QuizPageLayout from "../Mathzone/QuizPageLayout/QuizPageLayout";
 import TeacherViewEachResponseEnd from "../Mathzone/Results/Teacher/TeacherViewEachResponseEnd";
 import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import MathzoneWhiteBoard from "../Mathzone/MathzoneWhiteBoard";
-import { MISCELLANEOUS } from "../../../constants";
+import { MATHZONEDATAKEY, MISCELLANEOUS } from "../../../constants";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { useDispatch } from "react-redux";
+import { openClosedMathzoneWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
 const StaticQuestionRender = ({ obj }) => {
   const { handleUpdateStudentAnswerResponse, setIsProgressBarVisible } =
     useContext(ValidationContext);
@@ -116,6 +119,8 @@ export default function DisplayHomeWorkQuestion({
   currentSelectedRouter,
   currentSelectedKey,
 }) {
+  const dispatch = useDispatch();
+  const { room } = useVideoContext();
   const {
     updateTotalQuestionReview,
     currentQuestionReview,
@@ -166,8 +171,34 @@ export default function DisplayHomeWorkQuestion({
         mathzone: {},
         homeWorkId,
       });
+
+      handleCallBackToCloseWhiteboard();
     } catch (e) {}
   };
+
+  const handleCallBackToCloseWhiteboard = () => {
+    dispatch(openClosedMathzoneWhiteBoard(false));
+    handleDataTrackCloseWhiteboard();
+  };
+
+  const handleDataTrackCloseWhiteboard = () => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: currentSelectedRouter,
+      key: currentSelectedKey,
+      value: {
+        type: MATHZONEDATAKEY.openClosedWhiteBoard,
+        identity: null,
+        isMathZoneWhiteBoard: false,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   return (
     <>
       <div id="outerBoxContainerOuiz" style={{ minHeight: 1 }}>
@@ -186,6 +217,9 @@ export default function DisplayHomeWorkQuestion({
             >
               <FlagQuestionPagination
                 handleFlagQuestionChange={handleFlagQuestionChange}
+                handleCallBackToCloseWhiteboard={
+                  handleCallBackToCloseWhiteboard
+                }
               />
             </div>
             <div className={styles.nextBtnContainer} style={{ width: "180px" }}>

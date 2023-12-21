@@ -3,7 +3,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { FlagQuestionContext } from "../ContextProvider/FlagQuestionContextProvider";
 import useThrottle from "../CustomHooks/UseThrottle";
-import { useDispatch } from "react-redux";
 import {
   openClosedMathzoneWhiteBoard,
   resetWhiteBoardData,
@@ -15,9 +14,8 @@ export default function FlagQuestionPagination({
   handleFlagQuestionChange,
   currentSelectedRouter,
   currentSelectedKey,
+  handleCallBackToCloseWhiteboard,
 }) {
-  const dispatch = useDispatch();
-  const { room } = useVideoContext();
   const [inprogressThrottle, handleThrottle] = useThrottle(1000);
   const [page, setPage] = React.useState(1);
   const {
@@ -32,36 +30,7 @@ export default function FlagQuestionPagination({
     typeof handleFlagQuestionChange == "function" &&
       handleFlagQuestionChange(value - 1, false);
     handleThrottle();
-    handleWhiteboardState();
-  };
-
-  const handleWhiteboardState = () => {
-    // dispatch(
-    //   resetWhiteBoardData({
-    //     dataTrackKey: MISCELLANEOUS.miscellaneousDataWhiteBoard,
-    //   })
-    // );
-    dispatch(openClosedMathzoneWhiteBoard(false));
-
-    handleDataTrack();
-  };
-
-  const handleDataTrack = () => {
-    const [localDataTrackPublication] = [
-      ...room.localParticipant.dataTracks.values(),
-    ];
-
-    let DataTrackObj = {
-      pathName: currentSelectedRouter,
-      key: currentSelectedKey,
-      value: {
-        type: MATHZONEDATAKEY.openClosedWhiteBoard,
-        identity: null,
-        isMathZoneWhiteBoard: false,
-      },
-    };
-
-    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+    handleCallBackToCloseWhiteboard();
   };
 
   return (

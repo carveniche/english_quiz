@@ -11,10 +11,15 @@ import QuizWhitePage from "../Mathzone/QuizPageLayout/QuizWhitepage";
 import { TeacherQuizDisplay } from "../Mathzone/MainOnlineQuiz/MainOnlineQuizPage";
 import handleResizeWidth from "../Mathzone/handleResizeWidth";
 import MathzoneWhiteBoard from "../Mathzone/MathzoneWhiteBoard";
-import { MISCELLANEOUS } from "../../../constants";
+import { MATHZONEDATAKEY, MISCELLANEOUS } from "../../../constants";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { openClosedMathzoneWhiteBoard } from "../../../redux/features/ComponentLevelDataReducer";
 
 const FlagQuestionViewer = (props) => {
+  const dispatch = useDispatch();
+  const { room } = useVideoContext();
   const { currentSelectedRouter, currentSelectedKey, activeTabArray } =
     useSelector((state) => state.activeTabReducer);
   const [data, setData] = useState([]);
@@ -104,11 +109,36 @@ const FlagQuestionViewer = (props) => {
           true
         );
       setLoading(false);
+      handleCallBackToCloseWhiteboard();
     } catch (e) {
       // console.log(e);
       setLoading(false);
     }
   };
+
+  const handleCallBackToCloseWhiteboard = () => {
+    dispatch(openClosedMathzoneWhiteBoard(false));
+    handleDataTrackCloseWhiteboard();
+  };
+
+  const handleDataTrackCloseWhiteboard = () => {
+    const [localDataTrackPublication] = [
+      ...room.localParticipant.dataTracks.values(),
+    ];
+
+    let DataTrackObj = {
+      pathName: currentSelectedRouter,
+      key: currentSelectedKey,
+      value: {
+        type: MATHZONEDATAKEY.openClosedWhiteBoard,
+        identity: null,
+        isMathZoneWhiteBoard: false,
+      },
+    };
+
+    localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
+  };
+
   useEffect(() => {
     setTimeout(() => {
       handleResizeWidth(heightRef.current, setCurrentHeight);
@@ -151,6 +181,9 @@ const FlagQuestionViewer = (props) => {
                   handleFlagQuestionChange={props?.handleFlagQuestionChange}
                   currentSelectedRouter={currentSelectedRouter}
                   currentSelectedKey={currentSelectedKey}
+                  handleCallBackToCloseWhiteboard={
+                    handleCallBackToCloseWhiteboard
+                  }
                 />
               ) : (
                 ""
