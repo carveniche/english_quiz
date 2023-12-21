@@ -58,7 +58,7 @@ export default function CodingNewIframe() {
             src={extraParams.url}
             style={{ width: "100%", height: "100%", overflow: "hidden" }}
             onLoad={handleOnload}
-            allow="autoplay"
+            allow="autoplay; microphone"
           />
         )}
 
@@ -68,7 +68,7 @@ export default function CodingNewIframe() {
             src={extraParams.url}
             style={{ width: "100%", height: "100%", overflow: "hidden" }}
             onLoad={handleOnload}
-            allow="autoplay"
+            allow="autoplay; microphone"
           />
         )}
       </div>
