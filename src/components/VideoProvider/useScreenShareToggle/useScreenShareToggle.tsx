@@ -74,10 +74,9 @@ export default function useScreenShareToggle(
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
-  const callApiWhenStudentScreenShareStopped = () => {
+  const callApiWhenStudentScreenShareStopped = (errorMessage: string) => {
     if (!isTutorTechBoth({ identity: room?.localParticipant.identity || "" })) {
-      let errorName = "Student screen share stopped";
-      submitErrorLog(userId, liveClassId, errorName, 0, 0);
+      submitErrorLog(userId, liveClassId, errorMessage, 0, 0);
     }
   };
 
@@ -116,7 +115,9 @@ export default function useScreenShareToggle(
               sendScreenShareDatatrack(false);
               alreadyGetScreenShareRequestRef.current = false;
               handlePermissionDeniedDataTrack(true);
-              callApiWhenStudentScreenShareStopped();
+              callApiWhenStudentScreenShareStopped(
+                "Student Screen Share stopped"
+              );
             };
 
             track.onended = stopScreenShareRef.current;
@@ -136,6 +137,12 @@ export default function useScreenShareToggle(
         ) {
           console.error(error);
           onError(error);
+        }
+
+        if (error.message === "Permission denied" || error.code === 0) {
+          callApiWhenStudentScreenShareStopped(
+            "Student denied the permission for Screen Share"
+          );
         }
       });
   }, [room, onError]);
