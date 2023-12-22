@@ -4,6 +4,7 @@ import useScreenShareParticipant from "../../hooks/useScreenShareParticipant/use
 import ParticipantTracks from "../ParticipantTracks/ParticipantTracks";
 import { useDispatch } from "react-redux";
 import { setStudentScreenShareReceived } from "../../redux/features/liveClassDetails";
+import { isTutor } from "../../utils/participantIdentity";
 export default function ScreenShareDraggable() {
   const [width, setWidth] = useState<string>("600px");
   const [height, setHeight] = useState<string>("400px");
@@ -18,13 +19,20 @@ export default function ScreenShareDraggable() {
     if (screenShareParticipant !== undefined) {
       dispatch(setStudentScreenShareReceived(true));
     }
+    if (isTutor({ identity: screenShareParticipant?.identity || "" })) {
+      setWidth("1000px");
+      setHeight("600px");
+    }
   }, [screenShareParticipant]);
 
   return (
     <div>
       {screenShareParticipant !== undefined && (
         <Rnd
-          style={{ ...ScreenShareStyles, position: "fixed" }}
+          style={{
+            ...ScreenShareStyles,
+            position: "fixed",
+          }}
           size={{ width: width, height: height }}
           position={{ x: xPosition, y: yPosition }}
           onDragStop={(e, d) => {
