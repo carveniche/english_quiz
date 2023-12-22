@@ -97,13 +97,15 @@ export default function ResultPage({
 
   function getSpeedMathResult() {
     // We can pass speedMathComputerScore to get the same score for computer
-    getGameResult(gameId, liveClassId, playerId, computerScore).then((res) => {
-      if (res.data.status) {
-        setGameResultData(res.data);
-        setStudentScore(res.data.response_data);
-        getFinalResult(res.data);
+    getGameResult(gameId, liveClassId, playerId, speedMathComputerScore).then(
+      (res) => {
+        if (res.data.status) {
+          setGameResultData(res.data);
+          setStudentScore(res.data.response_data);
+          getFinalResult(res.data);
+        }
       }
-    });
+    );
   }
 
   const resultPackingView = () => {

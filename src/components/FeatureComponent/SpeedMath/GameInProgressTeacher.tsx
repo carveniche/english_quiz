@@ -33,7 +33,7 @@ export default function GameInProgressTeacher({
   useEffect(() => {
     if (!startQuestionTimer) {
       onGameInProgressTimerEnd(computerScore);
-      // handleUpdateComputerScoreStudent(computerScore);
+      handleUpdateComputerScoreStudent(computerScore);
     }
   }, [startQuestionTimer]);
 

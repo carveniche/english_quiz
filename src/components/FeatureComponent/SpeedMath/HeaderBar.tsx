@@ -69,7 +69,7 @@ export default function HeaderBar({
       >
         {startQuestionTimer && (
           <QuestionTimer
-            duration={30}
+            duration={60}
             questionTimerEndedCallback={questionTimerEndedCallback}
           />
         )}
