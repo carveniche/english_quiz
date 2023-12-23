@@ -52,6 +52,7 @@ interface liveClassDetailsTypes {
   speedMathAlreadyStarted: boolean;
   refreshNewCodingIframe: boolean;
   isCodingIframeOpened: boolean;
+  course: string;
 }
 
 const initialState: liveClassDetailsTypes = {
@@ -108,6 +109,7 @@ const initialState: liveClassDetailsTypes = {
   speedMathAlreadyStarted: false,
   isCodingIframeOpened: false,
   refreshNewCodingIframe: false,
+  course: "English",
 };
 
 export const liveClassDetailsSlice = createSlice({

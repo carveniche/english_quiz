@@ -16,6 +16,35 @@ export const SELECTED_BACKGROUND_SETTINGS_KEY =
 export const GALLERY_VIEW_ASPECT_RATIO = 9 / 16; // 16:9
 export const GALLERY_VIEW_MARGIN = 3;
 export const MAXIMUMACTIVETAB = 4;
+
+export const ROUTERKEYCONSTENGLISH = {
+  allScreen: "/allscreen",
+  myScreen: "/myscreen",
+  englishlesson: "/lesson",
+  englishmathzone: "/englishmathzone",
+  whiteboard: {
+    key: "whiteboard",
+    path: "/whiteboard",
+  },
+  miscellaneous: {
+    key: "miscellaneous",
+    subRoute: {
+      homework: {
+        keys: "/englishhomework",
+        route: "/englishhomework",
+      },
+      flagQuestion: {
+        keys: "/englishflagQuestion",
+        route: "/englishflagQuestion",
+      },
+      uploadResources: {
+        keys: "/uploadResources",
+        route: "/uploadResources",
+      },
+    },
+  },
+};
+
 export const ROUTERKEYCONST = {
   allScreen: "/allscreen",
   myScreen: "/myscreen",
@@ -50,7 +79,7 @@ export const MATHZONEDATAKEY = {
   mathzoneQuestionData: "mathzoneQuestionData",
   mathzoneWhiteBoardData: "mathzoneWhiteBoardData",
   openClosedWhiteBoard: "openClosedWhiteBoard",
-  viewIncorrectQuestion:"viewIncorrectQuestion"
+  viewIncorrectQuestion: "viewIncorrectQuestion",
 };
 
 export const MAINWHITEBOARD = {
@@ -66,7 +95,7 @@ export const HOMEWORKQUESTIONKEY = {
 export const PREPOSTTESTKEY = {
   preTest: "pre_test",
   postTest: "post_test",
-  viewIncorrectQuestion:"viewIncorrectQuestion"
+  viewIncorrectQuestion: "viewIncorrectQuestion",
 };
 export const CICO = {
   path: "/cico",
@@ -123,5 +152,8 @@ export const IFRAMENEWCODING = {
   icon: "/menu-icon/CodingIcon.svg",
 };
 
-export const SCREENRECORDING = true;
-export const SHOWFLOATINGPARTICIPANT = true;
+export const MATHCOURSE = "Math";
+export const ENGLISHCOURSE = "English";
+
+export const SCREENRECORDING = false;
+export const SHOWFLOATINGPARTICIPANT = false;

@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  CICO,
-  IFRAMENEWCODING,
   MAXIMUMACTIVETAB,
   ROUTERKEYCONST,
+  ROUTERKEYCONSTENGLISH,
 } from "../../constants";
 import defaultRouter from "../../Router/defaultRouter";
 export interface ActiveTabParams {
@@ -39,6 +38,7 @@ const activeTabReducer = createSlice({
   initialState,
   reducers: {
     addToActiveTab: (state, action: PayloadAction<ActiveTabParams>) => {
+      console.log("state", state);
       const { activeTabArray } = state;
 
       let notIncluded = false;
@@ -61,21 +61,12 @@ const activeTabReducer = createSlice({
         activeTabArray.push({ ...action.payload });
 
         state.currentSelectedIndex = activeTabArray.length - 1;
-      } else if (action.payload.key === ROUTERKEYCONST.mathzone) {
+      } else if (action.payload.key === ROUTERKEYCONSTENGLISH.englishmathzone) {
+        console.log("hey there hello hello");
         if (activeTabArray[index].path !== action.payload.path) {
           activeTabArray[index] = action.payload;
         }
-      } else if (
-        action.payload.key === ROUTERKEYCONST.mathvideolesson ||
-        action.payload.key === CICO.key ||
-        action.payload.key === ROUTERKEYCONST.lesson
-      ) {
-        activeTabArray[index] = action.payload;
-      } else if (action.payload.key === ROUTERKEYCONST.speedmath) {
-        activeTabArray[index] = action.payload;
       } else if (action.payload.key === ROUTERKEYCONST.miscellaneous.key) {
-        activeTabArray[index] = action.payload;
-      } else if (action.payload.key === IFRAMENEWCODING.key) {
         activeTabArray[index] = action.payload;
       }
     },

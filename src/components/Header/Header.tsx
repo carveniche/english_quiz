@@ -1,4 +1,4 @@
-import BegalileoLogo from "./NavbarIcons/BegalileoLogo";
+import BegalileoLogo from "../Navbar/NavbarIcons/BegalileoLogo";
 import ReportErrorScreenShot from "../ReportErrorScreenShot/ReportErrorScreenShot";
 import CallTechSupport from "../CallTechSupport/CallTechSupport";
 import { ParticipantAudioTracks } from "../ParticipantAudioTracks/ParticipantAudioTracks";

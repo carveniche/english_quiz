@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import {
   ActiveTabParams,
   addToActiveTab,
   deleteFromActiveTab,
-} from "../../redux/features/addActiveTabLink";
-import { RootState } from "../../redux/store";
-import { getQueryParams } from "../../utils/getQueryParams";
-import CloseIconButton from "./CloseIconButton";
-import TabIcon from "./TabIcon";
-import { isTutorTechBoth } from "../../utils/participantIdentity";
-import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../constants";
-import CustomAlert from "../DisplayCustomAlert/CustomAlert";
+} from "../../../redux/features/addActiveTabLink";
+import { RootState } from "../../../redux/store";
+import { getQueryParams } from "../../../utils/getQueryParams";
+import CloseIconButton from "../NavbarIcons/CloseIconButton";
+import TabIcon from "../NavbarIcons/TabIcon";
+import { isTutorTechBoth } from "../../../utils/participantIdentity";
+import { IFRAMENEWCODING, ROUTERKEYCONST } from "../../../constants";
+import CustomAlert from "../../DisplayCustomAlert/CustomAlert";
 
 export default function ActiveTabMenu() {
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ export default function ActiveTabMenu() {
     { path, key, name, icon, extraParams }: ActiveTabParams,
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
   ) => {
+    console.log("pathssssss", path, key, name, icon, extraParams);
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       event.preventDefault();
       return;

@@ -104,7 +104,7 @@ function ViewStatusContextProvider({ children }) {
 }
 export default function mathzone() {
   const { concept, tag, level } = useParams();
-
+  console.log("kdkdkk");
   return (
     <React.Fragment key={`${concept}${tag}${level}`}>
       {tag === PREPOSTTESTKEY.preTest || tag === PREPOSTTESTKEY.postTest ? (

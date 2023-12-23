@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import TabIcon from "./TabIcon";
-import { allConceptsDetails } from "../../redux/features/ConceptDetailsRedux";
-import { ActiveTabParams } from "../../redux/features/addActiveTabLink";
-import todayClassIcon from "./NavbarIcons/todayClassIconGreen.png";
-import { GGB, ROUTERKEYCONST } from "../../constants";
+import TabIcon from "../NavbarIcons/TabIcon";
+import { allConceptsDetails } from "../../../redux/features/ConceptDetailsRedux";
+import { ActiveTabParams } from "../../../redux/features/addActiveTabLink";
+import todayClassIcon from "../NavbarIcons/todayClassIconGreen.png";
+import { GGB, ROUTERKEYCONST } from "../../../constants";
 
 interface props {
   allConceptsDetails: allConceptsDetails;

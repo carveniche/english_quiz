@@ -1,16 +1,13 @@
-import Coding from "../components/FeatureComponent/Coding/Coding";
 import Lesson from "../components/FeatureComponent/Lesson/Lesson";
 import Mathzone from "../components/FeatureComponent/Mathzone/mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
-import MathVideoLesson from "../components/FeatureComponent/MathVideoLesson/MathVideoLesson";
 import React from "react";
-import { CICO, ROUTERKEYCONST } from "../constants";
+import { ROUTERKEYCONSTENGLISH } from "../constants";
 import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
-import SpeedMath from "../components/FeatureComponent/SpeedMath/SpeedMathHome";
-import MainCico from "../components/FeatureComponent/CICO/MainCico";
 import MainWhiteboard from "../components/FeatureComponent/Whiteboard/MainWhiteboard";
+
 interface routerConfig {
   path: string;
   key: string;
@@ -22,7 +19,7 @@ interface routerConfig {
   hasSubRoute: Boolean | null;
   subRoute: Object | null;
 }
-const routerConfig: routerConfig[] = [
+const englishRouterConfig: routerConfig[] = [
   {
     path: defaultRouter.path,
     key: defaultRouter.key,
@@ -37,7 +34,7 @@ const routerConfig: routerConfig[] = [
 
   {
     path: "/myscreen",
-    key: ROUTERKEYCONST.myScreen,
+    key: ROUTERKEYCONSTENGLISH.myScreen,
     exact: true,
     component: MyScreen,
     name: "My Screen",
@@ -48,8 +45,8 @@ const routerConfig: routerConfig[] = [
   },
 
   {
-    path: ROUTERKEYCONST.whiteboard.path,
-    key: ROUTERKEYCONST.whiteboard.key,
+    path: ROUTERKEYCONSTENGLISH.whiteboard.path,
+    key: ROUTERKEYCONSTENGLISH.whiteboard.key,
     name: "Whiteboard",
     component: MainWhiteboard,
     exact: true,
@@ -59,58 +56,24 @@ const routerConfig: routerConfig[] = [
     subRoute: null,
   },
   {
-    path: ROUTERKEYCONST.lesson,
-    key: ROUTERKEYCONST.lesson,
+    path: ROUTERKEYCONSTENGLISH.englishlesson,
+    key: ROUTERKEYCONSTENGLISH.englishlesson,
     exact: true,
     component: Lesson,
-    name: "Math Lesson",
+    name: "English Lesson",
     icon: "/menu-icon/MathLessons.svg",
     hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
   },
   {
-    path: `${ROUTERKEYCONST.mathzone}`,
-    key: ROUTERKEYCONST.mathzone,
+    path: `${ROUTERKEYCONSTENGLISH.englishmathzone}`,
+    key: ROUTERKEYCONSTENGLISH.englishmathzone,
     exact: true,
     component: Mathzone,
-    name: "Math Zone",
+    name: "English Zone",
     icon: "/menu-icon/MathQuiz.svg",
     hasChildren: true,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-  {
-    path: "/mathvideolesson",
-    key: ROUTERKEYCONST.mathvideolesson,
-    exact: true,
-    component: MathVideoLesson,
-    name: "Math Videos",
-    icon: "/menu-icon/MathVideoLessons.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-
-  {
-    path: "/speedmath",
-    key: ROUTERKEYCONST.speedmath,
-    exact: true,
-    component: SpeedMath,
-    name: "Speed Math",
-    icon: "/menu-icon/SpeedMathIcon.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
-  {
-    path: ROUTERKEYCONST.coding,
-    key: ROUTERKEYCONST.coding,
-    exact: true,
-    component: Coding,
-    name: "Coding",
-    icon: "/menu-icon/CodingIcon.svg",
-    hasChildren: false,
     hasSubRoute: false,
     subRoute: null,
   },
@@ -118,7 +81,7 @@ const routerConfig: routerConfig[] = [
   {
     path: "/miscellenous",
     component: null,
-    key: ROUTERKEYCONST.miscellaneous.key,
+    key: ROUTERKEYCONSTENGLISH.miscellaneous.key,
     exact: true,
     name: "Miscellaneous",
     icon: "/menu-icon/Whiteboard.svg",
@@ -126,9 +89,9 @@ const routerConfig: routerConfig[] = [
     hasSubRoute: true,
     subRoute: [
       {
-        key: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.keys,
+        key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.keys,
         name: "Flagged Questions",
-        path: ROUTERKEYCONST.miscellaneous.subRoute.flagQuestion.route,
+        path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.route,
         exact: true,
         icon: "/menu-icon/Whiteboard.svg",
         hasChildren: false,
@@ -136,9 +99,9 @@ const routerConfig: routerConfig[] = [
       },
 
       {
-        key: ROUTERKEYCONST.miscellaneous.subRoute.homework.keys,
+        key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.keys,
         name: "Homework",
-        path: ROUTERKEYCONST.miscellaneous.subRoute.homework.route,
+        path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.route,
         exact: true,
         icon: "/menu-icon/Whiteboard.svg",
         hasChildren: false,
@@ -146,17 +109,6 @@ const routerConfig: routerConfig[] = [
       },
     ],
   },
-  {
-    path: CICO.path,
-    key: CICO.key,
-    exact: true,
-    component: MainCico,
-    name: "CICO",
-    icon: "/menu-icon/Whiteboard.svg",
-    hasChildren: false,
-    hasSubRoute: false,
-    subRoute: null,
-  },
 ];
 
-export default routerConfig;
+export default englishRouterConfig;

@@ -1,14 +1,20 @@
 import { useDispatch } from "react-redux";
 import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
 import { isTutorTechBoth } from "../../utils/participantIdentity";
-import Navbar from "../Navbar/Navbar";
+
 import MenuDropDownArrow from "../Navbar/NavbarIcons/MenuDropDownArrow";
 import MenuHamburger from "../Navbar/NavbarIcons/MenuHamburger";
 import { useState } from "react";
 import { toggleMenuBar } from "../../redux/features/liveClassDetails";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { MATHCOURSE } from "../../constants";
+import EnglishNavbar from "../Navbar/EnglishNavbar/EnglishNavbar";
+import MathNavbar from "../Navbar/MathNavbar/MathNavbar";
 export default function NestedMenu() {
   const [showMenu, setShowMenu] = useState(false);
   const { room } = useVideoContext();
+  const { course } = useSelector((state: RootState) => state.liveClassDetails);
   const dispatch = useDispatch();
   const localParticipant = room?.localParticipant?.identity;
   const isValidParticipant = isTutorTechBoth({ identity: localParticipant });
@@ -33,7 +39,18 @@ export default function NestedMenu() {
             </div>
           </div>
         </button>
-        {showMenu && <Navbar onClick={() => handleShowMenu(false)} />}
+
+        {course === MATHCOURSE ? (
+          <>
+            {showMenu && <MathNavbar onClick={() => handleShowMenu(false)} />}
+          </>
+        ) : (
+          <>
+            {showMenu && (
+              <EnglishNavbar onClick={() => handleShowMenu(false)} />
+            )}
+          </>
+        )}
       </div>
     </>
   );

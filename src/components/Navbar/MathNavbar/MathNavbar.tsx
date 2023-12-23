@@ -3,21 +3,21 @@ import { NavLink } from "react-router-dom";
 import {
   ActiveTabParams,
   addToActiveTab,
-} from "../../redux/features/addActiveTabLink";
+} from "../../../redux/features/addActiveTabLink";
 
-import routerConfig from "../../Router/RouterConfig";
-import useVideoContext from "../../hooks/useVideoContext/useVideoContext";
-import { getQueryParams } from "../../utils/getQueryParams";
-import TabIcon from "./TabIcon";
+import routerConfig from "../../../Router/RouterConfig";
+import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
+import { getQueryParams } from "../../../utils/getQueryParams";
+import TabIcon from "../NavbarIcons/TabIcon";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import {
   CICO,
   LESSON,
   IFRAMENEWCODING,
   ROUTERKEYCONST,
   GGB,
-} from "../../constants";
+} from "../../../constants";
 import MathzoneNavbar from "./MathzoneNavbarMenu";
 import MathVideoLessonNavbar from "./MathVideoNavbarMenu";
 import MathLessonNavbarMenu from "./MathLessonNavbarMenu";
@@ -30,13 +30,13 @@ import {
   math_ClassType,
   coding_ClassType,
   mathCoding_ClassType,
-} from "../../utils/classTypesMenus";
-import { resetWhiteBoardData } from "../../redux/features/ComponentLevelDataReducer";
-import { isGradeAllowed } from "../../utils/isGradeAllowed";
-import CustomAlert from "../DisplayCustomAlert/CustomAlert";
-import { storeAllLessonLogs, storeGGBLessonLogs } from "../../api";
+} from "../../../utils/classTypesMenus";
+import { resetWhiteBoardData } from "../../../redux/features/ComponentLevelDataReducer";
+import { isGradeAllowed } from "../../../utils/isGradeAllowed";
+import CustomAlert from "../../DisplayCustomAlert/CustomAlert";
+import { storeAllLessonLogs, storeGGBLessonLogs } from "../../../api";
 
-export default function Navbar({ onClick }: { onClick: Function }) {
+export default function MathNavbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
     (state: RootState) => state.liveClassConceptDetails
   );
@@ -68,15 +68,15 @@ export default function Navbar({ onClick }: { onClick: Function }) {
     let finalArr = [];
 
     for (let i = 0; i < routerConfig.length; i++) {
-      if (class_type === "math_coding") {
+      if (String(class_type) === "math_coding") {
         if (mathCoding_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
-      } else if (class_type === "coding") {
+      } else if (String(class_type) === "coding") {
         if (coding_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }
-      } else if (class_type === "math") {
+      } else if (String(class_type) === "math") {
         if (math_ClassType.includes(routerConfig[i].key)) {
           finalArr.push(routerConfig[i]);
         }

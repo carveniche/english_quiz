@@ -16,8 +16,8 @@ import MobileTopMenuBar from "./components/MobileTopMenuBar/MobileTopMenuBar";
 import { BrowserRouter } from "react-router-dom";
 import AllPageRoutes from "./Router/AllPageRoutes";
 
-import Header2 from "./components/Navbar/Header2";
-import Header from "./components/Navbar/Header";
+import Header2 from "./components/Header/Header2";
+import Header from "./components/Header/Header";
 import { ChatProvider } from "./components/ChatProvider";
 import MainScreenRecording from "./components/ScreenRecording/MainScreenRecording";
 import StudentFeedBackForm from "./components/FeedBackForms/StudentFeedbackForms/StudentFeedBackForm";
@@ -26,6 +26,8 @@ import { RootState } from "./redux/store";
 import useVideoContext from "./hooks/useVideoContext/useVideoContext";
 import TeacherFeedbackFormStatus from "./components/FeedBackForms/TeacherFeedbackForm/TeacherFeedbackFormStatus";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import { MATHCOURSE } from "./constants";
+import EnglishAllPageRoutes from "./Router/EnglishAllPageRoutes";
 
 interface AppProps {
   setError: React.Dispatch<React.SetStateAction<TwilioError | Error | null>>;
@@ -40,8 +42,9 @@ logger.setLevel("SILENT");
 function JoinedScreen() {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const { room } = useVideoContext();
+
   const localParticipant = room?.localParticipant;
-  const { isClassHasDisconnected, isMenuOpen } = useSelector(
+  const { isClassHasDisconnected, isMenuOpen, course } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
   return (
@@ -61,7 +64,7 @@ function JoinedScreen() {
       <div className="section-component-layout" ref={parentRef}>
         <Room parentRef={parentRef} />
         <MainScreenRecording />
-        <AllPageRoutes />
+        {course === MATHCOURSE ? <AllPageRoutes /> : <EnglishAllPageRoutes />}
       </div>
       {!isMenuOpen && <MenuBar />}
     </Main>

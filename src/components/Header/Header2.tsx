@@ -1,4 +1,4 @@
-import ActiveTabMenu from "./ActiveTabMenu";
+import ActiveTabMenu from "../Navbar/MathNavbar/ActiveTabMenu";
 import NestedMenu from "../MenuBar/NestedMenu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";

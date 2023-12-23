@@ -54,12 +54,16 @@ import {
   toggleGraphWhiteboard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
+import { RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
   const history = useNavigate();
   const queryParams = getQueryParams();
   const dispatch = useDispatch();
+
+  const { course } = useSelector((state: RootState) => state.liveClassDetails);
 
   useEffect(() => {
     const handleMessage = (message: string) => {
@@ -327,6 +331,25 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
         UPLOADRESOURCE.closeUploadResource
       ) {
         dispatch(closeUploadResourceWhiteboard(false));
+      }
+      // Datatrack Start for English Subject
+      else if (parseMessage?.value?.datatrackName === "EnglishLesson") {
+        if (parseMessage?.value?.isReset) {
+          dispatch(
+            resetWhiteBoardData({
+              dataTrackKey: parseMessage?.value?.dataTrackKey,
+            })
+          );
+        }
+        dispatch(
+          addToActiveTab({
+            path: parseMessage.pathName,
+            key: parseMessage.key,
+            icon: parseMessage.icon,
+            name: parseMessage.name,
+            extraParams: parseMessage.extraParams || {},
+          })
+        );
       }
     };
 
