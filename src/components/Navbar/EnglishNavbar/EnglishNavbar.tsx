@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   ActiveTabParams,
   addToActiveTab,
-} from "../../../redux/features/addActiveTabLinkEnglish";
+} from "../../../redux/features/addActiveTabLink";
 import englishRouterConfig from "../../../Router/EnglishRouterConfig";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import { getQueryParams } from "../../../utils/getQueryParams";

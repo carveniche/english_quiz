@@ -4,6 +4,7 @@ import {
   IFRAMENEWCODING,
   MAXIMUMACTIVETAB,
   ROUTERKEYCONST,
+  ROUTERKEYCONSTENGLISH,
 } from "../../constants";
 import defaultRouter from "../../Router/defaultRouter";
 export interface ActiveTabParams {
@@ -76,6 +77,18 @@ const activeTabReducer = createSlice({
       } else if (action.payload.key === ROUTERKEYCONST.miscellaneous.key) {
         activeTabArray[index] = action.payload;
       } else if (action.payload.key === IFRAMENEWCODING.key) {
+        activeTabArray[index] = action.payload;
+      }
+      // Handling activateTabArray for English Subject
+      else if (action.payload.key === ROUTERKEYCONSTENGLISH.englishmathzone) {
+        if (activeTabArray[index].path !== action.payload.path) {
+          activeTabArray[index] = action.payload;
+        }
+      } else if (action.payload.key === ROUTERKEYCONSTENGLISH.englishlesson) {
+        activeTabArray[index] = action.payload;
+      } else if (
+        action.payload.key === ROUTERKEYCONSTENGLISH.miscellaneous.key
+      ) {
         activeTabArray[index] = action.payload;
       }
     },

@@ -332,7 +332,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
       ) {
         dispatch(closeUploadResourceWhiteboard(false));
       }
-      // Datatrack Start for English Subject
+      // Datatrack Handling For English Subject
       else if (parseMessage?.value?.datatrackName === "EnglishLesson") {
         if (parseMessage?.value?.isReset) {
           dispatch(
