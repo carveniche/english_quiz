@@ -37,7 +37,6 @@ export default function ActiveTabMenu() {
     { path, key, name, icon, extraParams }: ActiveTabParams,
     event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>
   ) => {
-    console.log("pathssssss", path, key, name, icon, extraParams);
     if (!isTutorTechBoth({ identity: String(role_name) })) {
       event.preventDefault();
       return;

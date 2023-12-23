@@ -20,7 +20,11 @@ import {
   openClosedScratchWhiteBoard,
   openClosedUploadResourceWhiteBoard,
 } from "../../../redux/features/ComponentLevelDataReducer";
-import { ROUTERKEYCONST, UPLOADRESOURCE } from "../../../constants";
+import {
+  ROUTERKEYCONST,
+  ROUTERKEYCONSTENGLISH,
+  UPLOADRESOURCE,
+} from "../../../constants";
 import useVideoContext from "../../../hooks/useVideoContext/useVideoContext";
 import UploadFilesIcon from "../UploadResource/UploadResourceIcons/UploadFilesIcon";
 import FilesChevronDown from "../UploadResource/UploadResourceIcons/FilesChevronDown";
@@ -291,15 +295,9 @@ export default function WhiteboardToolbar({
     newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
   }
 
-  // if (
-  //   (uploadResourceImages.length > 1 && isUploadResourceOpen) ||
-  //   currentSelectedScreen === "/lesson"
-  // ) {
-  //   newToolbar = newToolbar.filter((item: { id: number }) => item.id !== 3);
-  // }
-
   if (
-    currentSelectedScreen === "/lesson" ||
+    currentSelectedScreen === ROUTERKEYCONST.lesson ||
+    currentSelectedScreen === ROUTERKEYCONSTENGLISH.englishlesson ||
     isUploadResourceOpen ||
     !isTutorTechBoth({ identity: String(role_name) })
   ) {
@@ -350,7 +348,8 @@ export default function WhiteboardToolbar({
             </button>
           ))}
 
-          {(currentSelectedScreen === "/lesson" ||
+          {(currentSelectedScreen === ROUTERKEYCONST.lesson ||
+            currentSelectedScreen === ROUTERKEYCONSTENGLISH.englishlesson ||
             currentSelectedScreen === ROUTERKEYCONST.coding) && (
             <div className="flex flex-row w-[80px] justify-center items-center gap-2 ml-2">
               <input
