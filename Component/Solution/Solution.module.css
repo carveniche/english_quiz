@@ -1,0 +1,48 @@
+.quizCorrectInorrect {
+  font-family: "GothamRnd-Medium";
+  clear: both;
+  margin-bottom: 1rem;
+}
+.correctAnswerBox {
+  background-color: #dddddd;
+  padding: 10px 20px;
+  border: 1px solid #cccccc;
+  color: #666666;
+  margin-bottom: 1rem;
+}
+.correctAnswerBox .correctAnswer {
+  font-family: "GothamRnd-Medium";
+  color: #444444;
+}
+.correctAnswer > h6 {
+  margin: 0;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+.correctAnswer {
+  display: flex;
+
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+}
+.correctAnswer2 > h6 {
+  font-weight: bold;
+}
+.explanation {
+  font-size: 18px;
+  color: #666666;
+}
+.explanationBoxContainer {
+  border: 1px solid #cccccc;
+  padding: 10px 20px;
+}
+.explanationBoxContainer.word_wrap div {
+  white-space: pre-wrap;
+}
+.explanationBoxContainer.word_wrap_space {
+  white-space: pre-wrap;
+}
