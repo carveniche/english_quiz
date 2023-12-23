@@ -1,3 +1,6 @@
 [submodule "src/components/FeatureComponent/Mathzone/component"]
 	path = src/components/FeatureComponent/Mathzone/component
 	url = https://github.com/anishtiwari07/react-mathzone-questions.git
+[submodule "src/components/FeatureComponent/EnglishQuizZone/english_zone_question"]
+	path = src/components/FeatureComponent/EnglishQuizZone/english_zone_question
+	url = https://github.com/vipulSoni458/english_quiz.git
