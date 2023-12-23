@@ -7,14 +7,14 @@ import englishRouterConfig from "./EnglishRouterConfig";
 export default function EnglishAllPageRoutes() {
   const params = getQueryParams();
   const { pathname } = useLocation();
-  let y = `${ROUTERKEYCONSTENGLISH.englishmathzone}/:concept/:tag/:level`;
+  let y = `${ROUTERKEYCONSTENGLISH.englishquizzone}/:concept/:tag/:level`;
 
   return (
     <>
       {pathname === "/" && <Navigate to={`/allscreen?${params}`} />}
       <Routes>
         {englishRouterConfig.map((item) =>
-          item.key === ROUTERKEYCONSTENGLISH.englishmathzone ? (
+          item.key === ROUTERKEYCONSTENGLISH.englishquizzone ? (
             <Route path={y} Component={item.component} key={item.key}></Route>
           ) : item.hasSubRoute ? (
             <Route key={item.key} path={item.path}>

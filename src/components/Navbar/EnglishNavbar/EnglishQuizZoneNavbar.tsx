@@ -14,7 +14,7 @@ interface props {
   currentSelectedMenuIndex: number;
   handleOpenSubMenu: Function;
 }
-export default function EnglishMathZoneNavbar({
+export default function EnglishQuizZoneNavbar({
   allConceptsDetails,
   item,
   handleClick,

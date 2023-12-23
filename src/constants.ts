@@ -20,8 +20,8 @@ export const MAXIMUMACTIVETAB = 4;
 export const ROUTERKEYCONSTENGLISH = {
   allScreen: "/allscreen",
   myScreen: "/myscreen",
-  englishlesson: "/lesson",
-  englishmathzone: "/englishmathzone",
+  englishlesson: "/englishlesson",
+  englishquizzone: "/englishquizzone",
   whiteboard: {
     key: "whiteboard",
     path: "/whiteboard",
@@ -155,5 +155,5 @@ export const IFRAMENEWCODING = {
 export const MATHCOURSE = "Math";
 export const ENGLISHCOURSE = "English";
 
-export const SCREENRECORDING = true;
-export const SHOWFLOATINGPARTICIPANT = true;
+export const SCREENRECORDING = false;
+export const SHOWFLOATINGPARTICIPANT = false;

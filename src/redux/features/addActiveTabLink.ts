@@ -80,7 +80,7 @@ const activeTabReducer = createSlice({
         activeTabArray[index] = action.payload;
       }
       // Handling activateTabArray for English Subject
-      else if (action.payload.key === ROUTERKEYCONSTENGLISH.englishmathzone) {
+      else if (action.payload.key === ROUTERKEYCONSTENGLISH.englishquizzone) {
         if (activeTabArray[index].path !== action.payload.path) {
           activeTabArray[index] = action.payload;
         }

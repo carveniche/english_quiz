@@ -11,11 +11,11 @@ import TabIcon from "../NavbarIcons/TabIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { LESSON, ROUTERKEYCONSTENGLISH } from "../../../constants";
-import EnglishMathZoneNavbar from "./EnglishMathZoneNavbar";
 import EnglishLessonNavbar from "./EnglishLessonNavbar";
 import EnglishMiscelleneousNavbar from "./EnglishMiscelleneousNavbar";
 import { useState } from "react";
 import { resetWhiteBoardData } from "../../../redux/features/ComponentLevelDataReducer";
+import EnglishQuizZoneNavbar from "./EnglishQuizZoneNavbar";
 
 export default function EnglishNavbar({ onClick }: { onClick: Function }) {
   const { allConceptsDetails } = useSelector(
@@ -89,7 +89,7 @@ export default function EnglishNavbar({ onClick }: { onClick: Function }) {
       >
         {true &&
           englishRouterConfig.map((item, index) => {
-            return item.key === ROUTERKEYCONSTENGLISH.englishmathzone ? (
+            return item.key === ROUTERKEYCONSTENGLISH.englishquizzone ? (
               <li
                 className="rounded-sm px-3 pl-6 pr-3 py-3 hover:bg-black w-full flex gap-2 relative bg-red"
                 onClick={() => handleOpenSubMenu(index)}
@@ -104,7 +104,7 @@ export default function EnglishNavbar({ onClick }: { onClick: Function }) {
                 </div>
                 <TabIcon src={"/menu-icon/chevron.svg"} />
                 {index === currentSelectedMenuIndex && (
-                  <EnglishMathZoneNavbar
+                  <EnglishQuizZoneNavbar
                     allConceptsDetails={allConceptsDetails}
                     item={{ ...item, extraParams: {} }}
                     key={`english-${mathzoneKeys}`}

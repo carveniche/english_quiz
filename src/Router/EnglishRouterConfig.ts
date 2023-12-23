@@ -1,5 +1,4 @@
 import Lesson from "../components/FeatureComponent/Lesson/Lesson";
-import Mathzone from "../components/FeatureComponent/Mathzone/mathzone";
 import MyScreen from "../components/FeatureComponent/MyScreen/MyScreen";
 import React from "react";
 import { ROUTERKEYCONSTENGLISH } from "../constants";
@@ -7,6 +6,7 @@ import defaultRouter from "./defaultRouter";
 import FlagQuestionMenu from "../components/FeatureComponent/FlagQuestion/FlagQuestionMenu";
 import HomeWork from "../components/FeatureComponent/HomeWork/HomeWork";
 import MainWhiteboard from "../components/FeatureComponent/Whiteboard/MainWhiteboard";
+import EnglishQuiz from "../components/FeatureComponent/EnglishQuizZone/EnglishQuizZone";
 
 interface routerConfig {
   path: string;
@@ -67,10 +67,10 @@ const englishRouterConfig: routerConfig[] = [
     subRoute: null,
   },
   {
-    path: `${ROUTERKEYCONSTENGLISH.englishmathzone}`,
-    key: ROUTERKEYCONSTENGLISH.englishmathzone,
+    path: `${ROUTERKEYCONSTENGLISH.englishquizzone}`,
+    key: ROUTERKEYCONSTENGLISH.englishquizzone,
     exact: true,
-    component: Mathzone,
+    component: EnglishQuiz,
     name: "English Zone",
     icon: "/menu-icon/MathQuiz.svg",
     hasChildren: true,

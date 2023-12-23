@@ -54,16 +54,12 @@ import {
   toggleGraphWhiteboard,
   whiteBoardComponentLevelDataTrack,
 } from "../../redux/features/ComponentLevelDataReducer";
-import { RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 
 export default function DataTrack({ track }: { track: IDataTrack }) {
   const { pathname } = useLocation();
   const history = useNavigate();
   const queryParams = getQueryParams();
   const dispatch = useDispatch();
-
-  const { course } = useSelector((state: RootState) => state.liveClassDetails);
 
   useEffect(() => {
     const handleMessage = (message: string) => {

@@ -1,0 +1,3090 @@
+@font-face {
+  font-family: "GothamRnd-Book2";
+  src: url("fonts/GothamRounded-Book.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+.flex {
+  display: flex;
+}
+
+.flexDirectionRow {
+  flex-direction: row;
+}
+
+.flexGap2rem {
+  gap: 1rem;
+}
+.marginTop1Rem {
+  margin-top: 9px;
+}
+.flexWrap {
+  flex-wrap: wrap;
+}
+
+.flexDirectionColumn {
+  flex-direction: column;
+}
+
+.choiceType {
+  min-width: Calc(43% - 2rem);
+  min-height: 80px;
+  flex-wrap: wrap;
+  height: auto;
+  width: auto;
+  gap: 2rem;
+  padding-right: 1rem;
+  border: 1px solid black;
+}
+
+.choicesType > div:nth-child(2) {
+  padding-right: 1rem;
+}
+
+.selectedChoiceType {
+  background-color: #b9c2fc;
+}
+
+.bodyPage .wrongAnswer {
+  color: red !important;
+}
+
+.bodyPage .correctAnswer {
+  color: green !important;
+}
+
+.prevSelectionAnswerSelection {
+  background-color: white;
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+.blackBorderContent {
+  border: 1px solid black;
+}
+
+.blackborder {
+  border: 1px solid black;
+}
+
+.choiceTypeMultipleOption {
+  width: 150px;
+  height: 60px;
+  gap: 0rem;
+  border: 1px solid black;
+  justify-content: center;
+  display: flex;
+}
+
+.mainApp div {
+  margin: 20px 0;
+}
+
+.horizontalNotSymbols {
+  flex-wrap: wrap;
+}
+
+.horizontalNotSymbols > div {
+  width: calc(40% - 2rem);
+  min-width: 200px;
+  align-items: center;
+}
+
+/* Actual code */
+.questionName {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  color: #233584;
+}
+.ckeditrorAnswer input[type="radio"],
+.ckeditrorAnswer input[type="checkbox"] {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 8px !important;
+}
+.selectChoicesFont {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+}
+
+.bodyPage {
+  width: 100%;
+
+  padding: 1rem 0;
+  position: relative;
+  background: #ffdd63;
+  display: flex;
+  flex-direction: column;
+  height: calc(100%);
+
+  top: 0;
+}
+
+.mainPage .bodyPage {
+  height: 100%;
+}
+
+.whitePage {
+  background: white;
+
+  width: calc(100% - 160px);
+  margin: 0 auto;
+  min-height: calc(100% - 46px);
+  max-height: calc(100% - 46px);
+  overflow: auto;
+  clear: both;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  padding: 1rem 2rem;
+  height: auto;
+}
+
+.whitePage > div:nth-child(3) {
+  clear: both;
+  height: auto;
+  position: relative;
+  height: inherit;
+}
+
+.mainPage2 .whitePage > div:nth-child(3) {
+  clear: both;
+  height: auto;
+  position: absolute;
+  height: inherit;
+}
+
+.mainPage2 .whitePage {
+  min-height: calc(100% - 88px);
+  max-height: calc(100% - 88px);
+}
+
+.bodyPage > img {
+  position: absolute;
+}
+
+.eclipse1 {
+  position: absolute;
+  left: 1%;
+  top: 14%;
+  width: 98.11px;
+  height: 49.06px;
+  transform: translate(-1%, -14%);
+}
+
+.eclipseGreen {
+  left: 2%;
+  bottom: 1rem;
+  z-index: 0;
+  width: 120px;
+  height: 64px;
+  transform: translate(-2%, -1rem);
+}
+
+.polygon3 {
+  top: 10%;
+  right: 0;
+}
+
+.whiteStar {
+  top: 50%;
+  left: 10px;
+  width: 43.71px;
+  height: 43.71px;
+  transform: translate(-10px, -50%);
+}
+
+.Vector22 {
+  bottom: 2px;
+  left: 100%;
+  width: 139px;
+  height: 150px;
+  transform: translate(-100%, -2px);
+}
+
+.rectangle {
+  width: 61px;
+  height: 61px;
+  top: 50%;
+  left: 97%;
+  transform: translate(-97%, -50%);
+}
+
+.star5 {
+  left: 50%;
+  bottom: 1.5%;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -2.5%);
+}
+
+.border {
+  height: 2px;
+  width: 100%;
+  background-color: #eaeaea;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+}
+
+.border > div {
+  height: 2px;
+  background-color: green;
+  width: 20%;
+}
+
+.boxChoices {
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.checkButton {
+  position: static;
+  z-index: 9;
+}
+
+.checkButtonColor {
+  background-color: blue;
+  color: white;
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.checkButtonWaiting {
+  color: black;
+  width: auto;
+  font-size: initial;
+  border-radius: 0;
+  width: 160px;
+}
+
+.selectCount {
+  background-color: orangered;
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  border-radius: 15px;
+  position: absolute;
+  left: 77%;
+  top: 18%;
+  cursor: pointer;
+  transform: translate(-77%, -18%);
+}
+
+.imageBoxes {
+  position: relative;
+  cursor: pointer;
+}
+
+.modal {
+  height: 120px;
+
+  top: 0px;
+
+  clear: both;
+}
+
+.modalOuterBox {
+  width: 90%;
+  position: fixed;
+  z-index: 99;
+  height: auto;
+  max-height: 100%;
+  overflow-y: auto;
+  bottom: 10px;
+}
+
+.modalButton {
+  color: blue;
+  background-color: white;
+  width: auto;
+  float: right;
+  position: relative;
+
+  height: 35px;
+
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: center;
+  box-sizing: border-box;
+  z-index: 4;
+  cursor: pointer;
+  border: 1px solid #d3d8e3;
+}
+
+/* .modal2{
+      position:relative;
+      
+      
+    min-height: 180px;
+    height:auto;
+      width:100%;
+      background-color: white;
+    } */
+
+.green {
+  color: #6caf20;
+  background: #cceea5;
+}
+
+.red {
+  color: #eb5953;
+  background: #fae0e0;
+}
+
+.red > div:nth-child(1),
+.green > div:nth-child(1) {
+  margin: 2rem;
+  padding-top: 1rem;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.solutionPage {
+  margin-left: 2rem;
+  padding-top: 1rem;
+}
+
+/* @media only screen and (max-width:669px)
+    {
+      .checkButton{
+        width:50%;
+        left:50%;
+        margin-bottom: 2rem;
+      }
+      .contentParent{
+        margin-top: 1rem;;
+      }
+    } */
+/* @media only screen and (max-width:527px)
+    {
+      .checkButton{
+        width:60%;
+        left:40%;
+        margin-bottom: 2rem;
+      }
+      .contentParent{
+        margin-top: 1rem;;
+      }
+    } */
+
+.modalsParent {
+  position: relative;
+  border-radius: 11px;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  height: 100%;
+  border-top: none;
+}
+
+.choiceType2 {
+  min-width: auto;
+  max-width: Calc((100% - 10px));
+  min-height: auto;
+  width: 60px;
+  flex-wrap: wrap;
+  min-height: 60px;
+  height: auto;
+  padding: 10px;
+  width: auto;
+  gap: 2rem;
+  word-break: break-word;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+/* style={{ backgroundColor: "indigo", color: "white", width: 'inherit', height: 'inherit', border: '1px solid indigo', borderRadius: "20px", display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }} */
+
+.DraggableBox {
+  width: inherit;
+  min-height: 50px;
+  height: auto;
+  background-color: indigo;
+  color: white;
+  min-width: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.bgIndigo {
+  background-color: indigo;
+  color: white;
+}
+
+.questionContent {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.solutionText {
+  margin-bottom: 0.3rem;
+
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-weight: bold;
+}
+
+.checkButton2 {
+  width: 100px;
+  background: blue;
+  height: 40px;
+  color: white;
+  border-radius: 20px;
+
+  top: 5px;
+  left: 86%;
+  margin: 1rem;
+  float: right;
+
+  cursor: pointer;
+}
+
+.parentSolutionMargin {
+  margin: 1rem 0;
+}
+
+.paddingRightSolutionItem {
+  padding-right: 1rem;
+}
+
+.border2 {
+  height: 2px;
+  width: 100%;
+  background-color: #eaeaea;
+  margin: 0;
+  border-radius: 2px;
+}
+
+.border2 > div {
+  height: 2px;
+  background-color: green;
+  width: 20%;
+}
+
+.border2 {
+  height: 2px;
+  width: 100%;
+  background-color: #eaeaea;
+  margin: 0;
+  border-radius: 2px;
+}
+
+.border3 {
+  height: 2px;
+  width: 100%;
+  background-color: #eaeaea;
+  margin-top: 1rem;
+  border-radius: 2px;
+}
+
+.border3 > div {
+  height: 2px;
+  background-color: green;
+  width: 20%;
+  margin-bottom: 1rem;
+}
+
+.border4 {
+  height: 2px;
+  width: 100%;
+  background-color: #eaeaea;
+  margin: 1rem 0;
+  border-radius: 2px;
+}
+
+.border4 > div {
+  height: 2px;
+  background-color: green;
+  width: 20%;
+  margin-bottom: 1rem;
+}
+
+.modalsParent2 {
+  position: relative;
+  border-radius: 11px;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  border: 1px solid #d3d8e3;
+  border-top: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkButton3 {
+  width: 100px;
+  color: blue !important;
+  width: auto;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 1rem;
+  float: right;
+  border: 1px solid #d3d8e3;
+  cursor: pointer;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: center;
+  box-sizing: border-box;
+  z-index: 4;
+  cursor: pointer;
+}
+
+/* virtual Keyboard */
+#mathToolbarContainer {
+  width: 300px;
+  height: auto;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: gray;
+  border-radius: 7px;
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+}
+
+/* mathToolbarContainer */
+#mathToolbar {
+  width: 300px;
+  margin: 0 1rem;
+  display: grid;
+  position: relative;
+  gap: 1rem;
+  grid-template-columns: repeat(6, 31px);
+  clear: both;
+}
+
+#mathToolbar > div {
+  word-break: break;
+  height: 30px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+#tooltipTopBar {
+  color: white;
+
+  cursor: pointer;
+}
+
+.tooltipClose {
+  float: right;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.modalBorder1 {
+  border: 2px solid black;
+}
+
+.modalBorder2 {
+  border: 2px solid black;
+  border-bottom: 0px;
+}
+
+.MultipleChoicequestionName th,
+.MultipleChoicequestionName td {
+  padding: 1rem;
+}
+
+.bottomModal {
+  bottom: 0;
+  height: 0px;
+}
+
+.borderTopBottomMargin {
+  margin: 1rem 0;
+}
+
+.marginTopborder3 {
+  margin-top: 1rem;
+}
+
+.disabledTeacher {
+  text-align: left;
+  margin-top: 1rem;
+  font-size: 20px;
+}
+
+.mainPage,
+.mainPage2 {
+  width: 108%;
+
+  margin-left: -5.4%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.mainPage2 {
+  margin-left: -4%;
+  width: 106.2%;
+}
+
+.NextButton {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  height: 40px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 500 !important;
+  border-radius: 5px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.NextButton:hover {
+  background-color: darkblue;
+}
+
+/* .mainPage2 .bodyPage {
+      height: inherit;
+      overflow: hidden;
+  
+    } */
+/* .mainPage2 .bodyPage > .whitePage {
+      height: 100%;
+      max-height: 73vh;
+      overflow-y: auto;
+      margin-top: 50px;
+    } */
+
+/* @media only screen and (max-width: 1202px) {
+      .mainPage {
+        max-height: Calc(80.5vh - 1rem - 72px);
+      }
+    } */
+
+/* @media only screen and (max-width: 1102px) {
+      .mainPage {
+        max-height: Calc(78.4vh - 1rem - 72px);
+      }
+    } */
+
+/* @media only screen and (max-width: 1002px) {
+      .mainPage {
+        max-height: Calc(75.4vh - 1rem - 72px);
+      } */
+
+@media only screen and (max-width: 819px) {
+  /* .mainPage2 {  //just commented
+        max-height: 87vh;
+        height: 87vh;
+      } */
+}
+
+.NextButton2 {
+  width: auto;
+  position: relative;
+  z-index: 1;
+  background-color: blue;
+  height: 40px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  color: white;
+  font-weight: 500 !important;
+  border-radius: 5px;
+}
+
+.NextButton2:hover {
+  background-color: darkblue;
+}
+
+.whitePage .sc-hKMtZM,
+.whitePage .fkKysK {
+  display: grid !important;
+}
+
+.ckeditor {
+  white-space: initial;
+}
+.ckeditor .questionName {
+  white-space: initial;
+}
+@media only screen and (max-width: 1180px) {
+  /* .mainPage2 {
+        max-height: 80vh;
+      } */
+
+  /* .checkButton {// just  commented
+        top: 16%;
+      }
+      .mainPage2 .bodyPage > .whitePage {
+        max-height: 70vh;
+      } */
+}
+
+@media only screen and (max-width: 950px) {
+  /* .mainPage2 {
+        max-height: 83vh;  //just commented
+        height: 83vh;
+      }
+      .mainPage2 .bodyPage > .whitePage {
+        max-height: 73vh;
+      } */
+}
+
+/* @media only screen and (max-width: 919px) {
+      .mainPage2 {
+        max-height: 83vh;
+        height: 83vh;
+      }
+    } */
+
+.blockBaseBoxes {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.blockBaseBoxes img {
+  display: block;
+  width: fit-content;
+  height: fit-content;
+}
+
+.blockBaseFlexBoxSelection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 90%;
+  margin-top: 0.1rem;
+  cursor: pointer;
+}
+
+.blockBaseFlexBoxSelection > div {
+  min-width: Calc(50% - 0.4rem);
+  max-width: Calc(50% - 0.4rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+
+  padding: 1rem;
+}
+
+.blockBaseFlexBoxSelection > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.MultipleChoiceFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 90%;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.MultipleChoiceFlexBox > div {
+  min-width: Calc(50% - 0.5rem);
+  max-width: 100%;
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+}
+
+.MultipleChoiceFlexBox > div > div {
+  min-width: auto;
+  min-height: auto;
+}
+
+.MultipleChoiceFlexBox > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.MultipleChoiceFlexBox .choiceImage {
+  padding: 0;
+}
+
+.MatchObjectVerticalKeyingFlexBox3 {
+  width: 85%;
+  margin: 1rem 0;
+  display: flex;
+  column-gap: 4rem;
+  row-gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.MatchObjectVerticalKeyingFlexBox3 > div {
+  min-width: 90px;
+  width: auto;
+  flex-wrap: wrap;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.MatchObjectVerticalKeyingFlexBox3 > div {
+  display: flex;
+  justify-content: left;
+}
+
+.MatchObjectVerticalVerticalFlexBox2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 80%;
+  margin-top: 2rem;
+  cursor: pointer;
+}
+
+.MatchObjectVerticalVerticalFlexBox2 > div {
+  width: auto;
+
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 5px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+
+  padding: 1rem;
+}
+
+.MatchObjectVerticalVerticalFlexBox2 > div > div {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  aspect-ratio: 1/1;
+}
+
+.MatchObjectVerticalVerticalFlexBox2 > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.MatchObjectVerticalVerticalFlexBox3 {
+  width: 85%;
+  margin: 1rem 0;
+  display: flex;
+  column-column-gap: 4rem;
+  row-gap: 0.6rem;
+  flex-wrap: wrap;
+  row-gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.MatchObjectVerticalVerticalFlexBox3 > div {
+  min-width: 90px;
+  width: auto;
+  flex-wrap: wrap;
+
+  flex-wrap: wrap;
+}
+
+.MatchObjectVerticalVerticalFlexBox3 > div {
+  display: flex;
+  justify-content: left;
+}
+
+.MatchObjectVerticalDragDropFlexBox3 {
+  width: 85%;
+  margin: 1rem 0;
+  display: flex;
+  column-gap: 4rem;
+  row-gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.MatchObjectVerticalDragDropFlexBox3 > div {
+  min-width: 90px;
+  width: auto;
+  flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.MatchObjectVerticalDragDropFlexBox3 > div {
+  display: flex;
+  justify-content: left;
+}
+
+.MatchObjectVerticalDragDropFlexBox3 > .fontSize {
+  font-weight: 600;
+}
+
+.MatchObjectVerticalDragDropBox {
+  min-height: 60px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 140px;
+}
+
+.MatchObjectVerticalDragDropBox > div {
+  background-color: indigo;
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.MatchObjectVerticalDragDropBoxFlexBox2 {
+  display: flex;
+  margin-top: 2rem;
+
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.MatchObjectVerticalDragDropBoxFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.CountOnTensframeSelectFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 90%;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.CountOnTensframeSelectFlexBox > div {
+  min-width: Calc(50% - 0.5rem);
+  max-width: Calc(50% - 0.5rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+  min-height: 60px;
+}
+
+.TensframeButtonBox {
+  width: 80px;
+  background-color: white;
+  display: block;
+  height: 80px;
+  margin: 20px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.TensframeButtonBox img {
+  width: 50px;
+  height: 50px;
+}
+
+.RandomArrangmentDragDropKeyingFlexBox3 {
+  width: auto;
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.RandomArrangmentDragDropKeyingFlexBox3 > div {
+  width: auto;
+  justify-content: center;
+}
+
+.RandomArrangmentDragDropKeyingFlexBox3 > div {
+  display: flex;
+}
+
+.RandomArrangmentDragDropKeyingFlexBox {
+  display: flex;
+  width: 70%;
+  gap: 4rem;
+}
+
+@media (max-width: 1000px) {
+  .RandomArrangmentDragDropKeyingFlexBox {
+    width: 90%;
+  }
+}
+
+.RandomArrangmentDragDropKeyingFlexBox > div {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+/* RandomArrangmentDragDrop DragDrop */
+.RandomArrangmentDragDropDragDropFlexBox3 {
+  width: auto;
+
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.RandomArrangmentDragDropDragDropFlexBox3 > div {
+  display: flex;
+  width: auto;
+  justify-content: center;
+}
+
+.RandomArrangmentDragDropDragDropFlexBox2 {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.RandomArrangmentDragDropDragDropFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.RandomArrangmentDragDropDragDropFlexBox {
+  display: flex;
+  width: 70%;
+  gap: 4rem;
+}
+
+.RandomArrangmentDragDropDragDropFlexBox > div {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+.RandomArrangmentDragDropDragDropBox > div {
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.RandomArrangmentDragDropDragDropBoxImageBox {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* RandomArrangmet selectchoice */
+.RandomArrangmentDragDropSelectChoiceFlexBox3 {
+  width: auto;
+
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.RandomArrangmentDragDropSelectChoiceFlexBox3 > div {
+  width: auto;
+  justify-content: center;
+}
+
+.RandomArrangmentDragDropSelectChoiceFlexBox3 > div {
+  display: flex;
+}
+
+.RandomArrangmentDragDropSelectChoiceFlexBox {
+  display: flex;
+  width: 70%;
+  gap: 4rem;
+}
+
+@media (max-width: 1000px) {
+  .RandomArrangmentDragDropSelectChoiceFlexBox {
+    width: 90%;
+  }
+}
+
+.RandomArrangmentDragDropSelectChoiceFlexBox > div {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+/* matchobjectvertical keying */
+
+.MatchObjectHorizontalTypeKeyingFlexBox3 {
+  width: auto;
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+.MatchObjectHorizontalTypeKeyingFlexBox3 > div {
+  display: flex;
+  width: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.MatchObjectHorizontalTypeKeyingFlexBox {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* matchobjecthorizontal selectchoice */
+.MatchObjectHorizontalTypeSelectChoiceFlexBox3 {
+  width: auto;
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+.MatchObjectHorizontalTypeSelectChoiceFlexBox3 > div {
+  width: auto;
+  justify-content: center;
+}
+
+.MatchObjectHorizontalTypeSelectChoiceFlexBox3 > div {
+  display: flex;
+}
+
+.MatchObjectHorizontalTypeSelectChoiceFlexBox {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* matchobjecthorizontal dragdrop */
+
+.MatchObjectHorizontalTypeDragDropFlexBox3 {
+  width: auto;
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+.MatchObjectHorizontalTypeDragDropFlexBox3 > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.MatchObjectHorizontalTypeDragDropFlexBox3 > div {
+  display: flex;
+}
+
+.MatchObjectHorizontalTypeDragDropFlexBox2 {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.MatchObjectHorizontalTypeDragDropFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MatchObjectHorizontalTypeDragDropFlexBox {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.MatchObjectHorizontalTypeDragDropBox {
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 96px;
+  border: 1px solid black;
+}
+
+.MatchObjectHorizontalTypeDragDropBox > div {
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+/* Horizontal Picture Keying */
+
+.HorizontalPictureKeyingFlexBox {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 1rem;
+}
+
+.HorizontalPictureKeyingFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Horizontal Picture Selectchoice */
+.HorizontalPictureSelectChoiceFlexBox {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 1rem;
+}
+
+.HorizontalPictureSelectChoiceFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* HorizontalPicture Drag Drop */
+.HorizontalPictureDragDropFlexBox2 {
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.HorizontalPictureDragDropFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HorizontalPictureDragDropFlexBox {
+  text-align: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.HorizontalPictureDragDropFlexBox td {
+  padding: 10px;
+}
+
+.HorizontalPictureDragDropFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HorizontalPictureDragDropFlexBox .fontColor {
+  color: indigo;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.HorizontalPictureDragDropBox {
+  min-height: 60px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 80px;
+}
+
+.HorizontalPictureDragDropBox > div {
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* Hundred chart  */
+
+/* check custom.module.css file */
+
+/*Compare of Image SelectChoice  */
+
+.CompareOfImagesSelectChoiceFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 90%;
+  margin-top: 0.1rem;
+  cursor: pointer;
+}
+
+.CompareOfImagesSelectChoiceFlexBox > div {
+  min-width: Calc(50% - 0.4rem);
+  max-width: Calc(50% - 0.4rem);
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+
+  padding: 1rem;
+}
+
+.CompareOfImagesSelectChoiceFlexBox > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.CompareOfImagesDragDropFlexBox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.CompareOfImagesDragDropDragDropBoxes {
+  min-width: 120px;
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Compare Drag Operator Keying*/
+.CompareDragOperatorKeyingFlexBox2 {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem 0.2rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.CompareDragOperatorKeyingFlexBox2 > div {
+  min-width: 64px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.CompareDragOperatorKeyingFlexBox2 .missedBox {
+  min-width: 120px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+}
+
+/* Compare Drag Operator SelectChoice */
+
+.CompareDragOperatorSelectChoiceFlexBox2 {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem 0.2rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox2 > div {
+  min-width: 64px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox2 > #missedBox {
+  min-width: 120px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 90%;
+  margin-top: 0.1rem;
+  cursor: pointer;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox > div {
+  min-width: Calc(50% - 0.4rem);
+  max-width: Calc(50% - 0.4rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+
+  padding: 1rem;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox > div > div {
+  min-width: auto;
+  min-height: auto;
+}
+
+.CompareDragOperatorSelectChoiceFlexBox > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+/* comparedragoperator dragdrop */
+.CompareDragOperatorDragDropFlexBox2 {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem 0.2rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.CompareDragOperatorDragDropFlexBox2 > div {
+  min-width: 64px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.CompareDragOperatorDragDropFlexBox2 .missedBox {
+  min-width: 120px;
+  padding: 10px;
+  width: auto;
+  min-height: 50px;
+  height: auto;
+}
+
+.CompareDragOperatorDragDropFlexBox {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem 0.2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.CompareDragOperatorDragDropFlexBox > div {
+  min-width: 120px;
+  min-height: 50px;
+  width: auto;
+  max-width: 50%;
+  height: auto;
+  word-break: break-word;
+  padding: 10px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CompareDragOperatorDragDropFlexBox2 > .DropBoxes {
+  min-width: 120px;
+  min-height: 50px;
+  width: auto;
+  max-width: 50%;
+  height: auto;
+  word-break: break-word;
+  padding: 10px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* PlaceValueChart Keying */
+.PlaceValueChartKeyingGrid {
+  display: Grid;
+  width: 100%;
+  min-width: 100px;
+  margin: 2rem 0;
+  max-width: 100%;
+  height: auto;
+  /* grid-template-columns: repeat(${props=>props.totalCols}, 1fr); */
+  border: 1px solid black;
+}
+
+.PlaceValueChartKeyingGrid > div {
+  display: relative;
+  display: flex;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  word-break: break;
+  padding: 1rem 0.4rem;
+  border-right: 1px solid black;
+  height: auto;
+}
+
+.PlaceValueChartKeyingGrid > .borderBottom {
+  border-top: 1px solid black;
+}
+
+.PlaceValueChartKeyingGrid > .rightBorder {
+  border-right: 0px solid black;
+}
+
+.PlaceValueChartKeyingGrid > div > div {
+  word-break: break;
+  height: auto;
+}
+
+/* Place Value Chart SelectChoice */
+
+.PlaceValuechartSelectChoiceGrid {
+  display: Grid;
+  width: 100%;
+  min-width: 100px;
+  margin: 2rem 0;
+  max-width: 100%;
+  height: auto;
+
+  border: 1px solid black;
+  overflow: auto;
+}
+
+.PlaceValuechartSelectChoiceGrid > div {
+  display: relative;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  word-break: break;
+  padding: 1rem 0.4rem;
+  border-right: 1px solid black;
+  height: auto;
+}
+
+.PlaceValuechartSelectChoiceGrid > .borderBottom {
+  border-top: 1px solid black;
+}
+
+.PlaceValuechartSelectChoiceGrid > .rightBorder {
+  border-right: 0px solid black;
+}
+
+.PlaceValuechartSelectChoiceGrid > div > div {
+  word-break: break;
+  height: auto;
+}
+
+.PlaceValuechartSelectChoiceBox {
+  position: relative;
+  cursor: pointer;
+
+  min-width: 50px;
+  min-height: 50px;
+  width: auto;
+  height: auto;
+
+  flex-wrap: wrap;
+  word-break: break-word;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  max-width: inherit;
+}
+
+.PlaceValuechartSelectChoiceBox > div {
+  min-width: 100%;
+  min-height: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-word;
+  justify-content: center;
+  align-items: center;
+  background: indigo;
+  max-width: 95%;
+  height: auto;
+}
+
+/* PlaceValueChart DragDrop */
+
+.PlaceValueChartDragDropGrid {
+  display: Grid;
+  width: 100%;
+  min-width: 100px;
+  margin: 2rem 0;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid black;
+}
+
+.PlaceValueChartDragDropGrid > div {
+  display: relative;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  word-break: break;
+  padding: 1rem 0.4rem;
+  border-right: 1px solid black;
+  height: auto;
+}
+
+.PlaceValueChartDragDropGrid > .borderBottom {
+  border-top: 1px solid black;
+}
+
+.PlaceValueChartDragDropGrid > .rightBorder {
+  border-right: 0px solid black;
+}
+
+.PlaceValueChartDragDropGrid > div > div {
+  word-break: break;
+  height: auto;
+}
+
+.PlaceValueChartDragDropFlexBox2 {
+  display: flex;
+  margin: 1rem 0;
+  gap: 0.2rem;
+  position: relative;
+
+  flex-wrap: wrap;
+}
+
+.PlaceValueChartDragDropFlexBox2 > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  min-width: 50px;
+  min-height: 50px;
+  width: auto;
+  height: auto;
+
+  flex-wrap: wrap;
+  word-break: break-word;
+}
+
+.PlaceValueChartDragDropFlexBox2 > div > div {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-word;
+  justify-content: center;
+  align-items: center;
+}
+
+.PlaceValueChartDragDropBox {
+  position: relative;
+  cursor: move;
+
+  min-width: 50px;
+  min-height: 50px;
+  width: auto;
+  height: auto;
+
+  flex-wrap: wrap;
+  word-break: break-word;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  max-width: inherit;
+}
+
+.PlaceValueChartDragDropBox > div {
+  min-width: 100%;
+  min-height: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-word;
+  justify-content: center;
+  align-items: center;
+  background: indigo;
+  max-width: 95%;
+  height: auto;
+}
+
+/* Vertical Keying */
+
+.VerticalKeyingFlexBox {
+  display: flex;
+  align-items: center;
+}
+
+.VerticalKeyingFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+}
+
+/* verticalWithSymbols */
+.VerticalWithSymbolsFlexBox {
+  display: flex;
+
+  align-items: center;
+  gap: 1.2rem;
+  margin: 2rem 0;
+}
+
+.VerticalWithSymbolsFlexBox > div {
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+}
+
+/* Place value Table Select --keying*/
+.PlaceValueTableSelectKeyingFlexBox {
+  display: flex;
+  align-items: center;
+}
+
+.PlaceValueTableSelectKeyingFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  min-height: 60px;
+  height: auto;
+  word-break: break-word;
+}
+
+.PlaceValueTableSelectKeyingFlexBox input {
+  min-width: 80px;
+  width: auto;
+  min-height: 45px;
+  word-break: break-word;
+  text-align: center;
+}
+
+/* PlaceValueTableSelect SelectChoice */
+.PlaceValueTableSelectTypeSelectChoiceFlexBox {
+  display: table-row;
+
+  align-items: center;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox > div {
+  display: table-cell;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 0.7rem;
+  justify-content: center;
+  border: 1px solid orange;
+
+  height: 100%;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox * {
+  font-weight: 600;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox input {
+  max-width: 50px;
+  width: 50;
+  min-height: 45px;
+  word-break: break-word;
+  text-align: center;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 90%;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox2 > div {
+  min-width: Calc(50% - 0.5rem);
+  max-width: Calc(50% - 0.5rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox2 > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.PlaceValueTableSelectTypeSelectChoiceFlexBox2 .choiceImage {
+  padding: 0;
+}
+
+/* PlaceValueTableSelect DragDropType */
+
+.PlaceValueTableSelectFlexBoxDragDropTypeFlexBox {
+  display: table-row;
+
+  align-items: center;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeFlexBox > div {
+  display: table-cell;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid orange;
+  gap: 0.7rem;
+  padding: 10px;
+  flex-direction: column;
+  height: 100%;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeFlexBox input {
+  /* min-width: 80px; */
+  width: 100%;
+  min-height: 45px;
+
+  text-align: center;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeFlexBox2 {
+  display: flex;
+  margin-top: 2rem;
+
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeBox {
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 96px;
+  color: black;
+}
+
+.PlaceValueTableSelectFlexBoxDragDropTypeBox > div {
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+  width: inherit;
+  height: inherit;
+}
+
+@media (max-width: 1000px) {
+  .RandomArrangmentDragDropKeyingFlexBox {
+    width: 90%;
+  }
+}
+
+/*Orc */
+
+.OrcGrid {
+  display: Grid;
+  width: 80%;
+  min-width: 100px;
+  margin: 2rem;
+  border: 1px solid black;
+  height: auto;
+}
+
+.OrcGrid > div:nth-child(even) {
+  border: 1px solid black;
+}
+
+.OrcGrid > div {
+  border: 1px solid black;
+  display: flex;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  word-break: break;
+}
+
+.OrcGrid > .evenChild {
+  min-height: 100px;
+
+  height: auto;
+}
+
+.OrcGrid > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.OrcGrid > .flexbox {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.OrcDivBox {
+  display: flex;
+  gap: 0.4rem;
+  position: relative;
+  flex-wrap: wrap;
+  z-index: 4;
+
+  height: auto;
+}
+
+.OrcDivBox > div {
+  margin: 0 0.21rem;
+  border-bottom: 1px solid black;
+  min-height: 30px;
+  min-width: 30px;
+  width: auto;
+  height: auto;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.OrcDivBox2 {
+  width: calc(100% - 2rem);
+
+  position: relative;
+
+  min-height: 80px;
+  z-index: 5;
+  display: flex;
+  gap: 0.9rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 2rem;
+
+  height: auto;
+  border: 1px solid black;
+  margin-bottom: 1rem;
+}
+
+.OrcDivBox2 > div {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.OrcDivBox2 .react-draggable {
+  transform: translate(0, 0);
+}
+
+/* Oprc */
+.OprcGrid {
+  display: Grid;
+  max-width: 90%;
+  box-sizing: border-box;
+  margin: 2rem auto;
+}
+
+.OprcGrid > div:nth-child(even) {
+  box-sizing: border-box;
+}
+
+.OprcGrid > div {
+  border: 1px solid black;
+  padding: 1rem;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.OprcGrid > .lastChild {
+  min-height: 100px;
+
+  height: auto;
+  box-sizing: border-box;
+}
+
+.OprcGrid > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.OprcGridDivBox {
+  display: flex;
+  gap: 0.4rem;
+  position: relative;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  z-index: 4;
+
+  height: auto;
+}
+
+.OprcGridDivBox > div {
+  margin: 0.51rem;
+  border-bottom: 1px solid black;
+  min-height: 30px;
+  min-width: 30px;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break;
+  justify-content: center;
+  align-items: center;
+}
+
+.OprcGridDivBox2 {
+  width: calc(60% - 2rem);
+  position: relative;
+  height: auto;
+  z-index: 5;
+  display: flex;
+
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 2rem;
+  min-height: 60px;
+  height: auto;
+  border: 1px solid black;
+}
+
+.OprcGridDivBox2 > div {
+  min-width: 30px;
+  height: auto;
+  width: auto;
+  padding: 0rem 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.OprcGridDivBox2 .react-draggable {
+  transform: translate(0, 0);
+}
+
+/* count_tenframes_multiple content */
+.CountGridTenframesMultipleContentGrid {
+  display: grid;
+  margin: 20px 0;
+  border: 1px solid black;
+  width: 80%;
+  height: auto;
+  text-align: center;
+}
+
+.CountGridTenframesMultipleContentGrid > div {
+  border: 1px solid black;
+  border-top: 0px;
+  width: auto;
+  height: 60px;
+  max-width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CountGridTenframesMultipleContentGrid > .lowerBorder {
+  border-bottom: 0px;
+}
+
+.CountGridTenframesMultipleContentGrid > div {
+  border-right: 0px;
+}
+
+.CountGridTenframesMultipleContentGrid > div:nth-child(1) {
+  border-left: 0px;
+}
+
+.CountGridTenframesMultipleContentGrid > .leftBorder {
+  border-left: 0;
+}
+
+/* Tensframe Content */
+
+.TensframeContentGrid {
+  display: grid;
+  margin: 20px 0;
+  border: 1px solid black;
+  width: 80%;
+
+  text-align: center;
+}
+
+.TensframeContentGrid > div {
+  border: 1px solid black;
+  height: 80px;
+  border-top: 0px;
+}
+
+.TensframeContentGrid > .lowerBorder {
+  border-bottom: 0px;
+}
+
+.TensframeContentGrid > div {
+  border-right: 0px;
+}
+
+.TensframeContentGrid > div:nth-child(1) {
+  border-left: 0px;
+}
+
+/* .TensframeContentGrid  > div:nth-child(${(props) => props.column}n+1) {
+        border-left: 0px;
+      }
+    `; */
+
+/* questiontextoptions */
+.QuestiontextoptionsGrid {
+  display: grid;
+  max-width: 90%;
+  gap: 1rem;
+}
+
+.title {
+  display: flex;
+  gap: 2rem;
+  font-size: 20px;
+  font-weight: bold;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  color: black;
+}
+
+.title2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 20px;
+  font-weight: bold;
+  flex-wrap: wrap;
+  clear: both;
+  margin-bottom: 0;
+  gap: 1rem;
+  max-width: 80%;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.title2 > div {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+.questionNoHeading {
+  display: flex;
+  flex-wrap: wrap;
+  height: fit-content;
+  gap: 2rem;
+  flex-grow: 1;
+  width: 96%;
+}
+
+.questionNoHeading > .mathZoneQuestionNo {
+  font-size: 20px;
+  font-weight: bold;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: auto;
+}
+
+.questionNoHeading > .mathZonetitle {
+  font-size: 20px;
+  font-weight: bold;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.questionNoHeading .mathZoneLevel {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 1;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  height: fit-content;
+  font-size: 20px;
+  font-weight: bold;
+  max-height: 120px;
+}
+
+.mainPage2 .questionNoHeading .mathZoneLevel {
+  min-width: 81px;
+  width: 81px;
+}
+
+.mainPage2 .questionNoHeading .mathZoneLevel,
+.mainPage2
+  .questionNoHeading
+  .mathZoneQuestionNo
+  .mainPage2
+  .questionNoHeading
+  .mathZoneLevel,
+.mainPage2 .questionNoHeading .mathZoneQuestionNo {
+  border-radius: 5px;
+  padding: 5px;
+  background-color: blue;
+  color: white;
+}
+
+/* verticla dragdrop */
+
+.verticalDropVal {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+.VerticalDragDropFlexBox {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.VerticalDragDropFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+}
+
+.VerticalDragDropFlexBox2 {
+  display: flex;
+  gap: 1rem;
+  margin-top: 4rem;
+}
+
+.VerticalDragDropFlexBox2 > div {
+  width: 50px;
+  height: 50px;
+  gap: 1rem;
+  border-radius: 25px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+/* NumberBond Select Choice */
+.NumberBondSelectChoiceFlexBox {
+  display: flex;
+  align-items: center;
+}
+
+.NumberBondSelectChoiceFlexBox > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  min-height: 60px;
+  height: auto;
+  word-break: break-word;
+}
+
+.NumberBondSelectChoiceFlexBox * {
+  font-weight: 600;
+}
+
+.NumberBondSelectChoiceFlexBox input {
+  max-width: 50px;
+  width: 50;
+  min-height: 45px;
+  word-break: break-word;
+  text-align: center;
+}
+
+.NumberBondSelectChoiceFlexBox2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 90%;
+  margin-top: 2.5rem;
+  cursor: pointer;
+}
+
+.NumberBondSelectChoiceFlexBox2 > div {
+  min-width: Calc(50% - 0.5rem);
+  max-width: Calc(50% - 0.5rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+}
+
+.NumberBondSelectChoiceFlexBox2 > div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.NumberBondSelectChoiceFlexBox2 .choiceImage {
+  padding: 0;
+}
+
+/* Question  Text Images SelectChoice */
+.questiontextImage {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.questionContent > div {
+  min-width: 300px;
+  flex-grow: 1;
+}
+
+/* @media only screen and (max-width: 819px) {
+  
+      .mainPage2 {
+        max-height: 86vh;
+        height: 86vh;
+      }
+    } */
+/* multiple select */
+.multiSelectFlexBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 90%;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.multiSelectFlexBox > div {
+  min-width: Calc(50% - 0.5rem);
+  max-width: Calc(50% - 0.5rem);
+
+  flex: 1;
+  display: flex;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  padding-left: 18px;
+  color: #233584;
+  border-radius: 12px;
+  word-break: break;
+  min-height: auto;
+  height: 60px;
+
+  gap: 2rem;
+
+  border: 1px solid black;
+
+  height: auto;
+}
+
+.multiSelectFlexBox div > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+
+  flex-wrap: wrap;
+  word-break: break;
+}
+
+.multiSelectFlexBox .choiceImage {
+  padding: 0;
+}
+
+/* Main Ol */
+.MainOlBox {
+  margin: 1rem 0;
+  padding: 1rem;
+  display: flex;
+  width: 86%;
+  flex-direction: column;
+  border: 1px solid black;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border-radius: 5px;
+}
+
+.MainOlBox > div {
+  border-bottom: 1px solid black;
+  width: 80%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bodyPage div,
+.bodyPage span,
+.bodyPage tr,
+.bodyPage td,
+.bodyPage th,
+.bodyPage p {
+  /* H3 Desktop 18 pt */
+
+  font-family: "GothamRnd-Book2";
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 18px;
+}
+.bodyPage span {
+  line-height: 100% !important;
+}
+.bodyPage span:global(.mq-sup) var,
+.bodyPage span:global(.mq-sup) span,
+.bodyPage span:global(.mq-sup) sup {
+  font-size: 12px !important;
+}
+.bodyPage span:global(.mq-math-mode) sup:global(.mq-nthroot) {
+  margin-right: -0.4em;
+}
+.outerBtnContainer {
+  height: fit-content;
+  margin: 0 auto;
+  display: flex;
+  margin-top: 0.4rem;
+  justify-content: space-between;
+  width: 96%;
+
+  gap: 1rem;
+}
+
+.bodyPage span:global(.mq-sup) var,
+.bodyPage span:global(.mq-sup) span,
+.bodyPage span:global(.mq-sup) sup {
+  font-size: 12px !important;
+}
+.bodyPage span:global(.mq-math-mode) sup:global(.mq-nthroot) {
+  margin-right: -0.4em;
+}
+.modalPositionRelative {
+  float: none;
+}
+.bodyPage div:global(.power-font) {
+  font-size: 12px !important;
+}
+.bodyPage div:global(.power-font) span {
+  font-size: 12px !important;
+}
+
+.ckeditrorAnswer {
+  position: relative !important;
+}
+.nextButtonMarginBottom {
+  margin-bottom: 0;
+
+  float: none;
+}
+
+.paginationContainer {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.numberContainerPagination {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.numberContainerPagination > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.paginationContainer button:nth-child(1) {
+  margin-left: 1rem;
+}
+
+.colorGreenCircle {
+  background-color: limegreen;
+  color: white;
+}
+
+.numberContainerPagination > button:hover {
+  background-color: lime;
+  cursor: pointer;
+}
+
+.paginationContainer svg {
+  position: initial;
+  -webkit-transform: initial;
+  transform: initial;
+  width: initial;
+  height: initial;
+}
+
+.whitePage div,
+.whitePage span,
+.whitePage td,
+.whitePage th,
+.whitePage b,
+.whitePage u,
+.whitePage p,
+.whitePage h1 {
+  overflow-wrap: normal !important;
+}
+
+.nextBtnContainer {
+  width: 120px;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+.nextBtnContainer2 {
+  justify-content: flex-end;
+}
+
+.outerBtnContainer2 {
+  height: 2px;
+}
+
+.solutionText {
+  color: tomato;
+}
+.solutionText {
+  color: tomato;
+}
+
+.title2 > #titleStatus {
+  font-weight: bold !important;
+  font-size: 24px !important;
+}
+
+/* timer function */
+.mainPage2 .bodyPage .timerContainer {
+  display: flex;
+  width: calc(100% - 171px);
+  margin: 0 auto;
+}
+
+.resultReview .timerContainer {
+  justify-content: flex-end;
+  display: flex;
+}
+
+.timerCircle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: deepskyblue;
+  color: beige;
+  border: 1px solid black;
+  height: 58px;
+  width: 58px;
+
+  border-radius: 50%;
+}
+
+.mainPage2 .bodyPage > .timerTime {
+  font-family: "Roboto Mono", monospace !important;
+  font-weight: 300;
+  font-size: 16px !important;
+}
+
+.answerBoxContainer {
+  display: flex;
+  gap: 1rem;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.whitePage .questionContentText {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  color: initial;
+}
+
+.whitePage #fibAfterText {
+  width: calc(100% - 2rem);
+  margin: auto;
+  margin-top: 1rem;
+  font-size: 16px !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.whitePage .ckeditor div,
+.whitePage .ckeditor span,
+.whitePage .ckeditor td,
+.whitePage .ckeditor th,
+.whitePage .ckeditor b,
+.whitePage .ckeditor u,
+.whitePage .ckeditor p,
+.whitePage .ckeditor h1 {
+  overflow-wrap: normal !important;
+}
+
+.whitePage > div img {
+  height: fit-content;
+  display: initial;
+}
+#newTypeQuestion .questionName img {
+  width: auto !important;
+}
+.buttonContainer {
+  width: calc(100%);
+  top: 50%;
+  background-color: red;
+  transform: translate(0, -50%);
+  position: absolute;
+}
+.buttonContainer > div {
+  position: absolute;
+}
+.buttonContainer .prevBtn {
+  left: 40px;
+}
+.buttonContainer .nextBtn {
+  right: 40px;
+}
+#mathZoneNextQuestion img {
+  width: auto !important;
+}
+#mathZoneNextQuestion {
+  white-space: pre-wrap;
+}
+#mathZoneNextQuestion .questionName {
+  width: auto !important;
+}
+.studentTabContainer {
+  display: flex;
+  width: 80%;
+  margin: auto;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.studentTabContainer > div {
+  padding: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #6caf20;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.closeButton {
+  color: red;
+}
+.closeButton a:hover {
+  text-decoration: underline !important;
+  color: red !important;
+}
+/* Long division */
+
+.LongDivisonDragDropFlexBox3 {
+  width: auto;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: indigo;
+}
+
+.LongDivisonDragDropFlexBox3 > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.LongDivisonDragDropFlexBox3 > div {
+  display: flex;
+}
+
+.LongDivisonDragDropFlexBox2 {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.LongDivisonDragDropFlexBox2 > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LongDivisonDragDropFlexBox {
+  display: flex;
+
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.LongDivisonDragDropBox {
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 96px;
+  border: 1px solid black;
+}
+
+.LongDivisonDragDropBox > div {
+  min-width: inherit;
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+.mathquill_mathzone_questionname {
+  flex-wrap: wrap;
+}
+.mathquill_mathzone_questionname span:global(.mq-math-mode) {
+  font-size: inherit !important;
+}
+
+.mathquill_mathzone_questionname
+  span:global(.mq-math-mode)
+  span:global(.mq-root-block) {
+  display: contents;
+}
+
+.longDivisonTable {
+  vertical-align: top;
+}
+.longDivisonTable td {
+  text-align: center;
+  padding: 5px;
+  padding-top: 8px;
+  position: relative;
+}
+.skippedQuestionTitle {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.skippedQuestionTitle > h1 {
+  width: fit-content;
+  color: #828282;
+  margin: auto;
+  text-align: center;
+  border: 1px solid gray;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
