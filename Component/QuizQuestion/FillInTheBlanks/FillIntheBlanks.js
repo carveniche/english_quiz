@@ -50,7 +50,8 @@ export default function FillIntheBlanks({ obj }) {
       }
     }
     for (let item of arr) {
-      item[STUDENTANSWER] = item?.studentAnswer.trim() || "";
+      const value = item?.studentAnswer || "";
+      item[STUDENTANSWER] = value.trim() || "";
     }
     setSubmitResponse(true);
     setStudentAnswer(JSON.stringify(arr));
@@ -62,9 +63,8 @@ export default function FillIntheBlanks({ obj }) {
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div>
-          <ResourceViewer resources={obj?.resources||[]}/>
-          
-        </div>
+        <ResourceViewer resources={obj?.resources || []} />
+      </div>
       <div>
         <div className={styles.questionName}>
           {obj?.questionName?.length ? (
