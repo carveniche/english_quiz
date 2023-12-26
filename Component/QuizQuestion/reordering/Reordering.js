@@ -5,6 +5,7 @@ import { ValidationContext } from "../../QuizPage";
 import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import SolveButton from "../../CommonComponent/SolveButton";
+import ResourceViewer from "../../CommonComponent/ResourceViewer";
 export default function Reordering({ obj, direction }) {
   const choiceRef = useRef([]);
   const {
@@ -33,6 +34,10 @@ export default function Reordering({ obj, direction }) {
     <div>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
+      <div>
+          <ResourceViewer resources={obj?.resources||[]}/>
+          
+        </div>
       <div>
         <div className={styles.questionName}>
           {obj?.questionName?.length ? (

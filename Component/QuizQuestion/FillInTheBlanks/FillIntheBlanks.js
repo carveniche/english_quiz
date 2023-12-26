@@ -5,6 +5,7 @@ import styles from "../english_mathzone.module.css";
 import QuestionContent from "./QuestionContent";
 import { ValidationContext } from "../../QuizPage";
 import { STUDENTANSWER } from "../../Utility/Constant";
+import ResourceViewer from "../../CommonComponent/ResourceViewer";
 export default function FillIntheBlanks({ obj }) {
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
@@ -60,6 +61,10 @@ export default function FillIntheBlanks({ obj }) {
     <div>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
+      <div>
+          <ResourceViewer resources={obj?.resources||[]}/>
+          
+        </div>
       <div>
         <div className={styles.questionName}>
           {obj?.questionName?.length ? (

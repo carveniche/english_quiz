@@ -6,6 +6,7 @@ import { ValidationContext } from "../../QuizPage";
 import SolveButton from "../../CommonComponent/SolveButton";
 import objectParser from "../../Utility/objectParser";
 import { STUDENTANSWER } from "../../Utility/Constant";
+import ResourceViewer from "../../CommonComponent/ResourceViewer";
 export default function MultipleChoice({ obj }) {
   const {
     submitResponse,
@@ -53,6 +54,10 @@ export default function MultipleChoice({ obj }) {
     <div>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
+      <div>
+          <ResourceViewer resources={obj?.resources||[]}/>
+          
+        </div>
       <div>
         <div className={styles.questionName}>
           {obj?.questionName?.length ? (
