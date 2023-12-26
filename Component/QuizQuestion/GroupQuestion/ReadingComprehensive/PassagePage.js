@@ -2,47 +2,54 @@ import React, { useContext, useState } from "react";
 import Page from "./Page";
 import styles from "../../english_mathzone.module.css";
 import { GroupQuestionContext } from "../ContextProvider/GroupContextProvider";
+import NotificationModal from "./NotificationModal";
+import leftArrow from "../../../assets/Images/Svg/leftArrow.svg";
+import rightArrow from "../../../assets/Images/Svg/rightArrow.svg";
+import preview from "../../../assets/Images/Svg/preview.svg";
 export default function PassagePage({ groupData }) {
   const { handleShowQuestion } = useContext(GroupQuestionContext);
   const [currentPage, setCurrentPage] = useState(0);
   const handleChangePage = (val) => {
     setCurrentPage(currentPage + val);
   };
+  console.log(groupData);
   return (
-    <div style={{ height: "100%" }}>
+    <div
+      style={{
+        height: "100%",
+        position: "relative",
+        width: "fit-content",
+        margin: "auto",
+      }}
+    >
       <Page passage={groupData[currentPage] || []} />
-      <div
-        style={{
-          display: "flex",
-          width: "fit-content",
-          margin: "10px auto",
-          gap: 5,
-        }}
-      >
+      <NotificationModal />
+      <>
         {currentPage > 0 && (
           <button
             onClick={() => handleChangePage(-1)}
-            className={styles["prev-button"]}
+            className={`${styles.reading_comprehensive_btn} ${styles.prev_btn}`}
+            style={{ background: "initial", border: 0, cursor: "pointer" }}
           >
-            Prev
+            <img src={leftArrow} style={{ width: 60 }} />
           </button>
         )}
         {currentPage + 1 < groupData.length ? (
           <button
             onClick={() => handleChangePage(+1)}
-            className={styles["next-button"]}
+            className={`${styles.reading_comprehensive_btn} ${styles.next_btn}`}
           >
-            Next
+            <img src={rightArrow} style={{ width: 60 }} />
           </button>
         ) : (
           <button
-            className={styles["next-button"]}
+            className={`${styles.reading_comprehensive_btn} ${styles.next_btn}`}
             onClick={handleShowQuestion}
           >
-            Show Question
+            <img src={rightArrow} style={{ width: 60 }} />
           </button>
         )}
-      </div>
+      </>
     </div>
   );
 }

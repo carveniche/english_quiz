@@ -122,12 +122,11 @@
 .a4Page {
   width: 800px; /* A4 width */
   max-width: 100%;
-  height: 500px; /* A4 height */
-  max-height: calc(100% - 100px);
+  min-height: 500px; /* A4 height */
   margin: auto auto; /* Center the page horizontally */
-  border: 1px solid #ccc; /* Optional: Add a border for visualization */
+  /* Optional: Add a border for visualization */
   padding: 20px; /* Optional: Add padding for content */
-  overflow: auto;
+  overflow-wrap: anywhere;
 }
 
 .next-button {
@@ -164,4 +163,23 @@
 
 .prev-button:hover {
   background-color: #d32f2f; /* Darker red on hover */
+}
+.reading_comprehensive_btn {
+  position: absolute;
+  top: calc(50% - 30px);
+  background: initial;
+  border: 0;
+  cursor: pointer;
+}
+.reading_comprehensive_btn img {
+  transition: filter 0.3s;
+}
+.reading_comprehensive_btn img:hover {
+  filter: brightness(50%);
+}
+.reading_comprehensive_btn.reading_comprehensive_btn.prev_btn {
+  left: -62px;
+}
+.reading_comprehensive_btn.next_btn {
+  right: -42px;
 }
