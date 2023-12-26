@@ -6,33 +6,24 @@ const objectParser = (item, index) => {
     if (styles.length) {
       let selectedValue = {};
       for (let style of styles) {
-        if(style){
-          const {type,value}=style
-          if(type==="fontSize"){
-            selectedValue[type]=value
-          }
-          else if(type==="fontWeight"){
-            selectedValue[type]=value
-            selectedValue["color"]="black";
-          }
-          else if(type==="color"){
-            selectedValue[type]=value
-          }
-          else if(type==="fontStyle"){
-            selectedValue[type]=value
-          }
-          else if(type==="textDecoration"){
-            selectedValue[type]=value
+        if (style) {
+          const { type, value } = style;
+          if (type === "fontWeight") {
+            selectedValue[type] = value;
+            selectedValue["color"] = "black";
+          } else if (type === "color") {
+            selectedValue[type] = value;
+          } else if (type === "fontStyle") {
+            selectedValue[type] = value;
+          } else if (type === "textDecoration") {
+            selectedValue[type] = value;
           }
         }
-        
       }
-      console.log(selectedValue)
-     
+      console.log(selectedValue);
+
       value = <span style={selectedValue}>{item?.value}</span>;
-    }
-    else
-    value = <>{item?.value}</>;
+    } else value = <>{item?.value}</>;
   } else if (item?.node === "img") {
     value = (
       <div>

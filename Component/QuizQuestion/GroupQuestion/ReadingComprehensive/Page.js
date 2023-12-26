@@ -5,7 +5,9 @@ export default function Page({ passage }) {
   return (
     <div className={styles.a4Page}>
       {passage.map((item, key) => {
-        return objectParser(item, key);
+        return (
+          <React.Fragment key={key}>{objectParser(item, key)}</React.Fragment>
+        );
       })}
     </div>
   );
