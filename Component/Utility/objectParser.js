@@ -1,7 +1,7 @@
 const objectParser = (item, index) => {
   let value = "";
   if (item?.node === "text") {
-    const { styles } = item;
+    let { styles } = item;
     styles = styles || item?.style || [];
     if (styles.length) {
       let cssStyle = {};
