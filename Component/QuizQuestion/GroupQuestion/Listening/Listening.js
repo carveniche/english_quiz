@@ -1,14 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styles from "../../english_mathzone.module.css";
 import objectParser from "../../../Utility/objectParser";
-import { Button } from "@mui/material";
 import { useContext } from "react";
 import { GroupQuestionContext } from "../ContextProvider/GroupContextProvider";
-import ResourceViewer from "../../../CommonComponent/ResourceViewer";
+import ListeningPlayer from "./ListeningPlayer";
+import ListeningModal from "./ListeningModal";
+import { Button } from "@mui/material";
 export default function Listening({ group_data, question_data }) {
- 
-  const { currentQuestion, handleChangeQuestion } =
-    useContext(GroupQuestionContext);
+  const {
+    currentQuestion,
+    handleChangeQuestion,
+    handleShowPreviewData,
+    previewGroupData,
+    showQuestion,
+    handleShowQuestion,
+  } = useContext(GroupQuestionContext);
   // const [currentQuestion, setCurrentQuestion] = useState(0);
   const handleQuestionChange = (val) => {
     if (currentQuestion + 1 < question_data.length) {
@@ -17,18 +23,40 @@ export default function Listening({ group_data, question_data }) {
   };
 
   return (
-    <div>
-      <div className={styles.group}>
+    <div className={styles.group}>
+      {showQuestion ? (
+        <>
+          {previewGroupData && (
+            <div>
+              <ListeningModal
+                group_data={group_data}
+                from={"preview"}
+                onClick={() => handleShowPreviewData(false)}
+              />
+            </div>
+          )}
+          <div>
+            {!previewGroupData && (
+              <Button
+                variant="contained"
+                sx={{ float: "right", display: "none" }}
+                onClick={() => handleShowPreviewData(true)}
+                id="react_preview_btn"
+              >
+                Preview
+              </Button>
+            )}
+          </div>
+        </>
+      ) : (
         <div>
-          <ResourceViewer resources={group_data?.resources||[]}/>
-          
+          <ListeningModal
+            group_data={group_data}
+            onClick={handleShowQuestion}
+            from={"non_preview"}
+          />
         </div>
-        <div className={styles.questionName} style={{ clear: "both" }}>
-          {group_data?.question_text.map((item, key) => (
-            <React.Fragment key={key}>{objectParser(item, key)}</React.Fragment>
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
