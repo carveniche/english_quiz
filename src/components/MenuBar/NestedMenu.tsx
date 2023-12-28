@@ -14,7 +14,10 @@ import MathNavbar from "../Navbar/MathNavbar/MathNavbar";
 export default function NestedMenu() {
   const [showMenu, setShowMenu] = useState(false);
   const { room } = useVideoContext();
-  const { course } = useSelector((state: RootState) => state.liveClassDetails);
+
+  const { course } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
   const dispatch = useDispatch();
   const localParticipant = room?.localParticipant?.identity;
   const isValidParticipant = isTutorTechBoth({ identity: localParticipant });
@@ -40,7 +43,7 @@ export default function NestedMenu() {
           </div>
         </button>
 
-        {course === MATHCOURSE ? (
+        {course.toString() === MATHCOURSE ? (
           <>
             {showMenu && <MathNavbar onClick={() => handleShowMenu(false)} />}
           </>

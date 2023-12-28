@@ -44,9 +44,14 @@ function JoinedScreen() {
   const { room } = useVideoContext();
 
   const localParticipant = room?.localParticipant;
-  const { isClassHasDisconnected, isMenuOpen, course } = useSelector(
+  const { isClassHasDisconnected, isMenuOpen } = useSelector(
     (state: RootState) => state.liveClassDetails
   );
+
+  const { course } = useSelector(
+    (state: RootState) => state.videoCallTokenData
+  );
+
   return (
     <Main>
       {isClassHasDisconnected &&
@@ -64,7 +69,11 @@ function JoinedScreen() {
       <div className="section-component-layout" ref={parentRef}>
         <Room parentRef={parentRef} />
         <MainScreenRecording />
-        {course === MATHCOURSE ? <AllPageRoutes /> : <EnglishAllPageRoutes />}
+        {course.toString() === MATHCOURSE ? (
+          <AllPageRoutes />
+        ) : (
+          <EnglishAllPageRoutes />
+        )}
       </div>
       {!isMenuOpen && <MenuBar />}
     </Main>

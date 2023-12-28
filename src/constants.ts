@@ -153,7 +153,7 @@ export const IFRAMENEWCODING = {
 };
 
 export const MATHCOURSE = "Math";
-export const ENGLISHCOURSE = "English";
+export const ENGLISHCOURSE = "English Delight";
 
-export const SCREENRECORDING = false;
-export const SHOWFLOATINGPARTICIPANT = false;
+export const SCREENRECORDING = true;
+export const SHOWFLOATINGPARTICIPANT = true;
