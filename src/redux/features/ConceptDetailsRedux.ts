@@ -56,7 +56,19 @@ const liveClassConceptDetails = createSlice({
         }
       }
     },
+    addConceptListEnglish: (state, action) => {
+      const { payload } = action;
+      console.log("payload status", payload.status);
+      if (payload.status) {
+        const { concept_list } = payload;
+        if (concept_list.length) {
+          state.allConceptsDetails.conceptDetails = concept_list || [];
+          state.allConceptsDetails.status = true;
+        }
+      }
+    },
   },
 });
-export const { addToStore } = liveClassConceptDetails.actions;
+export const { addToStore, addConceptListEnglish } =
+  liveClassConceptDetails.actions;
 export default liveClassConceptDetails.reducer;
