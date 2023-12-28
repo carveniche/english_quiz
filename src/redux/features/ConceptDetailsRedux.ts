@@ -5,6 +5,7 @@ export interface allConceptsDetails {
   demo: Boolean;
   conceptDetails: object;
   mathzoneConceptDetails: object;
+  englishquizConceptDetails: object;
 }
 interface conceptDetails {
   allConceptsDetails: allConceptsDetails;
@@ -16,6 +17,7 @@ const initialState: conceptDetails = {
     demo: false,
     conceptDetails: [],
     mathzoneConceptDetails: [],
+    englishquizConceptDetails: [],
   },
 };
 const liveClassConceptDetails = createSlice({
@@ -58,12 +60,20 @@ const liveClassConceptDetails = createSlice({
     },
     addConceptListEnglish: (state, action) => {
       const { payload } = action;
-      console.log("payload status", payload.status);
+
       if (payload.status) {
         const { concept_list } = payload;
         if (concept_list.length) {
           state.allConceptsDetails.conceptDetails = concept_list || [];
           state.allConceptsDetails.status = true;
+          let englishQuizDetails = [...concept_list];
+          englishQuizDetails = englishQuizDetails.map(
+            ({ today_class, id, name, objectives }) => {
+              return { today_class, id, name, objectives: [...objectives] };
+            }
+          );
+          state.allConceptsDetails.englishquizConceptDetails =
+            englishQuizDetails || [];
         }
       }
     },

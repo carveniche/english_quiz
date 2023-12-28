@@ -41,15 +41,6 @@ export default function EnglishQuizZoneNavbar({
     }
   };
 
-  function convertToLevel1(inputString: string) {
-    const capitalized =
-      inputString.charAt(0).toUpperCase() + inputString.slice(1);
-
-    const result = capitalized.replace(/(\d)/, " $1");
-
-    return result;
-  }
-
   return (
     <>
       {
@@ -66,193 +57,203 @@ export default function EnglishQuizZoneNavbar({
             overflowY: "auto",
           }}
         >
-          {allConceptsDetails?.mathzoneConceptDetails.map((math, index) => {
-            return (
-              <li
-                className="rounded-sm w-full h-full relative item-center"
-                key={index}
-              >
-                <div className="w-full h-full px-3 pl-6 pr-3 py-3 hover:bg-black">
-                  <div
-                    className="flex gap-2 relative item-center "
-                    onClick={() => handleSelectTopic(index)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className={"w-full"} style={{ display: "block" }}>
-                      <div className="flex gap-2">
-                        <div>
-                          {math?.today_class ? (
-                            <div className="flex">
-                              {math?.name}
-                              <img
-                                style={{
-                                  width: "40px",
-                                  margin: "auto",
-                                  marginLeft: "5px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                                src={todayClassIcon}
-                              />
-                            </div>
-                          ) : (
-                            math?.name
+          {allConceptsDetails?.englishquizConceptDetails.map(
+            (english, index) => {
+              return (
+                <li
+                  className="rounded-sm w-full h-full relative item-center"
+                  key={index}
+                >
+                  <div className="w-full h-full px-3 pl-6 pr-3 py-3 hover:bg-black">
+                    <div
+                      className="flex gap-2 relative item-center "
+                      onClick={() => handleSelectTopic(index)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className={"w-full"} style={{ display: "block" }}>
+                        <div className="flex gap-2">
+                          <div>
+                            {english?.today_class ? (
+                              <div className="flex">
+                                {english?.name}
+                                <img
+                                  style={{
+                                    width: "40px",
+                                    margin: "auto",
+                                    marginLeft: "5px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                  }}
+                                  src={todayClassIcon}
+                                />
+                              </div>
+                            ) : (
+                              english?.name
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <TabIcon
+                        src={`/menu-icon/chevron_${
+                          currentSelectedTopic === index ? "up" : "down"
+                        }.svg`}
+                      />
+                    </div>
+                  </div>
+                  {english.objectives.length &&
+                    currentSelectedTopic === index && (
+                      <div className="w-full">
+                        <div className="w-full">
+                          {english.objectives.map((obj, tagIndex) =>
+                            obj.name ? (
+                              obj?.levels?.length ? (
+                                <>
+                                  <div
+                                    className="px-1 pl-12 pr-3 py-1 hover:bg-black"
+                                    key={tagIndex}
+                                    onClick={() => handleTagSelected(tagIndex)}
+                                  >
+                                    <div
+                                      className="flex gap-2 relative item-center justify-between"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <div style={{ display: "block" }}>
+                                        <div className="flex gap-2">
+                                          <div>
+                                            {obj?.today_class ? (
+                                              <div className="flex">
+                                                {obj?.name}
+                                                <img
+                                                  style={{
+                                                    width: "40px",
+                                                    margin: "auto",
+                                                    marginLeft: "5px",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                  }}
+                                                  src={todayClassIcon}
+                                                />
+                                              </div>
+                                            ) : (
+                                              obj?.name
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <TabIcon
+                                        src={`/menu-icon/chevron_${
+                                          currentSelectedTag === index
+                                            ? "up"
+                                            : "down"
+                                        }.svg`}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    {Boolean(obj.levels.length) &&
+                                      currentSelectedTag === tagIndex && (
+                                        <div className="w-full">
+                                          <div className="w-full">
+                                            {obj.levels.map(
+                                              (level, levelIndex) => (
+                                                <div className="pl-16 pr-3 hover:bg-black">
+                                                  <NavLink
+                                                    key={levelIndex}
+                                                    to={`${item.path}/${
+                                                      english.id
+                                                    }/${obj.id}/${
+                                                      level.split("level")[1]
+                                                    }?${queryParams}`}
+                                                    onClick={(e) =>
+                                                      handleClick(
+                                                        {
+                                                          path: `${item.path}/${
+                                                            english.id
+                                                          }/${obj.tag_id}/${
+                                                            level.split(
+                                                              "level"
+                                                            )[1]
+                                                          }`,
+                                                          key: item.key,
+                                                          name: `${item.name}:${english.name} - ${obj.name}`,
+                                                          icon: item.icon,
+                                                          extraParams: {
+                                                            conceptName:
+                                                              english.name,
+                                                            tagName: obj.name,
+                                                            level:
+                                                              level.split(
+                                                                "level"
+                                                              )[1],
+                                                          },
+                                                        },
+                                                        e
+                                                      )
+                                                    }
+                                                    className={"w-48"}
+                                                    style={{ display: "block" }}
+                                                  >
+                                                    {level}
+                                                  </NavLink>
+                                                </div>
+                                              )
+                                            )}
+                                          </div>
+                                        </div>
+                                      )}
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="w-full" key={tagIndex}>
+                                  <div
+                                    className="px-1 py-1 pl-12 pr-3 hover:bg-black"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <div style={{ display: "block" }}>
+                                      <div className="flex gap-2">
+                                        <NavLink
+                                          to={`${item.path}/${english.id}/${obj.tag_id}/0
+                                    }?${queryParams}`}
+                                          onClick={(e) =>
+                                            handleClick(
+                                              {
+                                                path: `${item.path}/${english.id}/${obj.tag_id}/0`,
+                                                key: item.key,
+                                                name: `${item.name}:${english.name} - ${obj.name}`,
+                                                icon: item.icon,
+                                                extraParams: {
+                                                  conceptName: english.name,
+                                                  tagName: obj.name,
+                                                  level: 0,
+                                                },
+                                              },
+                                              e
+                                            )
+                                          }
+                                          className={"w-48"}
+                                          style={{
+                                            display: "block",
+                                            color: "green",
+                                          }}
+                                        >
+                                          {obj?.name}
+                                        </NavLink>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            ) : (
+                              ""
+                            )
                           )}
                         </div>
                       </div>
-                    </div>
-                    <TabIcon
-                      src={`/menu-icon/chevron_${
-                        currentSelectedTopic === index ? "up" : "down"
-                      }.svg`}
-                    />
-                  </div>
-                </div>
-                {math.tags.length && currentSelectedTopic === index && (
-                  <div className="w-full">
-                    <div className="w-full">
-                      {math.tags.map((tag, tagIndex) =>
-                        tag.name ? (
-                          tag?.levels?.length ? (
-                            <>
-                              <div
-                                className="px-1 pl-12 pr-3 py-1 hover:bg-black"
-                                key={tagIndex}
-                                onClick={() => handleTagSelected(tagIndex)}
-                              >
-                                <div
-                                  className="flex gap-2 relative item-center justify-between"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <div style={{ display: "block" }}>
-                                    <div className="flex gap-2">
-                                      <div>
-                                        {tag?.today_class ? (
-                                          <div className="flex">
-                                            {tag?.name}
-                                            <img
-                                              style={{
-                                                width: "40px",
-                                                margin: "auto",
-                                                marginLeft: "5px",
-                                                display: "flex",
-                                                justifyContent: "center",
-                                              }}
-                                              src={todayClassIcon}
-                                            />
-                                          </div>
-                                        ) : (
-                                          tag?.name
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <TabIcon
-                                    src={`/menu-icon/chevron_${
-                                      currentSelectedTag === index
-                                        ? "up"
-                                        : "down"
-                                    }.svg`}
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                {Boolean(tag.levels.length) &&
-                                  currentSelectedTag === tagIndex && (
-                                    <div className="w-full">
-                                      <div className="w-full">
-                                        {tag.levels.map((level, levelIndex) => (
-                                          <div className="pl-16 pr-3 hover:bg-black">
-                                            <NavLink
-                                              key={levelIndex}
-                                              to={`${item.path}/${math.id}/${
-                                                tag.tag_id
-                                              }/${
-                                                level.split("level")[1]
-                                              }?${queryParams}`}
-                                              onClick={(e) =>
-                                                handleClick(
-                                                  {
-                                                    path: `${item.path}/${
-                                                      math.id
-                                                    }/${tag.tag_id}/${
-                                                      level.split("level")[1]
-                                                    }`,
-                                                    key: item.key,
-                                                    name: `${item.name}:${math.name} - ${tag.name}`,
-                                                    icon: item.icon,
-                                                    extraParams: {
-                                                      conceptName: math.name,
-                                                      tagName: tag.name,
-                                                      level:
-                                                        level.split("level")[1],
-                                                    },
-                                                  },
-                                                  e
-                                                )
-                                              }
-                                              className={"w-48"}
-                                              style={{ display: "block" }}
-                                            >
-                                              {convertToLevel1(level)}
-                                            </NavLink>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
-                              </div>
-                            </>
-                          ) : (
-                            <div className="w-full" key={tagIndex}>
-                              <div
-                                className="px-1 py-1 pl-12 pr-3 hover:bg-black"
-                                style={{ cursor: "pointer" }}
-                              >
-                                <div style={{ display: "block" }}>
-                                  <div className="flex gap-2">
-                                    <NavLink
-                                      to={`${item.path}/${math.id}/${tag.tag_id}/0
-                                    }?${queryParams}`}
-                                      onClick={(e) =>
-                                        handleClick(
-                                          {
-                                            path: `${item.path}/${math.id}/${tag.tag_id}/0`,
-                                            key: item.key,
-                                            name: `${item.name}:${math.name} - ${tag.name}`,
-                                            icon: item.icon,
-                                            extraParams: {
-                                              conceptName: math.name,
-                                              tagName: tag.name,
-                                              level: 0,
-                                            },
-                                          },
-                                          e
-                                        )
-                                      }
-                                      className={"w-48"}
-                                      style={{
-                                        display: "block",
-                                        color: "green",
-                                      }}
-                                    >
-                                      {tag?.name}
-                                    </NavLink>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )
-                        ) : (
-                          ""
-                        )
-                      )}
-                    </div>
-                  </div>
-                )}
-              </li>
-            );
-          })}
+                    )}
+                </li>
+              );
+            }
+          )}
         </ul>
       }
     </>
