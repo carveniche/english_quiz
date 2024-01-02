@@ -14,12 +14,12 @@ export function QuizDisplay({ obj }) {
     </>
   );
 }
-export default function GroupFile({ data }) {
+export default function GroupFile({ data, isShowQuestion }) {
   let groupObject = {
     "Reading Comprehension": <MainReadingComprehensive data={data} />,
     Listening: <MainListening data={data} />,
   };
-  const [showQuestion, setShowQuestion] = useState(false);
+  const [showQuestion, setShowQuestion] = useState(isShowQuestion || false);
   window.setShowQuestion = setShowQuestion;
   return (
     <>
