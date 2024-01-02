@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Page from "./Page";
 import styles from "../../english_mathzone.module.css";
 import { GroupQuestionContext } from "../ContextProvider/GroupContextProvider";
@@ -11,7 +11,11 @@ export default function PassagePage({ groupData }) {
   const handleChangePage = (val) => {
     setCurrentPage(currentPage + val);
   };
-  console.log(groupData);
+  
+  const leftArrowBtn=useRef(null)
+  const rightArrowBtn=useRef(null)
+  window.leftArrowBtn=leftArrowBtn.current
+  window.rightArrowBtn=rightArrowBtn.current
   return (
     <div
       style={{
@@ -29,6 +33,7 @@ export default function PassagePage({ groupData }) {
             onClick={() => handleChangePage(-1)}
             className={`${styles.reading_comprehensive_btn} ${styles.prev_btn}`}
             style={{ background: "initial", border: 0, cursor: "pointer" }}
+            ref={leftArrowBtn}
           >
           <LeftArrow />
           </button>
@@ -37,6 +42,7 @@ export default function PassagePage({ groupData }) {
           <button
             onClick={() => handleChangePage(+1)}
             className={`${styles.reading_comprehensive_btn} ${styles.next_btn}`}
+            ref={rightArrowBtn}
           >
           <RightArrow />
           </button>
@@ -44,6 +50,7 @@ export default function PassagePage({ groupData }) {
           <button
             className={`${styles.reading_comprehensive_btn} ${styles.next_btn}`}
             onClick={handleShowQuestion}
+            ref={rightArrowBtn}
           >
            <RightArrow />
           </button>
