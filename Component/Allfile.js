@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import MainMultipleChoice from "./QuizQuestion/MultipleChoice/MainMultipleChoice";
 import MainFillIntheblanks from "./QuizQuestion/FillInTheBlanks/MainFillIntheblanks";
 import MainReordering from "./QuizQuestion/reordering/MainReordering";
+import MainWriting from "./QuizQuestion/Writing/MainWriting";
 
 export default function Allfile({ data }) {
   let questionType = {
@@ -11,6 +12,7 @@ export default function Allfile({ data }) {
       <MainReordering obj={data} direction={"horizontal"} />
     ),
     "Vertical Ordering": <MainReordering obj={data} direction={"vertical"} />,
+    Writing: <MainWriting obj={data} />,
   };
   const getQuestionId = () => {
     return data?.question_id;
