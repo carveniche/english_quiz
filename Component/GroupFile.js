@@ -19,7 +19,7 @@ export default function GroupFile({ data }) {
     "Reading Comprehension": <MainReadingComprehensive data={data} />,
     Listening: <MainListening data={data} />,
   };
-  const [showQuestion, setShowQuestion] = useState(true);
+  const [showQuestion, setShowQuestion] = useState(false);
   window.setShowQuestion = setShowQuestion;
   return (
     <>

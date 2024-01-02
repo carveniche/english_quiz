@@ -122,7 +122,6 @@
 .a4Page {
   width: 800px; /* A4 width */
   max-width: 100%;
-  min-height: 500px; /* A4 height */
   margin: auto auto; /* Center the page horizontally */
   /* Optional: Add a border for visualization */
   padding: 20px; /* Optional: Add padding for content */
