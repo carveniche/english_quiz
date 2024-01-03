@@ -16,8 +16,10 @@ export function QuizDisplay({ obj }) {
 }
 export default function GroupFile({ data, isShowQuestion }) {
   let groupObject = {
-    "Reading Comprehension": <MainReadingComprehensive data={data} />,
-    Listening: <MainListening data={data} />,
+    "Reading Comprehension": (
+      <MainReadingComprehensive data={data} showQuestion={isShowQuestion} />
+    ),
+    Listening: <MainListening data={data} showQuestion={isShowQuestion} />,
   };
   const [showQuestion, setShowQuestion] = useState(isShowQuestion || false);
   window.setShowQuestion = setShowQuestion;
