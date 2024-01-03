@@ -27,6 +27,7 @@ import {
 } from "../../redux/features/liveClassDetails";
 import {
   CICO,
+  ENGLISHQUIZDATAKEY,
   FLAGGEDQUESTIONKEY,
   GGB,
   HOMEWORKQUESTIONKEY,
@@ -348,7 +349,7 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
           })
         );
       } else if (
-        parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
+        parseMessage?.value?.type === ENGLISHQUIZDATAKEY.englishquizQuestionData
       ) {
         dispatch(
           addToActiveTab({

@@ -17,13 +17,19 @@ import { allExcludedParticipants } from "../../../utils/excludeParticipant";
 import useSpeakerViewParticipants from "../../../hooks/useSpeakerViewParticipants/useSpeakerViewParticipants";
 import TeachersTitle from "./Teacher/TeachersTitle";
 import StudentsTitle from "./Student/StudentsTitle";
+import QuizCompleted from "./Result/QuizCompleted";
 
 export default function EnglishQuiz() {
   const { concept, objective_id, level } = useParams();
-  const { liveClassId } = useSelector((state) => state.liveClassDetails);
+
+  const [key, setKey] = useState(0);
+  const { liveClassId, userId } = useSelector(
+    (state) => state.liveClassDetails
+  );
   const [loading, setLoading] = useState(true);
   const [obj, setObj] = useState({});
   const [formattedQuestionData, setFormattedQuestionData] = useState({});
+  const [showQuestion, setShowQuestion] = useState(true);
   const [practiceId, setPracticeId] = useState();
   const [currentHeight, setCurrentHeight] = useState(0);
   const heightRef = useRef(null);
@@ -40,7 +46,9 @@ export default function EnglishQuiz() {
     activeTabArray,
   } = useSelector((state) => state.activeTabReducer);
   let activeTabData = activeTabArray[currentSelectedIndex];
-
+  const { englishquiz } = useSelector(
+    (state) => state.ComponentLevelDataReducer
+  );
   const handleDataTrack = (data, identity) => {
     const [localDataTrackPublication] = [
       ...room.localParticipant.dataTracks.values(),
@@ -61,6 +69,8 @@ export default function EnglishQuiz() {
       },
     };
 
+    console.log("localDataTrackPublication", localDataTrackPublication);
+
     localDataTrackPublication.track.send(JSON.stringify(DataTrackObj));
   };
 
@@ -75,7 +85,7 @@ export default function EnglishQuiz() {
       setLoading(false);
       setObj({ ...data });
       fixedQuestionFormat(data);
-      setPracticeId(data?.details.live_class_practice_id || "");
+      setPracticeId(data?.details[0].live_class_practice_id || "");
     }
   };
 
@@ -92,26 +102,31 @@ export default function EnglishQuiz() {
     }
     setLoading(true);
 
-    console.log("live_class_practice_id", live_class_practice_id);
-    console.log("objective_id", objective_id);
-    console.log("level", level);
-    console.log("live_class_id", live_class_id);
-    console.log("identity", identity);
-    return;
+    // console.log("live_class_practice_id", live_class_practice_id);
+    // console.log("objective_id", objective_id);
+    // console.log("level", level);
+    // console.log("live_class_id", live_class_id);
+    // console.log("identity", identity);
+    let level_id = level.split(" ").pop();
     let { data } = await handleUpdateNextQuestionEnglishQuiz({
-      live_class_practice_id,
-      objective_id,
-      level,
+      english_live_practice_id: live_class_practice_id,
+      objective_id: obj?.details[0]?.objective_id,
+      new_level_id: level_id,
       live_class_id,
     });
     if (data?.status) {
       setObj({ ...data });
+      console.log(data);
+      if (!data?.quiz_completed) fixedQuestionFormat(data);
       setLoading(false);
       handleDataTrack({ data }, identity);
       setKey(key + 1);
+    } else {
+      alert("no data is coming");
     }
   };
   const fixedQuestionFormat = (obj) => {
+    setShowQuestion(true);
     let formatData = {
       group_type: "",
       group_data: {
@@ -132,9 +147,16 @@ export default function EnglishQuiz() {
       formatData.group_type = details?.group_question_type || "";
       formatData.group_data.group_type = details?.group_question_type || "";
       formatData.group_data.question_text = details?.group_data || "";
+      if (details?.show_group_text) {
+        setShowQuestion(true);
+      } else {
+        setShowQuestion(false);
+      }
     }
     formatData.question_data[0].question_type = details?.question_type || "";
     formatData.question_data[0].question_data = details?.question_data || "";
+    console.log(details);
+    setKey(key + 1);
     setFormattedQuestionData({ ...formatData });
   };
 
@@ -167,7 +189,35 @@ export default function EnglishQuiz() {
         handleResizeWidth(heightRef.current, setCurrentHeight);
       }, 500);
   }, [obj?.quiz_completed, loading]);
-
+  const handlePreviewGroupData = () => {
+    let btn = document.getElementById("react_preview_btn");
+    if (btn) {
+      btn.click();
+    }
+  };
+  const checkStudentData = (data) => {
+    console.log(data);
+    if (data?.status) {
+      if (
+        typeof data?.questionData === "object" &&
+        Object.keys(data.questionData).length
+      ) {
+        setObj(data.questionData);
+        if (!data?.questionData?.quiz_completed)
+          fixedQuestionFormat(data.questionData);
+        // setKey(key + 1);
+      }
+    }
+  };
+  useEffect(() => {
+    if (localParticipant !== "tutor" && key > 0) checkStudentData(englishquiz);
+  }, [JSON.stringify(englishquiz)]);
+  let detailsArr = obj?.details || [];
+  detailsArr = detailsArr[0];
+  const handleShowQuestion = () => {
+    setShowQuestion(true);
+  };
+  window.showQuestionCb = handleShowQuestion;
   return (
     <>
       {!loading ? (
@@ -197,33 +247,21 @@ export default function EnglishQuiz() {
                     localParticipant
                   )
                 }
-                totalQuestion={obj?.total}
+                totalQuestion={detailsArr?.total}
                 practiceId={practiceId}
-                currentQuestion={obj?.question_no}
+                currentQuestion={detailsArr?.question_no}
               />
             ) : (
               <StudentsTitle
                 isQuizCompleted={obj?.quiz_completed}
-                currentQuestion={obj?.question_no}
-                totalQuestion={obj?.total}
-                obj={obj}
+                currentQuestion={detailsArr?.question_no}
+                totalQuestion={detailsArr?.total}
+                obj={detailsArr}
               />
             )}
           </div>
 
           <QuizPageLayout height={currentHeight}>
-            <div className={styles.title2}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: "bold !important",
-                }}
-                id={styles.titleStatus}
-              >
-                English Quiz
-              </div>
-            </div>
             <div
               style={{
                 position: "relative",
@@ -233,9 +271,27 @@ export default function EnglishQuiz() {
                 minHeight: `calc(100% - 60px)`,
               }}
             >
+              {showQuestion && (
+                <button onClick={handlePreviewGroupData}>Preview</button>
+              )}
               <QuizWhitePage>
-                {Object.keys(formattedQuestionData).length ? (
-                  <RenderedQuestion obj={formattedQuestionData} />
+                {obj?.quiz_completed ? (
+                  <QuizCompleted
+                    userId={userId}
+                    identity={localParticipant}
+                    live_class_id={liveClassId}
+                    english_live_practice_id={practiceId}
+                  />
+                ) : Object.keys(formattedQuestionData).length && key ? (
+                  <RenderedQuestion
+                    obj={formattedQuestionData}
+                    showQuestion={showQuestion}
+                    key={`${key}_${showQuestion}`}
+                    identity={localParticipant}
+                    details={detailsArr}
+                    studentId={userId}
+                    live_class_id={liveClassId}
+                  />
                 ) : null}
               </QuizWhitePage>
             </div>

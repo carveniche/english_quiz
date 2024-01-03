@@ -25,10 +25,25 @@ export const startPracticeEnglishQuizZone = (params: {
 export const handleUpdateNextQuestionEnglishQuiz = (params: {
   live_class_id: number;
   objective_id: number;
-  new_level: number;
+  new_level_id: number;
   english_live_practice_id: number;
 }) => {
   return axios.get(BaseUrl + "english_quiz/next_question?", {
+    params: { ...params },
+  });
+};
+
+export const studentAnswerEnglishResponse = async (data: object) => {
+  let config = {
+    method: "post",
+    url: `${BaseUrl}english_quiz/save_live_practice`,
+    data: data,
+  };
+  return axios(config);
+};
+
+export const studentResultEnglishZone = async (params: object) => {
+  return axios.get(BaseUrl + "english_quiz/result", {
     params: { ...params },
   });
 };
