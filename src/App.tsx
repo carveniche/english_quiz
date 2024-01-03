@@ -48,7 +48,7 @@ function JoinedScreen() {
     (state: RootState) => state.liveClassDetails
   );
 
-  const { course } = useSelector(
+  const { subject } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
 
@@ -69,7 +69,7 @@ function JoinedScreen() {
       <div className="section-component-layout" ref={parentRef}>
         <Room parentRef={parentRef} />
         <MainScreenRecording />
-        {course.toString() === MATHCOURSE ? (
+        {subject.toString() === MATHCOURSE ? (
           <AllPageRoutes />
         ) : (
           <EnglishAllPageRoutes />

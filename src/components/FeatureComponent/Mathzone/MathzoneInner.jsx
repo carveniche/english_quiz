@@ -164,6 +164,8 @@ export default function MathzoneInner() {
       }, 500);
   }, [obj?.quiz_completed, loading]);
 
+  console.log("loading", loading);
+
   return (
     <>
       {!loading ? (

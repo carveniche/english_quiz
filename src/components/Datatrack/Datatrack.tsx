@@ -37,6 +37,7 @@ import {
   WHITEBOARD,
 } from "../../constants";
 import {
+  changeEnglishQuizData,
   changeGGbMode,
   changeMathzoneData,
   changePdfIndex,
@@ -346,6 +347,19 @@ export default function DataTrack({ track }: { track: IDataTrack }) {
             extraParams: parseMessage.extraParams || {},
           })
         );
+      } else if (
+        parseMessage?.value?.type === MATHZONEDATAKEY.mathzoneQuestionData
+      ) {
+        dispatch(
+          addToActiveTab({
+            path: parseMessage?.value.activeTabData?.path || "",
+            key: parseMessage?.value?.activeTabData?.key || "",
+            icon: parseMessage?.value?.activeTabData?.icon || "",
+            name: parseMessage?.value?.activeTabData?.name || "",
+            extraParams: parseMessage?.value?.activeTabData?.path || "",
+          })
+        );
+        dispatch(changeEnglishQuizData(parseMessage.value.englishQuizData));
       }
     };
 

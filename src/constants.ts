@@ -152,8 +152,17 @@ export const IFRAMENEWCODING = {
   icon: "/menu-icon/CodingIcon.svg",
 };
 
-export const MATHCOURSE = "Math";
-export const ENGLISHCOURSE = "English Delight";
+//Constants for English
 
-export const SCREENRECORDING = true;
-export const SHOWFLOATINGPARTICIPANT = true;
+export const ENGLISHQUIZDATAKEY = {
+  englishquizQuestionData: "englishquizQuestionData",
+  englishquizWhiteBoardData: "englishquizWhiteBoardData",
+  openClosedWhiteBoard: "openClosedWhiteBoard",
+  viewIncorrectQuestionEnglish: "viewIncorrectQuestionEnglish",
+};
+
+export const MATHCOURSE = "Math";
+export const ENGLISHCOURSE = "English";
+
+export const SCREENRECORDING = false;
+export const SHOWFLOATINGPARTICIPANT = false;

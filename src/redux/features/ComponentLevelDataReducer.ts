@@ -97,6 +97,10 @@ const initialState = {
     currentMode: "tutor",
     currentSelectedStudentId: "",
   },
+
+  // English quiz states
+
+  englishquiz: {},
 };
 
 const ComponentLevelDataReducer = createSlice({
@@ -233,6 +237,12 @@ const ComponentLevelDataReducer = createSlice({
         currentIndex: payload?.currentIndex || 0,
       };
     },
+
+    // English Zone Reducers
+
+    changeEnglishQuizData: (state: ComponentLevelData, action: any) => {
+      state.englishquiz = action.payload || {};
+    },
   },
 });
 export const {
@@ -255,5 +265,6 @@ export const {
   toggleGraphWhiteboard,
   openCloseIncorrectMathzoneQuestion,
   openCloseIncorrectPrePostQuestion,
+  changeEnglishQuizData,
 } = ComponentLevelDataReducer.actions;
 export default ComponentLevelDataReducer.reducer;

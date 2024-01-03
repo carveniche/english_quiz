@@ -7,7 +7,7 @@ import englishRouterConfig from "./EnglishRouterConfig";
 export default function EnglishAllPageRoutes() {
   const params = getQueryParams();
   const { pathname } = useLocation();
-  let y = `${ROUTERKEYCONSTENGLISH.englishquizzone}/:concept/:tag/:level`;
+  let y = `${ROUTERKEYCONSTENGLISH.englishquizzone}/:concept/:objective_id/:level`;
 
   return (
     <>

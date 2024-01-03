@@ -15,7 +15,7 @@ export default function NestedMenu() {
   const [showMenu, setShowMenu] = useState(false);
   const { room } = useVideoContext();
 
-  const { course } = useSelector(
+  const { subject } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ export default function NestedMenu() {
           </div>
         </button>
 
-        {course.toString() === MATHCOURSE ? (
+        {subject.toString() === MATHCOURSE ? (
           <>
             {showMenu && <MathNavbar onClick={() => handleShowMenu(false)} />}
           </>

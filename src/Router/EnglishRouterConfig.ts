@@ -78,37 +78,37 @@ const englishRouterConfig: routerConfig[] = [
     subRoute: null,
   },
 
-  {
-    path: "/miscellenous",
-    component: null,
-    key: ROUTERKEYCONSTENGLISH.miscellaneous.key,
-    exact: true,
-    name: "Miscellaneous",
-    icon: "/menu-icon/Whiteboard.svg",
-    hasChildren: false,
-    hasSubRoute: true,
-    subRoute: [
-      {
-        key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.keys,
-        name: "Flagged Questions",
-        path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.route,
-        exact: true,
-        icon: "/menu-icon/Whiteboard.svg",
-        hasChildren: false,
-        component: FlagQuestionMenu,
-      },
+  // {
+  //   path: "/miscellenous",
+  //   component: null,
+  //   key: ROUTERKEYCONSTENGLISH.miscellaneous.key,
+  //   exact: true,
+  //   name: "Miscellaneous",
+  //   icon: "/menu-icon/Whiteboard.svg",
+  //   hasChildren: false,
+  //   hasSubRoute: true,
+  //   subRoute: [
+  //     {
+  //       key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.keys,
+  //       name: "Flagged Questions",
+  //       path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.flagQuestion.route,
+  //       exact: true,
+  //       icon: "/menu-icon/Whiteboard.svg",
+  //       hasChildren: false,
+  //       component: FlagQuestionMenu,
+  //     },
 
-      {
-        key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.keys,
-        name: "Homework",
-        path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.route,
-        exact: true,
-        icon: "/menu-icon/Whiteboard.svg",
-        hasChildren: false,
-        component: HomeWork,
-      },
-    ],
-  },
+  //     {
+  //       key: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.keys,
+  //       name: "Homework",
+  //       path: ROUTERKEYCONSTENGLISH.miscellaneous.subRoute.homework.route,
+  //       exact: true,
+  //       icon: "/menu-icon/Whiteboard.svg",
+  //       hasChildren: false,
+  //       component: HomeWork,
+  //     },
+  //   ],
+  // },
 ];
 
 export default englishRouterConfig;

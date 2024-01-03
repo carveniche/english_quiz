@@ -17,13 +17,13 @@ interface LessonAndMathZoneEffectProps {
 function LessonAndMathZoneEffect({
   liveClassId,
 }: LessonAndMathZoneEffectProps) {
-  const { course } = useSelector(
+  const { subject } = useSelector(
     (state: RootState) => state.videoCallTokenData
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (course.toString() === MATHCOURSE) {
+    if (subject.toString() === MATHCOURSE) {
       getLessonAndMathZoneConceptDetails({ live_class_id: `${liveClassId}` })
         .then((res) => {
           if (res.data.status) {

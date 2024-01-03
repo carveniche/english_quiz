@@ -159,32 +159,20 @@ export default function EnglishQuizZoneNavbar({
                                                 <div className="pl-16 pr-3 hover:bg-black">
                                                   <NavLink
                                                     key={levelIndex}
-                                                    to={`${item.path}/${
-                                                      english.id
-                                                    }/${obj.id}/${
-                                                      level.split("level")[1]
-                                                    }?${queryParams}`}
+                                                    to={`${item.path}/${english.id}/${obj.id}/${level}?${queryParams}`}
                                                     onClick={(e) =>
                                                       handleClick(
                                                         {
-                                                          path: `${item.path}/${
-                                                            english.id
-                                                          }/${obj.tag_id}/${
-                                                            level.split(
-                                                              "level"
-                                                            )[1]
-                                                          }`,
+                                                          path: `${item.path}/${english.id}/${obj.id}/${level}`,
                                                           key: item.key,
                                                           name: `${item.name}:${english.name} - ${obj.name}`,
                                                           icon: item.icon,
                                                           extraParams: {
                                                             conceptName:
                                                               english.name,
-                                                            tagName: obj.name,
-                                                            level:
-                                                              level.split(
-                                                                "level"
-                                                              )[1],
+                                                            objective_id:
+                                                              obj.id,
+                                                            level: level,
                                                           },
                                                         },
                                                         e
