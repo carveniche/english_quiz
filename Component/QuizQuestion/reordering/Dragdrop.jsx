@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import shuffle from "shuffle-array";
 import styles from "../english_mathzone.module.css";
 import { ValidationContext } from "../../QuizPage";
+import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -12,6 +13,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 export default function DragDrop({ questionData, choiceRef, direction }) {
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { showQuizResponse } = useContext(OuterPageContext);
   const onDragEnd = (result) => {
     if (submitResponse || disabledQuestion) return;
     // dropped outside the list
@@ -31,6 +33,12 @@ export default function DragDrop({ questionData, choiceRef, direction }) {
     temp = shuffle(temp);
     setQuetionContent([...temp]);
   }, []);
+  useEffect(() => {
+    if (showQuizResponse) {
+      let temp = [...questionData];
+      setQuetionContent([...temp]);
+    }
+  }, [showQuizResponse]);
   choiceRef.current = questionContent;
   return (
     <div className={styles.questionContent}>

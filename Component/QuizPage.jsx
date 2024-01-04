@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./outerPage.module.css";
 import GroupFile from "./GroupFile";
+import { OuterPageContext } from "./QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
 export const ValidationContext = React.createContext("Validation Context");
 export function ValidationContextProvider({ children }) {
   const [submitResponse, setSubmitResponse] = useState(false);
   const [disabledQuestion, setDisabledQuestion] = useState(false);
+  const { showQuizResponse } = useContext(OuterPageContext);
   const [isCorrect, setIsCorrect] = useState(-1); //0-false,1-true,-1 not selected
   const [studentAnswer, setStudentAnswer] = useState("");
+  useEffect(() => {
+    if (showQuizResponse) {
+      setDisabledQuestion(true);
+    }
+  }, [showQuizResponse]);
   return (
     <ValidationContext.Provider
       value={{

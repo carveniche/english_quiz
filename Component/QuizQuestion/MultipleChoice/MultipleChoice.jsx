@@ -55,9 +55,8 @@ export default function MultipleChoice({ obj }) {
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div>
-          <ResourceViewer resources={obj?.resources||[]}/>
-          
-        </div>
+        <ResourceViewer resources={obj?.resources || []} />
+      </div>
       <div>
         <div className={styles.questionName}>
           {obj?.questionName?.length ? (
