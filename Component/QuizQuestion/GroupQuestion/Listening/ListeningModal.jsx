@@ -28,14 +28,20 @@ export default function ListeningModal({ group_data, onClick, from }) {
           }}
         >
           {from === "non_preview" && (
-            <div style={{ marginBottom: 5, float: "right", width: "200px" }}>
-              <Button
-                variant="contained"
-                style={{ width: "100%", background: "orange" }}
-                onClick={handleClose}
-              >
-                Next
-              </Button>
+            <div
+              style={{
+                width: "calc(100% - 64px)",
+              }}
+            >
+              <div style={{ marginBottom: 5, float: "right", width: "200px" }}>
+                <Button
+                  variant="contained"
+                  style={{ width: "100%", background: "orange" }}
+                  onClick={handleClose}
+                >
+                  Next
+                </Button>
+              </div>
             </div>
           )}
           <Box
@@ -47,6 +53,7 @@ export default function ListeningModal({ group_data, onClick, from }) {
               height: "fit-content",
               clear: "both",
               borderRadius: 1,
+              position: "relative",
             }}
           >
             {from === "preview" && (

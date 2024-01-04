@@ -79,7 +79,7 @@ export default function ListeningPlayer({ audioUrl }) {
   return (
     <div
       style={{
-        width: "calc(100% + 64px - 20px)",
+        width: "calc(100% + 64px )",
         padding: 10,
         margin: "auto",
         marginLeft: -32,
@@ -106,7 +106,7 @@ export default function ListeningPlayer({ audioUrl }) {
             <PlayArrowIcon />
           </Button>
         )}
-        <Box sx={{ width: "430px" }}>
+        <Box sx={{ width: "350px" }}>
           <LinearProgress
             variant="determinate"
             value={progress}
