@@ -11,16 +11,16 @@ export default function PassagePage({ groupData }) {
   const handleChangePage = (val) => {
     setCurrentPage(currentPage + val);
   };
-  
-  const leftArrowBtn=useRef(null)
-  const rightArrowBtn=useRef(null)
-  window.leftArrowBtn=leftArrowBtn.current
-  window.rightArrowBtn=rightArrowBtn.current
+
+  const leftArrowBtn = useRef(null);
+  const rightArrowBtn = useRef(null);
+  window.leftArrowBtn = leftArrowBtn.current;
+  window.rightArrowBtn = rightArrowBtn.current;
   return (
     <div
       style={{
         height: "100%",
-        position: "relative",
+
         width: "fit-content",
         margin: "auto",
       }}
@@ -35,7 +35,7 @@ export default function PassagePage({ groupData }) {
             style={{ background: "initial", border: 0, cursor: "pointer" }}
             ref={leftArrowBtn}
           >
-          <LeftArrow />
+            <LeftArrow />
           </button>
         )}
         {currentPage + 1 < groupData.length ? (
@@ -44,7 +44,7 @@ export default function PassagePage({ groupData }) {
             className={`${styles.reading_comprehensive_btn} ${styles.next_btn}`}
             ref={rightArrowBtn}
           >
-          <RightArrow />
+            <RightArrow />
           </button>
         ) : (
           <button
@@ -52,7 +52,7 @@ export default function PassagePage({ groupData }) {
             onClick={handleShowQuestion}
             ref={rightArrowBtn}
           >
-           <RightArrow />
+            <RightArrow />
           </button>
         )}
       </>
