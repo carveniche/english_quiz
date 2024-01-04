@@ -30,7 +30,6 @@ export default function GroupQuestionContextProvider({ children }) {
     currentPage,
     previewGroupData,
     handleShowPreviewData,
-    previewGroupData,
     handleShowQuestion,
     currentQuestion,
     handleChangeQuestion,
