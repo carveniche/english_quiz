@@ -29,8 +29,11 @@ const CONFIG_URL = "https://api.openai.com/v1/chat/completions";
 const AutoSizeTextarea = ({ studentTextRef }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-
+  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  console.log(submitResponse);
   const handleTextareaChange = (event) => {
+    if (submitResponse) return;
+    if (disabledQuestion) return;
     setTextareaValue(event.target.value);
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -126,6 +129,7 @@ export default function Writing({ questionData }) {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponse,
     };
+    setSubmitResponse(true);
     setStudentAnswer(JSON.stringify(obj));
     return 1;
   };
