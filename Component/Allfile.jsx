@@ -12,7 +12,7 @@ export default function Allfile({ data }) {
       <MainReordering obj={data} direction={"horizontal"} />
     ),
     "Vertical Ordering": <MainReordering obj={data} direction={"vertical"} />,
-    Writing: <MainWriting obj={data} />,
+    "Writing ChatGpt": <MainWriting obj={data} />,
   };
   const getQuestionId = () => {
     return data?.question_id;

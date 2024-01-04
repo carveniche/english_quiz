@@ -2,8 +2,8 @@ import React from "react";
 import Listening from "./Listening";
 import GroupQuestionContextProvider from "../ContextProvider/GroupContextProvider";
 
-export default function MainListening({ data }) {
-  let group_data = JSON.parse(data?.group_data?.question_text, showQuestion);
+export default function MainListening({ data, showQuestion }) {
+  let group_data = JSON.parse(data?.group_data?.question_text);
   return (
     <>
       <GroupQuestionContextProvider>
