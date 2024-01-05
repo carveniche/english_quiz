@@ -120,7 +120,6 @@
   border-radius: 5px;
 }
 .a4Page {
-  width: 800px; /* A4 width */
   max-width: 100%;
   margin: auto auto; /* Center the page horizontally */
   /* Optional: Add a border for visualization */
@@ -180,7 +179,7 @@
   left: -62px;
 }
 .reading_comprehensive_btn.next_btn {
-  right: -42px;
+  right: -62px;
 }
 
 .gpt_feedback_box {
