@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./outerPage.module.css";
 import GroupFile from "./GroupFile";
-import { OuterPageContext } from "./QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
+import OuterPageContextProvider, {
+  OuterPageContext,
+} from "./QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
 export const ValidationContext = React.createContext("Validation Context");
 export function ValidationContextProvider({ children }) {
   const [submitResponse, setSubmitResponse] = useState(false);
@@ -45,7 +47,20 @@ function RenderingQuizPage({ obj }) {
 export default function QuizPage({ obj }) {
   return (
     <>
-      <RenderingQuizPage obj={obj} />
+      <OuterPageContextProvider>
+        <IntermediateQuizPage
+          isResponse={false}
+          showQuestion={false}
+          obj={obj}
+        />
+      </OuterPageContextProvider>
     </>
   );
 }
+export const IntermediateQuizPage = ({ isResponse, showQuestion, obj }) => {
+  const { setShowQuizResponse } = useContext(OuterPageContext);
+  useEffect(() => {
+    if (isResponse) setShowQuizResponse(true);
+  }, [isResponse]);
+  return <RenderingQuizPage obj={obj} />;
+};
