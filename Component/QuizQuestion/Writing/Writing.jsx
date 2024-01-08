@@ -25,9 +25,7 @@ const useStyles = {
     outline: "none",
   },
 };
-const BEARER_TOKEN =
-  "Bearer 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";
-const CONFIG_URL = "https://api.openai.com/v1/chat/completions";
+const CONFIG_URL = window.CONFIG_URL||"http://localhost:3000/";
 const AutoSizeTextarea = ({ studentTextRef }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
@@ -67,47 +65,16 @@ export default function Writing({ questionData }) {
     setStudentAnswer,
   } = useContext(ValidationContext);
   const apiCalled = (prompt_text) => {
-    // let data = JSON.stringify({
-    //   prompt: prompt_text,
-    //   max_tokens: 500,
-    //   temperature: 0,
-    // });
-
-    // let config = {
-    //   method: "post",
-    //   maxBodyLength: Infinity,
-    //   url: CONFIG_URL,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: BEARER_TOKEN,
-    //   },
-    //   data: data,
-    // };
-    // return axios.request(config);
-    return axios.post(
-      CONFIG_URL,
-      {
-        messages: [
-          {
-            role: "user",
-            content: prompt_text,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 512,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        model: "gpt-4", // Adjust the length of the response
-        // Add other parameters as needed based on OpenAI's API documentation
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: BEARER_TOKEN,
-        },
-      }
-    );
+    let formData=new FormData()
+    formData.append("prompt_text",prompt_text)
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${CONFIG_URL}app_teachers/gpt_response`,
+      data : formData
+    };
+    
+    return axios(config)
   };
   const handlePromptRequest = async (prompt_text) => {
     setGptResponseLoading(true);
@@ -116,12 +83,12 @@ export default function Writing({ questionData }) {
     questionText = getTextFromQuestion(questionText);
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher, in less than 100 words`;
     try {
-      const { data } = await apiCalled(
+      let { data } = await apiCalled(
         question_text || questionData?.prompt_text || ""
       );
 
       if (true) {
-        console.log(data?.choices[0]?.message?.content);
+    data=data?.data||{}
         setChatGptResponse(data?.choices[0]?.message?.content || "");
         setGptResponseLoading(false);
       }
