@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 .mathzoneMultipleChoiceFlexBox > div {
-  width: calc(50% - 0.5rem);
+  min-width: calc(50% - 0.5rem);
   max-width: 100%;
   flex: 1;
   display: flex;
