@@ -4,7 +4,7 @@ import objectParser from "../../../Utility/objectParser";
 import styles from "../../english_mathzone.module.css";
 import ListeningPlayer from "./ListeningPlayer";
 import CloseIcon from "@mui/icons-material/Close";
-export default function ListeningModal({ group_data, onClick, from }) {
+export default function ListeningModal({ group_data, onClick, from ,autoPlay}) {
   const handleClose = () => {
     typeof onClick === "function" && onClick();
   };
@@ -65,7 +65,7 @@ export default function ListeningModal({ group_data, onClick, from }) {
                 <CloseIcon />
               </IconButton>
             )}
-            <div
+           {group_data?.question_text?.length>0&& <div
               className={styles.questionName}
               style={{ clear: "both", marginBottom: 8 }}
             >
@@ -74,8 +74,8 @@ export default function ListeningModal({ group_data, onClick, from }) {
                   {objectParser(item, key)}
                 </React.Fragment>
               ))}
-            </div>
-            <ListeningPlayer audioUrl={group_data?.resources[0]?.url} />
+            </div>}
+            <ListeningPlayer audioUrl={group_data?.resources[0]?.url} autoPlay={autoPlay}/>
           </Box>
         </div>
       </Modal>

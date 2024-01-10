@@ -1,22 +1,22 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import ListeningModal from "../QuizQuestion/GroupQuestion/Listening/ListeningModal";
 export default function ResourceViewer({ resources }) {
     const audioRef = useRef([]);
+    const [selectedAudio,setSelectedAudio]=useState(-1)
     const handleAudioPlay = (index) => {
-        let audio = audioRef.current[index];
-        if (audio) {
-            audio.play();
-        }
+        setSelectedAudio(index)
+        
     };
-    useEffect(() => {
-        return () => {
-            for (let audio of audioRef.current) {
-                if (audio) audio.pause();
-            }
-        };
-    }, []);
-    return resources.length ? resources.map((item, key) => <>
+    
+    return resources.length ? resources.map((item, key) => <React.Fragment key={key}>
+  {key===selectedAudio&& <ListeningModal group_data={{
+    question_text:[],resources:[{
+        ...item
+    }]
+    
+  }} onClick={()=>handleAudioPlay(-1)} autoPlay={true} from={"preview"}/>}
         {
             item?.type === "audio" ? (
                 <IconButton
@@ -36,5 +36,5 @@ export default function ResourceViewer({ resources }) {
                 ""
             )
         }
-    </>) : ""
+    </React.Fragment>) : ""
 }

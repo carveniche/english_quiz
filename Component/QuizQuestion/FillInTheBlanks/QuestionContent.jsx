@@ -12,16 +12,22 @@ export default function QuestionContent({ choicesRef }) {
   };
   return (
     <div>
-      <div className={styles.questionContent}>
+      <div className={styles.questionContent} style={{marginTop:8,gap:2}}>
         {choicesRef.current.map((item, key) => (
           <React.Fragment key={key}>
             {key > 0 && <>&nbsp;</>}
             {item?.correct ? (
               <input
-                size={item?.studentAnswer?.length || 1}
+                size={item?.value?.length || 1}
                 value={item?.studentAnswer || ""}
                 onChange={(e) => handleChange(e, key)}
                 minLength={1}
+                style={{    
+                  fontSize: 16,
+                  padding: 5,
+                  margin:"0px 5px",
+                boxSizing:"border-box",textAlign:"center"}}
+              
               />
             ) : (
               item?.value

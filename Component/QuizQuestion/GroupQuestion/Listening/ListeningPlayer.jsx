@@ -8,7 +8,7 @@ import Replay10Icon from "@mui/icons-material/Replay10";
 import Button from "@mui/material/Button";
 import { VolumeOff } from "@mui/icons-material";
 import { VolumeUp } from "@mui/icons-material";
-export default function ListeningPlayer({ audioUrl }) {
+export default function ListeningPlayer({ audioUrl,autoPlay }) {
   const audioRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
   let [totalTime, setTotalTime] = useState(0);
@@ -45,7 +45,8 @@ export default function ListeningPlayer({ audioUrl }) {
         audioRef.current.ontimeupdate = handleTimeUpdate;
 
         setIsMute(audioRef.current.muted || false);
-
+        if(autoPlay)
+        handlePlayPause()
         setTotalTime(audioRef.current.duration);
         audioRef.current.onended = function () {
           setPlay(false);
@@ -86,6 +87,7 @@ export default function ListeningPlayer({ audioUrl }) {
         background: "rgba(0, 255, 255, 0.5)",
         marginBottom: -32,
         boxShadow: "border-box",
+        boxSizing:"border-box"
       }}
     >
       <audio ref={audioRef} src={audioUrl} style={{ display: "none" }}></audio>
