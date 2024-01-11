@@ -25,7 +25,7 @@ const useStyles = {
     outline: "none",
   },
 };
-const CONFIG_URL = window.CONFIG_URL||"http://localhost:3000/";
+const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
 const AutoSizeTextarea = ({ studentTextRef }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
@@ -48,7 +48,7 @@ const AutoSizeTextarea = ({ studentTextRef }) => {
       onChange={handleTextareaChange}
       placeholder="Enter Response"
       aria-label="Auto-sizing Textarea"
-      rowsMin={3} // Minimum number of rows
+      // Minimum number of rows
     />
   );
 };
@@ -57,6 +57,8 @@ export default function Writing({ questionData }) {
   const studentTextRef = useRef("");
   const [gptResponseLoading, setGptResponseLoading] = useState(false);
   const [redAlert, setRedAlert] = useState(false);
+  const [hideCheckButton, setHideCheckButton] = useState(false);
+  const [isResponse, setIsResponse] = useState(false);
   const {
     submitResponse,
     disabledQuestion,
@@ -65,16 +67,16 @@ export default function Writing({ questionData }) {
     setStudentAnswer,
   } = useContext(ValidationContext);
   const apiCalled = (prompt_text) => {
-    let formData=new FormData()
-    formData.append("prompt_text",prompt_text)
+    let formData = new FormData();
+    formData.append("prompt_text", prompt_text);
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
       url: `${CONFIG_URL}app_teachers/gpt_response`,
-      data : formData
+      data: formData,
     };
-    
-    return axios(config)
+
+    return axios(config);
   };
   const handlePromptRequest = async (prompt_text) => {
     setGptResponseLoading(true);
@@ -88,9 +90,10 @@ export default function Writing({ questionData }) {
       );
 
       if (true) {
-    data=data?.data||{}
+        data = data?.data || {};
         setChatGptResponse(data?.choices[0]?.message?.content || "");
         setGptResponseLoading(false);
+        setIsResponse(true);
       }
     } catch (e) {
       alert(e?.message || "Somthing went wrong please try again");
@@ -103,7 +106,8 @@ export default function Writing({ questionData }) {
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
-    if (!studentTextRef.current) {
+    setRedAlert(false);
+    if (!isResponse) {
       setRedAlert(true);
       return;
     }
@@ -111,15 +115,40 @@ export default function Writing({ questionData }) {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponse,
     };
-    handlePromptRequest(studentTextRef.current);
     setSubmitResponse(true);
     setStudentAnswer(JSON.stringify(obj));
     return 1;
   };
-
+  const checkGptResponse = () => {
+    if (submitResponse) return;
+    if (disabledQuestion) return;
+    if (hideCheckButton) return;
+    setRedAlert(false);
+    if (!studentTextRef.current) {
+      setRedAlert(true);
+      return;
+    }
+    handlePromptRequest(studentTextRef.current);
+    setHideCheckButton(true);
+  };
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
+      {!hideCheckButton && (
+        <>
+          {" "}
+          <div style={{ float: "right", marginRight: 2 }}>
+            <button
+              className={`${styles.checkButton} ${styles.checkButtonColor}`}
+              id="solveBtn"
+              onClick={checkGptResponse}
+            >
+              Check
+            </button>
+          </div>
+          <div style={{ paddingTop: 5, clear: "both" }}></div>
+        </>
+      )}
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className={styles.questionName}>
         {questionData?.questionName?.length ? (
@@ -135,7 +164,7 @@ export default function Writing({ questionData }) {
       <div style={{ marginTop: 5 }}>
         <AutoSizeTextarea studentTextRef={studentTextRef} />
       </div>
-      {submitResponse && (
+      {hideCheckButton && (
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
