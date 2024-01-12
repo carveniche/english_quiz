@@ -15,7 +15,9 @@ export default function PassagePage({ groupData }) {
   const leftArrowBtn = useRef(null);
   const rightArrowBtn = useRef(null);
   window.leftArrowBtn = leftArrowBtn.current;
-  window.rightArrowBtn = rightArrowBtn.current;
+  window.rightArrowBtn = rightArrowBtn.current
+  const [hideNotification,setHideNotification]=useState(false)
+  
   return (
     <div
       style={{
@@ -25,9 +27,9 @@ export default function PassagePage({ groupData }) {
         margin: "auto",
       }}
     >
-      <Page passage={groupData[currentPage] || []} />
-      <NotificationModal />
-      <>
+      {!hideNotification&&<NotificationModal onClose={setHideNotification}/>}
+     {hideNotification&& <>
+        <Page passage={groupData[currentPage] || []} />
         {currentPage > 0 && (
           <button
             onClick={() => handleChangePage(-1)}
@@ -55,7 +57,7 @@ export default function PassagePage({ groupData }) {
             <RightArrow />
           </button>
         )}
-      </>
+      </>}
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { Box, Modal } from "@mui/material";
 import React, { useState } from "react";
-export default function NotificationModal({ group_data, onClick }) {
+export default function NotificationModal({ group_data, onClose }) {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
+  typeof onClose==="function"&& onClose(true)
     setOpen(false);
   };
 
