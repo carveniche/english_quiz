@@ -27,7 +27,7 @@ export default function GroupFile({ data, isShowQuestion }) {
     <>
       {groupObject[data?.group_type]}
       {showQuestion && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ paddingTop:10 }}>
           <QuizDisplay obj={data?.question_data[0] || ""} />
         </div>
       )}

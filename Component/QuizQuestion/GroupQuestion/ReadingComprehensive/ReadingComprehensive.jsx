@@ -51,7 +51,7 @@ export default function ReadingComprehensive({
               </Button>
             )}
           </div>
-          <div style={{ clear: "both", marginTop: 10 }}></div>
+          <div style={{ clear: "both", paddingTop:10 }}></div>
         </>
       ) : (
         <>
