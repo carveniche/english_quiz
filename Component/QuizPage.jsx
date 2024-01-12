@@ -34,23 +34,23 @@ export function ValidationContextProvider({ children }) {
   );
 }
 
-function RenderingQuizPage({ obj }) {
+function RenderingQuizPage({ obj,showQuestion }) {
   return (
     <div className={`${styles.bodyPage2} ${styles.bodyPage}`}>
       <ValidationContextProvider>
-        <GroupFile data={obj} />
+        <GroupFile data={obj} isShowQuestion={showQuestion}/>
       </ValidationContextProvider>
     </div>
   );
 }
 
-export default function QuizPage({ obj }) {
+export default function QuizPage({ obj,isShowQuestion }) {
   return (
     <>
       <OuterPageContextProvider>
         <IntermediateQuizPage
           isResponse={false}
-          showQuestion={false}
+          showQuestion={isShowQuestion}
           obj={obj}
         />
       </OuterPageContextProvider>
@@ -62,5 +62,5 @@ export const IntermediateQuizPage = ({ isResponse, showQuestion, obj }) => {
   useEffect(() => {
     if (isResponse) setShowQuizResponse(true);
   }, [isResponse]);
-  return <RenderingQuizPage obj={obj} />;
+  return <RenderingQuizPage obj={obj} showQuestion={showQuestion}/>;
 };
