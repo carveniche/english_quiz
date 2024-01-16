@@ -5,6 +5,7 @@ export default function NotificationModal({ group_data, onClose }) {
   const handleClose = () => {
   typeof onClose==="function"&& onClose(true)
     setOpen(false);
+    typeof window.hideReadingConferencingModalCb==="function"&&window.hideReadingConferencingModalCb()
   };
 
   return (
