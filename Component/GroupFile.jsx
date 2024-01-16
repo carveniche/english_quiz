@@ -4,6 +4,7 @@ import Allfile from "./Allfile";
 import { ValidationContextProvider } from "./QuizPage";
 import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import MainListening from "./QuizQuestion/GroupQuestion/Listening/MainListening";
+import styles from "../Component/outerPage.module.css"
 export function QuizDisplay({ obj }) {
   return (
     <>
@@ -27,7 +28,7 @@ export default function GroupFile({ data, isShowQuestion }) {
     <>
       {groupObject[data?.group_type]}
       {showQuestion && (
-        <div style={{ paddingTop:10 }}>
+        <div style={{ paddingTop:10 }} className={styles.groupPage}>
           <QuizDisplay obj={data?.question_data[0] || ""} />
         </div>
       )}

@@ -6,6 +6,15 @@ import QuestionContent from "./QuestionContent";
 import { ValidationContext } from "../../QuizPage";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
+const checkTwoString=(a,b)=>{
+  a=a||""
+  b=b||""
+  a=a.toLowerCase()
+  b=b.toLowerCase();
+  a=a.trim()
+  b=b.trim()
+  return a==b 
+}
 export default function FillIntheBlanks({ obj }) {
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
@@ -36,7 +45,7 @@ export default function FillIntheBlanks({ obj }) {
     for (let item of arr) {
       if (item?.correct) {
         if (item?.studentAnswer && item?.studentAnswer.trim()) {
-          if (item?.value.trim() === item?.studentAnswer.trim()) {
+          if (checkTwoString(item?.value ,item?.studentAnswer.trim)) {
             if (answerStatus) {
               answerStatus = 1;
             }

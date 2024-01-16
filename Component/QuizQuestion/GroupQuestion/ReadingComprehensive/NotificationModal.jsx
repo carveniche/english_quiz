@@ -1,5 +1,6 @@
 import { Box, Modal } from "@mui/material";
 import React, { useState } from "react";
+import styles from "../../../outerPage.module.css"
 export default function NotificationModal({ group_data, onClose }) {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
@@ -9,12 +10,14 @@ export default function NotificationModal({ group_data, onClose }) {
   };
 
   return (
-    <div>
+    <div className={styles.groupPage}>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
+        className={styles.groupPage}
+
       >
         <Box
           sx={{
@@ -29,6 +32,7 @@ export default function NotificationModal({ group_data, onClose }) {
             height: "fit-content",
             overflow: "auto",
             p: 5,
+            outline:0,
           }}
         >
           <h2>
@@ -37,24 +41,24 @@ export default function NotificationModal({ group_data, onClose }) {
           </h2>
           <div
             style={{
-              border: "4px solid blue",
+           
               width: "fit-content",
               padding: 10,
-              background: "brown",
+              background: "#8C8CFB",
               borderRadius: 10,
               margin: "auto",
               cursor: "pointer",
               fontWeight: "bold",
               fontSize: 24,
               transition: "background-color 0.8s, color 0.7s",
+              color:"white",
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#808000"; // Change background color on hover
-              e.target.style.color = "black"; // Change text color on hover
+              e.target.style.backgroundColor = "#5ED0F3 "; // Change background color on hover
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "brown"; // Revert background color on hover out
-              e.target.style.color = "black"; // Revert text color on hover out
+              e.target.style.backgroundColor = "#8C8CFB"; // Revert background color on hover out
+             
             }}
             onClick={handleClose}
           >

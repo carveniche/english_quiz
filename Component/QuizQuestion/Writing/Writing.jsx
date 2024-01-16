@@ -126,10 +126,12 @@ export default function Writing({ questionData }) {
     setRedAlert(false);
     if (!studentTextRef.current) {
       setRedAlert(true);
-      return;
+      return -1;
     }
     handlePromptRequest(studentTextRef.current);
     setHideCheckButton(true);
+    setIsCorrect(1)
+    return 1
   };
   return (
     <div>

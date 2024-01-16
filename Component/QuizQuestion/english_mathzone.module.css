@@ -3,7 +3,7 @@
 .bodyPage tr,
 .bodyPage td,
 .bodyPage th,
-.bodyPage p {
+.bodyPage p,.bodyPage h2,.bodyPage h1 {
   /* H3 Desktop 18 pt */
 
   font-family: "GothamRnd-Book2";
@@ -11,6 +11,9 @@
   font-weight: 700;
   font-size: 18px;
   height: 100%;
+}
+.bodyPage h2,.bodyPage h1 {
+  font-size: 22px;
 }
 .questionContent {
   font-size: 16px;
@@ -163,10 +166,11 @@
 }
 .reading_comprehensive_btn {
   position: absolute;
-  top: calc(50% - 30px);
+  top: calc(50% - 68px);
   background: initial;
   border: 0;
   cursor: pointer;
+  z-index: 2;
 }
 .reading_comprehensive_btn img {
   transition: filter 0.3s;
@@ -175,10 +179,10 @@
   filter: brightness(50%);
 }
 .reading_comprehensive_btn.reading_comprehensive_btn.prev_btn {
-  left: -62px;
+  left: 0;
 }
 .reading_comprehensive_btn.next_btn {
-  right: -62px;
+  right: 0px;
 }
 
 .gpt_feedback_box {
@@ -198,4 +202,27 @@
   height: 40px;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.naviagationButton{
+    opacity: 1;
+    font-size: 100px;
+    margin: 0px !important;
+
+}
+  .naviagationButton .fa{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+
+  }
+.naviagationButton .fa-caret-left:before {
+  content: "\f0d9";
+}
+
+
+.naviagationButton .fa-caret-right:before {
+    content: "\f0da";
 }

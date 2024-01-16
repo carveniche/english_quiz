@@ -11,6 +11,7 @@
 .bodyPage td,
 .bodyPage th,
 .bodyPage h2,
+.bodyPage h1,
 .bodyPage p {
   /* H3 Desktop 18 pt */
 
@@ -25,4 +26,31 @@
 }
 .bodyPage2 img {
   max-width: 100%;
+}
+
+.bodyPage2 h2,.bodyPage2 h1{
+  font-size: 22px;
+} 
+.groupPage div,
+.groupPage span,
+.groupPage tr,
+.groupPage td,
+.groupPage th,
+.groupPage h2,
+.groupPage p {
+  /* H3 Desktop 18 pt */
+
+  font-family: "GothamRnd-Book2";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+
+.groupPage h2,.groupPage h1{
+  font-size: 22px;
+} 
+
+.groupPage{
+  display: block;
 }
