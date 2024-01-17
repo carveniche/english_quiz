@@ -26,12 +26,12 @@ const useStyles = {
   },
 };
 const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
-const AutoSizeTextarea = ({ studentTextRef }) => {
+const AutoSizeTextarea = ({ studentTextRef,hideCheckButton }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
-    if (submitResponse) return;
+    if (submitResponse ||hideCheckButton) return;
     if (disabledQuestion) return;
     setTextareaValue(event.target.value);
     if (textareaRef.current) {
@@ -84,6 +84,9 @@ export default function Writing({ questionData }) {
     let instruction = questionData.prompt_text || "";
     questionText = getTextFromQuestion(questionText);
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher, in less than 100 words`;
+    // let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
+    
+    // let q,uestion_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
     try {
       let { data } = await apiCalled(
         question_text || questionData?.prompt_text || ""
@@ -164,7 +167,7 @@ export default function Writing({ questionData }) {
         ) : null}
       </div>
       <div style={{ marginTop: 5 }}>
-        <AutoSizeTextarea studentTextRef={studentTextRef} />
+        <AutoSizeTextarea studentTextRef={studentTextRef} hideCheckButton={hideCheckButton}/>
       </div>
       {hideCheckButton && (
         <>
