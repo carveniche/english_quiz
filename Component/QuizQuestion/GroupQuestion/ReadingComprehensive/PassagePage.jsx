@@ -78,7 +78,7 @@ return ()=>clearTimeout(pageChangeRef.current)
           // >
           //   <RightArrow />
           // </button>
-          <button class={`${styles.next_btn} ${styles.naviagationButton} ${styles.reading_comprehensive_btn} react_passage_change_page_change_btn react_passage_right_btn`}  onClick={handleShowQuestion}>
+          <button class={`${styles.next_btn} ${styles.naviagationButton} ${styles.reading_comprehensive_btn} react_passage_change_page_change_btn react_passage_right_btn`}  onClick={()=>{!pageChangeRef.current&&handleShowQuestion()}}>
           <i class={`${styles.fa} ${styles["fa-caret-right"]}`}></i>
      </button>
         )}

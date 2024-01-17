@@ -106,7 +106,7 @@ export default function Writing({ questionData }) {
        apiArray[0]=apiCalled(
         question_text
       );
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word as integer`;
+      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in integer, 1 for the response is correct otherwise give score 0.`;
       apiArray[1]=apiCalled(
         question_text ||""
       );
@@ -160,8 +160,9 @@ console.log(e)
     }
     handlePromptRequest(studentTextRef.current);
     setHideCheckButton(true);
-    setIsCorrect(1)
-    return 1
+    let value=score===null?0:Number(score)
+    setIsCorrect(value||0)
+    return value||0
   };
   // console.log(chatGptResponse,score)
   return (

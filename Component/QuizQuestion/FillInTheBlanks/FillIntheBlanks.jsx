@@ -9,6 +9,7 @@ import ResourceViewer from "../../CommonComponent/ResourceViewer";
 const checkTwoString=(a,b)=>{
   a=a||""
   b=b||""
+  console.log({a,b})
   a=a.toLowerCase()
   b=b.toLowerCase();
   a=a.trim()
@@ -45,7 +46,7 @@ export default function FillIntheBlanks({ obj }) {
     for (let item of arr) {
       if (item?.correct) {
         if (item?.studentAnswer && item?.studentAnswer.trim()) {
-          if (checkTwoString(item?.value ,item?.studentAnswer.trim)) {
+          if (checkTwoString(item?.value ,item?.studentAnswer)) {
             if (answerStatus) {
               answerStatus = 1;
             }
