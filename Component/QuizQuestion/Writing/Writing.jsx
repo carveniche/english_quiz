@@ -54,6 +54,7 @@ const AutoSizeTextarea = ({ studentTextRef,hideCheckButton }) => {
 };
 export default function Writing({ questionData }) {
   const [chatGptResponse, setChatGptResponse] = useState("");
+  const [score,setScore]=useState(null)
   const studentTextRef = useRef("");
   const [gptResponseLoading, setGptResponseLoading] = useState(false);
   const [redAlert, setRedAlert] = useState(false);
@@ -83,25 +84,50 @@ export default function Writing({ questionData }) {
     let questionText = questionData?.questionName;
     let instruction = questionData.prompt_text || "";
     questionText = getTextFromQuestion(questionText);
+    let quizFrom=sessionStorage.getItem("engQuizFrom")
+    let stateRef=[];
+    let apiArray=[]
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher, in less than 100 words`;
-    // let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
+    // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
     
-    // let q,uestion_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
-    try {
-      let { data } = await apiCalled(
+    // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
+    if(quizFrom==="diagnostic"){
+      stateRef=[]
+      stateRef.push(setChatGptResponse)
+      apiArray[0]=apiCalled(
         question_text || questionData?.prompt_text || ""
       );
-
-      if (true) {
-        data = data?.data || {};
-        setChatGptResponse(data?.choices[0]?.message?.content || "");
-        setGptResponseLoading(false);
-        setIsResponse(true);
-      }
-    } catch (e) {
-      alert(e?.message || "Somthing went wrong please try again");
-      setGptResponseLoading(false);
     }
+    else{
+      stateRef=[]
+      stateRef.push(setChatGptResponse)
+      stateRef.push(setScore)
+       question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
+       apiArray[0]=apiCalled(
+        question_text
+      );
+      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word as integer`;
+      apiArray[1]=apiCalled(
+        question_text ||""
+      );
+    }
+   try{
+    let allData=await Promise.all(apiArray)
+    // console.log(allData)
+    allData=allData||[]
+    allData.forEach(({data},index)=>{
+      data=data?.data||{}
+      data=data.choices||[]
+      console.log(data)
+      typeof stateRef[index]=="function"&&stateRef[index](data[0]?.message?.content)
+    })
+    setGptResponseLoading(false);
+    setIsResponse(true);
+    
+   }
+   catch(e){
+console.log(e)
+   }
   };
   useEffect(() => {
     // handlePromptRequest();
@@ -117,6 +143,7 @@ export default function Writing({ questionData }) {
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponse,
+      score:score
     };
     setSubmitResponse(true);
     setStudentAnswer(JSON.stringify(obj));
@@ -136,6 +163,7 @@ export default function Writing({ questionData }) {
     setIsCorrect(1)
     return 1
   };
+  // console.log(chatGptResponse,score)
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
