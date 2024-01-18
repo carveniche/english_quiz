@@ -53,13 +53,14 @@ const AutoSizeTextarea = ({ studentTextRef,hideCheckButton }) => {
   );
 };
 export default function Writing({ questionData }) {
-  const [chatGptResponse, setChatGptResponse] = useState("");
-  const [score,setScore]=useState(null)
+  const chatGptResponseRef=useRef("")
+  const scoreRef=useRef(null)
   const studentTextRef = useRef("");
   const [gptResponseLoading, setGptResponseLoading] = useState(false);
   const [redAlert, setRedAlert] = useState(false);
   const [hideCheckButton, setHideCheckButton] = useState(false);
-  const [isResponse, setIsResponse] = useState(false);
+  let quizFromRef=useRef(sessionStorage.getItem("engQuizFrom"))
+  const isApiCalled=useRef(false)
   const {
     submitResponse,
     disabledQuestion,
@@ -84,7 +85,7 @@ export default function Writing({ questionData }) {
     let questionText = questionData?.questionName;
     let instruction = questionData.prompt_text || "";
     questionText = getTextFromQuestion(questionText);
-    let quizFrom=sessionStorage.getItem("engQuizFrom")
+    let quizFrom=quizFromRef.current
     let stateRef=[];
     let apiArray=[]
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher, in less than 100 words`;
@@ -92,16 +93,20 @@ export default function Writing({ questionData }) {
     
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
     if(quizFrom==="diagnostic"){
-      stateRef=[]
-      stateRef.push(setChatGptResponse)
+      stateRef.push(chatGptResponseRef)
+      stateRef.push(scoreRef)
+      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
       apiArray[0]=apiCalled(
+        question_text
+      );
+      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`
+      apiArray[1]=apiCalled(
         question_text || questionData?.prompt_text || ""
       );
     }
     else{
-      stateRef=[]
-      stateRef.push(setChatGptResponse)
-      stateRef.push(setScore)
+      stateRef.push(chatGptResponseRef)
+      stateRef.push(scoreRef)
        question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
        apiArray[0]=apiCalled(
         question_text
@@ -115,14 +120,16 @@ export default function Writing({ questionData }) {
     let allData=await Promise.all(apiArray)
     // console.log(allData)
     allData=allData||[]
+
     allData.forEach(({data},index)=>{
       data=data?.data||{}
       data=data.choices||[]
       console.log(data)
-      typeof stateRef[index]=="function"&&stateRef[index](data[0]?.message?.content)
+      stateRef[index].current=data[0]?.message?.content
     })
     setGptResponseLoading(false);
-    setIsResponse(true);
+    handleSubmit()
+    
     
    }
    catch(e){
@@ -136,53 +143,35 @@ console.log(e)
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
-    if (!isResponse) {
-      setRedAlert(true);
-      return;
-    }
     let obj = {
       studentResponse: studentTextRef.current,
-      chatGptResponse: chatGptResponse,
-      score:score
+      chatGptResponse: chatGptResponseRef.current,
+      score:Number(scoreRef.current)
     };
     setSubmitResponse(true);
+    typeof window.handleChangeNextQuestion=="function"&&window.handleChangeNextQuestion(obj)
     setStudentAnswer(JSON.stringify(obj));
-    return 1;
+    return scoreRef.current==0?0:1;
   };
   const checkGptResponse = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
     if (hideCheckButton) return;
+    if(isApiCalled.current)return
     setRedAlert(false);
     if (!studentTextRef.current) {
       setRedAlert(true);
       return -1;
     }
+    isApiCalled.current=true
     handlePromptRequest(studentTextRef.current);
-    setHideCheckButton(true);
-    let value=score===null?0:Number(score)
-    setIsCorrect(value||0)
-    return value||0
+  setHideCheckButton(true); 
+    return 1
   };
   // console.log(chatGptResponse,score)
   return (
     <div>
-      <SolveButton onClick={handleSubmit} />
-      {!hideCheckButton && (
-        <>
-          {" "}
-          <div style={{ float: "right", marginRight: 2 }}>
-            <button
-              className={`${styles.checkButton} ${styles.checkButtonColor}`}
-              id="solveBtn"
-              onClick={checkGptResponse}
-            >
-              Check
-            </button>
-          </div>
-          <div style={{ paddingTop: 5, clear: "both" }}></div>
-        </>
-      )}
+      <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className={styles.questionName}>
         {questionData?.questionName?.length ? (
@@ -203,7 +192,7 @@ console.log(e)
           {gptResponseLoading ? (
             <LinearProgressBar />
           ) : (
-            <GptFeedback chatGptResponse={chatGptResponse} />
+            quizFromRef.current==="diagnostic"?"":<GptFeedback chatGptResponse={chatGptResponseRef.current} />
           )}
         </>
       )}
