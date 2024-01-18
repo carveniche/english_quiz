@@ -99,10 +99,11 @@
 
 .mathzoneMainOlBox > div {
   border: 1px solid black;
-  width: 90%;
+  max-width: 90%;
+  width:fit-content;
   display: flex;
   flex-wrap: wrap;
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   justify-content: center;
 }
