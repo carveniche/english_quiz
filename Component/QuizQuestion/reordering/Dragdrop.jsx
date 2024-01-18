@@ -72,7 +72,7 @@ export default function DragDrop({ questionData, choiceRef, direction }) {
                   )}
                 </Draggable>
               ))}
-              {provided.placeholder}
+              
             </div>
           )}
         </Droppable>
