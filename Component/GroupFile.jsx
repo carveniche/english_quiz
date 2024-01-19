@@ -6,17 +6,12 @@ import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import MainListening from "./QuizQuestion/GroupQuestion/Listening/MainListening";
 import styles from "../Component/outerPage.module.css";
 export function QuizDisplay({ obj, showCorrectIncorrect, showSolution }) {
-  const [showCorrectResponse, setShowCorrectResponse] = useState(false);
-  const handleShowCorrectResponse = () => {
-    setShowCorrectResponse(true);
-  };
-  window.reactEnglishShowCorrectResponse = handleShowCorrectResponse;
   return (
     <>
       <ValidationContextProvider key={obj?.question_id}>
         <Allfile data={obj} />
         <CorrectIncorrectStatus
-          showCorrectIncorrect={showCorrectIncorrect || showCorrectResponse}
+          showCorrectIncorrect={showCorrectIncorrect}
           obj={obj}
         />
       </ValidationContextProvider>
