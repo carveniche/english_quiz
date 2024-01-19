@@ -82,6 +82,11 @@ export const IntermediateQuizPage = ({
   showCorrectIncorrect,
 }) => {
   const { setShowQuizResponse } = useContext(OuterPageContext);
+  const [correctResponse, setShowCorrectResponse] = useState(false);
+  const handleShowCorrectResponse = () => {
+    setShowCorrectResponse(true);
+  };
+  window.handleReactEnglishShowCorrectResponse = handleShowCorrectResponse;
   useEffect(() => {
     if (isResponse) setShowQuizResponse(true);
   }, [isResponse]);
@@ -90,7 +95,7 @@ export const IntermediateQuizPage = ({
       obj={obj}
       showQuestion={showQuestion}
       showSolution={showSolution}
-      showCorrectIncorrect={showCorrectIncorrect}
+      showCorrectIncorrect={showCorrectIncorrect || correctResponse}
     />
   );
 };
