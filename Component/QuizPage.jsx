@@ -34,17 +34,32 @@ export function ValidationContextProvider({ children }) {
   );
 }
 
-function RenderingQuizPage({ obj,showQuestion }) {
+function RenderingQuizPage({
+  obj,
+  showQuestion,
+  showCorrectIncorrect,
+  showSolution,
+}) {
   return (
     <div className={`${styles.bodyPage2} ${styles.bodyPage}`}>
       <ValidationContextProvider>
-        <GroupFile data={obj} isShowQuestion={showQuestion}/>
+        <GroupFile
+          data={obj}
+          isShowQuestion={showQuestion}
+          showSolution={showSolution}
+          showCorrectIncorrect={showCorrectIncorrect}
+        />
       </ValidationContextProvider>
     </div>
   );
 }
 
-export default function QuizPage({ obj,isShowQuestion }) {
+export default function QuizPage({
+  obj,
+  isShowQuestion,
+  showSolution,
+  showCorrectIncorrect,
+}) {
   return (
     <>
       <OuterPageContextProvider>
@@ -52,15 +67,30 @@ export default function QuizPage({ obj,isShowQuestion }) {
           isResponse={false}
           showQuestion={isShowQuestion}
           obj={obj}
+          showSolution={showSolution}
+          showCorrectIncorrect={showCorrectIncorrect}
         />
       </OuterPageContextProvider>
     </>
   );
 }
-export const IntermediateQuizPage = ({ isResponse, showQuestion, obj }) => {
+export const IntermediateQuizPage = ({
+  isResponse,
+  showQuestion,
+  obj,
+  showSolution,
+  showCorrectIncorrect,
+}) => {
   const { setShowQuizResponse } = useContext(OuterPageContext);
   useEffect(() => {
     if (isResponse) setShowQuizResponse(true);
   }, [isResponse]);
-  return <RenderingQuizPage obj={obj} showQuestion={showQuestion}/>;
+  return (
+    <RenderingQuizPage
+      obj={obj}
+      showQuestion={showQuestion}
+      showSolution={showSolution}
+      showCorrectIncorrect={showCorrectIncorrect}
+    />
+  );
 };

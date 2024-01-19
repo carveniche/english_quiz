@@ -3,7 +3,9 @@
 .bodyPage tr,
 .bodyPage td,
 .bodyPage th,
-.bodyPage p,.bodyPage h2,.bodyPage h1 {
+.bodyPage p,
+.bodyPage h2,
+.bodyPage h1 {
   /* H3 Desktop 18 pt */
 
   font-family: "GothamRnd-Book2";
@@ -12,7 +14,8 @@
   font-size: 18px;
   height: 100%;
 }
-.bodyPage h2,.bodyPage h1 {
+.bodyPage h2,
+.bodyPage h1 {
   font-size: 22px;
 }
 .questionContent {
@@ -99,15 +102,15 @@
 
 .mathzoneMainOlBox > div {
   max-width: 90%;
-  width:fit-content;
+  width: fit-content;
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
   border-radius: 5px;
   justify-content: center;
-  background-color: #5ED0F3;
-  color:white;
-  font: 20px;;
+  background-color: #5ed0f3;
+  color: white;
+  font: 20px;
 }
 
 .mathzoneHorizontalolBox {
@@ -120,11 +123,10 @@
   gap: 1rem;
 }
 .mathzoneHorizontalolBox > div {
-
   padding: 10px;
   border-radius: 5px;
-  background-color: #5ED0F3;
-  color:white;
+  background-color: #5ed0f3;
+  color: white;
 }
 .a4Page {
   max-width: 100%;
@@ -209,25 +211,22 @@
   cursor: pointer;
 }
 
-.naviagationButton{
-    opacity: 1;
-    font-size: 100px;
-    margin: 0px !important;
-
+.naviagationButton {
+  opacity: 1;
+  font-size: 100px;
+  margin: 0px !important;
 }
-  .naviagationButton .fa{
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-
-  }
+.naviagationButton .fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
 .naviagationButton .fa-caret-left:before {
   content: "\f0d9";
 }
 
-
 .naviagationButton .fa-caret-right:before {
-    content: "\f0da";
+  content: "\f0da";
 }

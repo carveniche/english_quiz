@@ -11,7 +11,12 @@ const reorder = (list, startIndex, endIndex) => {
   result.splice(endIndex, 0, removed);
   return result;
 };
-export default function DragDrop({ questionData, choiceRef, direction }) {
+export default function DragDrop({
+  questionData,
+  choiceRef,
+  direction,
+  isSolution,
+}) {
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const { showQuizResponse } = useContext(OuterPageContext);
   const onDragEnd = (result) => {
@@ -34,7 +39,7 @@ export default function DragDrop({ questionData, choiceRef, direction }) {
     setQuetionContent([...temp]);
   }, []);
   useEffect(() => {
-    if (showQuizResponse) {
+    if (showQuizResponse || isSolution) {
       let temp = [...questionData];
       setQuetionContent([...temp]);
     }
@@ -72,7 +77,6 @@ export default function DragDrop({ questionData, choiceRef, direction }) {
                   )}
                 </Draggable>
               ))}
-              
             </div>
           )}
         </Droppable>
