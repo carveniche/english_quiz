@@ -25,7 +25,7 @@ const useStyles = {
     outline: "none",
   },
 };
-const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
+
 const AutoSizeTextarea = ({ studentTextRef, hideCheckButton }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
@@ -69,6 +69,7 @@ export default function Writing({ questionData }) {
     setStudentAnswer,
   } = useContext(ValidationContext);
   const apiCalled = (prompt_text) => {
+    const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
     let formData = new FormData();
     formData.append("prompt_text", prompt_text);
     let config = {
