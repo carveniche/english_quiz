@@ -12,6 +12,7 @@ export default function CorrectIncorrectStatus({ showCorrectIncorrect, obj }) {
   const { isCorrect } = useContext(ValidationContext);
   const handleShowCorrectIncorrectImage = () => {
     setShowCorrectIncorrectImage(true);
+    handleShowCorrectOption()
   };
   const [showCorrectOption, setShowCorrectOption] = useState(
     showCorrectIncorrect || false

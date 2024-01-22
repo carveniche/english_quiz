@@ -8,6 +8,7 @@ import objectParser from "../../Utility/objectParser";
 import { TextareaAutosize } from "@mui/material";
 import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import LinearProgressBar from "./LinearProgressBar";
+import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 const useStyles = {
   autoSizeTextarea: {
     width: "100%",
@@ -68,6 +69,7 @@ export default function Writing({ questionData }) {
     setSubmitResponse,
     setStudentAnswer,
   } = useContext(ValidationContext);
+  const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
     const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
     let formData = new FormData();
@@ -140,7 +142,12 @@ export default function Writing({ questionData }) {
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
+    if (quizFromRef.current !== "diagnostic") {
+      setIsCorrect(scoreRef.current == 1 ? 1 : 0);
+    }
     setStudentAnswer(JSON.stringify(obj));
+    typeof setHasQuizAnswerSubmitted === "function" &&
+      setHasQuizAnswerSubmitted(true);
     return scoreRef.current == 0 ? 0 : 1;
   };
   const checkGptResponse = () => {
