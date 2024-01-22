@@ -27,6 +27,7 @@ const useStyles = {
   },
 };
 const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
+console.log({ CONFIG_URL });
 const AutoSizeTextarea = ({ studentTextRef, hideCheckButton }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
