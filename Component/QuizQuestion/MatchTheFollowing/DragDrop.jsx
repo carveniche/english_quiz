@@ -36,7 +36,7 @@ export default function DragDrop({
     if (
       row > -1 &&
       col > -1 &&
-      dropState[col].correct &&
+      dropState[col].isMissed &&
       !dropState[col].show
     ) {
       dropState[col].dropVal = dragState[i]?.value || "";
@@ -72,7 +72,7 @@ export default function DragDrop({
         key={{ dropKey }}
       >
         {dropState?.map((item, key) =>
-          !item?.correct ? (
+          !item?.isMissed ? (
             <div
               key={key}
               className={styles.match_the_following_Drop_Inner_Container}
@@ -112,7 +112,7 @@ export default function DragDrop({
                     ref={(el) =>
                       (droppableContainerRef.current[key] = {
                         el,
-                        isMissed: item.correct === true,
+                        isMissed: item.isMissed === true,
                         show: item?.show,
                       })
                     }
@@ -121,7 +121,7 @@ export default function DragDrop({
                       ref={(el) =>
                         (droppableContainerRef.current[key] = {
                           el,
-                          isMissed: item.correct === true,
+                          isMissed: item.isMissed === true,
                           show: item?.show,
                         })
                       }
@@ -139,7 +139,7 @@ export default function DragDrop({
                   ref={(el) =>
                     (droppableContainerRef.current[key] = {
                       el,
-                      isMissed: item.correct === true,
+                      isMissed: item.isMissed === true,
                       show: item?.show,
                     })
                   }
