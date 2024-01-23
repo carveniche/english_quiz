@@ -230,3 +230,53 @@
 .naviagationButton .fa-caret-right:before {
   content: "\f0da";
 }
+.match_the_following_DropContainer {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.match_the_following_Drop_Inner_Container {
+  width: auto;
+  margin: 1rem 0;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+.match_the_following_Drop_Inner_Container > div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.match_the_following_dragContainer {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.match_the_following_dragContainer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match_the_following_drag_inner_container {
+  min-height: 50px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  min-width: 96px;
+  border: 1px dashed black;
+  padding: 8px;
+}
+
+.match_the_following_drag_inner_container > div {
+  min-width: inherit;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}

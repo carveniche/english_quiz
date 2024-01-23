@@ -3,6 +3,7 @@ import MainMultipleChoice from "./QuizQuestion/MultipleChoice/MainMultipleChoice
 import MainFillIntheblanks from "./QuizQuestion/FillInTheBlanks/MainFillIntheblanks";
 import MainReordering from "./QuizQuestion/reordering/MainReordering";
 import MainWriting from "./QuizQuestion/Writing/MainWriting";
+import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchTheFollowing";
 
 export default function Allfile({ data }) {
   let questionType = {
@@ -13,6 +14,7 @@ export default function Allfile({ data }) {
     ),
     "Vertical Ordering": <MainReordering obj={data} direction={"vertical"} />,
     "Writing ChatGpt": <MainWriting obj={data} />,
+    "Math the Following": <MainMatchTheFollowing obj={data} />,
   };
   const getQuestionId = () => {
     return data?.question_id;
