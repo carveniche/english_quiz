@@ -71,13 +71,15 @@ export default function Writing({ questionData }) {
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
-    const CONFIG_URL = window.CONFIG_URL || "https://begalileo.com/";
+    console.log({ window_url: window.CONFIG_URL });
+    const CONFIG_URL2 = window.CONFIG_URL || "https://begalileo.com/";
+    console.log({ CONFIG_URL2 });
     let formData = new FormData();
     formData.append("prompt_text", prompt_text);
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${CONFIG_URL}app_teachers/gpt_response`,
+      url: `${CONFIG_URL2}app_teachers/gpt_response`,
       data: formData,
     };
 
