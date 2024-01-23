@@ -71,7 +71,9 @@ export default function Writing({ questionData }) {
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
+    console.log("standard console.log");
     console.log({ window_url: window.CONFIG_URL });
+    console.log("normal console.log");
     const CONFIG_URL2 = window.CONFIG_URL || "https://begalileo.com/";
     console.log({ CONFIG_URL2 });
     let formData = new FormData();
