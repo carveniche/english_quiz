@@ -44,3 +44,18 @@ export function SolutionForReordering({ obj, question_type }) {
     </>
   );
 }
+
+export function SolutionForWritingGpt({ obj, question_type }) {
+  let data = JSON.parse(obj);
+  return (
+    <>
+      <div
+        className={`${styles.correctAnswer} ${styles.correctAnswer2}`}
+        style={{ display: "block" }}
+      >
+        <h6>The correct answer is:</h6>
+        <>{data?.prompt_text || ""}</>
+      </div>
+    </>
+  );
+}
