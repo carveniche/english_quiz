@@ -3,7 +3,7 @@ import styles from "./Solution.module.css";
 export default function Explanation({ obj }) {
   let question_data = JSON.parse(obj?.question_data);
   let model = question_data?.solutionModel || [];
-  console.log(question_data);
+
   return model?.length ? (
     <>
       <>
