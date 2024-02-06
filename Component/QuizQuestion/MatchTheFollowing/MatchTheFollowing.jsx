@@ -23,7 +23,7 @@ export default function MatchTheFollowing({ obj }) {
     let arr = choicesRef.current || [];
     let isValidate = 1;
     for (let item of arr) {
-      if (item.correct) {
+      if (item.isMissed) {
         if (item.show) {
           if (!checkTwoString(item?.value || "", item?.dropVal || "")) {
             isValidate = 0;

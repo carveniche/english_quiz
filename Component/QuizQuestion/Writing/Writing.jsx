@@ -107,7 +107,7 @@ export default function Writing({ questionData }) {
       stateRef.push(scoreRef);
       question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
       apiArray[0] = apiCalled(question_text);
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in integer, 1 for the response is correct otherwise give score 0.`;
+      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the 1 for the response is correct otherwise give score 0. it should be only number as integer`;
       apiArray[1] = apiCalled(question_text || "");
     }
     try {
