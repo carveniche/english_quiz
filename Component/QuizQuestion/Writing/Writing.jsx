@@ -138,6 +138,7 @@ export default function Writing({ questionData }) {
       let regex = /score\s*:\s*\d$/i;
       let scoreValue = regex.exec(scoreRef.current);
       regex = /\d+/g;
+      scoreValue=scoreValue||[]
       scoreRef.current = regex.exec(scoreValue.pop());
     }
     let obj = {
