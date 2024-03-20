@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import DragDrop from "../../QuizQuestion/reordering/Dragdrop";
 import styles from "../Solution.module.css";
 import DragDropSolution from "../../QuizQuestion/MatchTheFollowing/DragDropSolution";
+import { OuterPageContext } from "../../QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
 export default function QuestionTypeResponse({ obj, question_type }) {
   let questionData = JSON.parse(obj?.question_data);
   let choices = questionData?.choices || [];
@@ -48,6 +49,7 @@ export function SolutionForReordering({ obj, question_type }) {
 
 export function SolutionForWritingGpt({ obj, question_type,showSolution ,userResponse}) {
   let data = JSON.parse(obj);
+  const { showQuizResponse } = useContext(OuterPageContext);
   let parseResponse=null;
   try{
     parseResponse=JSON.parse(userResponse)||null
@@ -61,6 +63,9 @@ export function SolutionForWritingGpt({ obj, question_type,showSolution ,userRes
         className={`${styles.correctAnswer} ${styles.correctAnswer2}`}
         style={{ display: "block" }}
       >
+        {
+          showQuizResponse&&parseResponse?.score>=0&&<h6 style={{marginBottom:5}}>Score: {parseResponse?.score}</h6>
+        }
         <h6>The correct answer is:</h6>
         <>{parseResponse?.chatGptResponse||data?.prompt_text || ""}</>
       </div>
