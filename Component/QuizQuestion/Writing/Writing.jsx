@@ -27,7 +27,7 @@ const useStyles = {
   },
 };
 
-const AutoSizeTextarea = ({ studentTextRef, hideCheckButton }) => {
+const AutoSizeTextarea = ({ studentTextRef, hideCheckButton,isShowingResponse,response }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
@@ -45,7 +45,7 @@ const AutoSizeTextarea = ({ studentTextRef, hideCheckButton }) => {
     <TextareaAutosize
       ref={textareaRef}
       style={useStyles.autoSizeTextarea}
-      value={textareaValue}
+      value={isShowingResponse?(textareaValue||response):textareaValue}
       onChange={handleTextareaChange}
       placeholder="Enter Response"
       aria-label="Auto-sizing Textarea"
@@ -53,7 +53,7 @@ const AutoSizeTextarea = ({ studentTextRef, hideCheckButton }) => {
     />
   );
 };
-export default function Writing({ questionData }) {
+export default function Writing({ questionData,questionResponse }) {
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -192,6 +192,8 @@ export default function Writing({ questionData }) {
         <AutoSizeTextarea
           studentTextRef={studentTextRef}
           hideCheckButton={hideCheckButton}
+          response={questionResponse?.studentResponse||null}
+          isShowingResponse={submitResponse||disabledQuestion}
         />
       </div>
       {hideCheckButton && (

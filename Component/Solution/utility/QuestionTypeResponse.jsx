@@ -46,8 +46,15 @@ export function SolutionForReordering({ obj, question_type }) {
   );
 }
 
-export function SolutionForWritingGpt({ obj, question_type,showSolution }) {
+export function SolutionForWritingGpt({ obj, question_type,showSolution ,userResponse}) {
   let data = JSON.parse(obj);
+  let parseResponse=null;
+  try{
+    parseResponse=JSON.parse(userResponse)||null
+  }
+  catch(e){
+    console.log(e)
+  }
   return (showSolution?
     <>
       <div
@@ -55,7 +62,7 @@ export function SolutionForWritingGpt({ obj, question_type,showSolution }) {
         style={{ display: "block" }}
       >
         <h6>The correct answer is:</h6>
-        <>{data?.prompt_text || ""}</>
+        <>{parseResponse?.chatGptResponse||data?.prompt_text || ""}</>
       </div>
     </>:""
   );

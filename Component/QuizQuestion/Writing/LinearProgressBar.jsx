@@ -7,7 +7,7 @@ export default function LinearProgressBar() {
       <div style={{ textAlign: "center", padding: "20px" }}>
         <CircularProgress />
         <Typography variant="body2" color="textSecondary">
-          Please Wait for Response
+        Using AI to evaluate your response. Please wait for the next question to load
         </Typography>
       </div>
     </>
