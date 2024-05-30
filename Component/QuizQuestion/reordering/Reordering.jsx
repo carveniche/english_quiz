@@ -6,7 +6,7 @@ import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import SolveButton from "../../CommonComponent/SolveButton";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
-export default function Reordering({ obj, direction }) {
+export default function Reordering({ obj, direction,questionResponse }) {
   const choiceRef = useRef([]);
   const {
     submitResponse,
@@ -53,6 +53,7 @@ export default function Reordering({ obj, direction }) {
         <Dragdrop
           choiceRef={choiceRef}
           questionData={obj?.questionContent}
+          response={questionResponse||[]}
           direction={direction}
         />
       </div>

@@ -3,9 +3,17 @@ import Reordering from "./Reordering";
 
 export default function MainReordering({ obj, direction }) {
   let questionData = JSON.parse(obj?.question_data);
+  let questionResponse=null
+  try{
+     questionResponse= JSON.parse(obj?.questionResponse)
+  }
+  catch(e){
+    console.log(e)
+  }
+
   return (
     <>
-      <Reordering obj={questionData} direction={direction} />
+      <Reordering obj={questionData} direction={direction} questionResponse={questionResponse}/>
     </>
   );
 }

@@ -16,6 +16,7 @@ export default function DragDrop({
   choiceRef,
   direction,
   isSolution,
+  response
 }) {
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const { showQuizResponse } = useContext(OuterPageContext);
@@ -41,6 +42,8 @@ export default function DragDrop({
   useEffect(() => {
     if (showQuizResponse || isSolution) {
       let temp = [...questionData];
+      if(response&&response?.length&&Array.isArray(response))
+        temp=[...response]
       setQuetionContent([...temp]);
     }
   }, [showQuizResponse]);
