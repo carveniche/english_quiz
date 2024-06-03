@@ -15,24 +15,6 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import ListeningModal from "../GroupQuestion/Listening/ListeningModal";
 import ListeningPlayer from "./ListeningPlayer";
 import getBlobDuration from "get-blob-duration";
-const useStyles = {
-  autoSizeTextarea: {
-    width: "100%",
-    maxWidth: "80%",
-    minWidth: "100px",
-    minHeight: "150px",
-    resize: "none",
-    padding: "8px 12px",
-    fontFamily: "inherit",
-    fontSize: "inherit",
-    lineHeight: "inherit",
-    boxSizing: "border-box",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    outline: "none",
-  },
-};
-
 var audioChunk=[]
 export default function Speaking({ questionData,questionResponse }) {
   const chatGptResponseRef = useRef("");
@@ -112,37 +94,35 @@ export default function Speaking({ questionData,questionResponse }) {
     // handlePromptRequest();
   }, []);
   const handleSubmit = () => {
-    if (submitResponse) return;
-    if (disabledQuestion) return;
+    if (submitResponse) return -1;
+    if (disabledQuestion) return -1;
     setRedAlert(false);
     
     if(!audioChunk.length){
       setRedAlert(true)
+      return -1
     }
-   let blob=new Blob(audioChunk)
+   let blob=new Blob(audioChunk, { type: 'audio/wav' })
     setSubmitResponse(true);
+    let obj = {
+      studentResponse: "",
+      chatGptResponse:"",
+      score: 1,
+      studentAudioResponse:blob
+      
+    };
+    typeof window.handleChangeNextQuestion == "function" &&
+    window.handleChangeNextQuestion(obj);
+    typeof setHasQuizAnswerSubmitted === "function" &&
+    setHasQuizAnswerSubmitted(true);
+    setStudentAnswer(obj);
+    return 1                    
 
-
-  };
-  const checkGptResponse = () => {
-    if (submitResponse) return;
-    if (disabledQuestion) return;
-    if (hideCheckButton) return;
-    if (isApiCalled.current) return;
-    setRedAlert(false);
-    if (!studentTextRef.current) {
-      setRedAlert(true);
-      return -1;
-    }
-    isApiCalled.current = true;
-    handlePromptRequest(studentTextRef.current);
-    setHideCheckButton(true);
-    return 1;
   };
   // console.log(chatGptResponse,score)
   return (
     <div>
-      <SolveButton onClick={checkGptResponse} />
+      <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className={styles.questionName}>
         {questionData?.questionName?.length ? (
