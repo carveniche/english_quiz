@@ -116,6 +116,7 @@ export default function Speaking({ questionData,questionResponse }) {
     typeof setHasQuizAnswerSubmitted === "function" &&
     setHasQuizAnswerSubmitted(true);
     setStudentAnswer(obj);
+    setIsCorrect(1)
     return 1                    
 
   };
