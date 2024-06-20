@@ -34,8 +34,9 @@ export default function CorrectIncorrectStatus({
             <div>
               <img
                 src={isCorrect === 1 ? correctImages : inCorrectImages}
-                alt="correct"
-                style={{ width: 50 }}
+                // alt="correct"
+                alt={isCorrect === 1 ? "correct" : "incorrect"}                
+                style={{ width: 50,height:"auto" }}
               />
             </div>
             <p style={{ margin: 0 }}>
