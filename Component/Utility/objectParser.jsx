@@ -1,39 +1,59 @@
 const objectParser = (item, index) => {
   let value = "";
+
   if (item?.node === "text") {
-    let { styles } = item;
-    styles = styles || item?.style || [];
-    if (styles.length) {
-      let selectedValue = {};
-      for (let style of styles) {
-        if (style) {
-          const { type, value } = style;
-          if (type === "fontWeight") {
-            selectedValue[type] = value;
-            selectedValue["color"] = "black";
-          } else if (type === "color") {
-            selectedValue[type] = value;
-          } else if (type === "fontStyle") {
-            selectedValue[type] = value;
-          } else if (type === "textDecoration") {
-            selectedValue[type] = value;
-          }
+    let { style } = item;
+    style = style || [];
+    
+    // Create a style object for React inline styles
+    let styleObject = {};
+    
+    for (let styleItem of style) {
+      if (styleItem) {
+        const { type, value } = styleItem;
+        switch (type) {
+          case "fontWeight":
+            styleObject.fontWeight = value;
+            break;
+          case "color":
+            styleObject.color = value;
+            break;
+          case "fontStyle":
+            styleObject.fontStyle = value;
+            break;
+          case "textDecoration":
+            styleObject.textDecoration = value;
+            break;
+          case "backgroundColor":
+            styleObject.backgroundColor = value;
+            break;
+          case "fontSize":
+            styleObject.fontSize = value; // Ensure fontSize is handled as needed
+            break;
+          default:
+            break;
         }
       }
-      console.log(selectedValue);
-
-      value = <span style={selectedValue}>{item?.value}</span>;
-    } else value = <>{item?.value}</>;
+    }
+    
+    value = <span style={styleObject}>{item?.value}</span>;
   } else if (item?.node === "img") {
     value = (
       <div>
-        <img src={item?.value} style={{ textDecoration: "under" }} />
+        <img src={item?.value} alt="" style={{ maxWidth: "100%" }} />
       </div>
     );
   } else if (item?.node === "audio") {
     value = <>Audio symbol</>;
   }
-  if (item?.inNewLine) return <div style={{ marginTop: 4 }}>{value}</div>;
+
+  // Handle new lines by wrapping content in a <div> with margin
+  if (item?.inNewLine) {
+    return <div style={{ marginTop: 4 }}>{value}</div>;
+  }
+
   return value;
 };
+
 export default objectParser;
+
