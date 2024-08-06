@@ -40,7 +40,7 @@ const objectParser = (item, index) => {
   } else if (item?.node === "img") {
     value = (
       <div>
-        <img src={item?.value} alt="" style={{ maxWidth: "100%" }} />
+        <img src={item?.value} alt="" style={{ width:item?.width||"fit-content",height:item?.height||"fit-content" }} />
       </div>
     );
   } else if (item?.node === "audio") {
@@ -49,7 +49,7 @@ const objectParser = (item, index) => {
 
   // Handle new lines by wrapping content in a <div> with margin
   if (item?.inNewLine) {
-    return <div style={{ marginTop: 4 }}>{value}</div>;
+    return <div style={{ marginTop: 4,height:2 }}>{value}</div>;
   }
 
   return value;
