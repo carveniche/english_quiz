@@ -135,36 +135,36 @@ export default function Writing({ questionData,questionResponse }) {
     if (disabledQuestion) return;
     setRedAlert(false);
 
-    for (let num of scoreRef.current) {
+    // for (let num of scoreRef.current) {
 
-      if (!isNaN(num) && num !== ' ') { 
-        if(num==='0'){
-          scoreRef.current = num
-        }else if(num==='1'){
-         scoreRef.current = num
-        }
-      }
-    }
-    
-    // if (isNaN(Number(scoreRef.current))) {
-    //   let regex = /score\s*:\s*\d$/i;
-    //   let scoreValue = regex.exec(scoreRef.current);
-    //   regex = /\d+/g;
-    //   scoreValue=scoreValue||[]
-    //   let score=regex.exec(scoreValue.pop());
-      
-    //   if(score===null)
-    //   {
-    //     let regex =/{{(\d+)}}/;
-    //     let scoreValue = regex.exec(scoreRef.current);
-    //     scoreValue=scoreValue||[]
-    //     regex = /\d+/g;
-    //     scoreRef.current = regex.exec(scoreValue.pop());
+    //   if (!isNaN(num) && num !== ' ') { 
+    //     if(num==='0'){
+    //       scoreRef.current = num
+    //     }else if(num==='1'){
+    //      scoreRef.current = num
+    //     }
     //   }
-    //   else
-    //   scoreRef.current = score
-    
     // }
+    
+    if (isNaN(Number(scoreRef.current))) {
+      let regex = /score\s*:\s*\d$/i;
+      let scoreValue = regex.exec(scoreRef.current);
+      regex = /\d+/g;
+      scoreValue=scoreValue||[]
+      let score=regex.exec(scoreValue.pop());
+      
+      if(score===null)
+      {
+        let regex =/{{(\d+)}}/;
+        let scoreValue = regex.exec(scoreRef.current);
+        scoreValue=scoreValue||[]
+        regex = /\d+/g;
+        scoreRef.current = regex.exec(scoreValue.pop());
+      }
+      else
+      scoreRef.current = score
+    
+    }
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponseRef.current,
