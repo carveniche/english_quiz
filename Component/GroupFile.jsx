@@ -31,7 +31,7 @@ export default function GroupFile({
     ),
     Listening: <MainListening data={data} showQuestion={isShowQuestion} />,
   };
-  const [showQuestion, setShowQuestion] = useState(isShowQuestion || false);
+  const [showQuestion, setShowQuestion] = useState(true || false);
   window.setShowQuestion = setShowQuestion;
   return (
     <>

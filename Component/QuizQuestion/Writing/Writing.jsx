@@ -131,6 +131,8 @@ export default function Writing({ questionData,questionResponse }) {
     // handlePromptRequest();
   }, []);
   const handleSubmit = () => {
+    console.log({ scoreRef})
+
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
@@ -140,6 +142,7 @@ export default function Writing({ questionData,questionResponse }) {
       regex = /\d+/g;
       scoreValue=scoreValue||[]
       let score=regex.exec(scoreValue.pop());
+      console.log({score, scoreRef})
       
       if(score===null)
       {

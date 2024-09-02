@@ -17,9 +17,9 @@ export default function ConditionalCorrectIncorrect({
   const { setDisabledQuestion } = useContext(ValidationContext);
   const writingGpt = ["Writing ChatGpt"];
   useEffect(() => {
-    () => {
+    // () => {
       setDisabledQuestion(true);
-    };
+    // };
   }, []);
   return (
     <div className={styles.correctAnswerBox}>

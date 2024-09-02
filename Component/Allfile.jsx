@@ -4,6 +4,7 @@ import MainFillIntheblanks from "./QuizQuestion/FillInTheBlanks/MainFillInthebla
 import MainReordering from "./QuizQuestion/reordering/MainReordering";
 import MainWriting from "./QuizQuestion/Writing/MainWriting";
 import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchTheFollowing";
+import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_Type";
 
 export default function Allfile({ data }) {
   let questionType = {
@@ -15,6 +16,8 @@ export default function Allfile({ data }) {
     "Vertical Ordering": <MainReordering obj={data} direction={"vertical"} />,
     "Writing ChatGpt": <MainWriting obj={data} />,
     "Math the Following": <MainMatchTheFollowing obj={data} />,
+    "read_the_text":<Main_Speaking_Type obj={data} />
+ 
   };
   const getQuestionId = () => {
     return data?.question_id;
