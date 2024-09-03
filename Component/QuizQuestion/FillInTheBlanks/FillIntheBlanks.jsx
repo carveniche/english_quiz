@@ -7,7 +7,7 @@ import { ValidationContext } from "../../QuizPage";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import { checkTwoString } from "../../Utility/stringValidation";
-
+import objectParser from "../../Utility/objectParser";
 export default function FillIntheBlanks({ obj }) {
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
@@ -18,18 +18,7 @@ export default function FillIntheBlanks({ obj }) {
     setSubmitResponse,
     setStudentAnswer,
   } = useContext(ValidationContext);
-  const objectParser = (item, index) => {
-    let value = "";
-    if (item?.node === "text") {
-      value = <>{item?.value}</>;
-    } else if (item?.node === "img") {
-      value = <img src={item?.value} />;
-    } else if (item?.node === "audio") {
-      value = <>Audio symbol</>;
-    }
-    if (item?.inNewLine) return <div>{value}</div>;
-    return value;
-  };
+
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
