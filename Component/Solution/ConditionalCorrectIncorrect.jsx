@@ -15,11 +15,11 @@ export default function ConditionalCorrectIncorrect({
   let reordering = ["Horizontal Ordering", "Vertical Ordering"];
   let dragDrop = ["Math the Following"];
   const { setDisabledQuestion } = useContext(ValidationContext);
-  const writingGpt = ["Writing ChatGpt"];
+  const writingGpt = ["Writing ChatGpt","read_the_text"];
   useEffect(() => {
-    () => {
+    // () => {
       setDisabledQuestion(true);
-    };
+    // };
   }, []);
   return (
     <div className={styles.correctAnswerBox}>
