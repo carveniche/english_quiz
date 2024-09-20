@@ -134,6 +134,18 @@ export default function Writing({ questionData,questionResponse }) {
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
+
+    // for (let num of scoreRef.current) {
+
+    //   if (!isNaN(num) && num !== ' ') { 
+    //     if(num==='0'){
+    //       scoreRef.current = num
+    //     }else if(num==='1'){
+    //      scoreRef.current = num
+    //     }
+    //   }
+    // }
+    
     if (isNaN(Number(scoreRef.current))) {
       let regex = /score\s*:\s*\d$/i;
       let scoreValue = regex.exec(scoreRef.current);

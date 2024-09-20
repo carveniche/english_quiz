@@ -7,8 +7,8 @@
 .bodyPage h2,
 .bodyPage h1 {
   /* H3 Desktop 18 pt */
-
-  font-family: "GothamRnd-Book2";
+ 
+  font-family: "Reddit Sans", sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
