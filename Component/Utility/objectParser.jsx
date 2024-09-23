@@ -36,7 +36,8 @@ const objectParser = (item, index) => {
       }
     }
     
-    value = <p style={styleObject}>{item?.value}</p>;
+    value = <span style={styleObject}>{item?.value}</span>;
+
   } else if (item?.node === "img") {
     value = (
       <div>
@@ -49,7 +50,8 @@ const objectParser = (item, index) => {
 
   // Handle new lines by wrapping content in a <div> with margin
   if (item?.inNewLine) {
-    return <div style={{ width: '100%',height:'18px' }}>{value}</div>;
+   // return <div style={{ width: '100%',height:'18px' }}>{value}</div>;
+   return <div style={{ width: '100%',height:'5px' }}>{value}</div>;
   }
 
   return value;
