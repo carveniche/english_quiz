@@ -396,8 +396,6 @@ function GptFeedback({ chatGptResponse }) {
 
     window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
 
-    
-
   }, []);
 
   const toggleSpeak = () => {
@@ -419,7 +417,7 @@ function GptFeedback({ chatGptResponse }) {
 
     return (
       <div className={styles.gpt_feedback_box}>
-              <button style={{border:"1px solid white",cursor:"pointer"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
+              <button style={{border:"1px solid white",cursor:"pointer",fontSize:"13px"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
         <div style={{ padding: 10, fontSize: 15 }}>
           {chatGptResponse || "No Response"}
         </div>
