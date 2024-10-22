@@ -10,7 +10,7 @@
  
   font-family: "Reddit Sans", sans-serif;
   font-style: normal;
-  font-weight: 700;
+ 
   font-size: 18px;
   height: 100%;
 }
@@ -28,7 +28,7 @@
 .questionName {
   font-size: 18px;
   font-style: normal;
-  font-weight: 700;
+ 
   line-height: 27px;
   letter-spacing: 0em;
   text-align: left;
