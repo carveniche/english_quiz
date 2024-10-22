@@ -3,6 +3,7 @@
   clear: both;
   margin-bottom: 1rem;
 }
+
 .correctAnswerBox {
   background-color: #dddddd;
   padding: 10px 20px;
@@ -10,11 +11,13 @@
   color: #666666;
   margin-bottom: 1rem;
 }
+
 .correctAnswerBox .correctAnswer {
   font-family: "GothamRnd-Medium";
   color: #444444;
 }
-.correctAnswer > h6 {
+
+.correctAnswer>h6 {
   margin: 0;
   margin-bottom: 10px;
   font-weight: 500;
@@ -22,6 +25,7 @@
   margin: 0;
   padding: 0;
 }
+
 .correctAnswer {
   display: flex;
 
@@ -29,20 +33,33 @@
   align-items: center;
   column-gap: 10px;
 }
-.correctAnswer2 > h6 {
+
+.correctAnswer2>h6 {
   font-weight: bold;
 }
+
 .explanation {
   font-size: 18px;
   color: #666666;
 }
+
 .explanationBoxContainer {
   border: 1px solid #cccccc;
   padding: 10px 20px;
 }
+
+.correctAnswerBox img {
+  max-width: 50%;
+}
+
+.choiceImageSize {
+  max-width: 150px !important;
+}
+
 .explanationBoxContainer.word_wrap div {
   white-space: pre-wrap;
 }
+
 .explanationBoxContainer.word_wrap_space {
   white-space: pre-wrap;
 }

@@ -30,7 +30,10 @@ export default function Choices({ choicesRef }) {
           {choice?.value && <div>{parse(choice.value)}</div>}
           {choice?.choice_image && (
             <div className="choiceImage">
-              <img src={choice?.choice_image} />
+              <img
+                style={{ maxWidth: "150px", maxHeight: "150px" }}
+                src={choice?.choice_image}
+              />
             </div>
           )}
         </div>

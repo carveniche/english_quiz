@@ -7,17 +7,20 @@
 .bodyPage h2,
 .bodyPage h1 {
   /* H3 Desktop 18 pt */
- 
-  font-family: "Reddit Sans", sans-serif;
+
+  /* font-family: "Reddit Sans", sans-serif; */
+  font-family: "GothamRnd-Book";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
   height: 100%;
 }
+
 .bodyPage h2,
 .bodyPage h1 {
   font-size: 22px;
 }
+
 .questionContent {
   font-size: 16px;
   font-style: normal;
@@ -25,6 +28,7 @@
   line-height: 24px;
   overflow-wrap: anywhere;
 }
+
 .questionName {
   font-size: 18px;
   font-style: normal;
@@ -33,6 +37,7 @@
   letter-spacing: 0em;
   text-align: left;
 }
+
 .mathzoneMultipleChoiceFlexBox {
   display: flex;
   flex-wrap: wrap;
@@ -41,7 +46,8 @@
   margin-top: 1rem;
   cursor: pointer;
 }
-.mathzoneMultipleChoiceFlexBox > div {
+
+.mathzoneMultipleChoiceFlexBox>div {
   min-width: calc(50% - 0.5rem);
   max-width: 100%;
   flex: 1;
@@ -100,7 +106,7 @@
   border-radius: 5px;
 }
 
-.mathzoneMainOlBox > div {
+.mathzoneMainOlBox>div {
   max-width: 90%;
   width: fit-content;
   display: flex;
@@ -122,22 +128,27 @@
   align-items: center;
   gap: 1rem;
 }
-.mathzoneHorizontalolBox > div {
+
+.mathzoneHorizontalolBox>div {
   padding: 10px;
   border-radius: 5px;
   background-color: #5ed0f3;
   color: white;
 }
+
 .a4Page {
   max-width: 100%;
-  margin: auto auto; /* Center the page horizontally */
+  margin: auto auto;
+  /* Center the page horizontally */
   /* Optional: Add a border for visualization */
-  padding: 20px; /* Optional: Add padding for content */
+  padding: 20px;
+  /* Optional: Add padding for content */
   overflow-wrap: anywhere;
 }
 
 .next-button {
-  background-color: #4caf50; /* Green background */
+  background-color: #4caf50;
+  /* Green background */
   border: none;
   color: white;
   padding: 12px 24px;
@@ -151,11 +162,13 @@
 }
 
 .next-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049;
+  /* Darker green on hover */
 }
 
 .prev-button {
-  background-color: #f44336; /* Red background */
+  background-color: #f44336;
+  /* Red background */
   border: none;
   color: white;
   padding: 12px 24px;
@@ -169,8 +182,10 @@
 }
 
 .prev-button:hover {
-  background-color: #d32f2f; /* Darker red on hover */
+  background-color: #d32f2f;
+  /* Darker red on hover */
 }
+
 .reading_comprehensive_btn {
   position: absolute;
   top: calc(50% - 68px);
@@ -179,15 +194,19 @@
   cursor: pointer;
   z-index: 2;
 }
+
 .reading_comprehensive_btn img {
   transition: filter 0.3s;
 }
+
 .reading_comprehensive_btn img:hover {
   filter: brightness(50%);
 }
+
 .reading_comprehensive_btn.reading_comprehensive_btn.prev_btn {
   left: 0;
 }
+
 .reading_comprehensive_btn.next_btn {
   right: 0px;
 }
@@ -197,6 +216,7 @@
   border: 1px solid gainsboro;
   max-width: 80%;
 }
+
 .checkButton {
   position: static;
   z-index: 9;
@@ -216,6 +236,7 @@
   font-size: 100px;
   margin: 0px !important;
 }
+
 .naviagationButton .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -223,6 +244,7 @@
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
 }
+
 .naviagationButton .fa-caret-left:before {
   content: "\f0d9";
 }
@@ -230,11 +252,13 @@
 .naviagationButton .fa-caret-right:before {
   content: "\f0da";
 }
+
 .match_the_following_DropContainer {
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
 }
+
 .match_the_following_Drop_Inner_Container {
   width: auto;
   margin: 1rem 0;
@@ -242,7 +266,8 @@
   gap: 2rem;
   flex-direction: column;
 }
-.match_the_following_Drop_Inner_Container > div {
+
+.match_the_following_Drop_Inner_Container>div {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -255,7 +280,8 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-.match_the_following_dragContainer > div {
+
+.match_the_following_dragContainer>div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,7 +297,7 @@
   padding: 8px;
 }
 
-.match_the_following_drag_inner_container > div {
+.match_the_following_drag_inner_container>div {
   min-width: inherit;
   min-height: 50px;
   display: flex;

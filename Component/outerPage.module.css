@@ -1,10 +1,11 @@
 @font-face {
-  font-family: "GothamRnd-Book2";
+  font-family: "GothamRnd-Book";
   src: url("assets/fonts/GothamRounded-Book.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
+
 .bodyPage div,
 .bodyPage span,
 .bodyPage tr,
@@ -15,7 +16,8 @@
 .bodyPage p {
   /* H3 Desktop 18 pt */
 
-  font-family: "Reddit Sans", sans-serif;
+  /* font-family: "Reddit Sans", sans-serif; */
+  font-family: "GothamRnd-Book";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -24,13 +26,16 @@
 .bodyPage2 {
   height: 100%;
 }
+
 .bodyPage2 img {
-  max-width: 100%;
+  max-width: 250px;
 }
 
-.bodyPage2 h2,.bodyPage2 h1{
+.bodyPage2 h2,
+.bodyPage2 h1 {
   font-size: 22px;
-} 
+}
+
 .groupPage div,
 .groupPage span,
 .groupPage tr,
@@ -40,17 +45,19 @@
 .groupPage p {
   /* H3 Desktop 18 pt */
 
-  font-family: "Reddit Sans", sans-serif;
+  /* font-family: "Reddit Sans", sans-serif; */
+  font-family: "GothamRnd-Book";
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
 }
 
 
-.groupPage h2,.groupPage h1{
+.groupPage h2,
+.groupPage h1 {
   font-size: 22px;
-} 
+}
 
-.groupPage{
+.groupPage {
   display: block;
 }
