@@ -4,10 +4,10 @@ const objectParser = (item, index) => {
   if (item?.node === "text") {
     let { style } = item;
     style = style || [];
-    
+
     // Create a style object for React inline styles
     let styleObject = {};
-    
+
     for (let styleItem of style) {
       if (styleItem) {
         const { type, value } = styleItem;
@@ -35,12 +35,20 @@ const objectParser = (item, index) => {
         }
       }
     }
-    
+
     value = <span style={styleObject}>{item?.value}</span>;
   } else if (item?.node === "img") {
     value = (
       <div>
-        <img src={item?.value} alt="" style={{ width:item?.width||"fit-content",height:item?.height||"fit-content",float:item?.float||"" }} />
+        <img
+          src={item?.value}
+          alt=""
+          style={{
+            width: item?.width || "fit-content",
+            height: item?.height || "fit-content",
+            float: item?.float || "",
+          }}
+        />
       </div>
     );
   } else if (item?.node === "audio") {
@@ -49,11 +57,11 @@ const objectParser = (item, index) => {
 
   // Handle new lines by wrapping content in a <div> with margin
   if (item?.inNewLine) {
-    return <div style={{ width: '100%',height:'18px' }}>{value}</div>;
+    // return <div style={{ width: '100%',height:'18px' }}>{value}</div>;
+    return <div style={{ width: "100%", height: "5px" }}>{value}</div>;
   }
 
   return value;
 };
 
 export default objectParser;
-

@@ -253,7 +253,7 @@ function GptFeedback({ chatGptResponse }) {
           fontWeight: "normal",
         }}
       >
-        Feedback From: Gpt-4
+        Feedback From: AI
       </div>
     </div>
   );

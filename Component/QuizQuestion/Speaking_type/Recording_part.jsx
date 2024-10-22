@@ -368,8 +368,56 @@ const Recording_part = ({ questionData,questionResponse}) => {
 
 
 function GptFeedback({ chatGptResponse }) {
+  // const [isSpeaking, setIsSpeaking] = useState(false);
+  // const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
+
+  
+  // const toggleSpeak = () => {
+  //   if (isSpeaking) {
+  //     window.speechSynthesis.cancel(); // Stop speaking
+  //   } else {
+  //     window.speechSynthesis.speak(speech); // Start speaking
+  //   }
+  //   setIsSpeaking(!isSpeaking); // Toggle speaking state
+  // };
+
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [voice, setVoice] = useState(null);
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      console.log('voices',voices)
+      // Filter for female voices; you can adjust this as needed
+      const femaleVoice = voices.find(v => v.name === "Microsoft Zira - English (United States)");
+      setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
+    };
+
+    loadVoices(); // Initial load
+
+    window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
+
+  }, []);
+
+  const toggleSpeak = () => {
+    const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
+    speech.voice = voice; // Set the selected voice
+
+    speech.onend = () => {
+      setIsSpeaking(false); // Reset speaking state when finished
+    };
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel(); // Stop speaking
+      setIsSpeaking(false); // Update state
+    } else {
+      window.speechSynthesis.speak(speech); // Start speaking
+      setIsSpeaking(true); // Update state
+    }
+  };
+
     return (
       <div className={styles.gpt_feedback_box}>
+              <button style={{border:"1px solid white",cursor:"pointer",fontSize:"13px"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
         <div style={{ padding: 10, fontSize: 15 }}>
           {chatGptResponse || "No Response"}
         </div>
@@ -385,7 +433,7 @@ function GptFeedback({ chatGptResponse }) {
             fontWeight: "normal",
           }}
         >
-          Feedback From: Gpt-4
+          Feedback From: AI
         </div>
       </div>
     );
