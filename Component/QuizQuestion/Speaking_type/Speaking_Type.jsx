@@ -24,7 +24,7 @@ export default function Speaking_Type({ questionData,questionResponse }) {
         <ResourceViewer resources={questionData?.resources || []} />
       </div>
 
-      <div className={styles.questionName} style={{display:'flex',justifyContent: 'center', alignItems: 'center'}}>
+      <div className={styles.questionName} style={{display:'flex', alignItems: 'center'}}>
         {questionData?.questionName?.length ? (
           <>
        
