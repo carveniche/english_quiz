@@ -42,19 +42,19 @@ const Recording_part = ({ questionData,questionResponse}) => {
         border: 'none',
         background: '#38c185',
         color: 'white',
-        padding: '10px',
+        padding: '13px',
         borderRadius: '10px',
         cursor: 'pointer',
-        fontSize:'11px'
+        fontSize:'14px'
     };
     const stoprecord={
         border: 'none',
         background: 'red',
         color: 'white',
-        padding: '10px',
+        padding: '13px',
         borderRadius: '10px',
         cursor: 'pointer',
-        fontSize:'11px'
+        fontSize:'14px'
     }
         // button styles end
 
