@@ -20,13 +20,13 @@ export default function ResourceViewer({ resources }) {
         {
             item?.type === "audio" ? (
                 <IconButton
-                style={{position:"relative",bottom:"1.15rem"}}
+                style={{position:"relative",bottom:"0.8rem"}}
                     aria-label="speaker"
                     sx={{ float: "left" }}
                     onClick={() => handleAudioPlay(key)}
                     key={key}
                 >
-                    <VolumeUpIcon  style={{width:"50px",height:"50px",color:"#23bdf0"}}/>
+                    <VolumeUpIcon  style={{width:"35px",height:"35px",color:"#23bdf0"}}/>
                     <audio
                         ref={(el) => (audioRef.current[key] = el)}
                         src={item?.url}
