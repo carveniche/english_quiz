@@ -11,7 +11,7 @@
   /* font-family: "Reddit Sans", sans-serif; */
   font-family: "GothamRnd-Book";
   font-style: normal;
- 
+
   font-size: 18px;
   height: 100%;
 }
@@ -32,7 +32,7 @@
 .questionName {
   font-size: 18px;
   font-style: normal;
- 
+
   line-height: 27px;
   letter-spacing: 0em;
   text-align: left;
@@ -42,6 +42,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  justify-content: space-around;
   width: 90%;
   margin-top: 1rem;
   cursor: pointer;
@@ -50,6 +51,8 @@
 .mathzoneMultipleChoiceFlexBox>div {
   min-width: calc(50% - 0.5rem);
   max-width: 100%;
+  max-width: 45%;
+  min-width: 45%;
   flex: 1;
   display: flex;
   font-size: 16px;

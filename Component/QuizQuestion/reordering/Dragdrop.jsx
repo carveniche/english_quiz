@@ -16,7 +16,7 @@ export default function DragDrop({
   choiceRef,
   direction,
   isSolution,
-  response
+  response,
 }) {
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const { showQuizResponse } = useContext(OuterPageContext);
@@ -42,8 +42,8 @@ export default function DragDrop({
   useEffect(() => {
     if (showQuizResponse || isSolution) {
       let temp = [...questionData];
-      if(response&&response?.length&&Array.isArray(response))
-        temp=[...response]
+      if (response && response?.length && Array.isArray(response))
+        temp = [...response];
       setQuetionContent([...temp]);
     }
   }, [showQuizResponse]);
@@ -59,6 +59,7 @@ export default function DragDrop({
                   ? styles.mathzoneHorizontalolBox
                   : styles.mathzoneMainOlBox
               }
+              style={{ maxWidth: "50%" }}
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
@@ -74,6 +75,15 @@ export default function DragDrop({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      style={{
+                        width: "fit-content",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "50px",
+                        padding: "10px 20px",
+                        fontSize: "35px",
+                      }}
                     >
                       {item}
                     </div>
