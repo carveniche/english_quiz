@@ -27,7 +27,8 @@
 }
 
 .bodyPage2 img {
-  max-width: 250px;
+  max-width: 350px;
+  max-height: 350px;
 }
 
 .bodyPage2 h2,
