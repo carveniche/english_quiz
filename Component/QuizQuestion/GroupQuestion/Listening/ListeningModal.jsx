@@ -44,11 +44,11 @@ export default function ListeningModal({ group_data, onClick, from ,autoPlay}) {
           )}
           <Box
             sx={{
-              width: "calc(100% - 64px)",
+              width: "calc(100% - 5px)",
               bgcolor: "background.paper",
               boxShadow: 24,
               p: 4,
-              maxHeight: "350px",
+              maxHeight: "500px",
               overflow: "auto",
               overflowX:"hidden",
               clear: "both",
