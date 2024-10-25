@@ -4,7 +4,12 @@ import objectParser from "../../../Utility/objectParser";
 import styles from "../../english_mathzone.module.css";
 import ListeningPlayer from "./ListeningPlayer";
 import CloseIcon from "@mui/icons-material/Close";
-export default function ListeningModal({ group_data, onClick, from ,autoPlay}) {
+export default function ListeningModal({
+  group_data,
+  onClick,
+  from,
+  autoPlay,
+}) {
   const handleClose = () => {
     typeof onClick === "function" && onClick();
   };
@@ -50,7 +55,7 @@ export default function ListeningModal({ group_data, onClick, from ,autoPlay}) {
               p: 4,
               maxHeight: "350px",
               overflow: "auto",
-              overflowX:"hidden",
+              overflowX: "hidden",
               clear: "both",
               borderRadius: 1,
               position: "relative",
@@ -65,17 +70,22 @@ export default function ListeningModal({ group_data, onClick, from ,autoPlay}) {
                 <CloseIcon />
               </IconButton>
             )}
-           {group_data?.question_text?.length>0&& <div
-              className={styles.questionName}
-              style={{ clear: "both", marginBottom: 8 }}
-            >
-              {group_data?.question_text.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </div>}
-            <ListeningPlayer audioUrl={group_data?.resources[0]?.url} autoPlay={autoPlay}/>
+            {group_data?.question_text?.length > 0 && (
+              <div
+                className={styles.questionName}
+                style={{ clear: "both", marginBottom: 8 }}
+              >
+                {group_data?.question_text.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+            <ListeningPlayer
+              audioUrl={group_data?.resources[0]?.url}
+              autoPlay={autoPlay}
+            />
           </Box>
         </div>
       </Modal>

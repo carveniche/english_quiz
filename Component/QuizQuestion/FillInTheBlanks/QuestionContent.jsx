@@ -47,10 +47,7 @@ export default function QuestionContent({ choicesRef }) {
   };
   return (
     <div>
-      <div
-        className={styles.questionContent}
-        style={{ marginTop: 8, paddingLeft: "3rem", gap: 2 }}
-      >
+      <div className={styles.questionContent} style={{ marginTop: 8, gap: 2 }}>
         {choicesRef.current.map((item, key) => (
           <React.Fragment key={key}>
             {key > 0 && <>&nbsp;</>}

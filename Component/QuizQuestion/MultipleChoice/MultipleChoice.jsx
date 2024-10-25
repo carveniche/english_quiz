@@ -7,6 +7,7 @@ import SolveButton from "../../CommonComponent/SolveButton";
 import objectParser from "../../Utility/objectParser";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
+import QuestionImageTextGrouped from "../../CommonComponent/QuestionImageTextGrouped";
 export default function MultipleChoice({ obj }) {
   const {
     submitResponse,
@@ -61,15 +62,7 @@ export default function MultipleChoice({ obj }) {
       )}
       <div>
         <div className={styles.questionName}>
-          {obj?.questionName?.length ? (
-            <>
-              {obj?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </>
-          ) : null}
+          <QuestionImageTextGrouped questionData={obj?.questionName} />
         </div>
         <Choices choicesRef={choicesRef} />
       </div>

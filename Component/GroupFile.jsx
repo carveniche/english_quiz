@@ -37,7 +37,7 @@ export default function GroupFile({
     <>
       {groupObject[data?.group_type]}
       {showQuestion && (
-        <div style={{ padding: "10px 20px" }} className={styles.groupPage}>
+        <div style={{ padding: "10px 50px" }} className={styles.groupPage}>
           <QuizDisplay
             obj={data?.question_data[0] || ""}
             showCorrectIncorrect={showCorrectIncorrect}

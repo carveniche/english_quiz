@@ -9,10 +9,10 @@ import { TextareaAutosize } from "@mui/material";
 import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import LinearProgressBar from "./LinearProgressBar";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
+import QuestionImageTextGrouped from "../../CommonComponent/QuestionImageTextGrouped";
 const useStyles = {
   autoSizeTextarea: {
     width: "100%",
-    maxWidth: "80%",
     minWidth: "100px",
     minHeight: "150px",
     resize: "none",
@@ -201,17 +201,11 @@ export default function Writing({ questionData, questionResponse }) {
   return (
     <div>
       <SolveButton onClick={checkGptResponse} />
-      {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
+      {redAlert && !submitResponse && (
+        <CustomAlertBoxMathZone msg={"Please write the answer"} />
+      )}
       <div className={styles.questionName}>
-        {questionData?.questionName?.length ? (
-          <>
-            {questionData?.questionName.map((item, key) => (
-              <React.Fragment key={key}>
-                {objectParser(item, key)}
-              </React.Fragment>
-            ))}
-          </>
-        ) : null}
+        <QuestionImageTextGrouped questionData={questionData?.questionName} />
       </div>
       <div style={{ marginTop: 5 }}>
         <AutoSizeTextarea

@@ -8,6 +8,7 @@ import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
+import QuestionImageTextGrouped from "../../CommonComponent/QuestionImageTextGrouped";
 export default function FillIntheBlanks({ obj }) {
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
@@ -49,6 +50,10 @@ export default function FillIntheBlanks({ obj }) {
     setIsCorrect(answerStatus);
     return answerStatus;
   };
+
+  var textNodes = obj.questionName.filter((node) => node.node !== "img");
+  var imageNodes = obj.questionName.filter((node) => node.node === "img");
+
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -58,15 +63,7 @@ export default function FillIntheBlanks({ obj }) {
       </div>
       <div>
         <div className={styles.questionName}>
-          {obj?.questionName?.length ? (
-            <>
-              {obj?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </>
-          ) : null}
+          <QuestionImageTextGrouped questionData={obj?.questionName} />
         </div>
         <QuestionContent choicesRef={choicesRef} />
       </div>

@@ -4,6 +4,7 @@ import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
+import QuestionImageTextGrouped from "../../CommonComponent/QuestionImageTextGrouped";
 
 export default function Speaking_Type({ questionData, questionResponse }) {
   // const objectParser = (item, index) => {
@@ -28,17 +29,7 @@ export default function Speaking_Type({ questionData, questionResponse }) {
         className={styles.questionName}
         style={{ display: "flex", alignItems: "center" }}
       >
-        {questionData?.questionName?.length ? (
-          <>
-            <div>
-              {questionData?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </div>
-          </>
-        ) : null}
+        <QuestionImageTextGrouped questionData={questionData?.questionName} />
       </div>
 
       <Recording_part
