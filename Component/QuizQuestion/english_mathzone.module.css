@@ -310,3 +310,15 @@
   color: white;
   cursor: pointer;
 }
+
+.inputFieldfib:focus {
+  border: 1px solid #0d5069c4;
+ /* Blue border on focus */
+  outline: none; /* Remove default outline */
+
+}
+.inputFieldfib{
+  border: 1px solid #0092c8c4;
+  width: 40px;
+}
+
