@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 import styles from "../english_mathzone.module.css";
-  import objectParser from "../../Utility/objectParser";
-import Recording_part from './Recording_part';
-import ResourceViewer from '../../CommonComponent/ResourceViewer';
+import objectParser from "../../Utility/objectParser";
+import Recording_part from "./Recording_part";
+import ResourceViewer from "../../CommonComponent/ResourceViewer";
 
-export default function Speaking_Type({ questionData,questionResponse }) {
+export default function Speaking_Type({ questionData, questionResponse }) {
   // const objectParser = (item, index) => {
   //   let value = "";
   //   if (item?.node === "text") {
@@ -20,29 +20,31 @@ export default function Speaking_Type({ questionData,questionResponse }) {
   // };
   return (
     <div>
-         <div>
+      <div>
         <ResourceViewer resources={questionData?.resources || []} />
       </div>
 
-      <div className={styles.questionName} style={{display:'flex', alignItems: 'center'}}>
+      <div
+        className={styles.questionName}
+        style={{ display: "flex", alignItems: "center" }}
+      >
         {questionData?.questionName?.length ? (
           <>
-       
-          <div>
-
-            {questionData?.questionName.map((item, key) => (
-              <React.Fragment key={key}>
-                {objectParser(item, key)}
-              </React.Fragment>
-            ))}
-
+            <div>
+              {questionData?.questionName.map((item, key) => (
+                <React.Fragment key={key}>
+                  {objectParser(item, key)}
+                </React.Fragment>
+              ))}
             </div>
           </>
         ) : null}
       </div>
 
-  <Recording_part  questionData={questionData} questionResponse={questionResponse} />
-
+      <Recording_part
+        questionData={questionData}
+        questionResponse={questionResponse}
+      />
     </div>
   );
 }
