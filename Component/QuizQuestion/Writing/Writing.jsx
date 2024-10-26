@@ -27,7 +27,12 @@ const useStyles = {
   },
 };
 
-const AutoSizeTextarea = ({ studentTextRef, hideCheckButton,isShowingResponse,response }) => {
+const AutoSizeTextarea = ({
+  studentTextRef,
+  hideCheckButton,
+  isShowingResponse,
+  response,
+}) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
@@ -45,7 +50,7 @@ const AutoSizeTextarea = ({ studentTextRef, hideCheckButton,isShowingResponse,re
     <TextareaAutosize
       ref={textareaRef}
       style={useStyles.autoSizeTextarea}
-      value={isShowingResponse?(textareaValue||response):textareaValue}
+      value={isShowingResponse ? textareaValue || response : textareaValue}
       onChange={handleTextareaChange}
       placeholder="Enter Response"
       aria-label="Auto-sizing Textarea"
@@ -53,7 +58,7 @@ const AutoSizeTextarea = ({ studentTextRef, hideCheckButton,isShowingResponse,re
     />
   );
 };
-export default function Writing({ questionData,questionResponse }) {
+export default function Writing({ questionData, questionResponse }) {
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -137,7 +142,7 @@ export default function Writing({ questionData,questionResponse }) {
 
     // for (let num of scoreRef.current) {
 
-    //   if (!isNaN(num) && num !== ' ') { 
+    //   if (!isNaN(num) && num !== ' ') {
     //     if(num==='0'){
     //       scoreRef.current = num
     //     }else if(num==='1'){
@@ -145,25 +150,21 @@ export default function Writing({ questionData,questionResponse }) {
     //     }
     //   }
     // }
-    
+
     if (isNaN(Number(scoreRef.current))) {
       let regex = /score\s*:\s*\d$/i;
       let scoreValue = regex.exec(scoreRef.current);
       regex = /\d+/g;
-      scoreValue=scoreValue||[]
-      let score=regex.exec(scoreValue.pop());
-      
-      if(score===null)
-      {
-        let regex =/{{(\d+)}}/;
+      scoreValue = scoreValue || [];
+      let score = regex.exec(scoreValue.pop());
+
+      if (score === null) {
+        let regex = /{{(\d+)}}/;
         let scoreValue = regex.exec(scoreRef.current);
-        scoreValue=scoreValue||[]
+        scoreValue = scoreValue || [];
         regex = /\d+/g;
         scoreRef.current = regex.exec(scoreValue.pop());
-      }
-      else
-      scoreRef.current = score
-    
+      } else scoreRef.current = score;
     }
     let obj = {
       studentResponse: studentTextRef.current,
@@ -216,8 +217,8 @@ export default function Writing({ questionData,questionResponse }) {
         <AutoSizeTextarea
           studentTextRef={studentTextRef}
           hideCheckButton={hideCheckButton}
-          response={questionResponse?.studentResponse||null}
-          isShowingResponse={submitResponse||disabledQuestion}
+          response={questionResponse?.studentResponse || null}
+          isShowingResponse={submitResponse || disabledQuestion}
         />
       </div>
       {hideCheckButton && (
@@ -236,28 +237,28 @@ export default function Writing({ questionData,questionResponse }) {
 }
 
 function GptFeedback({ chatGptResponse }) {
-
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voice, setVoice] = useState(null);
   useEffect(() => {
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      console.log('voices',voices)
+      console.log("voices", voices);
       // Filter for female voices; you can adjust this as needed
-      const femaleVoice = voices.find(v => v.name === "Microsoft Zira - English (United States)");
+      const femaleVoice = voices.find(
+        (v) => v.name === "Microsoft Zira - English (United States)"
+      );
       setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
     };
 
     loadVoices(); // Initial load
 
     window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
-
-    
-
   }, []);
 
   const toggleSpeak = () => {
-    const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
+    const speech = new SpeechSynthesisUtterance(
+      chatGptResponse || "No Response"
+    );
     speech.voice = voice; // Set the selected voice
 
     speech.onend = () => {
@@ -273,10 +274,18 @@ function GptFeedback({ chatGptResponse }) {
     }
   };
 
-
   return (
     <div className={styles.gpt_feedback_box}>
-       <button style={{border:"1px solid white",cursor:"pointer",fontSize:"13px"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
+      <button
+        style={{
+          border: "1px solid white",
+          cursor: "pointer",
+          fontSize: "13px",
+        }}
+        onClick={toggleSpeak}
+      >
+        🔊 Read Aloud
+      </button>
       <div style={{ padding: 10, fontSize: 15 }}>
         {chatGptResponse || "No Response"}
       </div>

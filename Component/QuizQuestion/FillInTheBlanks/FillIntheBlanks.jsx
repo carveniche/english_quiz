@@ -10,7 +10,6 @@ import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 export default function FillIntheBlanks({ obj }) {
-
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
   const {
@@ -25,14 +24,14 @@ export default function FillIntheBlanks({ obj }) {
     if (submitResponse) return;
     if (disabledQuestion) return;
 
-   // choicesRef.current[0].studentAnswer = choicesRef.current[0].studentAnswer.join("")
+    // choicesRef.current[0].studentAnswer = choicesRef.current[0].studentAnswer.join("")
     choicesRef.current.forEach((choice) => {
       if (Array.isArray(choice.studentAnswer)) {
         choice.studentAnswer = choice.studentAnswer.join("");
       }
     });
 
-    console.log('current choices',choicesRef.current)
+    console.log("current choices", choicesRef.current);
     let arr = choicesRef.current || [];
     let answerStatus = -1;
     for (let item of arr) {
@@ -61,17 +60,25 @@ export default function FillIntheBlanks({ obj }) {
     return answerStatus;
   };
 
-  
   return (
     <div>
       <div
-      style={{color:"#00b8fa",fontWeight:'bold',padding:'16px 5px 22px 0px',fontSize:'18px'}}
-      >Fill in the Blanks</div>
+        style={{
+          color: "#00b8fa",
+          fontWeight: "bold",
+          padding: "16px 5px 22px 0px",
+          fontSize: "18px",
+        }}
+      >
+        Fill in the Blanks
+      </div>
       <SolveButton onClick={handleSubmit} />
-      {redAlert && !submitResponse && <CustomAlertBoxMathZone msg={"Please Type the Answer"} />}
-      
+      {redAlert && !submitResponse && (
+        <CustomAlertBoxMathZone msg={"Please Type the Answer"} />
+      )}
+
       <div>
-        <div className={styles.questionName} style={{color:'green'}}>
+        <div className={styles.questionName} style={{ color: "green" }}>
           {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
@@ -82,9 +89,11 @@ export default function FillIntheBlanks({ obj }) {
             </>
           ) : null}
         </div>
-     
-      <br/>
-        {obj?.resources.length>0 && <AudiPlayerComponent  resources={obj?.resources || []}/>}
+
+        <br />
+        {obj?.resources.length > 0 && (
+          <AudiPlayerComponent resources={obj?.resources || []} />
+        )}
 
         <QuestionContent choicesRef={choicesRef} />
       </div>
