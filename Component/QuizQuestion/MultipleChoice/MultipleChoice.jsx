@@ -50,6 +50,9 @@ export default function MultipleChoice({ obj }) {
     }
     return status;
   };
+
+  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
+  var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -60,8 +63,46 @@ export default function MultipleChoice({ obj }) {
         </div>
       )}
       <div>
-        <div className={styles.questionName}>
-          {obj?.questionName?.length ? (
+        <div
+          style={{ paddingLeft: obj?.resources?.length > 0 ? "50px" : "" }}
+          className={styles.questionName}
+        >
+          {textNodes && imageNodes ? (
+            <div style={{ display: "flex" }}>
+              <div>
+                {textNodes &&
+                  textNodes.length > 0 &&
+                  textNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+              </div>
+              <div>
+                {imageNodes &&
+                  imageNodes.length > 0 &&
+                  imageNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {obj?.questionName?.length ? (
+                <>
+                  {obj?.questionName.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                </>
+              ) : null}
+            </>
+          )}
+
+          {/* {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
                 <React.Fragment key={key}>
@@ -69,7 +110,7 @@ export default function MultipleChoice({ obj }) {
                 </React.Fragment>
               ))}
             </>
-          ) : null}
+          ) : null} */}
         </div>
         <Choices choicesRef={choicesRef} />
       </div>

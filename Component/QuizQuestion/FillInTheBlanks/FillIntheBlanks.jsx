@@ -10,7 +10,14 @@ import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 export default function FillIntheBlanks({ obj }) {
-  const choicesRef = useRef(obj?.choices || []);
+  var data = obj?.choices.flatMap((sda) => {
+    return sda.value.split(" ").map((val) => ({
+      correct: sda.correct,
+      value: val,
+    }));
+  });
+  console.log(data);
+  const choicesRef = useRef(data || []);
   const [redAlert, setRedAlert] = useState(false);
   const {
     submitResponse,
@@ -60,6 +67,8 @@ export default function FillIntheBlanks({ obj }) {
     return answerStatus;
   };
 
+  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
+  var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   return (
     <div>
       <div
@@ -79,7 +88,45 @@ export default function FillIntheBlanks({ obj }) {
 
       <div>
         <div className={styles.questionName} style={{ color: "green" }}>
-          {obj?.questionName?.length ? (
+          {textNodes && imageNodes ? (
+            <div style={{ display: "flex" }}>
+              <div>
+                {textNodes &&
+                  textNodes.length > 0 &&
+                  textNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                {obj?.resources.length > 0 && (
+                  <AudiPlayerComponent resources={obj?.resources || []} />
+                )}
+                <QuestionContent choicesRef={choicesRef} />
+              </div>
+              <div>
+                {imageNodes &&
+                  imageNodes.length > 0 &&
+                  imageNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {obj?.questionName?.length ? (
+                <>
+                  {obj?.questionName.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                </>
+              ) : null}
+            </>
+          )}
+          {/* {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
                 <React.Fragment key={key}>
@@ -87,15 +134,13 @@ export default function FillIntheBlanks({ obj }) {
                 </React.Fragment>
               ))}
             </>
-          ) : null}
+          ) : null} */}
         </div>
 
         <br />
-        {obj?.resources.length > 0 && (
+        {/* {obj?.resources.length > 0 && (
           <AudiPlayerComponent resources={obj?.resources || []} />
-        )}
-
-        <QuestionContent choicesRef={choicesRef} />
+        )} */}
       </div>
     </div>
   );

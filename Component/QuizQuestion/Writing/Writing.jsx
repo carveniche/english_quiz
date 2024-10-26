@@ -12,7 +12,7 @@ import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageCont
 const useStyles = {
   autoSizeTextarea: {
     width: "100%",
-    maxWidth: "80%",
+    maxWidth: "100%",
     minWidth: "100px",
     minHeight: "150px",
     resize: "none",
@@ -198,12 +198,55 @@ export default function Writing({ questionData, questionResponse }) {
     return 1;
   };
   // console.log(chatGptResponse,score)
+
+  var textNodes = questionData?.questionName.filter(
+    (node) => node.node !== "img"
+  );
+  var imageNodes = questionData?.questionName.filter(
+    (node) => node.node === "img"
+  );
   return (
     <div>
       <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className={styles.questionName}>
-        {questionData?.questionName?.length ? (
+        {textNodes && imageNodes ? (
+          <>
+            <div style={{ display: "flex" }}>
+              <div>
+                {textNodes &&
+                  textNodes.length > 0 &&
+                  textNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+              </div>
+              <div>
+                {imageNodes &&
+                  imageNodes.length > 0 &&
+                  imageNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {questionData?.questionName?.length ? (
+              <>
+                {questionData?.questionName.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : null}
+          </>
+        )}
+        {/* {questionData?.questionName?.length ? (
           <>
             {questionData?.questionName.map((item, key) => (
               <React.Fragment key={key}>
@@ -211,7 +254,7 @@ export default function Writing({ questionData, questionResponse }) {
               </React.Fragment>
             ))}
           </>
-        ) : null}
+        ) : null} */}
       </div>
       <div style={{ marginTop: 5 }}>
         <AutoSizeTextarea

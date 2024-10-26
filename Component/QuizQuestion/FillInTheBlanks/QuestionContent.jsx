@@ -3,6 +3,7 @@ import styles from "../english_mathzone.module.css";
 import { ValidationContext } from "../../QuizPage";
 
 export default function QuestionContent({ choicesRef }) {
+  console.log("jaknscjas", choicesRef);
   const [update, setUpdate] = useState(false);
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const focusRef = useRef([]);
@@ -11,7 +12,8 @@ export default function QuestionContent({ choicesRef }) {
     if (submitResponse || disabledQuestion) return;
 
     const value = e.target.value || "";
-    choicesRef.current[itemIndex].studentAnswer = choicesRef.current[itemIndex].studentAnswer || [];
+    choicesRef.current[itemIndex].studentAnswer =
+      choicesRef.current[itemIndex].studentAnswer || [];
     choicesRef.current[itemIndex].studentAnswer[charIndex] = value;
 
     // Move focus to the next input if a character was added
@@ -20,8 +22,8 @@ export default function QuestionContent({ choicesRef }) {
     } else {
       findLastElement(itemIndex, charIndex);
     }
-     
-    console.log(choicesRef)
+
+    console.log(choicesRef);
     setUpdate(!update);
   };
 
@@ -46,7 +48,10 @@ export default function QuestionContent({ choicesRef }) {
   };
 
   useEffect(() => {
-    initialFocus(0, 0);
+    var focusTimeout = setTimeout(() => {
+      // initialFocus(0, 0);
+    }, 1000);
+    return () => clearTimeout(focusTimeout);
   }, []);
 
   const handleKeyChange = (e, itemIndex, charIndex) => {
@@ -60,38 +65,52 @@ export default function QuestionContent({ choicesRef }) {
 
   return (
     <div>
-      <div className={styles.questionContent} style={{ marginTop: 20, paddingLeft: "3rem", gap: 2,display:'flex',gap:'20px' }}>
+      <div
+        className={styles.questionContent}
+        style={{
+          marginTop: 20,
+          paddingLeft: "3rem",
+          gap: 2,
+          display: "flex",
+          gap: "20px",
+        }}
+      >
         {choicesRef.current.map((item, itemIndex) => (
-          <div  key={itemIndex}>
-          <React.Fragment key={itemIndex}>
-            {item?.correct && item?.value.split("").map((char, charIndex) => (
-              <input
-              className={styles.inputFieldfib}
-                key={charIndex}
-                maxLength={1}
-                size={1}
-                value={choicesRef.current[itemIndex].studentAnswer?.[charIndex] || ""}
-                ref={(el) => {
-                  if (!focusRef.current[itemIndex]) {
-                    focusRef.current[itemIndex] = [];
-                  }
-                  focusRef.current[itemIndex][charIndex] = el;
-                }}
-                onChange={(e) => handleChange(e, itemIndex, charIndex)}
-                onKeyDown={(e) => handleKeyChange(e, itemIndex, charIndex)}
-                minLength={1}
-                style={{
-                  fontSize: 16,
-                  padding: 5,
-                 
-                  boxSizing: "border-box",
-                  textAlign: "center",
-                }}
-              />
-            ))}
-            {!item?.correct && <span>{item?.value}</span>}
-            {itemIndex < choicesRef.current.length - 1 && <>&nbsp;</>}
-          </React.Fragment>
+          <div key={itemIndex}>
+            <React.Fragment key={itemIndex}>
+              {item?.correct &&
+                item?.value.split("").map((char, charIndex) => (
+                  <input
+                    className={styles.inputFieldfib}
+                    key={charIndex}
+                    maxLength={1}
+                    size={1}
+                    value={
+                      choicesRef.current[itemIndex].studentAnswer?.[
+                        charIndex
+                      ] || ""
+                    }
+                    ref={(el) => {
+                      if (!focusRef.current[itemIndex]) {
+                        focusRef.current[itemIndex] = [];
+                      }
+                      focusRef.current[itemIndex][charIndex] = el;
+                    }}
+                    onChange={(e) => handleChange(e, itemIndex, charIndex)}
+                    onKeyDown={(e) => handleKeyChange(e, itemIndex, charIndex)}
+                    minLength={1}
+                    style={{
+                      fontSize: 16,
+                      padding: 5,
+
+                      boxSizing: "border-box",
+                      textAlign: "center",
+                    }}
+                  />
+                ))}
+              {!item?.correct && <span>{item?.value}</span>}
+              {itemIndex < choicesRef.current.length - 1 && <>&nbsp;</>}
+            </React.Fragment>
           </div>
         ))}
       </div>

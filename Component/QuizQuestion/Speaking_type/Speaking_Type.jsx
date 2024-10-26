@@ -4,6 +4,7 @@ import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
+import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 
 export default function Speaking_Type({ questionData, questionResponse }) {
   // const objectParser = (item, index) => {
@@ -18,6 +19,12 @@ export default function Speaking_Type({ questionData, questionResponse }) {
   //   if (item?.inNewLine) return <div>{value}</div>;
   //   return value;
   // };
+  var textNodes = questionData?.questionName.filter(
+    (node) => node.node !== "img"
+  );
+  var imageNodes = questionData?.questionName.filter(
+    (node) => node.node === "img"
+  );
   return (
     <div>
       <div>
@@ -28,7 +35,46 @@ export default function Speaking_Type({ questionData, questionResponse }) {
         className={styles.questionName}
         style={{ display: "flex", alignItems: "center" }}
       >
-        {questionData?.questionName?.length ? (
+        {textNodes && imageNodes ? (
+          <div style={{ display: "flex" }}>
+            <div>
+              {textNodes &&
+                textNodes.length > 0 &&
+                textNodes.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+              {questionData?.resources.length > 0 && (
+                <AudiPlayerComponent
+                  resources={questionData?.resources || []}
+                />
+              )}
+            </div>
+            <div>
+              {imageNodes &&
+                imageNodes.length > 0 &&
+                imageNodes.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            {questionData?.questionName?.length ? (
+              <>
+                {questionData?.questionName.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : null}
+          </>
+        )}
+        {/* {questionData?.questionName?.length ? (
           <>
             <div>
               {questionData?.questionName.map((item, key) => (
@@ -38,7 +84,7 @@ export default function Speaking_Type({ questionData, questionResponse }) {
               ))}
             </div>
           </>
-        ) : null}
+        ) : null} */}
       </div>
 
       <Recording_part
