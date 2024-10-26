@@ -112,7 +112,7 @@ export default function Writing({ questionData,questionResponse }) {
     }
     try {
       let allData = await Promise.all(apiArray);
-      // console.log(allData)
+      console.log(allData)
       allData = allData || [];
 
       allData.forEach(({ data }, index) => {
@@ -147,29 +147,35 @@ export default function Writing({ questionData,questionResponse }) {
     // }
     
     if (isNaN(Number(scoreRef.current))) {
-      let regex = /score\s*:\s*\d$/i;
+      console.log('this is scoreref', scoreRef.current);
+    
+      // Updated regex to find "score: [digit]" anywhere in the string
+      let regex = /score\s*:\s*(\d)/i;
+      console.log('this is regex', regex);
+    
       let scoreValue = regex.exec(scoreRef.current);
-      regex = /\d+/g;
-      scoreValue=scoreValue||[]
-      let score=regex.exec(scoreValue.pop());
-      
-      if(score===null)
-      {
-        let regex =/{{(\d+)}}/;
-        let scoreValue = regex.exec(scoreRef.current);
-        scoreValue=scoreValue||[]
+      console.log('this is score value', scoreValue[1]);
+    
+      // Extract the digit if score pattern is found
+      if (scoreValue !== null) {
+        scoreRef.current = scoreValue[1]; // The digit captured by the regex
+      } else {
+        // Second attempt if the score pattern isn't found
+        regex = /{{(\d+)}}/;
+        scoreValue = regex.exec(scoreRef.current) || [];
         regex = /\d+/g;
         scoreRef.current = regex.exec(scoreValue.pop());
       }
-      else
-      scoreRef.current = score
-    
     }
+    
+
+    console.log('this is scoreref before submit',scoreRef.current)
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
+    console.log('this is obj',obj)
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);

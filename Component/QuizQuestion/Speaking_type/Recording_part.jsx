@@ -189,25 +189,28 @@ const Recording_part = ({ questionData,questionResponse}) => {
         if (submitResponse) return;
         if (disabledQuestion) return;
         setRedAlert(false);
+        
         if (isNaN(Number(scoreRef.current))) {
-            let regex = /score\s*:\s*\d$/i;
-            let scoreValue = regex.exec(scoreRef.current);
+          console.log('this is scoreref', scoreRef.current);
+        
+          // Updated regex to find "score: [digit]" anywhere in the string
+          let regex = /score\s*:\s*(\d)/i;
+          console.log('this is regex', regex);
+        
+          let scoreValue = regex.exec(scoreRef.current);
+          console.log('this is score value', scoreValue[1]);
+        
+          // Extract the digit if score pattern is found
+          if (scoreValue !== null) {
+            scoreRef.current = scoreValue[1]; // The digit captured by the regex
+          } else {
+            // Second attempt if the score pattern isn't found
+            regex = /{{(\d+)}}/;
+            scoreValue = regex.exec(scoreRef.current) || [];
             regex = /\d+/g;
-            scoreValue=scoreValue||[]
-            let score=regex.exec(scoreValue.pop());
-            console.log({score, scoreRef})
-            
-            if(score===null)
-            {
-              let regex =/{{(\d+)}}/;
-              let scoreValue = regex.exec(scoreRef.current);
-              scoreValue=scoreValue||[]
-              regex = /\d+/g;
-              scoreRef.current = regex.exec(scoreValue.pop());
-            }
-            else
-            scoreRef.current = score 
+            scoreRef.current = regex.exec(scoreValue.pop());
           }
+        }
 
           console.log('this is AA ',audioFileRef.current)
 
