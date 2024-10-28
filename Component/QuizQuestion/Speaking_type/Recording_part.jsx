@@ -42,19 +42,19 @@ const Recording_part = ({ questionData,questionResponse}) => {
         border: 'none',
         background: '#38c185',
         color: 'white',
-        padding: '13px',
+        padding: '12px',
         borderRadius: '10px',
         cursor: 'pointer',
-        fontSize:'14px'
+        fontSize:'13px'
     };
     const stoprecord={
         border: 'none',
         background: 'red',
         color: 'white',
-        padding: '13px',
+        padding: '12px',
         borderRadius: '10px',
         cursor: 'pointer',
-        fontSize:'14px'
+        fontSize:'13px'
     }
         // button styles end
 
@@ -342,8 +342,8 @@ const Recording_part = ({ questionData,questionResponse}) => {
         </div>
   
         {(!questionResponse?.audio_response) && <div className="controllers">
-          {stateIndex === 0 && <button id="record"  style={recordbtn} onClick={handleRecord}>Start Record</button>}
-          {stateIndex === 1 && <button id="stop" style={stoprecord} onClick={handleStopRecording}>Stop Record</button>}
+          {stateIndex === 0 && <button id="record"  style={recordbtn} onClick={handleRecord}>Start Recording</button>}
+          {stateIndex === 1 && <button id="stop" style={stoprecord} onClick={handleStopRecording}>Stop Recording</button>}
           {stateIndex === 2 && (
             <>{!hideCheckButton &&
               <button id="record" style={recordbtn} onClick={handleRecord}>Record Again</button>

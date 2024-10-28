@@ -68,10 +68,10 @@ export default function QuestionContent({ choicesRef }) {
         className={styles.questionContent}
         style={{
           marginTop: 20,
-          paddingLeft: "3rem",
-          gap: 2,
+      //    paddingLeft: "3rem",
           display: "flex",
-          gap: "20px",
+        //  gap: "20px",
+        alignItems:'end',
         }}
       >
         {choicesRef.current.map((item, itemIndex) => (
