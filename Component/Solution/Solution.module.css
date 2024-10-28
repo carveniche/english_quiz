@@ -5,11 +5,15 @@
 }
 
 .correctAnswerBox {
-  background-color: #dddddd;
+  /* background-color: #dddddd; */
   padding: 10px 20px;
-  border: 1px solid #cccccc;
+  /* border: 1px solid #cccccc; */
   color: #666666;
   margin-bottom: 1rem;
+  background-color: #efefef;
+  border: 1px solid #efefef;
+  border-radius: 5px;
+
 }
 
 .correctAnswerBox .correctAnswer {
@@ -35,17 +39,18 @@
 }
 
 .correctAnswer2>h6 {
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .explanation {
-  font-size: 18px;
+  font-size: 16px;
   color: #666666;
 }
 
 .explanationBoxContainer {
   border: 1px solid #cccccc;
   padding: 10px 20px;
+  border-radius: 5px;
 }
 
 .correctAnswerBox img {

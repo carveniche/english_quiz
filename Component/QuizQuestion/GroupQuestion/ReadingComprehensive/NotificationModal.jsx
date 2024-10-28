@@ -33,6 +33,7 @@ export default function NotificationModal({ group_data, onClose }) {
             overflow: "auto",
             p: 5,
             outline:0,
+            borderRadius:'15px'
           }}
         >
           <h2>

@@ -117,7 +117,9 @@
   padding: 10px;
   border-radius: 5px;
   justify-content: center;
-  background-color: #5ed0f3;
+  /* background-color: #5ed0f3; */
+  background-color: #009e62;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   color: white;
   font: 20px;
 }
@@ -136,8 +138,10 @@
   padding: 15px 25px;
   border-radius: 5px;
   font-size: 1.8rem;
-  background-color: #5ed0f3;
+  /* background-color: #5ed0f3; */
   color: white;
+  background-color: #009e62;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .a4Page {
