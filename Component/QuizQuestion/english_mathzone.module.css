@@ -41,10 +41,11 @@
 .mathzoneMultipleChoiceFlexBox {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 25px;
   justify-content: start;
-  width: 90%;
+  width: 100%;
   margin-top: 1rem;
+  row-gap: 25px;
   cursor: pointer;
 }
 
@@ -75,6 +76,9 @@
 
 .mathzoneSelectedChoiceType {
   background-color: #b9c2fc;
+  /* background-color: #03C03C; */
+  transform: scale(.99);
+  transition: transform 0.3s;
 }
 
 .mathzone-circle-selectbox {
@@ -142,12 +146,25 @@
 
 .a4Page {
   max-width: 100%;
-  margin: auto auto;
-  /* Center the page horizontally */
-  /* Optional: Add a border for visualization */
   padding: 20px;
-  /* Optional: Add padding for content */
   overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 25px;
+  height: fit-content;
+  margin-top: 25px;
+  background-color: wheat;
+  border-radius: 25px;
+  border: 2px solid brown;
+}
+
+.biggerFont span {
+  font-size: 30px !important;
+}
+
+.biggerFont {
+  font-size: 30px !important;
 }
 
 .next-button {
@@ -218,7 +235,7 @@
 .gpt_feedback_box {
   margin-top: 10px;
   border: 1px solid gainsboro;
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .checkButton {
@@ -313,12 +330,13 @@
 
 .inputFieldfib:focus {
   border: 1px solid #0d5069c4;
- /* Blue border on focus */
-  outline: none; /* Remove default outline */
+  /* Blue border on focus */
+  outline: none;
+  /* Remove default outline */
 
 }
-.inputFieldfib{
+
+.inputFieldfib {
   border: 1px solid #0092c8c4;
   width: 40px;
 }
-

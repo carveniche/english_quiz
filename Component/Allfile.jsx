@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MainMultipleChoice from "./QuizQuestion/MultipleChoice/MainMultipleChoice";
 import MainFillIntheblanks from "./QuizQuestion/FillInTheBlanks/MainFillIntheblanks";
 import MainReordering from "./QuizQuestion/reordering/MainReordering";
@@ -7,21 +7,49 @@ import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchThe
 import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_Type";
 
 export default function Allfile({ data }) {
+  const [wordsLength, setWordsLength] = useState(0);
   let questionType = {
-    "Multiple choice": <MainMultipleChoice obj={data} />,
-    "Fill in the blanks": <MainFillIntheblanks obj={data} />,
-    "Horizontal Ordering": (
-      <MainReordering obj={data} direction={"horizontal"} />
+    "Multiple choice": (
+      <MainMultipleChoice wordsLength={wordsLength} obj={data} />
     ),
-    "Vertical Ordering": <MainReordering obj={data} direction={"vertical"} />,
-    "Writing ChatGpt": <MainWriting obj={data} />,
-    "Math the Following": <MainMatchTheFollowing obj={data} />,
-    "read_the_text":<Main_Speaking_Type obj={data} />
- 
+    "Fill in the blanks": (
+      <MainFillIntheblanks wordsLength={wordsLength} obj={data} />
+    ),
+    "Horizontal Ordering": (
+      <MainReordering
+        wordsLength={wordsLength}
+        obj={data}
+        direction={"horizontal"}
+      />
+    ),
+    "Vertical Ordering": (
+      <MainReordering
+        wordsLength={wordsLength}
+        obj={data}
+        direction={"vertical"}
+      />
+    ),
+    "Writing ChatGpt": <MainWriting wordsLength={wordsLength} obj={data} />,
+    "Math the Following": (
+      <MainMatchTheFollowing wordsLength={wordsLength} obj={data} />
+    ),
+    read_the_text: <Main_Speaking_Type wordsLength={wordsLength} obj={data} />,
   };
   const getQuestionId = () => {
     return data?.question_id;
   };
+  useEffect(() => {
+    if (data.question_data) {
+      var wordsLength = JSON.parse(data.question_data)?.questionName.reduce(
+        (acc, node) =>
+          node.node == "text" && node.value
+            ? acc + node.value.split(" ").length
+            : acc,
+        0
+      );
+      setWordsLength(wordsLength);
+    }
+  }, []);
   window.getQuestionId = getQuestionId;
   return <>{questionType[data?.question_type] || "Yet to be Released"}</>;
 }

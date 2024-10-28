@@ -36,7 +36,7 @@ const objectParser = (item, index) => {
       }
     }
 
-    value = <span style={styleObject}>{item?.value}</span>;
+    value = <span style={styleObject}>{` ${item?.value} `}</span>;
   } else if (item?.node === "img") {
     value = (
       <div>

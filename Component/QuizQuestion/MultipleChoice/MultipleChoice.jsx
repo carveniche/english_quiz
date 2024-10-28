@@ -7,7 +7,7 @@ import SolveButton from "../../CommonComponent/SolveButton";
 import objectParser from "../../Utility/objectParser";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
-export default function MultipleChoice({ obj }) {
+export default function MultipleChoice({ obj, wordsLength }) {
   const {
     submitResponse,
     disabledQuestion,
@@ -69,14 +69,22 @@ export default function MultipleChoice({ obj }) {
         >
           {textNodes && imageNodes ? (
             <div style={{ display: "flex" }}>
-              <div>
-                {textNodes &&
-                  textNodes.length > 0 &&
-                  textNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
+              <div
+                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+                style={{
+                  display: "flex",
+                  alignItems: wordsLength <= 30 ? "center" : "",
+                }}
+              >
+                <div>
+                  {textNodes &&
+                    textNodes.length > 0 &&
+                    textNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
+                </div>
               </div>
               <div>
                 {imageNodes &&

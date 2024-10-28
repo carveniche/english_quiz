@@ -3,7 +3,6 @@ import styles from "../english_mathzone.module.css";
 import { ValidationContext } from "../../QuizPage";
 
 export default function QuestionContent({ choicesRef }) {
-  console.log("jaknscjas", choicesRef);
   const [update, setUpdate] = useState(false);
   const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const focusRef = useRef([]);

@@ -18,7 +18,12 @@ export default function Choices({ choicesRef }) {
       {choicesRef?.current.map((choice, key) => (
         <div
           key={key}
-          style={{ padding: `1rem 1rem` }}
+          style={{
+            padding: `1rem 1rem`,
+            boxShadow:
+              "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 7px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset",
+            border: "none",
+          }}
           className={`${
             choice?.isStudentAnswer ? styles.mathzoneSelectedChoiceType : ""
           }`}

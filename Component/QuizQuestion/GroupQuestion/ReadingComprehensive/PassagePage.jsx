@@ -37,6 +37,8 @@ export default function PassagePage({ groupData }) {
 
         width: "fit-content",
         margin: "auto",
+        paddingBottom: "10px",
+        height: "fit-content",
       }}
     >
       {!hideNotification && <NotificationModal onClose={setHideNotification} />}

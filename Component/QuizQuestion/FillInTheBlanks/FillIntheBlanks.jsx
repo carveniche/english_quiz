@@ -9,14 +9,13 @@ import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
-export default function FillIntheBlanks({ obj }) {
+export default function FillIntheBlanks({ obj, wordsLength }) {
   var data = obj?.choices.flatMap((sda) => {
     return sda.value.split(" ").map((val) => ({
       correct: sda.correct,
       value: val,
     }));
   });
-  console.log(data);
   const choicesRef = useRef(data || []);
   const [redAlert, setRedAlert] = useState(false);
   const {
@@ -66,7 +65,6 @@ export default function FillIntheBlanks({ obj }) {
     setIsCorrect(answerStatus);
     return answerStatus;
   };
-
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   return (
@@ -90,18 +88,26 @@ export default function FillIntheBlanks({ obj }) {
         <div className={styles.questionName} style={{ color: "green" }}>
           {textNodes && imageNodes ? (
             <div style={{ display: "flex" }}>
-              <div>
-                {textNodes &&
-                  textNodes.length > 0 &&
-                  textNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-                {obj?.resources.length > 0 && (
-                  <AudiPlayerComponent resources={obj?.resources || []} />
-                )}
-                <QuestionContent choicesRef={choicesRef} />
+              <div
+                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+                style={{
+                  display: "flex",
+                  alignItems: wordsLength <= 30 ? "center" : "",
+                }}
+              >
+                <div>
+                  {textNodes &&
+                    textNodes.length > 0 &&
+                    textNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
+                  {obj?.resources.length > 0 && (
+                    <AudiPlayerComponent resources={obj?.resources || []} />
+                  )}
+                  <QuestionContent choicesRef={choicesRef} />
+                </div>
               </div>
               <div>
                 {imageNodes &&

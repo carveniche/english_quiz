@@ -6,7 +6,11 @@ import Recording_part from "./Recording_part";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 
-export default function Speaking_Type({ questionData, questionResponse }) {
+export default function Speaking_Type({
+  questionData,
+  questionResponse,
+  wordsLength,
+}) {
   // const objectParser = (item, index) => {
   //   let value = "";
   //   if (item?.node === "text") {
@@ -37,19 +41,27 @@ export default function Speaking_Type({ questionData, questionResponse }) {
       >
         {textNodes && imageNodes ? (
           <div style={{ display: "flex" }}>
-            <div>
-              {textNodes &&
-                textNodes.length > 0 &&
-                textNodes.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}
-              {questionData?.resources.length > 0 && (
-                <AudiPlayerComponent
-                  resources={questionData?.resources || []}
-                />
-              )}
+            <div
+              className={`${wordsLength <= 50 ? styles.biggerFont : ""}`}
+              style={{
+                display: "flex",
+                alignItems: wordsLength <= 50 ? "center" : "",
+              }}
+            >
+              <div>
+                {textNodes &&
+                  textNodes.length > 0 &&
+                  textNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                {questionData?.resources.length > 0 && (
+                  <AudiPlayerComponent
+                    resources={questionData?.resources || []}
+                  />
+                )}
+              </div>
             </div>
             <div>
               {imageNodes &&

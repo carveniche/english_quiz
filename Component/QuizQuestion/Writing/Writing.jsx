@@ -58,7 +58,11 @@ const AutoSizeTextarea = ({
     />
   );
 };
-export default function Writing({ questionData, questionResponse }) {
+export default function Writing({
+  questionData,
+  questionResponse,
+  wordsLength,
+}) {
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -214,6 +218,7 @@ export default function Writing({ questionData, questionResponse }) {
   var imageNodes = questionData?.questionName.filter(
     (node) => node.node === "img"
   );
+  console.log("wordsLength", wordsLength);
   return (
     <div>
       <SolveButton onClick={checkGptResponse} />
@@ -222,14 +227,22 @@ export default function Writing({ questionData, questionResponse }) {
         {textNodes && imageNodes ? (
           <>
             <div style={{ display: "flex" }}>
-              <div>
-                {textNodes &&
-                  textNodes.length > 0 &&
-                  textNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
+              <div
+                className={`${wordsLength <= 50 ? styles.biggerFont : ""}`}
+                style={{
+                  display: "flex",
+                  alignItems: wordsLength <= 50 ? "center" : "",
+                }}
+              >
+                <div>
+                  {textNodes &&
+                    textNodes.length > 0 &&
+                    textNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
+                </div>
               </div>
               <div>
                 {imageNodes &&
@@ -294,7 +307,6 @@ function GptFeedback({ chatGptResponse }) {
   useEffect(() => {
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      console.log("voices", voices);
       // Filter for female voices; you can adjust this as needed
       const femaleVoice = voices.find(
         (v) => v.name === "Microsoft Zira - English (United States)"
