@@ -19,7 +19,7 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: "1rem",
+          gap: "0.75rem",
           backgroundColor: "#f5fff6",
           padding: "1rem",
           boxShadow: "rgba(170, 157, 157, 35%) 0px 5px 15px",
@@ -30,8 +30,8 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           id="message_img"
           src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/person-speaking-clipart-md.png"
           alt="Audio recording"
-          width="65"
-          height="65"
+          width="45"
+          height="45"
         />
         <div>
           Please sit in a quiet place and be loud and clear while recording
