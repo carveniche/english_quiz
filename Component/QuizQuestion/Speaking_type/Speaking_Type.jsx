@@ -56,11 +56,11 @@ export default function Speaking_Type({
                       {objectParser(item, key)}
                     </React.Fragment>
                   ))}
-                {questionData?.resources.length > 0 && (
+                {/* {questionData?.resources.length > 0 && (
                   <AudiPlayerComponent
                     resources={questionData?.resources || []}
                   />
-                )}
+                )} */}
               </div>
             </div>
             <div>
