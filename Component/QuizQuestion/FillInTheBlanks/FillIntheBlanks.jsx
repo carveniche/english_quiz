@@ -85,7 +85,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
       )}
 
       <div>
-        <div className={styles.questionName} style={{ color: "green" }}>
+        <div className={styles.questionName}>
           {textNodes && imageNodes ? (
             <div style={{ display: "flex" }}>
               <div

@@ -5,11 +5,11 @@ import { ValidationContextProvider } from "./QuizPage";
 import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import MainListening from "./QuizQuestion/GroupQuestion/Listening/MainListening";
 import styles from "../Component/outerPage.module.css";
-export function QuizDisplay({ obj, showCorrectIncorrect, showSolution }) {
+export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
   return (
     <>
       <ValidationContextProvider key={obj?.question_id}>
-        <Allfile data={obj} />
+        <Allfile data={obj} questionData={data} />
         <CorrectIncorrectStatus
           showCorrectIncorrect={showCorrectIncorrect}
           showSolution={showSolution}
@@ -40,6 +40,7 @@ export default function GroupFile({
         <div style={{ padding: "10px 20px" }} className={styles.groupPage}>
           <QuizDisplay
             obj={data?.question_data[0] || ""}
+            data={data}
             showCorrectIncorrect={showCorrectIncorrect}
             showSolution={showSolution}
           />

@@ -62,6 +62,7 @@ export default function Writing({
   questionData,
   questionResponse,
   wordsLength,
+  questionGroupData,
 }) {
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
@@ -102,7 +103,8 @@ export default function Writing({
     let apiArray = [];
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
-
+    if (qstText)
+      question_text = `this is passage text ${qstText} ,   please read the passage text and then give the feedback ${question_text}`;
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
     if (quizFrom === "diagnostic") {
       stateRef.push(chatGptResponseRef);
@@ -218,7 +220,21 @@ export default function Writing({
   var imageNodes = questionData?.questionName.filter(
     (node) => node.node === "img"
   );
-  console.log("wordsLength", wordsLength);
+
+  const [qstText, setQstText] = useState("");
+  useEffect(() => {
+    if (questionGroupData.group_data) {
+      var textGroupNodes = JSON.parse(
+        questionGroupData.group_data.question_text
+      );
+      textGroupNodes = textGroupNodes[0].filter((node) => node.node === "text");
+      var xyu = textGroupNodes.reduce((acc, node) => {
+        return (acc += node.value);
+      }, "");
+      setQstText(xyu);
+    }
+  }, []);
+
   return (
     <div>
       <SolveButton onClick={checkGptResponse} />

@@ -6,7 +6,7 @@ import MainWriting from "./QuizQuestion/Writing/MainWriting";
 import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchTheFollowing";
 import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_Type";
 
-export default function Allfile({ data }) {
+export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
   let questionType = {
     "Multiple choice": (
@@ -29,7 +29,13 @@ export default function Allfile({ data }) {
         direction={"vertical"}
       />
     ),
-    "Writing ChatGpt": <MainWriting wordsLength={wordsLength} obj={data} />,
+    "Writing ChatGpt": (
+      <MainWriting
+        questionData={questionData}
+        wordsLength={wordsLength}
+        obj={data}
+      />
+    ),
     "Math the Following": (
       <MainMatchTheFollowing wordsLength={wordsLength} obj={data} />
     ),
