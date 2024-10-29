@@ -223,7 +223,10 @@ export default function Writing({
 
   const [qstText, setQstText] = useState("");
   useEffect(() => {
-    if (questionGroupData.group_data) {
+    if (
+      questionGroupData.group_data &&
+      questionGroupData.group_data.question_text
+    ) {
       var textGroupNodes = JSON.parse(
         questionGroupData.group_data.question_text
       );
