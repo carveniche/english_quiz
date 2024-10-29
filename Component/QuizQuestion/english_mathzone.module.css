@@ -99,7 +99,8 @@
   -ms-flex-align: center;
   align-items: center;
   border-radius: 50%;
-  border: 1.5px solid lightgray;
+  /* border: 1.5px solid lightgray; */
+  border: 1.5px solid #233584;
 }
 
 .mathzoneMainOlBox {

@@ -30,9 +30,15 @@ export default function Choices({ choicesRef }) {
           onClick={() => handleClick(key)}
         >
           <div className={styles["mathzone-circle-selectbox"]}>
-            <b>{String.fromCharCode(65 + key)}</b>
+            <b style={{ color: choice?.isStudentAnswer ? "white" : "" }}>
+              {String.fromCharCode(65 + key)}
+            </b>
           </div>
-          {choice?.value && <div>{parse(choice.value)}</div>}
+          {choice?.value && (
+            <div style={{ color: choice?.isStudentAnswer ? "white" : "" }}>
+              {parse(choice.value)}
+            </div>
+          )}
           {choice?.choice_image && (
             <div className="choiceImage">
               <img
