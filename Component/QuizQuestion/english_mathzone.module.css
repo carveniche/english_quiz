@@ -64,6 +64,7 @@
   text-align: left;
   align-items: center;
   padding-left: 18px;
+  background-color: #E0FFFF;
   color: #233584;
   border-radius: 12px;
   word-break: break;
@@ -75,8 +76,9 @@
 }
 
 .mathzoneSelectedChoiceType {
-  background-color: #b9c2fc;
+  /* background-color: #b9c2fc; */
   /* background-color: #03C03C; */
+  background-color: teal !important;
   transform: scale(.99);
   transition: transform 0.3s;
 }
