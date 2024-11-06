@@ -1,7 +1,8 @@
 import { Box, Modal } from "@mui/material";
 import React, { useState } from "react";
 import styles from "../../../outerPage.module.css"
-export default function NotificationModal({ group_data, onClose }) {
+export default function NotificationModal({ group_data, onClose,msg }) {
+  
   const [open, setOpen] = useState(true);
   const handleClose = () => {
   typeof onClose==="function"&& onClose(true)
@@ -37,8 +38,8 @@ export default function NotificationModal({ group_data, onClose }) {
           }}
         >
           <h2>
-            Hey! You will get a passage now! Read it carefully and answer
-            questions that follow.
+          {msg ? msg : "Hey! You will get a passage now! Read it carefully and answer questions that follow."}
+            
           </h2>
           <div
             style={{

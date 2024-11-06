@@ -316,7 +316,21 @@ const Recording_part = ({ questionData,questionResponse}) => {
    
    
     };
-  
+    const [isPlaying, setIsPlaying] = useState(false);
+  const audioRefplay = useRef(null);
+  const handleAudioToggle = () => {
+    if (isPlaying) {
+      audioRefplay.current.pause();
+    } else {
+      audioRefplay.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleAudioEnd = () => {
+    setIsPlaying(false);
+  };
+
     return (
 <div>
 
@@ -337,7 +351,28 @@ const Recording_part = ({ questionData,questionResponse}) => {
             </>
           )}
           {(stateIndex === 2||(submitResponse||disabledQuestion)) && (
-            <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
+
+            <div
+            onClick={handleAudioToggle}
+            style={{
+              width: 75,
+              height: 75,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}>
+              <img
+          src={
+            isPlaying
+              ? "https://d1t64bxz3n5cv1.cloudfront.net/Animation+-+1729854589712.gif"
+              : "https://d1t64bxz3n5cv1.cloudfront.net/play.png"
+          }
+          alt="Audio Control"
+          style={{ width: 50, height: 50}}
+        />
+            <audio id="first"  ref={audioRefplay}  src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL} onEnded={handleAudioEnd}></audio>
+            </div>
           )}
         </div>
   
@@ -419,7 +454,8 @@ function GptFeedback({ chatGptResponse }) {
   };
 
     return (
-      <div className={styles.gpt_feedback_box}>
+      <div style={{width:'90%'}} 
+      className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
               <button style={{border:"1px solid white",cursor:"pointer",fontSize:"13px"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
         <div style={{ padding: 10, fontSize: 15 }}>
           {chatGptResponse || "No Response"}

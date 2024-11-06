@@ -5,6 +5,7 @@ import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import stageimg from "../../assets/Images/BG2.png";  
 
 export default function Speaking_Type({
   questionData,
@@ -30,14 +31,14 @@ export default function Speaking_Type({
     (node) => node.node === "img"
   );
   return (
-    <div>
+    <div style={{paddingTop:'12%'}}>
       <div>
         <ResourceViewer resources={questionData?.resources || []} />
       </div>
 
       <div
         className={styles.questionName}
-        style={{ display: "flex", alignItems: "center" }}
+        style={{ display: "flex", alignItems: "center",justifyContent:'center' }}
       >
         {textNodes && imageNodes ? (
           <div style={{ display: "flex" }}>
