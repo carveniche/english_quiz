@@ -193,12 +193,11 @@ const Recording_part = ({ questionData,questionResponse}) => {
         if (isNaN(Number(scoreRef.current))) {
           console.log('this is scoreref', scoreRef.current);
         
-          // Updated regex to find "score: [digit]" anywhere in the string
-          let regex = /score\s*:\s*(\d)/i;
+         let regex = /{{(\d+)}}/;
           console.log('this is regex', regex);
         
           let scoreValue = regex.exec(scoreRef.current);
-          console.log('this is score value', scoreValue[1]);
+          console.log('this is score value', scoreValue);
         
           // Extract the digit if score pattern is found
           if (scoreValue !== null) {
