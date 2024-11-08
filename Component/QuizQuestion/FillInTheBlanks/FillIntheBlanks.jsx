@@ -70,7 +70,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   return (
     <div>
-      <div
+      {/* <div
         style={{
           color: "#00b8fa",
           fontWeight: "bold",
@@ -79,7 +79,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
         }}
       >
         Fill in the Blanks
-      </div>
+      </div> */}
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && (
         <CustomAlertBoxMathZone msg={"Please Type the Answer"} />
