@@ -155,7 +155,7 @@
 .mathzoneHorizontalolBox>div {
   padding: 15px 25px;
   border-radius: 5px;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   /* background-color: #5ed0f3; */
   color: white;
   background-color: #009e62;
@@ -178,11 +178,11 @@
 }
 
 .biggerFont span {
-  font-size: 24px !important;
+  font-size: 20px !important;
 }
 
 .biggerFont {
-  font-size: 24px !important;
+  font-size: 20px !important;
 }
 
 .next-button {
