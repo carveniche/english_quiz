@@ -64,11 +64,13 @@
   text-align: left;
   align-items: center;
   padding-left: 18px;
-  background-color: #E0FFFF;
+  /* background-color: #E0FFFF; */
+  background-color: white;
   color: #233584;
   border-radius: 12px;
   word-break: break;
-  min-height: auto;
+  /* min-height: auto; */
+  min-height: 60px;
   height: 60px;
   gap: 2rem;
   border: 1px solid black;
@@ -78,9 +80,18 @@
 .mathzoneSelectedChoiceType {
   /* background-color: #b9c2fc; */
   /* background-color: #03C03C; */
-  background-color: teal !important;
+  /* background-color: teal !important; */
+  background-color: #E0FFFF !important;
   transform: scale(.99);
   transition: transform 0.3s;
+}
+
+.greenCorrect {
+  background-color: #1DB954 !important;
+}
+
+.redInCorrect {
+  background-color: #ff3333 !important;
 }
 
 .mathzone-circle-selectbox {
@@ -160,18 +171,18 @@
   justify-content: start;
   gap: 25px;
   height: fit-content;
-  margin-top: 25px;
+  margin: 25px;
   background-color: wheat;
   border-radius: 25px;
   border: 2px solid brown;
 }
 
 .biggerFont span {
-  font-size: 30px !important;
+  font-size: 24px !important;
 }
 
 .biggerFont {
-  font-size: 30px !important;
+  font-size: 24px !important;
 }
 
 .next-button {
@@ -346,4 +357,31 @@
 .inputFieldfib {
   border: 1px solid #0092c8c4;
   width: 40px;
+}
+
+.blinking {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+}
+
+.blinking::placeholder {
+  animation: blink 1s infinite !important;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+    color: yellow;
+  }
+
+  50% {
+    opacity: 0;
+    color: green;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

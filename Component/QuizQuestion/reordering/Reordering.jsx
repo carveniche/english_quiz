@@ -6,7 +6,8 @@ import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import SolveButton from "../../CommonComponent/SolveButton";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
-export default function Reordering({ obj, direction,questionResponse }) {
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+export default function Reordering({ obj, direction, questionResponse }) {
   const choiceRef = useRef([]);
   const {
     submitResponse,
@@ -30,16 +31,15 @@ export default function Reordering({ obj, direction,questionResponse }) {
     setIsCorrect(correctValue);
     return correctValue;
   };
+  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
-      <div>
-          <ResourceViewer resources={obj?.resources||[]}/>
-          
-        </div>
+
       <div>
         <div className={styles.questionName}>
+          <SpeakQuestionText readText={textNodes} />
           {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
@@ -50,10 +50,13 @@ export default function Reordering({ obj, direction,questionResponse }) {
             </>
           ) : null}
         </div>
+        <div style={{ margin: "25px 0" }}>
+          <ResourceViewer resources={obj?.resources || []} />
+        </div>
         <Dragdrop
           choiceRef={choiceRef}
           questionData={obj?.questionContent}
-          response={questionResponse||[]}
+          response={questionResponse || []}
           direction={direction}
         />
       </div>

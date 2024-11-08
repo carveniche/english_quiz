@@ -9,6 +9,8 @@ import { TextareaAutosize } from "@mui/material";
 import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import LinearProgressBar from "./LinearProgressBar";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import Book_back from "../../assets/Images/Book_Background.jpg";
 const useStyles = {
   autoSizeTextarea: {
     width: "100%",
@@ -19,6 +21,8 @@ const useStyles = {
     padding: "8px 12px",
     fontFamily: "inherit",
     fontSize: "inherit",
+    boxShadow:
+      "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
     lineHeight: "inherit",
     boxSizing: "border-box",
     border: "1px solid #ccc",
@@ -47,15 +51,21 @@ const AutoSizeTextarea = ({
   };
   studentTextRef.current = textareaValue;
   return (
-    <TextareaAutosize
-      ref={textareaRef}
-      style={useStyles.autoSizeTextarea}
-      value={isShowingResponse ? textareaValue || response : textareaValue}
-      onChange={handleTextareaChange}
-      placeholder="Enter Response"
-      aria-label="Auto-sizing Textarea"
-      // Minimum number of rows
-    />
+    <>
+      <TextareaAutosize
+        ref={textareaRef}
+        className={`${styles.blinking} blinking`}
+        style={useStyles.autoSizeTextarea}
+        value={isShowingResponse ? textareaValue || response : textareaValue}
+        onChange={handleTextareaChange}
+        placeholder="Enter Response"
+        aria-label="Auto-sizing Textarea"
+        // Minimum number of rows
+      />
+      <p style={{ marginTop: "0" }}>{`Word Count : ${
+        textareaValue.split(" ").filter((wrd) => wrd).length
+      }`}</p>
+    </>
   );
 };
 export default function Writing({
@@ -103,8 +113,8 @@ export default function Writing({
     let apiArray = [];
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
-    if (qstText)
-      question_text = `this is passage text ${qstText} ,   please read the passage text and then give the feedback ${question_text}`;
+    if (grpText)
+      question_text = `this is passage text ${grpText} ,   please read the passage text and then give the feedback ${question_text}`;
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
     if (quizFrom === "diagnostic") {
       stateRef.push(chatGptResponseRef);
@@ -221,7 +231,7 @@ export default function Writing({
     (node) => node.node === "img"
   );
 
-  const [qstText, setQstText] = useState("");
+  const [grpText, setGrpText] = useState("");
   useEffect(() => {
     if (
       questionGroupData.group_data &&
@@ -234,7 +244,7 @@ export default function Writing({
       var xyu = textGroupNodes.reduce((acc, node) => {
         return (acc += node.value);
       }, "");
-      setQstText(xyu);
+      setGrpText(xyu);
     }
   }, []);
 
@@ -243,16 +253,17 @@ export default function Writing({
       <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className={styles.questionName}>
-        {textNodes && imageNodes ? (
+        {/* {textNodes && imageNodes ? (
           <>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", gap: "40px" }}>
               <div
-                className={`${wordsLength <= 50 ? styles.biggerFont : ""}`}
+                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
                 style={{
                   display: "flex",
-                  alignItems: wordsLength <= 50 ? "center" : "",
+                  alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
+                <SpeakQuestionText readText={textNodes} />
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&
@@ -286,7 +297,87 @@ export default function Writing({
               </>
             ) : null}
           </>
-        )}
+        )} */}
+        <div
+          style={{
+            backgroundRepeat: "no-repeat",
+            display: "flex",
+            gap: "10%",
+            padding: "20px",
+            backgroundSize: "cover",
+            borderRadius: "15px",
+            // backgroundImage: `url(${Book_back})`,
+            backgroundImage: `url(/assets/new_home/Book_Background_new.jpg)`,
+          }}
+        >
+          {textNodes && imageNodes ? (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "45%",
+                }}
+              >
+                <div
+                  className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+                  style={{
+                    display: "flex",
+                    alignItems: wordsLength <= 30 ? "center" : "",
+                    width: "100%",
+                  }}
+                >
+                  <SpeakQuestionText readText={textNodes} />
+                  <div style={{ paddingLeft: "15px" }}>
+                    {textNodes &&
+                      textNodes.length > 0 &&
+                      textNodes.map((item, key) => (
+                        <React.Fragment key={key}>
+                          {objectParser(item, key)}
+                        </React.Fragment>
+                      ))}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  {imageNodes &&
+                    imageNodes.length > 0 &&
+                    imageNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {questionData?.questionName?.length ? (
+                <>
+                  {questionData?.questionName.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                </>
+              ) : null}
+            </>
+          )}
+          <div style={{ marginTop: "5px", paddingRight: "5px", width: "45%" }}>
+            <AutoSizeTextarea
+              studentTextRef={studentTextRef}
+              hideCheckButton={hideCheckButton}
+              response={questionResponse?.studentResponse || null}
+              isShowingResponse={submitResponse || disabledQuestion}
+            />
+          </div>
+        </div>
         {/* {questionData?.questionName?.length ? (
           <>
             {questionData?.questionName.map((item, key) => (
@@ -297,14 +388,14 @@ export default function Writing({
           </>
         ) : null} */}
       </div>
-      <div style={{ marginTop: 5 }}>
+      {/* <div style={{ marginTop: 5 }}>
         <AutoSizeTextarea
           studentTextRef={studentTextRef}
           hideCheckButton={hideCheckButton}
           response={questionResponse?.studentResponse || null}
           isShowingResponse={submitResponse || disabledQuestion}
         />
-      </div>
+      </div> */}
       {hideCheckButton && (
         <>
           {gptResponseLoading ? (

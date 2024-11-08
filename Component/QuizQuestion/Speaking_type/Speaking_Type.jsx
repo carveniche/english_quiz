@@ -5,6 +5,7 @@ import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 
 export default function Speaking_Type({
   questionData,
@@ -40,14 +41,15 @@ export default function Speaking_Type({
         style={{ display: "flex", alignItems: "center" }}
       >
         {textNodes && imageNodes ? (
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", gap: "40px" }}>
             <div
-              className={`${wordsLength <= 50 ? styles.biggerFont : ""}`}
+              className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
               style={{
                 display: "flex",
-                alignItems: wordsLength <= 50 ? "center" : "",
+                alignItems: wordsLength <= 30 ? "center" : "",
               }}
             >
+              <SpeakQuestionText readText={textNodes} />
               <div>
                 {textNodes &&
                   textNodes.length > 0 &&

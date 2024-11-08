@@ -9,6 +9,7 @@ import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 export default function FillIntheBlanks({ obj, wordsLength }) {
   var data = obj?.choices.flatMap((sda) => {
     return sda.value.split(" ").map((val) => ({
@@ -87,7 +88,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
       <div>
         <div className={styles.questionName}>
           {textNodes && imageNodes ? (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", gap: "40px" }}>
               <div
                 className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
                 style={{
@@ -96,13 +97,18 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
                 }}
               >
                 <div>
-                  {textNodes &&
-                    textNodes.length > 0 &&
-                    textNodes.map((item, key) => (
-                      <React.Fragment key={key}>
-                        {objectParser(item, key)}
-                      </React.Fragment>
-                    ))}
+                  <div style={{ display: "flex" }}>
+                    <SpeakQuestionText readText={textNodes} />
+                    <div>
+                      {textNodes &&
+                        textNodes.length > 0 &&
+                        textNodes.map((item, key) => (
+                          <React.Fragment key={key}>
+                            {objectParser(item, key)}
+                          </React.Fragment>
+                        ))}
+                    </div>
+                  </div>
                   {obj?.resources.length > 0 && (
                     <AudiPlayerComponent resources={obj?.resources || []} />
                   )}

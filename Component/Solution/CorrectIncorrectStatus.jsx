@@ -26,8 +26,13 @@ export default function CorrectIncorrectStatus({
   };
   window.reactEnglishHandleShowCorrectOption = handleShowCorrectOption;
   window.handleShowCorrectIncorrectImage = handleShowCorrectIncorrectImage;
-  return (showSolution||showCorrectIncorrectImage) ? (
-    <div style={{ marginTop: 10 }}>
+  return showSolution || showCorrectIncorrectImage ? (
+    <div
+      style={{
+        marginTop: 10,
+        display: obj.question_type !== "Multiple choice" ? "block" : "none",
+      }}
+    >
       {showCorrectIncorrectImage &&
         (isCorrect === 0 || isCorrect === 1 ? (
           <div className={styles.quizCorrectInorrect}>

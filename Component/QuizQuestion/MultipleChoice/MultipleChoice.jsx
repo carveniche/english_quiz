@@ -7,6 +7,7 @@ import SolveButton from "../../CommonComponent/SolveButton";
 import objectParser from "../../Utility/objectParser";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 export default function MultipleChoice({ obj, wordsLength }) {
   const {
     submitResponse,
@@ -68,7 +69,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
           className={styles.questionName}
         >
           {textNodes && imageNodes ? (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", gap: "40px" }}>
               <div
                 className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
                 style={{
@@ -76,6 +77,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
                   alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
+                <SpeakQuestionText readText={textNodes} />
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&

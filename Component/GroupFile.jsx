@@ -10,6 +10,7 @@ export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
     <>
       <ValidationContextProvider key={obj?.question_id}>
         <Allfile data={obj} questionData={data} />
+
         <CorrectIncorrectStatus
           showCorrectIncorrect={showCorrectIncorrect}
           showSolution={showSolution}
