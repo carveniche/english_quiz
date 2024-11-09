@@ -1,6 +1,8 @@
 import React from "react";
 import Speaking_Type from "./Speaking_Type";
 import { WRITING_GPT } from "../../Utility/Constant";
+import NotificationModal from "../GroupQuestion/ReadingComprehensive/NotificationModal";
+import { useState } from "react";
 
 export const Main_Speaking_Type = ({ obj, wordsLength }) => {
   let question_text = JSON.parse(obj?.question_data);
@@ -12,9 +14,11 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
     console.log(e);
   }
 
+  const [hideNotification, setHideNotification] = useState(false);
+
   return (
     <>
-      <div
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "center",
@@ -36,9 +40,11 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
         <div>
           Please sit in a quiet place and be loud and clear while recording
         </div>
-      </div>
+      </div> */}
 
       <br />
+      {!hideNotification && <NotificationModal  msg={" Please sit in a quiet place and be loud and clear while recording"} onClose={setHideNotification} />}
+
       <Speaking_Type
         questionData={question_text}
         questionResponse={questionResponse}
