@@ -9,6 +9,7 @@ import styles from "../english_mathzone.module.css";
 import getTextFromQuestion from '../../Utility/getTextFromQuestion';
 import axios from 'axios';
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
+import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
 
 const Recording_part = ({ questionData,questionResponse}) => {
 
@@ -318,6 +319,10 @@ const Recording_part = ({ questionData,questionResponse}) => {
   
     return (
 <div>
+  
+{questionData?.resources.length > 0 && (
+                    <AudiPlayerComponent resources={questionData?.resources || []} />
+                  )}
 
 <SolveButton  onClick={passAudio} />
 {redAlert && !submitResponse && <CustomAlertBoxVoice />}

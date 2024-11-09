@@ -32,9 +32,10 @@ export default function Speaking_Type({
   );
   return (
     <div>
-      <div>
+      {/* <div>
         <ResourceViewer resources={questionData?.resources || []} />
-      </div>
+      </div> */}
+      
 
       <div
         className={styles.questionName}

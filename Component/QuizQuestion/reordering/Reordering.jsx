@@ -7,6 +7,7 @@ import objectParser from "../../Utility/objectParser";
 import SolveButton from "../../CommonComponent/SolveButton";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 export default function Reordering({ obj, direction, questionResponse }) {
   const choiceRef = useRef([]);
   const {
@@ -50,9 +51,12 @@ export default function Reordering({ obj, direction, questionResponse }) {
             </>
           ) : null}
         </div>
-        <div style={{ margin: "25px 0" }}>
+
+        {/* <div style={{ margin: "25px 0" }}>
           <ResourceViewer resources={obj?.resources || []} />
-        </div>
+        </div> */}
+    {obj?.resources.length>0 && <AudiPlayerComponent  resources={obj?.resources || []}/>}
+
         <Dragdrop
           choiceRef={choiceRef}
           questionData={obj?.questionContent}

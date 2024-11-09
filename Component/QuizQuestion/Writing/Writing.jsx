@@ -11,6 +11,7 @@ import LinearProgressBar from "./LinearProgressBar";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import Book_back from "../../assets/Images/Book_Background.jpg";
+import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 const useStyles = {
   autoSizeTextarea: {
     width: "100%",
@@ -354,6 +355,11 @@ export default function Writing({
                       </React.Fragment>
                     ))}
                 </div>
+
+                {questionData?.resources.length > 0 && (
+                    <AudiPlayerComponent resources={questionData?.resources || []} />
+                  )}
+                  
               </div>
             </>
           ) : (

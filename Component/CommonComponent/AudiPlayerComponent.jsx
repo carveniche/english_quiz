@@ -23,7 +23,7 @@ export default function AudiPlayerComponent({ resources }) {
         style={{
           width: 115,
           height: 115,
-          backgroundImage: `url("https://d1t64bxz3n5cv1.cloudfront.net/hearing_img.png")`, // Replace with your background image URL
+          backgroundImage: `url("https://d1t64bxz3n5cv1.cloudfront.net/Hearing.png")`, // Replace with your background image URL
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",

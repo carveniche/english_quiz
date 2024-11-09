@@ -8,6 +8,7 @@ import objectParser from "../../Utility/objectParser";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 export default function MultipleChoice({ obj, wordsLength }) {
   const {
     submitResponse,
@@ -58,11 +59,11 @@ export default function MultipleChoice({ obj, wordsLength }) {
     <div>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
-      {obj?.resources?.length > 0 && (
+      {/* {obj?.resources?.length > 0 && (
         <div>
           <ResourceViewer resources={obj?.resources || []} />
         </div>
-      )}
+      )} */}
       <div>
         <div
           style={{ paddingLeft: obj?.resources?.length > 0 ? "50px" : "" }}
@@ -86,6 +87,10 @@ export default function MultipleChoice({ obj, wordsLength }) {
                         {objectParser(item, key)}
                       </React.Fragment>
                     ))}
+
+                <div>
+                {obj?.resources.length>0 && <AudiPlayerComponent  resources={obj?.resources || []}/>}
+                </div>
                 </div>
               </div>
               <div>
