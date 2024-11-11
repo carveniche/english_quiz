@@ -10,16 +10,17 @@ import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import LinearProgressBar from "./LinearProgressBar";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
-import Book_back from "../../assets/Images/Book_Background.jpg";
+
 const useStyles = {
   autoSizeTextarea: {
-    width: "100%",
+    height: "98%",
+    width: "98%",
     maxWidth: "100%",
     minWidth: "100px",
     minHeight: "150px",
     resize: "none",
     padding: "8px 12px",
-    fontFamily: "inherit",
+    fontFamily: "Reddit Sans, sans-serif",
     fontSize: "inherit",
     boxShadow:
       "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
@@ -45,8 +46,8 @@ const AutoSizeTextarea = ({
     if (disabledQuestion) return;
     setTextareaValue(event.target.value);
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      // textareaRef.current.style.height = "auto";
+      // textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
   studentTextRef.current = textareaValue;
@@ -62,7 +63,9 @@ const AutoSizeTextarea = ({
         aria-label="Auto-sizing Textarea"
         // Minimum number of rows
       />
-      <p style={{ marginTop: "0" }}>{`Word Count : ${
+      <p
+        style={{ marginTop: "3px", textAlign: "right", width: "97%" }}
+      >{`Word Count : ${
         textareaValue.split(" ").filter((wrd) => wrd).length
       }`}</p>
     </>
@@ -170,8 +173,7 @@ export default function Writing({
     if (isNaN(Number(scoreRef.current))) {
       console.log("this is scoreref", scoreRef.current);
 
- 
-     let regex = /{{(\d+)}}/;
+      let regex = /{{(\d+)}}/;
       console.log("this is regex", regex);
 
       let scoreValue = regex.exec(scoreRef.current);
@@ -232,6 +234,7 @@ export default function Writing({
   );
 
   const [grpText, setGrpText] = useState("");
+  const [qstnText, setQstnText] = useState("");
   useEffect(() => {
     if (
       questionGroupData.group_data &&
@@ -246,7 +249,19 @@ export default function Writing({
       }, "");
       setGrpText(xyu);
     }
+    if (questionData.questionName) {
+      var textGroupNodes = questionData.questionName.filter(
+        (node) => node.node === "text"
+      );
+      var xyu = textGroupNodes.reduce((acc, node) => {
+        return (acc += node.value);
+      }, "");
+      setQstnText(xyu);
+    }
   }, []);
+  const isEnglishStudentLevel =
+    localStorage.getItem("isEnglishStudentLevel") || false;
+  console.log("qsmtets", qstnText);
 
   return (
     <div>
@@ -263,7 +278,9 @@ export default function Writing({
                   alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
-                <SpeakQuestionText readText={textNodes} />
+                {isEnglishStudentLevel && (
+                  <SpeakQuestionText readText={textNodes} />
+                )}
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&
@@ -298,86 +315,159 @@ export default function Writing({
             ) : null}
           </>
         )} */}
-        <div
-          style={{
-            backgroundRepeat: "no-repeat",
-            display: "flex",
-            gap: "10%",
-            padding: "20px",
-            backgroundSize: "cover",
-            borderRadius: "15px",
-            // backgroundImage: `url(${Book_back})`,
-            backgroundImage: `url(/assets/new_home/Book_Background_new.jpg)`,
-          }}
-        >
-          {textNodes && imageNodes ? (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "45%",
-                }}
-              >
+        {qstnText.split(" ").length < 30 ? (
+          <div
+            style={{
+              backgroundRepeat: "no-repeat",
+              display: "flex",
+              gap: "10%",
+              padding: "20px",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              minHeight: "80vh",
+              borderRadius: "15px",
+              height: "fit-content",
+              // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
+              backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/WritingGptBg-02.png)`,
+            }}
+          >
+            {textNodes && imageNodes ? (
+              <>
                 <div
-                  className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
                   style={{
                     display: "flex",
-                    alignItems: wordsLength <= 30 ? "center" : "",
-                    width: "100%",
+                    flexDirection: "column",
+                    width: "45%",
                   }}
                 >
-                  <SpeakQuestionText readText={textNodes} />
-                  <div style={{ paddingLeft: "15px" }}>
-                    {textNodes &&
-                      textNodes.length > 0 &&
-                      textNodes.map((item, key) => (
+                  <div
+                    className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+                    style={{
+                      display: "flex",
+                      alignItems: wordsLength <= 30 ? "center" : "",
+                      width: "100%",
+                    }}
+                  >
+                    {isEnglishStudentLevel && (
+                      <SpeakQuestionText readText={textNodes} />
+                    )}
+                    <div style={{ paddingLeft: "15px" }}>
+                      {textNodes &&
+                        textNodes.length > 0 &&
+                        textNodes.map((item, key) => (
+                          <React.Fragment key={key}>
+                            {objectParser(item, key)}
+                          </React.Fragment>
+                        ))}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    {imageNodes &&
+                      imageNodes.length > 0 &&
+                      imageNodes.map((item, key) => (
                         <React.Fragment key={key}>
                           {objectParser(item, key)}
                         </React.Fragment>
                       ))}
                   </div>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  {imageNodes &&
-                    imageNodes.length > 0 &&
-                    imageNodes.map((item, key) => (
+              </>
+            ) : (
+              <>
+                {questionData?.questionName?.length ? (
+                  <>
+                    {questionData?.questionName.map((item, key) => (
                       <React.Fragment key={key}>
                         {objectParser(item, key)}
                       </React.Fragment>
                     ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {questionData?.questionName?.length ? (
-                <>
-                  {questionData?.questionName.map((item, key) => (
+                  </>
+                ) : null}
+              </>
+            )}
+            <div
+              style={{
+                marginTop: "5px",
+                paddingLeft: "10px",
+                paddingRight: "5px",
+                width: "45%",
+                height: "auto",
+              }}
+            >
+              <AutoSizeTextarea
+                studentTextRef={studentTextRef}
+                hideCheckButton={hideCheckButton}
+                response={questionResponse?.studentResponse || null}
+                isShowingResponse={submitResponse || disabledQuestion}
+              />
+            </div>
+          </div>
+        ) : (
+          <div
+            style={{
+              backgroundRepeat: "no-repeat",
+              display: "flex",
+              gap: "10%",
+              padding: "20px",
+              flexDirection: "column",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              minHeight: "80vh",
+              width: "60vw",
+              margin: "auto",
+              borderRadius: "15px",
+              paddingLeft: "60px",
+              height: "fit-content",
+              // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
+              backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+BG-03.png)`,
+            }}
+          >
+            <div
+              className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+              style={{
+                display: "flex",
+                alignItems: wordsLength <= 30 ? "center" : "",
+                width: "100%",
+              }}
+            >
+              {isEnglishStudentLevel && (
+                <SpeakQuestionText readText={textNodes} />
+              )}
+              <div style={{ paddingLeft: "15px" }}>
+                {textNodes &&
+                  textNodes.length > 0 &&
+                  textNodes.map((item, key) => (
                     <React.Fragment key={key}>
                       {objectParser(item, key)}
                     </React.Fragment>
                   ))}
-                </>
-              ) : null}
-            </>
-          )}
-          <div style={{ marginTop: "5px", paddingRight: "5px", width: "45%" }}>
-            <AutoSizeTextarea
-              studentTextRef={studentTextRef}
-              hideCheckButton={hideCheckButton}
-              response={questionResponse?.studentResponse || null}
-              isShowingResponse={submitResponse || disabledQuestion}
-            />
+              </div>
+            </div>
+            <div
+              style={{
+                marginTop: "5px",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                width: "100%",
+                height: "60vh",
+              }}
+            >
+              <AutoSizeTextarea
+                studentTextRef={studentTextRef}
+                hideCheckButton={hideCheckButton}
+                response={questionResponse?.studentResponse || null}
+                isShowingResponse={submitResponse || disabledQuestion}
+              />
+            </div>
           </div>
-        </div>
+        )}
         {/* {questionData?.questionName?.length ? (
           <>
             {questionData?.questionName.map((item, key) => (

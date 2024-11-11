@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import styles from "../english_mathzone.module.css";
@@ -68,6 +68,9 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   };
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
+  const isEnglishStudentLevel =
+    localStorage.getItem("isEnglishStudentLevel") || false;
+  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
   return (
     <div>
       {/* <div
@@ -98,7 +101,9 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
               >
                 <div>
                   <div style={{ display: "flex" }}>
-                    <SpeakQuestionText readText={textNodes} />
+                    {isEnglishStudentLevel && (
+                      <SpeakQuestionText readText={textNodes} />
+                    )}
                     <div>
                       {textNodes &&
                         textNodes.length > 0 &&

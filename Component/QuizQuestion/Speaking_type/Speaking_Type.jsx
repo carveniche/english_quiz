@@ -30,6 +30,9 @@ export default function Speaking_Type({
   var imageNodes = questionData?.questionName.filter(
     (node) => node.node === "img"
   );
+  const isEnglishStudentLevel =
+    localStorage.getItem("isEnglishStudentLevel") || false;
+  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
   return (
     <div>
       <div>
@@ -49,7 +52,9 @@ export default function Speaking_Type({
                 alignItems: wordsLength <= 30 ? "center" : "",
               }}
             >
-              <SpeakQuestionText readText={textNodes} />
+              {isEnglishStudentLevel && (
+                <SpeakQuestionText readText={textNodes} />
+              )}
               <div>
                 {textNodes &&
                   textNodes.length > 0 &&

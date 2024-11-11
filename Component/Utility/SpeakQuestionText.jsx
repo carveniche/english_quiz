@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import playing from "../assets/Images/PlayingAudioAnimation.gif";
-import paused from "../assets/Images/PlayAudioLottie.gif";
+import Lottie from "react-lottie";
+import * as paused from "../Solution/AudioPaused.json";
+import * as playing from "../Solution/AudioPlaying.json";
 
 export default function SpeakQuestionText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [text, setText] = useState("");
   const [voices, setVoices] = useState([]);
-
+  const [canStart, setCanStart] = useState(false);
   useEffect(() => {
     if (readText.length > 0) {
       let combinedText = readText.reduce((acc, node) => acc + node.value, "");
@@ -24,24 +25,47 @@ export default function SpeakQuestionText({ readText }) {
       );
     }
 
-    setVoices(window.speechSynthesis.getVoices());
+    const updateVoices = () => {
+      console.log("Updating");
+      const availableVoices = window.speechSynthesis.getVoices();
+      if (availableVoices.length > 0) {
+        setVoices(availableVoices);
+      }
+    };
 
+    updateVoices();
+
+    window.speechSynthesis.onvoiceschanged = updateVoices;
+    const timer = setTimeout(() => {
+      setCanStart(true);
+    }, 1000);
     return () => {
-      window.speechSynthesis.onvoiceschanged = null;
+      if (timer) clearTimeout(timer);
+
       window.speechSynthesis.cancel();
     };
-  }, [readText.length]);
-
+  }, [canStart]);
+  useEffect(() => {
+    const voiceCheckTimer = setTimeout(() => {
+      if (voices.length === 0) {
+        console.error("Fallback: No voices loaded");
+      }
+    }, 2000);
+    return () => clearTimeout(voiceCheckTimer);
+  }, [voices]);
   const readTheQuestionText = () => {
-    console.log("isSpeaking", isSpeaking);
-    console.log("text.length", text);
+    setIsSpeaking(true);
+    const voicesAvailable = window.speechSynthesis.getVoices();
     if (isSpeaking || text.length === 0) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
       return;
     }
-    const utterance = new SpeechSynthesisUtterance(text.join(". "));
-    utterance.voice = voices[12] || voices[0];
+    const textNeedstoSpoken = text.join(". ");
+    console.log("voicesAvailable", voicesAvailable);
+    console.log("textNeedstoSpoken", textNeedstoSpoken);
+    const utterance = new SpeechSynthesisUtterance(textNeedstoSpoken);
+    utterance.voice = voicesAvailable[7] || voicesAvailable[0];
     if (voices.length === 0) {
       console.error("There was an error while generating speech:");
     }
@@ -59,29 +83,33 @@ export default function SpeakQuestionText({ readText }) {
 
     window.speechSynthesis.speak(utterance);
   };
+  const playingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: playing,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const pausedOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: paused,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <>
-      {/* <VolumeUpIcon
-        style={{
-          width: "35px",
-          height: "35px",
-          color: "#23bdf0",
-          cursor: "pointer",
-        }}
-        onClick={readTheQuestionText}
-      /> */}
-      <img
-        // src={isSpeaking ? playing : paused}
-        src={
-          isSpeaking
-            ? "/assets/new_home/PlayingAudioAnimation.gif"
-            : "/assets/new_home/PlayAudioLottie.gif"
-        }
-        style={{ maxWidth: "50px", maxHeight: "50px", cursor: "pointer" }}
-        onClick={readTheQuestionText}
-        alt="play"
-      />
+      <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
+        <Lottie
+          options={isSpeaking ? playingOptions : pausedOptions}
+          height={"50px"}
+          width={"50px"}
+          cursor={"pointer"}
+        />
+      </div>
     </>
   );
 }
