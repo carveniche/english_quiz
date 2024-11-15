@@ -383,7 +383,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
           }}
         >
           {stateIndex === 1 && (
-            <div className="timer" id="timer">
+            <div className="timer" id="timer_speaking_type">
               {formatTime(elapsedTime)}
             </div>
           )}
