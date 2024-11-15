@@ -14,7 +14,7 @@ import Book_back from "../../assets/Images/Book_Background.jpg";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 const useStyles = {
   autoSizeTextarea: {
-    height: "98%",
+    height: "95%",
     width: "98%",
     maxWidth: "100%",
     minWidth: "100px",
@@ -316,7 +316,7 @@ export default function Writing({
             ) : null}
           </>
         )} */}
-        {qstnText.split(" ").length < 30 ? (
+        {qstnText.split(" ").length > 30 ? (
           <div
             style={{
               backgroundRepeat: "no-repeat",
@@ -435,42 +435,44 @@ export default function Writing({
               backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+BG-03.png)`,
             }}
           >
-            <div
-              className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-              style={{
-                display: "flex",
-                alignItems: wordsLength <= 30 ? "center" : "",
-                width: "100%",
-              }}
-            >
-              {isEnglishStudentLevel && (
-                <SpeakQuestionText readText={textNodes} />
-              )}
-              <div style={{ paddingLeft: "15px" }}>
-                {textNodes &&
-                  textNodes.length > 0 &&
-                  textNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
+            <div style={{ marginLeft: "3rem" }}>
+              <div
+                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
+                style={{
+                  display: "flex",
+                  alignItems: wordsLength <= 30 ? "center" : "",
+                  width: "100%",
+                }}
+              >
+                {isEnglishStudentLevel && (
+                  <SpeakQuestionText readText={textNodes} />
+                )}
+                <div style={{ paddingLeft: "15px" }}>
+                  {textNodes &&
+                    textNodes.length > 0 &&
+                    textNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
+                </div>
               </div>
-            </div>
-            <div
-              style={{
-                marginTop: "5px",
-                paddingLeft: "5px",
-                paddingRight: "5px",
-                width: "100%",
-                height: "60vh",
-              }}
-            >
-              <AutoSizeTextarea
-                studentTextRef={studentTextRef}
-                hideCheckButton={hideCheckButton}
-                response={questionResponse?.studentResponse || null}
-                isShowingResponse={submitResponse || disabledQuestion}
-              />
+              <div
+                style={{
+                  marginTop: "5px",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                  width: "100%",
+                  height: "60vh",
+                }}
+              >
+                <AutoSizeTextarea
+                  studentTextRef={studentTextRef}
+                  hideCheckButton={hideCheckButton}
+                  response={questionResponse?.studentResponse || null}
+                  isShowingResponse={submitResponse || disabledQuestion}
+                />
+              </div>
             </div>
           </div>
         )}
