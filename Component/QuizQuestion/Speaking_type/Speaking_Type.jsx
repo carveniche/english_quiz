@@ -34,23 +34,44 @@ export default function Speaking_Type({
     localStorage.getItem("isEnglishStudentLevel") || false;
   console.log("isEnglishStudentLevel", isEnglishStudentLevel);
 
-  const [isTrue,setIsTrue]=useState(false)
-  const direction=isTrue? 'column':'row'
-  console.log(direction,isTrue)
+  const [isTrue, setIsTrue] = useState(false);
+  const direction = isTrue ? "column" : "row";
+  console.log(direction, isTrue);
 
   return (
-    <div className="red" style={{display:'flex',flexDirection:`${direction}`,justifyContent:'space-around'}}>
+    <div
+      className="red"
+      style={{
+        display: "flex",
+        flexDirection: `${direction}`,
+        justifyContent: "space-around",
+      }}
+    >
       {/* <div>
         <ResourceViewer resources={questionData?.resources || []} />
       </div> */}
-      
 
       <div
         className={styles.questionName}
-        style={{ display: "flex", alignItems: "center",justifyContent:'center' }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         {textNodes && imageNodes ? (
-          <div style={{ display: "flex", gap: "40px",flexDirection:'column' }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "40px",
+              flexDirection: "column",
+              paddingBottom: "2%",
+            }}
+          >
+            {questionData?.resources.length > 0 && (
+              <AudiPlayerComponent resources={questionData?.resources || []} />
+            )}
+
             <div
               className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
               style={{
@@ -77,6 +98,7 @@ export default function Speaking_Type({
                 )} */}
               </div>
             </div>
+
             <div>
               {imageNodes &&
                 imageNodes.length > 0 &&
@@ -86,10 +108,6 @@ export default function Speaking_Type({
                   </React.Fragment>
                 ))}
             </div>
-                                          
-{questionData?.resources.length > 0 && (
-                    <AudiPlayerComponent resources={questionData?.resources || []} />
-                  )}
           </div>
         ) : (
           <>
@@ -115,13 +133,13 @@ export default function Speaking_Type({
             </div>
           </>
         ) : null} */}
-      </div>    
+      </div>
 
       <Recording_part
         questionData={questionData}
         questionResponse={questionResponse}
         setIsTrue={setIsTrue}
-      />      
+      />
     </div>
   );
 }

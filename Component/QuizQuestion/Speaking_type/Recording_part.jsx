@@ -41,32 +41,34 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   // button styles start
   const recordbtn = {
     border: "none",
-    //background: '#38c185',
-    color: "transparent",
+    // background: "#38c185",
+    background: "linear-gradient(45deg, #00CFC7 ,#0093CF)",
+    color: "white",
     padding: "12px",
     borderRadius: "20px",
     cursor: "pointer",
     fontSize: "13px",
-    backgroundImage:
-      'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Start.png")',
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
+    // backgroundImage:
+    //   'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Start.png")',
+    // backgroundRepeat: "no-repeat",
+    // backgroundPosition: "center center",
+    // backgroundSize: "cover",
     width: "150px",
   };
   const stoprecord = {
     border: "none",
-    //  background: 'red',
-    color: "transparent",
+    //background: "red",
+    background: "linear-gradient(45deg, #E97200, #E98E00)",
+    color: "white",
     padding: "12px",
     borderRadius: "20px",
     cursor: "pointer",
     fontSize: "13px",
-    backgroundImage:
-      'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Stop.png")',
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
+    // backgroundImage:
+    //   'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Stop.png")',
+    // backgroundRepeat: "no-repeat",
+    // backgroundPosition: "center center",
+    // backgroundSize: "cover",
     width: "150px",
   };
   // button styles end
@@ -463,13 +465,17 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
 
         {hideCheckButton && (
           <>
-            {gptResponseLoading ? (
-              <LinearProgressBar type={"speaking"} />
-            ) : quizFromRef.current === "diagnostic" ? (
-              ""
-            ) : (
-              <GptFeedback chatGptResponse={chatGptResponseRef.current} />
-            )}
+            <div style={{ position: "absolute", width: "80%", bottom: "5%" }}>
+              {gptResponseLoading ? (
+                <LinearProgressBar type={"speaking"} />
+              ) : quizFromRef.current === "diagnostic" ? (
+                ""
+              ) : (
+                <GptFeedback chatGptResponse={chatGptResponseRef.current} />
+              )}
+            </div>
+            <br />
+            <br />
           </>
         )}
 
