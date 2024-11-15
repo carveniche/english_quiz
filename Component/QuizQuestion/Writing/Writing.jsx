@@ -456,6 +456,13 @@ export default function Writing({
                         {objectParser(item, key)}
                       </React.Fragment>
                     ))}
+                    {imageNodes &&
+                      imageNodes.length > 0 &&
+                      imageNodes.map((item, key) => (
+                        <React.Fragment key={key}>
+                          {objectParser(item, key)}
+                        </React.Fragment>
+                      ))}
                 </div>
               </div>
               <div
