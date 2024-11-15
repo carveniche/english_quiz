@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import Lottie from "react-lottie";
 // import recordingGIF from "../../assets/Images/record.gif"
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxVoice from "../../CommonComponent/CustomAlertBoxVoice";
@@ -8,6 +9,8 @@ import styles from "../english_mathzone.module.css";
 import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
+import * as paused from "../../Solution/AudioPaused.json";
+import * as playing from "../../Solution/AudioPlaying.json";
 
 const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -337,6 +340,22 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   const handleAudioEnd = () => {
     setIsPlaying(false);
   };
+  const playingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: playing,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const pausedOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: paused,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   return (
     <div>
       <SolveButton onClick={passAudio} />
@@ -394,14 +413,11 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
                 cursor: "pointer",
               }}
             >
-              <img
-                src={
-                  isPlaying
-                    ? "https://d1t64bxz3n5cv1.cloudfront.net/AudioPlay.gif"
-                    : "https://d1t64bxz3n5cv1.cloudfront.net/PlayButton.gif"
-                }
-                alt="Audio Control"
-                style={{ width: 85, height: 85 }}
+              <Lottie
+                options={isPlaying ? playingOptions : pausedOptions}
+                height={"85px"}
+                width={"85px"}
+                cursor={"pointer"}
               />
               <audio
                 id="first"
@@ -448,7 +464,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
         {hideCheckButton && (
           <>
             {gptResponseLoading ? (
-              <LinearProgressBar />
+              <LinearProgressBar type={"speaking"} />
             ) : quizFromRef.current === "diagnostic" ? (
               ""
             ) : (
