@@ -16,8 +16,12 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
 
   const [hideNotification, setHideNotification] = useState(false);
 
+ // url('https://d1t64bxz3n5cv1.cloudfront.net/stage.png')
   return (
     <>
+    <div style={{backgroundImage:`url('https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+stage.png')`, backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",height:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
       {/* <div
         style={{
           display: "flex",
@@ -42,14 +46,18 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
         </div>
       </div> */}
 
-      <br />
       {!hideNotification && <NotificationModal  msg={" Please sit in a quiet place and be loud and clear while recording"} onClose={setHideNotification} />}
 
+<div style={{border:'1px solid transparent',height:'auto',maxHeight:'350px',width:'80%',overflowX:'hidden'}}>
+  
       <Speaking_Type
         questionData={question_text}
         questionResponse={questionResponse}
         wordsLength={wordsLength}
       />
+</div>
+
+      </div>
     </>
   );
 };

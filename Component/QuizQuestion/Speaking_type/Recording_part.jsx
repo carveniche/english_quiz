@@ -9,9 +9,8 @@ import styles from "../english_mathzone.module.css";
 import getTextFromQuestion from '../../Utility/getTextFromQuestion';
 import axios from 'axios';
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
-import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
 
-const Recording_part = ({ questionData,questionResponse}) => {
+const Recording_part = ({ questionData,questionResponse,setIsTrue}) => {
 
     const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
     const {
@@ -41,21 +40,32 @@ const Recording_part = ({ questionData,questionResponse}) => {
     // button styles start
     const recordbtn = {
         border: 'none',
-        background: '#38c185',
-        color: 'white',
+        //background: '#38c185',
+        color: 'transparent',
         padding: '12px',
-        borderRadius: '10px',
+        borderRadius: '20px',
         cursor: 'pointer',
-        fontSize:'13px'
+        fontSize:'13px',
+        backgroundImage: 'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Start.png")',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        width:'150px'
+        
     };
     const stoprecord={
         border: 'none',
-        background: 'red',
-        color: 'white',
+      //  background: 'red',
+        color: 'transparent',
         padding: '12px',
-        borderRadius: '10px',
+        borderRadius: '20px',
         cursor: 'pointer',
-        fontSize:'13px'
+        fontSize:'13px',
+        backgroundImage: 'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Stop.png")',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        width:'150px'
     }
         // button styles end
 
@@ -140,6 +150,7 @@ const Recording_part = ({ questionData,questionResponse}) => {
     
     const handlePromptRequest = async (prompt_text) => {
         setHideCheckButton(true);
+        setIsTrue(true);
         setGptResponseLoading(true);
         let questionText = questionData?.questionName;
         let instruction = questionData.prompt_text || "";
@@ -317,12 +328,26 @@ const Recording_part = ({ questionData,questionResponse}) => {
    
     };
   
+
+
+
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRefplay = useRef(null);
+    const handleAudioToggle = () => {
+      if (isPlaying) {
+        audioRefplay.current.pause();
+      } else {
+        audioRefplay.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    };
+    const handleAudioEnd = () => {
+      setIsPlaying(false);
+    };
     return (
 <div>
   
-{questionData?.resources.length > 0 && (
-                    <AudiPlayerComponent resources={questionData?.resources || []} />
-                  )}
+
 
 <SolveButton  onClick={passAudio} />
 {redAlert && !submitResponse && <CustomAlertBoxVoice />}
@@ -336,12 +361,35 @@ const Recording_part = ({ questionData,questionResponse}) => {
         )}  
           {stateIndex === 1 && (
             <>
-              <img id="message_img" src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/record.gif" alt="Audio recording" width="100" height="100" />
+              <img id="message_img" src="https://d1t64bxz3n5cv1.cloudfront.net/Talking+C.gif" alt="Audio recording" width="200" height="200" />
               <span>Recording...</span>
             </>
           )}
           {(stateIndex === 2||(submitResponse||disabledQuestion)) && (
-            <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
+            // <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
+
+            <div
+            onClick={handleAudioToggle}
+            style={{
+              width: 75,
+              height: 75,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}>
+              <img
+          src={
+            isPlaying
+              ? "https://d1t64bxz3n5cv1.cloudfront.net/AudioPlay.gif"
+              : "https://d1t64bxz3n5cv1.cloudfront.net/PlayButton.gif"
+          }
+          alt="Audio Control"
+          style={{ width: 85, height: 85}}
+        />
+            <audio id="first"  ref={audioRefplay}  src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL} onEnded={handleAudioEnd}></audio>
+            </div>
+
           )}
         </div>
   
@@ -423,7 +471,7 @@ function GptFeedback({ chatGptResponse }) {
   };
 
     return (
-      <div className={styles.gpt_feedback_box}>
+      <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`} >
               <button style={{border:"1px solid white",cursor:"pointer",fontSize:"13px"}} onClick={toggleSpeak}>🔊 Read Aloud</button>
         <div style={{ padding: 10, fontSize: 15 }}>
           {chatGptResponse || "No Response"}

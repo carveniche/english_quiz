@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import styles from "../english_mathzone.module.css";
 import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
-import ResourceViewer from "../../CommonComponent/ResourceViewer";
+// import ResourceViewer from "../../CommonComponent/ResourceViewer";
+// import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
-import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 
 export default function Speaking_Type({
   questionData,
@@ -30,8 +30,13 @@ export default function Speaking_Type({
   var imageNodes = questionData?.questionName.filter(
     (node) => node.node === "img"
   );
+
+  const [isTrue,setIsTrue]=useState(false)
+  const direction=isTrue? 'column':'row'
+  console.log(direction,isTrue)
+
   return (
-    <div>
+    <div className="red" style={{display:'flex',flexDirection:`${direction}`,justifyContent:'space-around'}}>
       {/* <div>
         <ResourceViewer resources={questionData?.resources || []} />
       </div> */}
@@ -39,10 +44,10 @@ export default function Speaking_Type({
 
       <div
         className={styles.questionName}
-        style={{ display: "flex", alignItems: "center" }}
+        style={{ display: "flex", alignItems: "center",justifyContent:'center' }}
       >
         {textNodes && imageNodes ? (
-          <div style={{ display: "flex", gap: "40px" }}>
+          <div style={{ display: "flex", gap: "40px",flexDirection:'column' }}>
             <div
               className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
               style={{
@@ -50,7 +55,8 @@ export default function Speaking_Type({
                 alignItems: wordsLength <= 30 ? "center" : "",
               }}
             >
-              <SpeakQuestionText readText={textNodes} />
+              {/* <SpeakQuestionText readText={textNodes} /> */}
+
               <div>
                 {textNodes &&
                   textNodes.length > 0 &&
@@ -75,6 +81,10 @@ export default function Speaking_Type({
                   </React.Fragment>
                 ))}
             </div>
+                                          
+{questionData?.resources.length > 0 && (
+                    <AudiPlayerComponent resources={questionData?.resources || []} />
+                  )}
           </div>
         ) : (
           <>
@@ -100,12 +110,13 @@ export default function Speaking_Type({
             </div>
           </>
         ) : null} */}
-      </div>
+      </div>    
 
       <Recording_part
         questionData={questionData}
         questionResponse={questionResponse}
-      />
+        setIsTrue={setIsTrue}
+      />      
     </div>
   );
 }
