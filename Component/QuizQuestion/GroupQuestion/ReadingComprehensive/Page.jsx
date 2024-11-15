@@ -15,7 +15,7 @@ export default function Page({ passage }) {
         linesLength <= 5 ? styles.biggerFont : ""
       }`}
     >
-      {isEnglishStudentLevel && <SpeakQuestionText readText={passage} />}
+      {/* {isEnglishStudentLevel && <SpeakQuestionText readText={passage} />} */}
       {/* <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}> */}
       <div>
         {passage.map((item, key) => {

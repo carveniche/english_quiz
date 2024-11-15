@@ -101,9 +101,9 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
               >
                 <div>
                   <div style={{ display: "flex" }}>
-                    {isEnglishStudentLevel && (
+                    {/* {isEnglishStudentLevel && (
                       <SpeakQuestionText readText={textNodes} />
-                    )}
+                    )} */}
                     <div>
                       {textNodes &&
                         textNodes.length > 0 &&

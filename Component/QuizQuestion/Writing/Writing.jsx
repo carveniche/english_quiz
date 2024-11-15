@@ -349,9 +349,9 @@ export default function Writing({
                       width: "100%",
                     }}
                   >
-                    {isEnglishStudentLevel && (
+                    {/* {isEnglishStudentLevel && (
                       <SpeakQuestionText readText={textNodes} />
-                    )}
+                    )} */}
                     <div style={{ paddingLeft: "15px" }}>
                       {textNodes &&
                         textNodes.length > 0 &&
@@ -378,12 +378,13 @@ export default function Writing({
                         </React.Fragment>
                       ))}
                   </div>
-  
-                {questionData?.resources.length > 0 && (
-                    <AudiPlayerComponent resources={questionData?.resources || []} />
+
+                  {questionData?.resources.length > 0 && (
+                    <AudiPlayerComponent
+                      resources={questionData?.resources || []}
+                    />
                   )}
-                  
-              </div>
+                </div>
               </>
             ) : (
               <>
@@ -444,9 +445,9 @@ export default function Writing({
                   width: "100%",
                 }}
               >
-                {isEnglishStudentLevel && (
+                {/* {isEnglishStudentLevel && (
                   <SpeakQuestionText readText={textNodes} />
-                )}
+                )} */}
                 <div style={{ paddingLeft: "15px" }}>
                   {textNodes &&
                     textNodes.length > 0 &&

@@ -81,9 +81,9 @@ export default function MultipleChoice({ obj, wordsLength }) {
                   alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
-                {isEnglishStudentLevel && (
+                {/* {isEnglishStudentLevel && (
                   <SpeakQuestionText readText={textNodes} />
-                )}
+                )} */}
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&

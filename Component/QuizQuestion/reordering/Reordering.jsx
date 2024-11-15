@@ -43,7 +43,7 @@ export default function Reordering({ obj, direction, questionResponse }) {
 
       <div>
         <div className={styles.questionName}>
-          {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />}
+          {/* {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />} */}
           {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
