@@ -33,6 +33,9 @@ export default function Reordering({ obj, direction, questionResponse }) {
     return correctValue;
   };
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
+  const isEnglishStudentLevel =
+    localStorage.getItem("isEnglishStudentLevel") || false;
+  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -40,7 +43,7 @@ export default function Reordering({ obj, direction, questionResponse }) {
 
       <div>
         <div className={styles.questionName}>
-          <SpeakQuestionText readText={textNodes} />
+          {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />}
           {obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (

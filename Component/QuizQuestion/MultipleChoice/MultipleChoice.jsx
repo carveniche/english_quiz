@@ -55,6 +55,9 @@ export default function MultipleChoice({ obj, wordsLength }) {
 
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
+  const isEnglishStudentLevel =
+    localStorage.getItem("isEnglishStudentLevel") || false;
+  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -78,7 +81,9 @@ export default function MultipleChoice({ obj, wordsLength }) {
                   alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
-                <SpeakQuestionText readText={textNodes} />
+                {isEnglishStudentLevel && (
+                  <SpeakQuestionText readText={textNodes} />
+                )}
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&

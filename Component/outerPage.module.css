@@ -16,8 +16,8 @@
 .bodyPage p {
   /* H3 Desktop 18 pt */
 
-  /* font-family: "Reddit Sans", sans-serif; */
-  font-family: "GothamRnd-Book2";
+  font-family: "Reddit Sans", sans-serif !important;
+  /* font-family: "GothamRnd-Book2"; */
   font-style: normal;
   font-size: 18px;
 }
@@ -45,8 +45,8 @@
 .groupPage p {
   /* H3 Desktop 18 pt */
 
-  /* font-family: "Reddit Sans", sans-serif; */
-  font-family: "GothamRnd-Book2";
+  font-family: "Reddit Sans", sans-serif !important;
+  /* font-family: "GothamRnd-Book2"; */
   font-style: normal;
   font-size: 18px;
 }
