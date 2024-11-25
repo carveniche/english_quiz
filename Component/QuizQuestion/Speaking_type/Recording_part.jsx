@@ -415,11 +415,12 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
                 cursor: "pointer",
               }}
             >
-              <Lottie
-                options={isPlaying ? playingOptions : pausedOptions}
-                height={"85px"}
-                width={"85px"}
-                cursor={"pointer"}
+              <img
+                src={
+                  isPlaying
+                    ? "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PayingAudioAnimation.gif"
+                    : "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PlayAudioLottie.gif"
+                }
               />
               <audio
                 id="first"
