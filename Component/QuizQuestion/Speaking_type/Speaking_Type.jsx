@@ -32,7 +32,6 @@ export default function Speaking_Type({
   );
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
 
   const [isTrue, setIsTrue] = useState(false);
   const direction = isTrue ? "column" : "row";

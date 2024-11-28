@@ -57,7 +57,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
+
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -93,9 +93,11 @@ export default function MultipleChoice({ obj, wordsLength }) {
                       </React.Fragment>
                     ))}
 
-                <div>
-                {obj?.resources.length>0 && <AudiPlayerComponent  resources={obj?.resources || []}/>}
-                </div>
+                  <div>
+                    {obj?.resources.length > 0 && (
+                      <AudiPlayerComponent resources={obj?.resources || []} />
+                    )}
+                  </div>
                 </div>
               </div>
               <div>

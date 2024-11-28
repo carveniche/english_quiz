@@ -7,7 +7,7 @@ export default function Page({ passage }) {
   const [linesLength, setLinesLength] = useState(passage.length || 0);
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
+
   return (
     // <div className={styles.a4Page}>
     <div

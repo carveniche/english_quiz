@@ -35,7 +35,7 @@ export default function Reordering({ obj, direction, questionResponse }) {
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
+
   return (
     <div>
       <SolveButton onClick={handleSubmit} />
@@ -58,7 +58,9 @@ export default function Reordering({ obj, direction, questionResponse }) {
         {/* <div style={{ margin: "25px 0" }}>
           <ResourceViewer resources={obj?.resources || []} />
         </div> */}
-    {obj?.resources.length>0 && <AudiPlayerComponent  resources={obj?.resources || []}/>}
+        {obj?.resources.length > 0 && (
+          <AudiPlayerComponent resources={obj?.resources || []} />
+        )}
 
         <Dragdrop
           choiceRef={choiceRef}

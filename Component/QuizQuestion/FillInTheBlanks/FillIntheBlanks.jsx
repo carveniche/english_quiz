@@ -70,7 +70,6 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("isEnglishStudentLevel", isEnglishStudentLevel);
   return (
     <div>
       {/* <div
