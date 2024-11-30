@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import parse from "html-react-parser";
 import styles from "../english_mathzone.module.css";
 import { ValidationContext } from "../../QuizPage";
 export default function Choices({ choicesRef }) {
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { studentAnswer, submitResponse, disabledQuestion } =
+    useContext(ValidationContext);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const handleClick = (index) => {
     if (submitResponse || disabledQuestion) return;
@@ -13,6 +14,17 @@ export default function Choices({ choicesRef }) {
     setSelectedIndex(index);
   };
 
+  useEffect(() => {
+    if (studentAnswer.length > 0) {
+      choicesRef.current = choicesRef.current.map((c, i) => {
+        if (studentAnswer[i]) {
+          setSelectedIndex(i);
+          c.isStudentAnswer = studentAnswer[i].studentAnswer;
+        }
+        return c;
+      });
+    }
+  }, []);
   return (
     <div className={styles.mathzoneMultipleChoiceFlexBox}>
       {choicesRef?.current.map((choice, key) => (

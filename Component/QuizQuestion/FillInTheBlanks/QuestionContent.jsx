@@ -4,7 +4,8 @@ import { ValidationContext } from "../../QuizPage";
 
 export default function QuestionContent({ choicesRef }) {
   const [update, setUpdate] = useState(false);
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { studentAnswer, submitResponse, disabledQuestion } =
+    useContext(ValidationContext);
   const focusRef = useRef([]);
 
   const handleChange = (e, itemIndex, charIndex) => {
@@ -61,6 +62,11 @@ export default function QuestionContent({ choicesRef }) {
       }
     }
   };
+  if (studentAnswer.length > 0)
+    choicesRef.current = choicesRef.current.map((c, i) => ({
+      ...c,
+      studentAnswer: studentAnswer[i] && studentAnswer[i].studentAnswer,
+    }));
 
   return (
     <div>
@@ -68,10 +74,10 @@ export default function QuestionContent({ choicesRef }) {
         className={styles.questionContent}
         style={{
           marginTop: 20,
-      //    paddingLeft: "3rem",
+          //    paddingLeft: "3rem",
           display: "flex",
-        //  gap: "20px",
-        alignItems:'end',
+          //  gap: "20px",
+          alignItems: "end",
         }}
       >
         {choicesRef.current.map((item, itemIndex) => (

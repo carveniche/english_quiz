@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MainMultipleChoice from "./QuizQuestion/MultipleChoice/MainMultipleChoice";
 import MainFillIntheblanks from "./QuizQuestion/FillInTheBlanks/MainFillIntheblanks";
 import MainReordering from "./QuizQuestion/reordering/MainReordering";
 import MainWriting from "./QuizQuestion/Writing/MainWriting";
 import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchTheFollowing";
 import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_Type";
+import { ValidationContext } from "./QuizPage";
 
 export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
+  const { setStudentAnswer, setSubmitResponse } = useContext(ValidationContext);
+  useEffect(() => {
+    if (data?.student_response) {
+      setStudentAnswer(JSON.parse(data?.student_response));
+      setSubmitResponse(true);
+    }
+  }, []);
   let questionType = {
     "Multiple choice": (
       <MainMultipleChoice wordsLength={wordsLength} obj={data} />
