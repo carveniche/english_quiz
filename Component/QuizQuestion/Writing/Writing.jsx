@@ -12,6 +12,7 @@ import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageCont
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import Book_back from "../../assets/Images/Book_Background.jpg";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import React_Base_Api from "../../../ReactConfigApi";
 const useStyles = {
   autoSizeTextarea: {
     height: "95%",
@@ -95,7 +96,7 @@ export default function Writing({
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
-    const CONFIG_URL2 = window.CONFIG_URL || "https://begalileo.com/";
+    const CONFIG_URL2 = window.CONFIG_URL || React_Base_Api;
     let formData = new FormData();
     formData.append("prompt_text", prompt_text);
     let config = {

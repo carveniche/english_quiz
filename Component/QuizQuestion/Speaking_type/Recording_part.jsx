@@ -11,6 +11,7 @@ import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import * as paused from "../../Solution/AudioPaused.json";
 import * as playing from "../../Solution/AudioPlaying.json";
+import React_Base_Api from "../../../ReactConfigApi";
 
 const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -142,7 +143,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   };
 
   const apiCalled = (prompt_text) => {
-    const CONFIG_URL2 = window.CONFIG_URL || "https://begalileo.com/";
+    const CONFIG_URL2 = window.CONFIG_URL || React_Base_Api;
     let formData = new FormData();
     formData.append("prompt_text", prompt_text);
     let config = {
@@ -284,7 +285,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     // }
     // const CONFIG_URL12 = window.CONFIG_URL12 || "http://localhost:3000/";
 
-    const CONFIG_URL12 = window.CONFIG_URL12 || "https://begalileo.com/";
+    const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
     //  const CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
 
     let formData = new FormData();
