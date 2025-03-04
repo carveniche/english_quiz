@@ -35,7 +35,7 @@ export default function Speaking_Type({
 
   const [isTrue, setIsTrue] = useState(false);
   const direction = isTrue ? "column" : "row";
-  console.log(direction, isTrue);
+  // console.log(direction, isTrue);
 
   return (
     <div

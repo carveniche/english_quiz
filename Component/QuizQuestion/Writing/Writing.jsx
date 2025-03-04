@@ -138,13 +138,13 @@ export default function Writing({
     }
     try {
       let allData = await Promise.all(apiArray);
-      console.log(allData);
+      // console.log(allData);
       allData = allData || [];
 
       allData.forEach(({ data }, index) => {
         data = data?.data || {};
         data = data.choices || [];
-        console.log(data);
+        // console.log(data);
         stateRef[index].current = data[0]?.message?.content;
       });
       setGptResponseLoading(false);
@@ -173,13 +173,13 @@ export default function Writing({
     // }
 
     if (isNaN(Number(scoreRef.current))) {
-      console.log("this is scoreref", scoreRef.current);
+      // console.log("this is scoreref", scoreRef.current);
 
       let regex = /{{(\d+)}}/;
       console.log("this is regex", regex);
 
       let scoreValue = regex.exec(scoreRef.current);
-      console.log("this is score value", scoreValue);
+      // console.log("this is score value", scoreValue);
 
       // Extract the digit if score pattern is found
       if (scoreValue !== null) {
@@ -193,13 +193,13 @@ export default function Writing({
       }
     }
 
-    console.log("this is scoreref before submit", scoreRef.current);
+    // console.log("this is scoreref before submit", scoreRef.current);
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
-    console.log("this is obj", obj);
+    // console.log("this is obj", obj);
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
@@ -263,7 +263,7 @@ export default function Writing({
   }, []);
   const isEnglishStudentLevel =
     localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("qsmtets", qstnText);
+  // console.log("qsmtets", qstnText);
 
   return (
     <div>

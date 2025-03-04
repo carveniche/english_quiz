@@ -23,7 +23,7 @@ export default function QuestionContent({ choicesRef }) {
       findLastElement(itemIndex, charIndex);
     }
 
-    console.log(choicesRef);
+    // console.log(choicesRef);
     setUpdate(!update);
   };
 

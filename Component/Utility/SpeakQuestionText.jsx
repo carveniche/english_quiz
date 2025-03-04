@@ -62,8 +62,8 @@ export default function SpeakQuestionText({ readText }) {
       return;
     }
     const textNeedstoSpoken = text.join(". ");
-    console.log("voicesAvailable", voicesAvailable);
-    console.log("textNeedstoSpoken", textNeedstoSpoken);
+    // console.log("voicesAvailable", voicesAvailable);
+    // console.log("textNeedstoSpoken", textNeedstoSpoken);
     const utterance = new SpeechSynthesisUtterance(textNeedstoSpoken);
     utterance.voice = voicesAvailable[7] || voicesAvailable[0];
     if (voices.length === 0) {

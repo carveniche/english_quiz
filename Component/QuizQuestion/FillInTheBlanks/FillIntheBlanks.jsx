@@ -38,7 +38,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
       }
     });
 
-    console.log("current choices", choicesRef.current);
+    // console.log("current choices", choicesRef.current);
     let arr = choicesRef.current || [];
     let answerStatus = -1;
     for (let item of arr) {

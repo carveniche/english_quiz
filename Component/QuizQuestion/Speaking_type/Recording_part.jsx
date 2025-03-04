@@ -166,7 +166,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     let quizFrom = quizFromRef.current;
     let stateRef = [];
     let apiArray = [];
-    console.log("this is prompt_text", prompt_text);
+    // console.log("this is prompt_text", prompt_text);
     if (!prompt_text) {
       prompt_text = "No response";
     }
@@ -195,7 +195,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       allData.forEach(({ data }, index) => {
         data = data?.data || {};
         data = data.choices || [];
-        console.log(data);
+        // console.log(data);
         stateRef[index].current = data[0]?.message?.content;
       });
       setGptResponseLoading(false);
@@ -211,13 +211,13 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     setRedAlert(false);
 
     if (isNaN(Number(scoreRef.current))) {
-      console.log("this is scoreref", scoreRef.current);
+      // console.log("this is scoreref", scoreRef.current);
 
       let regex = /{{(\d+)}}/;
-      console.log("this is regex", regex);
+      // console.log("this is regex", regex);
 
       let scoreValue = regex.exec(scoreRef.current);
-      console.log("this is score value", scoreValue);
+      // console.log("this is score value", scoreValue);
 
       // Extract the digit if score pattern is found
       if (scoreValue !== null) {
@@ -231,14 +231,14 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       }
     }
 
-    console.log("this is AA ", audioFileRef.current);
+    // console.log("this is AA ", audioFileRef.current);
 
     let obj = {
       audio_response: audioFileRef.current,
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
-    console.log("this is object", obj);
+    // console.log("this is object", obj);
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
@@ -252,7 +252,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   };
 
   const AudioTransalator = async (audioF) => {
-    console.log("this is audio inside", audioF);
+    // console.log("this is audio inside", audioF);
     let blobfile = new File([audioFileRef.current], "audio.mp3", {
       type: "audio/mp3",
       lastModified: Date.now(),
@@ -293,7 +293,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     formData.append("model", "whisper-1");
     formData.append("language", "en");
     formData.append("type", "audio");
-    console.log(`${CONFIG_URL12}app_teachers/gpt_response`);
+    // console.log(`${CONFIG_URL12}app_teachers/gpt_response`);
     let config = {
       method: "POST",
       maxBodyLength: Infinity,
@@ -303,9 +303,9 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
 
     try {
       let audiotext = await axios(config);
-      console.log("this is audiotext", audiotext);
+      // console.log("this is audiotext", audiotext);
       const data_text = audiotext.data.data.text;
-      console.log("this is dfsdfs", data_text);
+      // console.log("this is dfsdfs", data_text);
       handlePromptRequest(data_text);
     } catch (error) {
       console.log(error);
@@ -322,8 +322,8 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       setRedAlert(true);
       return -1;
     }
-    console.log("this is src", audioURL);
-    console.log("this is audioFileRef.current", audioFileRef.current);
+    // console.log("this is src", audioURL);
+    // console.log("this is audioFileRef.current", audioFileRef.current);
     isApiCalled.current = true;
 
     AudioTransalator(audioFileRef.current);
@@ -505,7 +505,7 @@ function GptFeedback({ chatGptResponse }) {
   useEffect(() => {
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      console.log("voices", voices);
+      // console.log("voices", voices);
       // Filter for female voices; you can adjust this as needed
       const femaleVoice = voices.find(
         (v) => v.name === "Microsoft Zira - English (United States)"

@@ -3,7 +3,7 @@ export const validateCoordiante = (boxes, { x, y }) => {
   if (!Array.isArray(twoDArray[0])) {
     twoDArray = [boxes];
   }
-  console.log(twoDArray);
+  // console.log(twoDArray);
   for (let i = 0; i < twoDArray.length; i++) {
     for (let j = 0; j < twoDArray[i].length; j++) {
       const { x0, y0, x1, y1 } = getCoordinate(twoDArray[i][j]?.el || "");
@@ -15,7 +15,7 @@ export const validateCoordiante = (boxes, { x, y }) => {
   return [-1, -1];
 };
 const getCoordinate = (el) => {
-  console.log(el);
+  // console.log(el);
   let coordiantes = {
     x0: 0,
     y0: 0,
