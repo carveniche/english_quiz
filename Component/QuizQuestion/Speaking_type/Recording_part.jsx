@@ -336,7 +336,12 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     if (isPlaying) {
       audioRefplay.current.pause();
     } else {
-      audioRefplay.current.play();
+      audioRefplay.current.play().catch(error => {
+        alert("There was an error playing the audio.");
+        setIsPlaying(false);
+        console.error("Playback error:", error);
+      });
+      
     }
     setIsPlaying(!isPlaying);
   };
@@ -417,6 +422,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
               }}
             >
               <img
+              style={{maxWidth:'100%'}}
                 src={
                   isPlaying
                     ? "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PayingAudioAnimation.gif"

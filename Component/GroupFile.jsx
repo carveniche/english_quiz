@@ -6,9 +6,10 @@ import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import MainListening from "./QuizQuestion/GroupQuestion/Listening/MainListening";
 import styles from "../Component/outerPage.module.css";
 export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
+  
   return (
     <>
-      <ValidationContextProvider key={obj?.question_id}>
+      <ValidationContextProvider key={obj?.question_id} showSolution={showSolution} readOut={obj?.read_out}>
         <Allfile data={obj} questionData={data} />
 
         <CorrectIncorrectStatus

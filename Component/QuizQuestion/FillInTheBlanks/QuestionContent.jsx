@@ -4,16 +4,18 @@ import { ValidationContext } from "../../QuizPage";
 
 export default function QuestionContent({ choicesRef }) {
   const [update, setUpdate] = useState(false);
-  const { studentAnswer, submitResponse, disabledQuestion } =
+  const { studentAnswer, submitResponse, disabledQuestion,showSolution } =
     useContext(ValidationContext);
   const focusRef = useRef([]);
 
   const handleChange = (e, itemIndex, charIndex) => {
-    if (submitResponse || disabledQuestion) return;
+  
+    if (submitResponse || disabledQuestion || showSolution) return;
 
     const value = e.target.value || "";
     choicesRef.current[itemIndex].studentAnswer =
-      choicesRef.current[itemIndex].studentAnswer || [];
+    choicesRef.current[itemIndex].studentAnswer || [];
+    
     choicesRef.current[itemIndex].studentAnswer[charIndex] = value;
 
     // Move focus to the next input if a character was added
@@ -23,7 +25,7 @@ export default function QuestionContent({ choicesRef }) {
       findLastElement(itemIndex, charIndex);
     }
 
-    console.log(choicesRef);
+    // console.log(choicesRef);
     setUpdate(!update);
   };
 
@@ -62,11 +64,11 @@ export default function QuestionContent({ choicesRef }) {
       }
     }
   };
-  if (studentAnswer.length > 0)
-    choicesRef.current = choicesRef.current.map((c, i) => ({
-      ...c,
-      studentAnswer: studentAnswer[i] && studentAnswer[i].studentAnswer,
-    }));
+  // if (studentAnswer.length > 0)
+  //   choicesRef.current = choicesRef.current.map((c, i) => ({
+  //     ...c,
+  //    // studentAnswer: studentAnswer[i] && studentAnswer[i].studentAnswer,
+  //   }));
 
   return (
     <div>
@@ -90,6 +92,7 @@ export default function QuestionContent({ choicesRef }) {
                     key={charIndex}
                     maxLength={1}
                     size={1}
+                    readOnly={showSolution}
                     value={
                       choicesRef.current[itemIndex].studentAnswer?.[
                         charIndex
@@ -116,6 +119,121 @@ export default function QuestionContent({ choicesRef }) {
               {!item?.correct && <span>{item?.value}</span>}
               {itemIndex < choicesRef.current.length - 1 && <>&nbsp;</>}
             </React.Fragment>
+          </div>
+        ))}
+
+      </div>
+    </div>
+  );
+}
+
+
+export function QuestionContentSec({ choicesRef }) {
+  const [update, setUpdate] = useState(false);
+  const { studentAnswer, submitResponse, disabledQuestion, showSolution } =
+    useContext(ValidationContext);
+  const focusRef = useRef([]);
+
+  const handleChange = (e, itemIndex) => {
+    if (submitResponse || disabledQuestion || showSolution) return;
+
+    const value = e.target.value || "";
+    choicesRef.current[itemIndex].studentAnswer = value;
+
+    setUpdate(!update); // Trigger re-render
+
+    // Move focus to the next input if a character was added
+    if (value.length > 0) {
+      moveFocusForward(itemIndex + 1);
+    }
+  };
+
+  const moveFocusForward = (nextIndex) => {
+    while (
+      nextIndex < choicesRef.current.length &&
+      !choicesRef.current[nextIndex].correct // Skip incorrect letters
+    ) {
+      nextIndex++;
+    }
+  
+    if (focusRef.current[nextIndex]) {
+      focusRef.current[nextIndex].focus();
+    }
+  };
+  
+
+  const moveFocusBackward = (prevIndex) => {
+    while (
+      prevIndex >= 0 &&
+      !choicesRef.current[prevIndex].correct // Skip incorrect letters
+    ) {
+      prevIndex--;
+    }
+  
+    if (focusRef.current[prevIndex]) {
+      focusRef.current[prevIndex].focus();
+    }
+  };
+  
+
+  useEffect(() => {
+    var focusTimeout = setTimeout(() => {
+      // moveFocusForward(0);
+    }, 1000);
+    return () => clearTimeout(focusTimeout);
+  }, []);
+
+  const handleKeyChange = (e, itemIndex) => {
+    if (e.key === "Backspace") {
+      if (!choicesRef.current[itemIndex].studentAnswer) {
+        moveFocusBackward(itemIndex - 1);
+      }
+    }
+  };
+ 
+  // if (studentAnswer.length > 0) {
+  //   choicesRef.current = choicesRef.current.map((c, i) => ({
+  //     ...c,
+      
+  //     //studentAnswer: studentAnswer[i] ? studentAnswer[i].studentAnswer : "",
+      
+  //   }));
+  // }
+
+  return (
+    <div>
+      <div
+        className={styles.questionContent}
+        style={{
+          marginTop: 20,
+          display: "flex",
+          alignItems: "end",
+        }}
+      >
+        {choicesRef.current.map((item, itemIndex) => (
+          <div key={itemIndex}>
+            {item.correct ? (
+              <input
+                className={styles.inputFieldfib}
+                key={itemIndex}
+                maxLength={1}
+                size={1}
+                readOnly={showSolution}
+                value={choicesRef.current[itemIndex].studentAnswer || ""}
+                ref={(el) => (focusRef.current[itemIndex] = el)}
+                onChange={(e) => handleChange(e, itemIndex)}
+                onKeyDown={(e) => handleKeyChange(e, itemIndex)}
+                style={{
+                  fontSize: 16,
+                  padding: 5,
+                  boxSizing: "border-box",
+                  textAlign: "center",
+                }}
+              />
+            ) : (
+              <span>{item.value}</span>
+            )}
+            {itemIndex < choicesRef.current.length - 1 && <>&nbsp;</>}
           </div>
         ))}
       </div>

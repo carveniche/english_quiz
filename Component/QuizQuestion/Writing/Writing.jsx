@@ -42,7 +42,7 @@ const AutoSizeTextarea = ({
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { submitResponse, disabledQuestion} = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
     if (submitResponse || hideCheckButton) return;
     if (disabledQuestion) return;
@@ -55,6 +55,8 @@ const AutoSizeTextarea = ({
   studentTextRef.current = textareaValue;
   return (
     <>
+   
+
       <TextareaAutosize
         ref={textareaRef}
         className={`${styles.blinking} blinking`}
@@ -87,12 +89,15 @@ export default function Writing({
   const [hideCheckButton, setHideCheckButton] = useState(false);
   let quizFromRef = useRef(sessionStorage.getItem("engQuizFrom"));
   const isApiCalled = useRef(false);
+  const [grpText, setGrpText] = useState("");
+  const [qstnText, setQstnText] = useState("");
   const {
     submitResponse,
     disabledQuestion,
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
+    readOut
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
@@ -127,15 +132,33 @@ export default function Writing({
       question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and  give feedback but don't provide score, in less than 100 words`;
       apiArray[0] = apiCalled(question_text);
       question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number.It should be only number as integer`;
+      
       apiArray[1] = apiCalled(question_text || questionData?.prompt_text || "");
     } else {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
       question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback but don't provide score, in less than 100 words`;
       apiArray[0] = apiCalled(question_text);
-      question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and give the score as {{1}} if the response is correct otherwise give score as {{0}}.Please follow instruction correctly`;
+      question_text = `The following question was asked to a student: '${questionText}'. 
+
+      A student responded:
+      '${prompt_text}'. 
+      
+      Use this instruction: ${instruction}. To evaluate the response, return the score as **1** if the response is correct; otherwise, return the score as **0**.  
+      
+      ### **Return Format:**  
+      Strictly return **only valid JSON** as shown below:  
+    
+      {
+          "score": <either 1 or 0>,
+          "feedback": "<Provide a brief explanation for the score>"
+      }
+  
+      Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;
+      
       apiArray[1] = apiCalled(question_text || "");
     }
+
     try {
       let allData = await Promise.all(apiArray);
       console.log(allData);
@@ -172,26 +195,38 @@ export default function Writing({
     //   }
     // }
 
-    if (isNaN(Number(scoreRef.current))) {
-      console.log("this is scoreref", scoreRef.current);
+try{
 
-      let regex = /{{(\d+)}}/;
-      console.log("this is regex", regex);
-
-      let scoreValue = regex.exec(scoreRef.current);
-      console.log("this is score value", scoreValue);
-
-      // Extract the digit if score pattern is found
-      if (scoreValue !== null) {
-        scoreRef.current = scoreValue[1]; // The digit captured by the regex
-      } else {
-        // Second attempt if the score pattern isn't found
-        regex = /{{(\d+)}}/;
-        scoreValue = regex.exec(scoreRef.current) || [];
-        regex = /\d+/g;
-        scoreRef.current = regex.exec(scoreValue.pop());
-      }
+    if(scoreRef?.current){
+      const {score}=JSON.parse(scoreRef?.current)
+      scoreRef.current=score
     }
+  }catch(error){
+    console.log('error score',error)
+  }
+
+
+
+    // if (isNaN(Number(scoreRef.current))) {
+    //   console.log("this is scoreref", scoreRef.current);
+
+    //   let regex = /{{(\d+)}}/;
+    //   console.log("this is regex", regex);
+
+    //   let scoreValue = regex.exec(scoreRef.current);
+    //   console.log("this is score value", scoreValue);
+
+    //   // Extract the digit if score pattern is found
+    //   if (scoreValue !== null) {
+    //     scoreRef.current = scoreValue[1]; // The digit captured by the regex
+    //   } else {
+    //     // Second attempt if the score pattern isn't found
+    //     regex = /{{(\d+)}}/;
+    //     scoreValue = regex.exec(scoreRef.current) || [];
+    //     regex = /\d+/g;
+    //     scoreRef.current = regex.exec(scoreValue.pop());
+    //   }
+    // }
 
     console.log("this is scoreref before submit", scoreRef.current);
     let obj = {
@@ -212,6 +247,7 @@ export default function Writing({
     return scoreRef.current == 0 ? 0 : 1;
   };
   const checkGptResponse = () => {
+
     if (submitResponse) return;
     if (disabledQuestion) return;
     if (hideCheckButton) return;
@@ -221,6 +257,13 @@ export default function Writing({
       setRedAlert(true);
       return -1;
     }
+    const studentResWordLen=studentTextRef.current.split(' ').length
+
+   if(qstnText.split(" ").length > 30 && studentResWordLen <10){
+    alert('Please make sure you write at least 10 words')
+    return
+   }
+
     isApiCalled.current = true;
     handlePromptRequest(studentTextRef.current);
     setHideCheckButton(true);
@@ -235,8 +278,7 @@ export default function Writing({
     (node) => node.node === "img"
   );
 
-  const [grpText, setGrpText] = useState("");
-  const [qstnText, setQstnText] = useState("");
+
   useEffect(() => {
     if (
       questionGroupData.group_data &&
@@ -245,14 +287,14 @@ export default function Writing({
       var textGroupNodes = JSON.parse(
         questionGroupData.group_data.question_text
       );
-      textGroupNodes = textGroupNodes[0].filter((node) => node.node === "text");
-      var xyu = textGroupNodes.reduce((acc, node) => {
+      textGroupNodes = textGroupNodes[0]?.filter((node) => node.node === "text");
+      var xyu = textGroupNodes?.reduce((acc, node) => {
         return (acc += node.value);
       }, "");
       setGrpText(xyu);
     }
     if (questionData.questionName) {
-      var textGroupNodes = questionData.questionName.filter(
+      var textGroupNodes = questionData.questionName?.filter(
         (node) => node.node === "text"
       );
       var xyu = textGroupNodes.reduce((acc, node) => {
@@ -261,8 +303,8 @@ export default function Writing({
       setQstnText(xyu);
     }
   }, []);
-  const isEnglishStudentLevel =
-    localStorage.getItem("isEnglishStudentLevel") || false;
+  const isEnglishStudentLevel = readOut
+    // localStorage.getItem("isEnglishStudentLevel") || false;
   console.log("qsmtets", qstnText);
 
   return (
@@ -350,9 +392,10 @@ export default function Writing({
                       width: "100%",
                     }}
                   >
-                    {/* {isEnglishStudentLevel && (
+                    <div className="audio_with_questiontext">
+                    {isEnglishStudentLevel && (
                       <SpeakQuestionText readText={textNodes} />
-                    )} */}
+                    )}
                     <div style={{ paddingLeft: "15px" }}>
                       {textNodes &&
                         textNodes.length > 0 &&
@@ -361,6 +404,7 @@ export default function Writing({
                             {objectParser(item, key)}
                           </React.Fragment>
                         ))}
+                    </div>
                     </div>
                   </div>
                   <div
@@ -446,10 +490,13 @@ export default function Writing({
                   width: "100%",
                 }}
               >
-                {/* {isEnglishStudentLevel && (
-                  <SpeakQuestionText readText={textNodes} />
-                )} */}
+                
                 <div style={{ paddingLeft: "15px" }}>
+                <div className="audio_with_questiontext">
+                {isEnglishStudentLevel && (
+                  <SpeakQuestionText readText={textNodes} />
+                )}
+                <div>
                   {textNodes &&
                     textNodes.length > 0 &&
                     textNodes.map((item, key) => (
@@ -457,6 +504,8 @@ export default function Writing({
                         {objectParser(item, key)}
                       </React.Fragment>
                     ))}
+                     </div>
+                     </div>
                     {imageNodes &&
                       imageNodes.length > 0 &&
                       imageNodes.map((item, key) => (
@@ -464,6 +513,7 @@ export default function Writing({
                           {objectParser(item, key)}
                         </React.Fragment>
                       ))}
+                     
                 </div>
               </div>
               <div
@@ -510,7 +560,8 @@ export default function Writing({
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-            <GptFeedback chatGptResponse={chatGptResponseRef.current} />
+            
+            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
       )}
@@ -518,17 +569,28 @@ export default function Writing({
   );
 }
 
-function GptFeedback({ chatGptResponse }) {
+function GptFeedback({ chatGptResponse ,scoreResponse}) {
+ 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voice, setVoice] = useState(null);
+  const { submitResponse} = useContext(ValidationContext);
   useEffect(() => {
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
       // Filter for female voices; you can adjust this as needed
-      const femaleVoice = voices.find(
-        (v) => v.name === "Microsoft Zira - English (United States)"
-      );
-      setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
+      const preferredVoices = [
+        "Google UK English Male",  // Chrome (Daniel equivalent)
+        "Google UK English Female",
+        "Daniel",                  // Safari
+        "Microsoft David",         // Windows default
+        "Microsoft Zira"
+    ];
+  
+    const selectedVoice = voices.find(voice =>
+        preferredVoices.includes(voice.name)
+    );
+
+      setVoice(selectedVoice || voices[0]); // Default to first available female voice or any voice
     };
 
     loadVoices(); // Initial load
@@ -567,8 +629,11 @@ function GptFeedback({ chatGptResponse }) {
       >
         🔊 Read Aloud
       </button>
-      <div style={{ padding: 10, fontSize: 15 }}>
+      <div >
+       {submitResponse  && <p style={{margin:'0',padding: '10px 10px 0 10px',}}>This anwser is :- <b>{scoreResponse =="1" ? 'correct' : "wrong"}</b></p>}
+        <p style={{ padding: 10, fontSize: 15 ,margin:'0'}}>
         {chatGptResponse || "No Response"}
+        </p>
       </div>
       <div
         style={{

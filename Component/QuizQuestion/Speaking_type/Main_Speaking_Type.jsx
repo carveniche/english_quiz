@@ -6,6 +6,8 @@ import { useState } from "react";
 
 export const Main_Speaking_Type = ({ obj, wordsLength }) => {
   let question_text = JSON.parse(obj?.question_data);
+
+  
   let questionResponse = null;
   try {
     questionResponse = obj[WRITING_GPT.questionResponse] || null;
@@ -25,7 +27,7 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          height: "100vh",
+          height: `${questionResponse ? "75vh":"100vh"}`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -68,7 +70,8 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
         <div
           style={{
             border: "1px solid transparent",
-            height: "auto",
+            height: "350px",
+            maxHeight:'350px',
             maxHeight: "350px",
             width: "75%",
             overflowX: "hidden",

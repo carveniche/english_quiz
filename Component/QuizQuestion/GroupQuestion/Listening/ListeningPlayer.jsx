@@ -39,10 +39,13 @@ export default function ListeningPlayer({ audioUrl,autoPlay }) {
     setCurrentTime(Math.floor(currentTime));
   };
   useEffect(() => {
+     
     if (audioRef.current) {
+      
       audioRef.current.ontimeupdate = handleTimeUpdate;
       audioRef.current.onloadedmetadata = function () {
-        audioRef.current.ontimeupdate = handleTimeUpdate;
+        if (!audioRef.current) return;
+          audioRef.current.ontimeupdate = handleTimeUpdate;
 
         setIsMute(audioRef.current.muted || false);
         if(autoPlay)

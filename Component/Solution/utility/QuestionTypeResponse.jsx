@@ -1,8 +1,11 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import DragDrop from "../../QuizQuestion/reordering/Dragdrop";
 import styles from "../Solution.module.css";
 import DragDropSolution from "../../QuizQuestion/MatchTheFollowing/DragDropSolution";
 import { OuterPageContext } from "../../QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
+import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import SpeakAiText from "../../Utility/SpeakAiText";
+import { ValidationContext } from "../../QuizPage";
 export default function QuestionTypeResponse({ obj, question_type }) {
   let questionData = JSON.parse(obj?.question_data);
   let choices = questionData?.choices || [];
@@ -49,7 +52,9 @@ export function SolutionForReordering({ obj, question_type }) {
 
 export function SolutionForWritingGpt({ obj, question_type,showSolution ,userResponse}) {
   let data = JSON.parse(obj);
+  const [showSpeakIcon,setShowSpeakIcon]=useState(false)
   const { showQuizResponse } = useContext(OuterPageContext);
+   const {readOut} = useContext(ValidationContext);
   let parseResponse=null;
   try{
     parseResponse=JSON.parse(userResponse)||null
@@ -57,6 +62,16 @@ export function SolutionForWritingGpt({ obj, question_type,showSolution ,userRes
   catch(e){
     console.log(e)
   }
+const requireQuestionType=['Writing ChatGpt','read_the_text']
+const isEnglishStudentLevel = readOut || false
+
+  
+useEffect(()=>{
+  if(question_type && isEnglishStudentLevel && requireQuestionType.includes(question_type)){
+    setShowSpeakIcon(true)
+  }
+} ,[question_type])
+
   return (showSolution?
     <>
       <div
@@ -66,7 +81,10 @@ export function SolutionForWritingGpt({ obj, question_type,showSolution ,userRes
         {
           showQuizResponse&&parseResponse?.score>=0&&<h6 style={{marginBottom:5}}>Score: {parseResponse?.score}</h6>
         }
-        <h6>The correct answer is:</h6>
+        <div className={styles.ai_audio_player_section}>
+        <h6 className="flex-1">The correct answer is:</h6>
+       {showSpeakIcon &&<SpeakAiText readText={parseResponse?.chatGptResponse||data?.prompt_text || ""}/>}
+        </div>
         <>{parseResponse?.chatGptResponse||data?.prompt_text || ""}</>
       </div>
     </>:""

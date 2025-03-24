@@ -69,3 +69,8 @@
 .explanationBoxContainer.word_wrap_space {
   white-space: pre-wrap;
 }
+
+.ai_audio_player_section {
+  display: flex;
+  align-items: center;
+}

@@ -16,6 +16,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
+    readOut
   } = useContext(ValidationContext);
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
@@ -55,8 +56,8 @@ export default function MultipleChoice({ obj, wordsLength }) {
 
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
-  const isEnglishStudentLevel =
-    localStorage.getItem("isEnglishStudentLevel") || false;
+  const isEnglishStudentLevel =readOut
+    // localStorage.getItem("isEnglishStudentLevel") || false;
 
   return (
     <div>
@@ -81,9 +82,10 @@ export default function MultipleChoice({ obj, wordsLength }) {
                   alignItems: wordsLength <= 30 ? "center" : "",
                 }}
               >
-                {/* {isEnglishStudentLevel && (
+                <div className="audio_with_questiontext">
+                {isEnglishStudentLevel && (
                   <SpeakQuestionText readText={textNodes} />
-                )} */}
+                )}
                 <div>
                   {textNodes &&
                     textNodes.length > 0 &&
@@ -97,6 +99,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
                     {obj?.resources.length > 0 && (
                       <AudiPlayerComponent resources={obj?.resources || []} />
                     )}
+                  </div>
                   </div>
                 </div>
               </div>

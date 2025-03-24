@@ -3,21 +3,20 @@ import Lottie from "react-lottie";
 import * as paused from "../Solution/AudioPaused.json";
 import * as playing from "../Solution/AudioPlaying.json";
 
-export default function SpeakQuestionText({ readText }) {
+export default function SpeakAiText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [text, setText] = useState("");
   const [voices, setVoices] = useState([]);
   const [canStart, setCanStart] = useState(false);
   useEffect(() => {
     if (readText.length > 0) {
-      let combinedText = readText.reduce((acc, node) => acc + node.value, "");
-      if (combinedText.includes("__")) {
-        while (combinedText.includes("__")) {
-          combinedText = combinedText.replaceAll("__", "_");
-        }
-      }
-      combinedText = combinedText.replaceAll("_" , " blank ");
-      combinedText = combinedText.replaceAll("br" , "");
+      //let combinedText = readText.reduce((acc, node) => acc + node.value, "");
+      //if (combinedText.includes("__")) {
+       //// while (combinedText.includes("__")) {
+         // combinedText = combinedText.replaceAll("__", "_");
+        //}
+      //}
+     const combinedText = readText.replaceAll("_", " blank ");
       setText(
         combinedText
           .split(".")
@@ -46,6 +45,7 @@ export default function SpeakQuestionText({ readText }) {
       window.speechSynthesis.cancel();
     };
   }, [canStart]);
+
   useEffect(() => {
     const voiceCheckTimer = setTimeout(() => {
       if (voices.length === 0) {
@@ -63,11 +63,11 @@ export default function SpeakQuestionText({ readText }) {
       return;
     }
     const textNeedstoSpoken = text.join(". ");
-    //console.log("voicesAvailable", voicesAvailable);
-    //console.log("textNeedstoSpoken", textNeedstoSpoken);
-    const utterance = new SpeechSynthesisUtterance(textNeedstoSpoken);
-    const preferredVoices = [
-      // "Microsoft George - English (United Kingdom)",
+    console.log("voicesAvailable", voicesAvailable);
+    console.log("textNeedstoSpoken", textNeedstoSpoken);
+    const utterance = new SpeechSynthesisUtterance('apple');
+    utterance.lang="en-US";
+    const preferredVoices = [ 
       "Google UK English Male",  // Chrome (Daniel equivalent)
       "Google UK English Female",
       "Daniel",                  // Safari
@@ -75,11 +75,9 @@ export default function SpeakQuestionText({ readText }) {
       "Microsoft Zira"
   ];
 
-  const selectedVoice = voicesAvailable.find(voice =>{
-    console.log(voice)
-      return preferredVoices.includes(voice.name)
-  });
-  utterance.rate = 0.9;
+  const selectedVoice = voicesAvailable.find(voice =>
+      preferredVoices.includes(voice.name)
+  );
 
     utterance.voice = selectedVoice || voicesAvailable[0];
     if (voices.length === 0) {

@@ -30,7 +30,7 @@ export default function CorrectIncorrectStatus({
     <div
       style={{
         marginTop: 10,
-        display: obj.question_type !== "Multiple choice" ? "block" : "none",
+        // display: obj.question_type !== "Multiple choice" ? "block" : "none",
       }}
     >
       {showCorrectIncorrectImage &&

@@ -5,7 +5,7 @@ import OuterPageContextProvider, {
   OuterPageContext,
 } from "./QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
 export const ValidationContext = React.createContext("Validation Context");
-export function ValidationContextProvider({ children }) {
+export function ValidationContextProvider({ children,showSolution,readOut }) {
   const [submitResponse, setSubmitResponse] = useState(false);
   const [disabledQuestion, setDisabledQuestion] = useState(false);
   const { showQuizResponse } = useContext(OuterPageContext);
@@ -16,6 +16,7 @@ export function ValidationContextProvider({ children }) {
       setDisabledQuestion(true);
     }
   }, [showQuizResponse]);
+ 
   return (
     <ValidationContext.Provider
       value={{
@@ -27,6 +28,8 @@ export function ValidationContextProvider({ children }) {
         setSubmitResponse,
         setStudentAnswer,
         studentAnswer,
+        showSolution,
+        readOut
       }}
     >
       {children}

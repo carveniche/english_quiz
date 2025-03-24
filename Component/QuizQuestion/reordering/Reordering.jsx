@@ -9,6 +9,8 @@ import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 export default function Reordering({ obj, direction, questionResponse }) {
+
+
   const choiceRef = useRef([]);
   const {
     submitResponse,
@@ -16,6 +18,7 @@ export default function Reordering({ obj, direction, questionResponse }) {
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
+    readOut
   } = useContext(ValidationContext);
   const [redAlert, setRedAlert] = useState(false);
   const handleSubmit = () => {
@@ -32,9 +35,12 @@ export default function Reordering({ obj, direction, questionResponse }) {
     setIsCorrect(correctValue);
     return correctValue;
   };
+
+ 
   var textNodes = obj?.questionName.filter((node) => node.node !== "img");
-  const isEnglishStudentLevel =
-    localStorage.getItem("isEnglishStudentLevel") || false;
+  const isEnglishStudentLevel =readOut
+    // localStorage.getItem("isEnglishStudentLevel") || false;
+
 
   return (
     <div>
@@ -42,9 +48,11 @@ export default function Reordering({ obj, direction, questionResponse }) {
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
 
       <div>
+      <div className="audio_with_questiontext">
+      {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />}
         <div className={styles.questionName}>
-          {/* {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />} */}
-          {obj?.questionName?.length ? (
+         
+          {obj?.questionName && obj?.questionName?.length ? (
             <>
               {obj?.questionName.map((item, key) => (
                 <React.Fragment key={key}>
@@ -53,12 +61,13 @@ export default function Reordering({ obj, direction, questionResponse }) {
               ))}
             </>
           ) : null}
+          </div>
         </div>
 
         {/* <div style={{ margin: "25px 0" }}>
           <ResourceViewer resources={obj?.resources || []} />
         </div> */}
-        {obj?.resources.length > 0 && (
+        {obj?.resources && obj?.resources?.length > 0 && (
           <AudiPlayerComponent resources={obj?.resources || []} />
         )}
 
