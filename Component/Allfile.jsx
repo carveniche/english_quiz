@@ -6,6 +6,8 @@ import MainWriting from "./QuizQuestion/Writing/MainWriting";
 import MainMatchTheFollowing from "./QuizQuestion/MatchTheFollowing/MainMatchTheFollowing";
 import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_Type";
 import { ValidationContext } from "./QuizPage";
+import MainHotSpot from "./QuizQuestion/HotSpot/MainHotSpot";
+import MainLabeling from "./QuizQuestion/Labeling/MainLabeling";
 
 export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
@@ -48,12 +50,19 @@ export default function Allfile({ data, questionData }) {
       <MainMatchTheFollowing wordsLength={wordsLength} obj={data} />
     ),
     read_the_text: <Main_Speaking_Type wordsLength={wordsLength} obj={data} />,
+    hotspot: <MainHotSpot wordsLength={wordsLength} obj={data} />,
+    labeling: <MainLabeling wordsLength={wordsLength} obj={data} />,
   };
   const getQuestionId = () => {
     return data?.question_id;
   };
   useEffect(() => {
+if(data.question_type == "hotspot" || data.question_type == "labeling"){
+   
+    return
+}
     if (data.question_data) {
+      
       var wordsLength = JSON.parse(data.question_data)?.questionName.reduce(
         (acc, node) =>
           node.node == "text" && node.value
@@ -65,5 +74,6 @@ export default function Allfile({ data, questionData }) {
     }
   }, []);
   window.getQuestionId = getQuestionId;
+ 
   return <>{questionType[data?.question_type] || "Yet to be Released"}</>;
 }
