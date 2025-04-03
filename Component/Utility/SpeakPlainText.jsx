@@ -3,7 +3,7 @@ import Lottie from "react-lottie";
 import * as paused from "../Solution/AudioPaused.json";
 import * as playing from "../Solution/AudioPlaying.json";
 
-export default function SpeakAiText({ readText }) {
+export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [text, setText] = useState("");
   const [voices, setVoices] = useState([]);
@@ -63,9 +63,8 @@ export default function SpeakAiText({ readText }) {
       return;
     }
     const textNeedstoSpoken = text.join(". ");
-    console.log("voicesAvailable", voicesAvailable);
-    console.log("textNeedstoSpoken", textNeedstoSpoken);
-    const utterance = new SpeechSynthesisUtterance('apple');
+    console.log(textNeedstoSpoken)
+    const utterance = new SpeechSynthesisUtterance(textNeedstoSpoken);
     utterance.lang="en-US";
     const preferredVoices = [ 
       "Google UK English Male",  // Chrome (Daniel equivalent)

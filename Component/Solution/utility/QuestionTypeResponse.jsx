@@ -4,8 +4,8 @@ import styles from "../Solution.module.css";
 import DragDropSolution from "../../QuizQuestion/MatchTheFollowing/DragDropSolution";
 import { OuterPageContext } from "../../QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
-import SpeakAiText from "../../Utility/SpeakAiText";
 import { ValidationContext } from "../../QuizPage";
+import SpeakPlainText from "../../Utility/SpeakPlainText";
 export default function QuestionTypeResponse({ obj, question_type }) {
   let questionData = JSON.parse(obj?.question_data);
   let choices = questionData?.choices || [];
@@ -83,7 +83,7 @@ useEffect(()=>{
         }
         <div className={styles.ai_audio_player_section}>
         <h6 className="flex-1">The correct answer is:</h6>
-       {showSpeakIcon &&<SpeakAiText readText={parseResponse?.chatGptResponse||data?.prompt_text || ""}/>}
+       {showSpeakIcon &&<SpeakPlainText readText={parseResponse?.chatGptResponse||data?.prompt_text || ""}/>}
         </div>
         <>{parseResponse?.chatGptResponse||data?.prompt_text || ""}</>
       </div>

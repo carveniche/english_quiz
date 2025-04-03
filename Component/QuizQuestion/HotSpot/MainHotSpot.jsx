@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import CustomAlertBoxMathZone from '../../CommonComponent/CustomAlertBoxMathZone';
 import SolveButton from '../../CommonComponent/SolveButton';
 import { ValidationContext } from '../../QuizPage';
+import SpeakPlainText from '../../Utility/SpeakPlainText';
 
 export default function MainHotSpot({ obj, wordsLength }) {
 
@@ -47,12 +48,10 @@ function HotSpotPreview({ data, question_text }) {
           const is_correct = rect?.isCorrect;
           // Outer Rectangle (Padding Effect)
           ctx.fillStyle = submitResponse ? is_correct ? "#14f17545" : "#e43c3ca1" : "#0000ff30"; // Light gray background
-          ctx.fillRect(rect.x - 4, rect.y - 4, rect.width + 8, rect.height + 8);
+          ctx.fillRect(rect.x , rect.y, rect.width , rect.height );
           ctx.strokeStyle = submitResponse ? (is_correct ? "green" : "red") : "blue";
           ctx.lineWidth = 2;
-          ctx.strokeRect(rect.x - 4, rect.y - 4, rect.width + 8, rect.height + 8);
-
-
+          ctx.strokeRect(rect.x , rect.y , rect.width , rect.height );
           if (rect.studentAnswer && !submitResponse) {
             let circleRadius = 14;
             let circleX = rect.x + rect.width / 2;
@@ -60,13 +59,7 @@ function HotSpotPreview({ data, question_text }) {
             ctx.beginPath();
             ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
             ctx.fillStyle = "#ffcc00";
-            ctx.fill();
-
-
-            // ctx.fillStyle = ""; // Dark blue before submission, green/red after
-            // let padding = rect.width * 0.2; // 20% padding inside
-            // ctx.fillRect(rect.x + padding, rect.y + padding, rect.width - 2 * padding, rect.height - 2 * padding);
-          
+            ctx.fill();    
         }
 
 
@@ -95,13 +88,16 @@ function HotSpotPreview({ data, question_text }) {
         return;
       }
 
+
+
       // Handling Circle Choices
       choices?.forEach((circle) => {
         const is_correct = circle?.isCorrect;
-
+      
         // Outer Circle
+        const pd=2
         ctx.beginPath();
-        ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+        ctx.arc(circle.x, circle.y +pd, circle.radius, 0, Math.PI * 2);
         ctx.fillStyle = submitResponse ? (is_correct ? "#14f17545" : "#e43c3ca1") : "#0000ff30";
         ctx.strokeStyle = submitResponse ? (is_correct ? "green" : "red") : "blue";
         ctx.lineWidth = 2;
@@ -111,7 +107,7 @@ function HotSpotPreview({ data, question_text }) {
         // Selected State (Inner Circle)
         if (circle.studentAnswer && !submitResponse) {
             ctx.beginPath();
-            ctx.arc(circle.x, circle.y, circle.radius * 0.6, 0, Math.PI * 2);
+            ctx.arc(circle.x, circle.y+pd, circle.radius * 0.6, 0, Math.PI * 2);
             ctx.fillStyle = "#ffcc00";
             ctx.fill();
           
@@ -119,10 +115,10 @@ function HotSpotPreview({ data, question_text }) {
         if (submitResponse) {
           // Small White Circle
           let circleRadius = 8;
-          let circleX = circle.x; // Center remains same
-          let circleY = circle.y; // Center remains same
+          let circleX = circle.x ; // Center remains same
+          let circleY = circle.y +pd; // Center remains same
           ctx.beginPath();
-          ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
+          ctx.arc(circleX, circleY , circleRadius, 0, Math.PI * 2);
           ctx.fillStyle = "white";
           ctx.fill();
 
@@ -138,8 +134,6 @@ function HotSpotPreview({ data, question_text }) {
       });
 
     }
-
-
 
     if (showSolution && data?.questionResponse) {
       let question_response = JSON.parse(data?.questionResponse?.studentAnswer);
@@ -157,7 +151,7 @@ function HotSpotPreview({ data, question_text }) {
 
       const clickX = (e.clientX - rect.left) * scaleX;
       const clickY = (e.clientY - rect.top) * scaleY;
-
+      console.log(clickX,clickY,'rect')
       let select = false;
       let elements = [...choices];
 
@@ -259,10 +253,10 @@ function HotSpotPreview({ data, question_text }) {
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className="hotspot_container">
         <div className="hotspot_question_text">
-          <p>{question_text?.questionName}</p>
+          <div className='audio_with_questiontext'><SpeakPlainText readText={question_text?.questionName}/><p>{question_text?.questionName}</p></div>
         </div>
         <div className="hotspot_image" style={{ backgroundImage: `url(${question_text?.image})` }}>
-          <canvas className="canvas" ref={canvasRef} width="504" height="504"></canvas>
+          <canvas className="canvas" ref={canvasRef} width="610" height="400"></canvas>
         </div>
       </div>
     </>

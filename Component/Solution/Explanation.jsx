@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./Solution.module.css";
-import SpeakAiText from "../Utility/SpeakAiText";
 import { ValidationContext } from "../QuizPage";
+import SpeakPlainText from "../Utility/SpeakPlainText";
 export default function Explanation({ obj }) {
   let question_data = JSON.parse(obj?.question_data);
   let model = question_data?.solutionModel || [];
@@ -24,7 +24,7 @@ export default function Explanation({ obj }) {
             {model?.map((item, index) => {
               return (
                 <div key={index} style={{display:'flex'}}>
-                  {readOut &&<SpeakAiText readText={item?.text && item?.text.replace(/^ {3,}/gm, "")}/>}
+                  {readOut &&<SpeakPlainText readText={item?.text && item?.text.replace(/^ {3,}/gm, "")}/>}
                   {item?.text && item?.text.replace(/^ {3,}/gm, "")}
                   {item?.images && <img src={item?.images} />}
                 </div>
