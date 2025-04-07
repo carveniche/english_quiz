@@ -1,6 +1,5 @@
 const objectParser = (item, index) => {
   let value = "";
-
   if (item?.node === "text") {
     let { style } = item;
     style = style || [];
@@ -53,6 +52,9 @@ const objectParser = (item, index) => {
     );
   } else if (item?.node === "audio") {
     value = <>Audio symbol</>;
+  }else if (item?.node === "video"  || item?.node === "a") {
+
+    value = getVideoType(item?.value)
   }
 
   // Handle new lines by wrapping content in a <div> with margin
@@ -65,3 +67,33 @@ const objectParser = (item, index) => {
 };
 
 export default objectParser;
+
+function getVideoType(url) {
+  const youTubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i;
+
+  if (youTubeRegex.test(url)) {
+    return (
+
+      <>
+      <iframe
+    width="250"
+    height="150"
+    src={url.replace("watch?v=", "embed/")}
+    title="YouTube video player"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+      </>
+    )
+  }  else {
+    return (
+
+      <>
+      <video width="250" height="150" controls>
+    <source src={url} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+      </>
+    )
+  }
+}
