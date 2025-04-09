@@ -42,7 +42,7 @@ const AutoSizeTextarea = ({
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-  const { submitResponse, disabledQuestion} = useContext(ValidationContext);
+  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
     if (submitResponse || hideCheckButton) return;
     if (disabledQuestion) return;
@@ -53,26 +53,42 @@ const AutoSizeTextarea = ({
     }
   };
   studentTextRef.current = textareaValue;
-  return (
-    <>
-   
 
+
+  const handlePaste = (e) => e.preventDefault();
+
+  const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
+
+  return (
+    <div style={{ width: "100%" }}>
       <TextareaAutosize
         ref={textareaRef}
-        className={`${styles.blinking} blinking`}
-        style={useStyles.autoSizeTextarea}
+        className={`${styles.blinking}`}
         value={isShowingResponse ? textareaValue || response : textareaValue}
         onChange={handleTextareaChange}
-        placeholder="Enter Response"
+        onPaste={handlePaste}
+        placeholder="Type your response here..."
+        minRows={12}
+        maxRows={14}
         aria-label="Auto-sizing Textarea"
-        // Minimum number of rows
+        style={{
+          width: "100%",
+          padding: "12px",
+          fontSize: "16px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          resize: "none",
+          backgroundColor: isShowingResponse ? "#f5f5f5" : "#fff",
+          transition: "all 0.2s ease",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+        }}
       />
-      <p
+          <p
         style={{ marginTop: "3px", textAlign: "right", width: "97%" }}
       >{`Word Count : ${
         textareaValue.split(" ").filter((wrd) => wrd).length
       }`}</p>
-    </>
+    </div>
   );
 };
 export default function Writing({
@@ -81,6 +97,7 @@ export default function Writing({
   wordsLength,
   questionGroupData,
 }) {
+  console.log(questionResponse,wordsLength,"check questionResponse inside writing")
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -305,12 +322,12 @@ try{
   }, []);
   const isEnglishStudentLevel = readOut
     // localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("qsmtets", qstnText);
+  console.log("qsmtets", qstnText,qstnText.split(" ").length);
 
   return (
     <div>
       <SolveButton onClick={checkGptResponse} />
-      {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
+      {redAlert && !submitResponse && <CustomAlertBoxMathZone msg="Please begin writing"/>}
       <div className={styles.questionName}>
         {/* {textNodes && imageNodes ? (
           <>
@@ -359,7 +376,7 @@ try{
             ) : null}
           </>
         )} */}
-        {qstnText.split(" ").length > 30 ? (
+        {qstnText.split(" ").length < 30 ? (
           <div
             style={{
               backgroundRepeat: "no-repeat",
@@ -560,8 +577,8 @@ try{
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-            
-            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+            <></>
+            // <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
       )}
