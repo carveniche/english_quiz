@@ -6,17 +6,42 @@ import playing from "../Solution/AudioPlaying.json";
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [text, setText] = useState("");
+  const [voicesAvailable, setVoicesAvailable] = useState([]);
 
   useEffect(() => {
     if (readText) setText(readText);
   }, [readText]);
 
-  const readTheQuestionText = () => {
-    const voicesAvailable = window.speechSynthesis.getVoices();
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        setVoicesAvailable(voices);
+      }
+    };
 
-    if (isSpeaking || text.length === 0) {
+    // Attempt to load voices right away
+    loadVoices();
+    // If voices aren't ready yet, listen for when they become available
+    window.speechSynthesis.onvoiceschanged = () => {
+      loadVoices();
+    };
+  }, []);
+
+  const readTheQuestionText = () => {
+    if (!text || text.trim().length === 0) return;
+
+    if (isSpeaking) {
+      // Stop if already speaking
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
+      return;
+    }
+    setIsSpeaking(true);
+    if (voicesAvailable.length === 0) {
+      // Retry after delay if voices not ready
+      console.log("Voices not yet available. Retrying...");
+      setTimeout(readTheQuestionText, 200);
       return;
     }
 
@@ -28,16 +53,25 @@ export default function SpeakPlainText({ readText }) {
       "Google UK English Female",
       "Daniel",
       "Microsoft David",
-      "Microsoft Zira"
+      "Microsoft Zira",
     ];
 
     const selectedVoice = voicesAvailable.find((voice) =>
       preferredVoices.includes(voice.name)
     );
+
     utterance.voice = selectedVoice || voicesAvailable[0];
 
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
+    // 🔊 Triggers when speech starts
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+    };
+
+    // 🛑 Triggers when speech ends or gets cancelled
+    utterance.onend = () => {
+      setIsSpeaking(false);
+    };
+
     utterance.onerror = (event) => {
       setIsSpeaking(false);
       console.error("Speech synthesis error:", event.error);
