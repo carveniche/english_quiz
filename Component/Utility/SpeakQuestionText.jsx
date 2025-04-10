@@ -10,7 +10,14 @@ export default function SpeakQuestionText({ readText }) {
   const [canStart, setCanStart] = useState(false);
   useEffect(() => {
     if (readText.length > 0) {
-      let combinedText = readText.reduce((acc, node) => acc + node.value, "");
+      
+      let type = ['a', 'video', 'audio', 'img','br'];
+
+      let combinedText = readText.reduce((acc, node) => {
+        return !type.includes(node.node) ? acc + node.value : acc;
+      }, "");
+    //  let temCombinedText = combinedText.replace(/\s+/g, " ").trim();
+
       if (combinedText.includes("__")) {
         while (combinedText.includes("__")) {
           combinedText = combinedText.replaceAll("__", "_");
@@ -54,52 +61,62 @@ export default function SpeakQuestionText({ readText }) {
     }, 2000);
     return () => clearTimeout(voiceCheckTimer);
   }, [voices]);
-  const readTheQuestionText = () => {
-    setIsSpeaking(true);
-    const voicesAvailable = window.speechSynthesis.getVoices();
-    if (isSpeaking || text.length === 0) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      return;
-    }
-    const textNeedstoSpoken = text.join(". ");
-    //console.log("voicesAvailable", voicesAvailable);
-    //console.log("textNeedstoSpoken", textNeedstoSpoken);
-    const utterance = new SpeechSynthesisUtterance(textNeedstoSpoken);
-    const preferredVoices = [
-      // "Microsoft George - English (United Kingdom)",
-      "Google UK English Male",  // Chrome (Daniel equivalent)
-      "Google UK English Female",
-      "Daniel",                  // Safari
-      "Microsoft David",         // Windows default
-      "Microsoft Zira"
+
+ const readTheQuestionText = () => {
+  const voicesAvailable = window.speechSynthesis.getVoices();
+
+  // If already speaking, cancel the current utterance
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+    return;
+  }
+
+  // Don't proceed if there's no text to speak
+  if (text.length === 0) return;
+
+  const textToSpeak = text.join(". ").trim();
+
+  const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+  // Preferred voice names across different platforms
+  const preferredVoices = [
+    "Google UK English Male",  // Chrome
+    "Google UK English Female",
+    "Daniel",                  // Safari
+    "Microsoft David",         // Windows
+    "Microsoft Zira"
   ];
 
-  const selectedVoice = voicesAvailable.find(voice =>{
-    console.log(voice)
-      return preferredVoices.includes(voice.name)
-  });
-  utterance.rate = 0.9;
+  // Select a matching voice or fallback to first available
+  const selectedVoice = voicesAvailable.find(voice =>
+    preferredVoices.includes(voice.name)
+  );
 
-    utterance.voice = selectedVoice || voicesAvailable[0];
-    if (voices.length === 0) {
-      console.error("There was an error while generating speech:");
-    }
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-    };
+  utterance.voice = selectedVoice || voicesAvailable[0];
+  utterance.rate = 0.5; // Adjust speaking speed here (0.1 to 10)
 
-    utterance.onend = () => {
-      setIsSpeaking(false);
-    };
-
-    utterance.onerror = (event) => {
-      setIsSpeaking(false);
-      console.error("Speech as synthesis error:", event.error);
-    };
-
-    window.speechSynthesis.speak(utterance);
+  // Handle start of speech
+  utterance.onstart = () => {
+    setIsSpeaking(true);
   };
+
+  // Handle end of speech
+  utterance.onend = () => {
+    setIsSpeaking(false);
+    console.log("Speech finished.");
+  };
+
+  // Handle any errors during speech
+  utterance.onerror = (event) => {
+    setIsSpeaking(false);
+    console.error("Speech synthesis error:", event.error);
+  };
+
+  // Start speaking
+  window.speechSynthesis.speak(utterance);
+};
+
   const playingOptions = {
     loop: true,
     autoplay: true,
