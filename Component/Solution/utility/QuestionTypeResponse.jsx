@@ -82,10 +82,10 @@ useEffect(()=>{
           showQuizResponse&&parseResponse?.score>=0&&<h6 style={{marginBottom:5}}>Score: {parseResponse?.score}</h6>
         }
         <div className={styles.ai_audio_player_section}>
-        <h6 className="flex-1">The correct answer is:</h6>
-       {showSpeakIcon &&<SpeakPlainText readText={parseResponse?.chatGptResponse||data?.prompt_text || ""}/>}
+       { parseResponse?.chatGptResponse &&<h6 className="flex-1">The correct answer is:</h6>}
+       {showSpeakIcon &&<SpeakPlainText readText={parseResponse?.chatGptResponse}/>}
         </div>
-        <>{parseResponse?.chatGptResponse||data?.prompt_text || ""}</>
+        <>{parseResponse?.chatGptResponse}</>
       </div>
     </>:""
   );

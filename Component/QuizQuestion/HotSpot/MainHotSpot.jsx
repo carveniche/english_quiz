@@ -7,18 +7,17 @@ import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-mater
 import { Zoom } from '@mui/material';
 import  './hotSpot.css';
 
-export default function MainHotSpot({ obj, wordsLength }) {
-
+export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
 
   let question_text = JSON.parse(obj?.question_data);
 
   return (
-    <div><HotSpotPreview data={obj} question_text={question_text} /></div>
+    <div><HotSpotPreview data={obj} question_text={question_text} questionData={questionData} /></div>
   )
 }
 
-function HotSpotPreview({ data, question_text }) {
+function HotSpotPreview({ data, question_text,questionData }) {
   const canvasRef = useRef(null);
   const [redAlert, setRedAlert] = useState(false);
   const [choices, setChoices] = useState(question_text?.choices || []); // Store in state
@@ -139,8 +138,8 @@ function HotSpotPreview({ data, question_text }) {
 
     }
 
-    if (showSolution && data?.questionResponse) {
-      let question_response = JSON.parse(data?.questionResponse);
+    if (showSolution &&questionData?.studentResponse) {
+      let question_response = JSON.parse(questionData?.studentResponse);
       setChoices(question_response)
       setSubmitResponse(showSolution)
       drawAll()
