@@ -36,10 +36,25 @@ export default function GroupFile({
   const [showQuestion, setShowQuestion] = useState(isShowQuestion || false);
   window.setShowQuestion = setShowQuestion;
   return (
-    <>
+   <>
+    <div
+    style={{
+      padding: "10px 20px",
+      userSelect: "none",         // Prevents text selection
+      WebkitUserSelect: "none",   // Safari
+      MozUserSelect: "none",      // Firefox
+      msUserSelect: "none"        // Internet Explorer
+    }}
+     onCopy={(e) => e.preventDefault()}
+     onContextMenu={(e) => e.preventDefault()}
+    >
       {groupObject[data?.group_type]}
       {showQuestion && (
-        <div style={{ padding: "10px 20px" }} className={styles.groupPage}>
+        <div  style={{
+          padding: "10px 20px",}}
+        className={styles.groupPage}
+       
+          >
           <QuizDisplay
             obj={data?.question_data[0] || ""}
             data={data}
@@ -48,6 +63,7 @@ export default function GroupFile({
           />
         </div>
       )}
-    </>
+    </div>
+   </>
   );
 }
