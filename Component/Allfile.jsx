@@ -50,7 +50,7 @@ export default function Allfile({ data, questionData }) {
       <MainMatchTheFollowing wordsLength={wordsLength} obj={data} />
     ),
     read_the_text: <Main_Speaking_Type wordsLength={wordsLength} obj={data} />,
-    hotspot: <MainHotSpot wordsLength={wordsLength} obj={data} />,
+    hotspot: <MainHotSpot wordsLength={wordsLength} obj={data}  questionData={questionData} />,
     labeling: <MainLabeling wordsLength={wordsLength} obj={data} />,
   };
   const getQuestionId = () => {
