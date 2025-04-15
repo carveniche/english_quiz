@@ -319,7 +319,7 @@ export default function Writing({
   const isEnglishStudentLevel = readOut;
   // localStorage.getItem("isEnglishStudentLevel") || false;
 
-  return 
+  return (
     <div>
       <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && (
