@@ -52,20 +52,27 @@ const AutoSizeTextarea = ({
       // textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   };
+
+
   studentTextRef.current = textareaValue;
+  const handlePaste = (event) => {
+    console.log('not allowed paste')
+    event.preventDefault(); // This blocks the paste
+  };
+  
+  
 
-  const handlePaste = (e) => e.preventDefault();
-
-  const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
+  //const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
 
   return (
     <div style={{ width: "100%" }}>
       <TextareaAutosize
+      onPasteCapture={handlePaste}
         ref={textareaRef}
         className={`${styles.blinking}`}
         value={isShowingResponse ? textareaValue || response : textareaValue}
         onChange={handleTextareaChange}
-        onPaste={handlePaste}
+        
         placeholder="Type your response here..."
         minRows={12}
         maxRows={14}
@@ -96,11 +103,7 @@ export default function Writing({
   wordsLength,
   questionGroupData,
 }) {
-  console.log(
-    questionResponse,
-    wordsLength,
-    "check questionResponse inside writing"
-  );
+
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -322,7 +325,6 @@ export default function Writing({
   }, []);
   const isEnglishStudentLevel = readOut;
   // localStorage.getItem("isEnglishStudentLevel") || false;
-  console.log("qsmtets", qstnText, qstnText.split(" ").length);
 
   return (
     <div>
