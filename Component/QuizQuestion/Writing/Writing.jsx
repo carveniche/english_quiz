@@ -42,7 +42,7 @@ const AutoSizeTextarea = ({
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { submitResponse, disabledQuestion} = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
     if (submitResponse || hideCheckButton) return;
     if (disabledQuestion) return;
@@ -65,11 +65,14 @@ const AutoSizeTextarea = ({
   //const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <div style={{ width: "100%" }}>
+    <>
+   
+
       <TextareaAutosize
       onPasteCapture={handlePaste}
         ref={textareaRef}
-        className={`${styles.blinking}`}
+        className={`${styles.blinking} blinking`}
+        style={useStyles.autoSizeTextarea}
         value={isShowingResponse ? textareaValue || response : textareaValue}
         onChange={handleTextareaChange}
         
@@ -77,24 +80,14 @@ const AutoSizeTextarea = ({
         minRows={12}
         maxRows={14}
         aria-label="Auto-sizing Textarea"
-        style={{
-          width: "100%",
-          padding: "12px",
-          fontSize: "16px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          resize: "none",
-          backgroundColor: isShowingResponse ? "#f5f5f5" : "#fff",
-          transition: "all 0.2s ease",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-        }}
+        // Minimum number of rows
       />
       <p
         style={{ marginTop: "3px", textAlign: "right", width: "97%" }}
       >{`Word Count : ${
         textareaValue.split(" ").filter((wrd) => wrd).length
       }`}</p>
-    </div>
+    </>
   );
 };
 export default function Writing({
@@ -326,7 +319,7 @@ export default function Writing({
   const isEnglishStudentLevel = readOut;
   // localStorage.getItem("isEnglishStudentLevel") || false;
 
-  return (
+  return 
     <div>
       <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && (
@@ -586,8 +579,8 @@ export default function Writing({
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-            <></>
-            // <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+            
+            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
       )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie";
-import paused from "../Solution/AudioPaused.json";
-import playing from "../Solution/AudioPlaying.json";
+import * as paused from "../Solution/AudioPaused.json";
+import * as playing from "../Solution/AudioPlaying.json";
 
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -56,7 +56,7 @@ export default function SpeakPlainText({ readText }) {
       "Microsoft Zira",
     ];
 
-    const selectedVoice = voicesAvailable.find((voice) =>
+  const selectedVoice = voicesAvailable.find(voice =>
       preferredVoices.includes(voice.name)
     );
 
@@ -74,29 +74,38 @@ export default function SpeakPlainText({ readText }) {
 
     utterance.onerror = (event) => {
       setIsSpeaking(false);
-      console.error("Speech synthesis error:", event.error);
+      console.error("Speech as synthesis error:", event.error);
     };
 
     window.speechSynthesis.speak(utterance);
   };
-
-  const animationOptions = {
+  const playingOptions = {
     loop: true,
     autoplay: true,
-    animationData: isSpeaking ? playing : paused,
+    animationData: playing,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const pausedOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: paused,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
 
   return (
-    <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
-      <Lottie
-        options={animationOptions}
-        height={"50px"}
-        width={"50px"}
-        isClickToPauseDisabled
-      />
-    </div>
+    <>
+      <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
+        <Lottie
+          options={isSpeaking ? playingOptions : pausedOptions}
+          height={"50px"}
+          width={"50px"}
+          cursor={"pointer"}
+        />
+      </div>
+    </>
   );
 }

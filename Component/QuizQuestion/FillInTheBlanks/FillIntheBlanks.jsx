@@ -23,17 +23,24 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   } = useContext(ValidationContext);
 
 
-  var data = obj?.choices.flatMap((sda) => {
-    return sda.value.split(" ").map((val) => ({
+  const data = obj?.choices.map((sda) => {
+    const combinedValue = sda.value
+      .split(/\s+/) // split by spaces
+      .map((val) => val.replace(/[^\w']/g, '')) // remove punctuation except apostrophes
+      .filter(Boolean) // remove any empty strings
+      .join(' '); // join back into one string
+  
+    return {
       correct: sda.correct,
-      value: val,
-     ...(showSolution && {studentAnswer: sda.studentAnswer }|| {})
-    }));
+      value: combinedValue,
+      ...(showSolution ? { studentAnswer: sda.studentAnswer } : {})
+    };
   });
+  
 
   const choicesRef = useRef(data || []);
  
-
+console.log(choicesRef,'choicesRef')
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
@@ -78,6 +85,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   var imageNodes = obj?.questionName.filter((node) => node.node === "img");
  const isEnglishStudentLevel = readOut
     // localStorage.getItem("isEnglishStudentLevel") || false;
+
   return (
     <div>
       {/* <div
@@ -127,10 +135,9 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
                     <AudiPlayerComponent resources={obj?.resources || []} />
                   )}
 
-                  {choicesRef.current.length <=1?
+                  {choicesRef.current.length &&
                   <QuestionContent choicesRef={choicesRef} /> 
-                    :
-                  <QuestionContentSec choicesRef={choicesRef}/>
+                   
                   }
                 </div>
               </div>
