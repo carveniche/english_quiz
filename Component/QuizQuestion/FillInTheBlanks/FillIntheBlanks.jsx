@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import styles from "../english_mathzone.module.css";
-import QuestionContent, { QuestionContentSec } from "./QuestionContent";
+import QuestionContent from "./QuestionContent";
 import { ValidationContext } from "../../QuizPage";
 import { STUDENTANSWER } from "../../Utility/Constant";
-import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import { checkTwoString } from "../../Utility/stringValidation";
 import objectParser from "../../Utility/objectParser";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 export default function FillIntheBlanks({ obj, wordsLength }) {
   const [redAlert, setRedAlert] = useState(false);
   const {
@@ -29,18 +29,18 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
       .map((val) => val.replace(/[^\w']/g, '')) // remove punctuation except apostrophes
       .filter(Boolean) // remove any empty strings
       .join(' '); // join back into one string
-  
+
     return {
       correct: sda.correct,
       value: combinedValue,
       ...(showSolution ? { studentAnswer: sda.studentAnswer } : {})
     };
   });
-  
+
 
   const choicesRef = useRef(data || []);
- 
-console.log(choicesRef,'choicesRef')
+
+  console.log(choicesRef, 'choicesRef')
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
@@ -78,108 +78,26 @@ console.log(choicesRef,'choicesRef')
     setSubmitResponse(true);
     setStudentAnswer(JSON.stringify(arr));
     setIsCorrect(answerStatus);
-   
+
     return answerStatus;
   };
-  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
-  var imageNodes = obj?.questionName.filter((node) => node.node === "img");
- const isEnglishStudentLevel = readOut
-    // localStorage.getItem("isEnglishStudentLevel") || false;
-
+ 
   return (
-    <div>
-      {/* <div
-        style={{
-          color: "#00b8fa",
-          fontWeight: "bold",
-          padding: "16px 5px 22px 0px",
-          fontSize: "18px",
-        }}
-      >
-        Fill in the Blanks
-      </div> */}
+    <>
+
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && (
         <CustomAlertBoxMathZone msg={"Please Type the Answer"} />
       )}
 
-      <div>
-        <div className={styles.questionName}>
-          {textNodes && imageNodes ? (
-            <div style={{ display: "flex", gap: "40px" }}>
-              <div
-                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: wordsLength <= 30 ? "center" : "",
-                }}
-              >
-                <div>
-                  <div style={{ display: "flex" }}>
-                    <div className="audio_with_questiontext">
-                    {isEnglishStudentLevel && (
-                      <SpeakQuestionText readText={textNodes} />
-                    )}
-                    <div>
-                      {textNodes &&
-                        textNodes.length > 0 &&
-                        textNodes.map((item, key) => (
-                          <React.Fragment key={key}>
-                            {objectParser(item, key)}
-                          </React.Fragment>
-                        ))}
-                    </div>
-                    </div>
-                  </div>
-                  {obj?.resources && obj?.resources.length > 0 && (
-                    <AudiPlayerComponent resources={obj?.resources || []} />
-                  )}
+      <QuestionCommonContent
+        isFrom="fill_in_the_blanks"
+        obj={obj}
+        wordsLength={wordsLength}
+        choicesRef={choicesRef}
+        isEnglishStudentLevel={readOut}
+      />
 
-                  {choicesRef.current.length &&
-                  <QuestionContent choicesRef={choicesRef} /> 
-                   
-                  }
-                </div>
-              </div>
-              <div>
-                {imageNodes &&
-                  imageNodes.length > 0 &&
-                  imageNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-              </div>
-            </div>
-          ) : (
-            <>
-              {obj?.questionName?.length ? (
-                <>
-                  {obj?.questionName.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-                </>
-              ) : null}
-            </>
-          )}
-          {/* {obj?.questionName?.length ? (
-            <>
-              {obj?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </>
-          ) : null} */}
-        </div>
-
-        <br />
-        {/* {obj?.resources.length > 0 && (
-          <AudiPlayerComponent resources={obj?.resources || []} />
-        )} */}
-      </div>
-    </div>
+    </>
   );
 }

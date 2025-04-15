@@ -38,14 +38,15 @@ const objectParser = (item, index) => {
     value = <span style={styleObject}>{` ${item?.value} `}</span>;
   } else if (item?.node === "img") {
     value = (
-      <div>
+      <div className="image">
         <img
           src={item?.value}
           alt=""
           style={{
-            width: item?.width || "fit-content",
+            width: "200px",
             height: item?.height || "fit-content",
             float: item?.float || "",
+            aspectRatio:1/1
           }}
         />
       </div>
@@ -74,7 +75,7 @@ function getVideoType(url) {
   if (youTubeRegex.test(url)) {
     return (
 
-      <>
+      <div className="video">
       <iframe
     width="250"
     height="150"
@@ -83,17 +84,17 @@ function getVideoType(url) {
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowFullScreen
   />
-      </>
+      </div>
     )
   }  else {
     return (
 
-      <>
+      <div className="video">
       <video width="250" height="150" controls>
     <source src={url} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-      </>
+      </div>
     )
   }
 }

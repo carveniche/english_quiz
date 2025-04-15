@@ -35,6 +35,7 @@ export default function GroupFile({
   };
   const [showQuestion, setShowQuestion] = useState(isShowQuestion || false);
   window.setShowQuestion = setShowQuestion;
+  
   return (
    <>
     <div
@@ -48,6 +49,7 @@ export default function GroupFile({
      onCopy={(e) => e.preventDefault()}
      onContextMenu={(e) => e.preventDefault()}
     >
+      
       {groupObject[data?.group_type]}
       {showQuestion && (
         <div  style={{
@@ -55,6 +57,7 @@ export default function GroupFile({
         className={styles.groupPage}
        
           >
+            
           <QuizDisplay
             obj={data?.question_data[0] || ""}
             data={data}

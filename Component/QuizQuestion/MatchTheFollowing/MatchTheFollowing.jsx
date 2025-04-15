@@ -9,6 +9,8 @@ import DragDrop from "./DragDrop";
 import { checkTwoString } from "../../Utility/stringValidation";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
+import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 export default function MatchTheFollowing({ obj }) {
   const [redAlert, setRedAlert] = useState(false);
   const {
@@ -47,11 +49,6 @@ export default function MatchTheFollowing({ obj }) {
     return isValidate;
   };
 
-
-  var textNodes = obj?.questionName.filter(
-    (node) => node.node !== "img"
-  );
-  const isEnglishStudentLevel = readOut
   // localStorage.getItem("isEnglishStudentLevel") || false;
   return (
     <>
@@ -65,26 +62,12 @@ export default function MatchTheFollowing({ obj }) {
         )}
         <div>
 
-          <div className={styles.questionName}>
-
-            <div className="audio_with_questiontext">
-              {isEnglishStudentLevel && (
-                <SpeakQuestionText readText={textNodes} />
-
-              )}
-              <div>
-            {obj?.questionName?.length ? (
-              <>
-                {obj?.questionName.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}
-              </>
-            ) : null}
-            </div>
-            </div>
-          </div>
+            <QuestionCommonContent
+                    obj={obj}
+                    wordsLength={[]}
+                    choicesRef={obj?.question_content}
+                    isEnglishStudentLevel={readOut}
+                  />
           <DragDrop
             choiceRef={choicesRef}
             questionContent={obj?.question_content || []}

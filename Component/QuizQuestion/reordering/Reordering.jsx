@@ -8,6 +8,7 @@ import SolveButton from "../../CommonComponent/SolveButton";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 export default function Reordering({ obj, direction, questionResponse }) {
 
 
@@ -36,48 +37,35 @@ export default function Reordering({ obj, direction, questionResponse }) {
     return correctValue;
   };
 
- 
-  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
-  const isEnglishStudentLevel =readOut
-    // localStorage.getItem("isEnglishStudentLevel") || false;
+
+
+  // localStorage.getItem("isEnglishStudentLevel") || false;
 
 
   return (
-    <div>
+    <>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
 
       <div>
-      <div className="audio_with_questiontext">
-      {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />}
-        <div className={styles.questionName}>
-         
-          {obj?.questionName && obj?.questionName?.length ? (
-            <>
-              {obj?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </>
-          ) : null}
-          </div>
-        </div>
 
-        {/* <div style={{ margin: "25px 0" }}>
-          <ResourceViewer resources={obj?.resources || []} />
-        </div> */}
-        {obj?.resources && obj?.resources?.length > 0 && (
-          <AudiPlayerComponent resources={obj?.resources || []} />
-        )}
+        <QuestionCommonContent
+          obj={obj}
+          wordsLength={[]}
+          choicesRef={obj?.questionContent}
+          isEnglishStudentLevel={readOut}
+        />
 
         <Dragdrop
           choiceRef={choiceRef}
           questionData={obj?.questionContent}
           response={questionResponse || []}
           direction={direction}
+
         />
+
+
       </div>
-    </div>
+    </>
   );
 }

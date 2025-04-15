@@ -9,6 +9,7 @@ import { STUDENTANSWER } from "../../Utility/Constant";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 export default function MultipleChoice({ obj, wordsLength }) {
   const {
     submitResponse,
@@ -54,91 +55,20 @@ export default function MultipleChoice({ obj, wordsLength }) {
     return status;
   };
 
-  var textNodes = obj?.questionName.filter((node) => node.node !== "img");
-  var imageNodes = obj?.questionName.filter((node) => node.node === "img");
-  const isEnglishStudentLevel =readOut
-    // localStorage.getItem("isEnglishStudentLevel") || false;
-
+ 
   return (
-    <div>
+    <>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
-      {/* {obj?.resources?.length > 0 && (
-        <div>
-          <ResourceViewer resources={obj?.resources || []} />
-        </div>
-      )} */}
       <div>
-        <div
-          style={{ paddingLeft: obj?.resources?.length > 0 ? "50px" : "" }}
-          className={styles.questionName}
-        >
-          {textNodes && imageNodes ? (
-            <div style={{ display: "flex", gap: "40px" }}>
-              <div
-                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: wordsLength <= 30 ? "center" : "",
-                }}
-              >
-                <div className="audio_with_questiontext">
-                {isEnglishStudentLevel && (
-                  <SpeakQuestionText readText={textNodes} />
-                )}
-                <div>
-                  {textNodes &&
-                    textNodes.length > 0 &&
-                    textNodes.map((item, key) => (
-                      <React.Fragment key={key}>
-                        {objectParser(item, key)}
-                      </React.Fragment>
-                    ))}
-
-                  <div>
-                    {obj?.resources.length > 0 && (
-                      <AudiPlayerComponent resources={obj?.resources || []} />
-                    )}
-                  </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                {imageNodes &&
-                  imageNodes.length > 0 &&
-                  imageNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-              </div>
-            </div>
-          ) : (
-            <>
-              {obj?.questionName?.length ? (
-                <>
-                  {obj?.questionName.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-                </>
-              ) : null}
-            </>
-          )}
-
-          {/* {obj?.questionName?.length ? (
-            <>
-              {obj?.questionName.map((item, key) => (
-                <React.Fragment key={key}>
-                  {objectParser(item, key)}
-                </React.Fragment>
-              ))}
-            </>
-          ) : null} */}
-        </div>
+        <QuestionCommonContent
+          obj={obj}
+          wordsLength={wordsLength}
+          choicesRef={choicesRef}
+          isEnglishStudentLevel={readOut}
+        />
         <Choices choicesRef={choicesRef} />
       </div>
-    </div>
+    </>
   );
 }

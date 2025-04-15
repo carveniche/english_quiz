@@ -393,3 +393,56 @@
   padding: 10px;
   margin-top: 2%;
 }
+
+
+/* common question content */
+.questionContainer {
+  width: 100%;
+}
+
+.flexRow {
+  display: flex;
+  gap: 10px;
+}
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.textArea {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.imageArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.audioWithText {
+  display: flex;
+  gap: 10px;
+}
+
+.questionText {
+  width: 100%;
+  /* display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center; */
+}
+
+.biggerFont {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.singleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

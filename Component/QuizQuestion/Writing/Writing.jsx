@@ -13,10 +13,11 @@ import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import Book_back from "../../assets/Images/Book_Background.jpg";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 import React_Base_Api from "../../../ReactConfigApi";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 const useStyles = {
   autoSizeTextarea: {
     height: "95%",
-    width: "98%",
+    width: "100%",
     maxWidth: "100%",
     minWidth: "100px",
     minHeight: "150px",
@@ -42,7 +43,7 @@ const AutoSizeTextarea = ({
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-  const { submitResponse, disabledQuestion} = useContext(ValidationContext);
+  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
     if (submitResponse || hideCheckButton) return;
     if (disabledQuestion) return;
@@ -59,34 +60,33 @@ const AutoSizeTextarea = ({
     console.log('not allowed paste')
     event.preventDefault(); // This blocks the paste
   };
-  
-  
+
+
 
   //const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
 
   return (
     <>
-   
+
 
       <TextareaAutosize
-      onPasteCapture={handlePaste}
+        onPasteCapture={handlePaste}
         ref={textareaRef}
         className={`${styles.blinking} blinking`}
         style={useStyles.autoSizeTextarea}
         value={isShowingResponse ? textareaValue || response : textareaValue}
         onChange={handleTextareaChange}
-        
+
         placeholder="Type your response here..."
         minRows={12}
         maxRows={14}
         aria-label="Auto-sizing Textarea"
-        // Minimum number of rows
+      // Minimum number of rows
       />
       <p
         style={{ marginTop: "3px", textAlign: "right", width: "97%" }}
-      >{`Word Count : ${
-        textareaValue.split(" ").filter((wrd) => wrd).length
-      }`}</p>
+      >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
+        }`}</p>
     </>
   );
 };
@@ -316,64 +316,15 @@ export default function Writing({
       setQstnText(xyu);
     }
   }, []);
-  const isEnglishStudentLevel = readOut;
-  // localStorage.getItem("isEnglishStudentLevel") || false;
 
+const  longText= (qstnText?.split(" ").length > 30)
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <SolveButton onClick={checkGptResponse} />
       {redAlert && !submitResponse && (
         <CustomAlertBoxMathZone msg="Please begin writing" />
       )}
-      <div className={styles.questionName}>
-        {/* {textNodes && imageNodes ? (
-          <>
-            <div style={{ display: "flex", gap: "40px" }}>
-              <div
-                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: wordsLength <= 30 ? "center" : "",
-                }}
-              >
-                {isEnglishStudentLevel && (
-                  <SpeakQuestionText readText={textNodes} />
-                )}
-                <div>
-                  {textNodes &&
-                    textNodes.length > 0 &&
-                    textNodes.map((item, key) => (
-                      <React.Fragment key={key}>
-                        {objectParser(item, key)}
-                      </React.Fragment>
-                    ))}
-                </div>
-              </div>
-              <div>
-                {imageNodes &&
-                  imageNodes.length > 0 &&
-                  imageNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            {questionData?.questionName?.length ? (
-              <>
-                {questionData?.questionName.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}
-              </>
-            ) : null}
-          </>
-        )} */}
-        {qstnText.split(" ").length > 30 ? (
+
           <div
             style={{
               backgroundRepeat: "no-repeat",
@@ -392,82 +343,19 @@ export default function Writing({
               border: "1px solid #e0e0e0",
             }}
           >
-            {textNodes && imageNodes ? (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "45%",
-                  }}
-                >
-                  <div
-                    className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-                    style={{
-                      display: "flex",
-                      alignItems: wordsLength <= 30 ? "center" : "",
-                      width: "100%",
-                    }}
-                  >
-                    <div className="audio_with_questiontext">
-                      {isEnglishStudentLevel && (
-                        <SpeakQuestionText readText={textNodes} />
-                      )}
-                      <div style={{ paddingLeft: "15px" }}>
-                        {textNodes &&
-                          textNodes.length > 0 &&
-                          textNodes.map((item, key) => (
-                            <React.Fragment key={key}>
-                              {objectParser(item, key)}
-                            </React.Fragment>
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {imageNodes &&
-                      imageNodes.length > 0 &&
-                      imageNodes.map((item, key) => (
-                        <React.Fragment key={key}>
-                          {objectParser(item, key)}
-                        </React.Fragment>
-                      ))}
-                  </div>
+          <div style={{ display:'flex',flexDirection:`${longText ? "row":'column'}`, width: "100%" }}>
+          <QuestionCommonContent
+             longText={longText}
+              obj={questionData}
+              wordsLength={wordsLength}
+              choicesRef={[]}
+              isEnglishStudentLevel={readOut}
+            />
 
-                  {questionData?.resources.length > 0 && (
-                    <AudiPlayerComponent
-                      resources={questionData?.resources || []}
-                    />
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                {questionData?.questionName?.length ? (
-                  <>
-                    {questionData?.questionName.map((item, key) => (
-                      <React.Fragment key={key}>
-                        {objectParser(item, key)}
-                      </React.Fragment>
-                    ))}
-                  </>
-                ) : null}
-              </>
-            )}
             <div
               style={{
-                marginTop: "5px",
-                paddingLeft: "10px",
-                paddingRight: "5px",
-                width: "45%",
-                height: "auto",
+                width: longText ? "50%" : "100%",
+               
               }}
             >
               <AutoSizeTextarea
@@ -475,103 +363,15 @@ export default function Writing({
                 hideCheckButton={hideCheckButton}
                 response={questionResponse?.studentResponse || null}
                 isShowingResponse={submitResponse || disabledQuestion}
+
+            
               />
             </div>
           </div>
-        ) : (
-          <div
-            style={{
-              backgroundRepeat: "no-repeat",
-              display: "flex",
-              gap: "10%",
-              padding: "20px",
-              flexDirection: "column",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              // minHeight: "80vh",
-              width: "60vw",
-              margin: "auto",
-              borderRadius: "15px",
-              paddingLeft: "60px",
-              backgroundColor: "#e8f5e9", // soft peachy cream (very kid-friendly!)
-
-              // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
-              // backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+BG-03.png)`,
-              height: "fit-content",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)", // subtle shadow for depth
-              border: "1px solid #e0e0e0",
-            }}
-          >
-            <div style={{ marginLeft: "3rem" }}>
-              <div
-                className={`${wordsLength <= 30 ? styles.biggerFont : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: wordsLength <= 30 ? "center" : "",
-                  width: "100%",
-                }}
-              >
-                <div style={{ paddingLeft: "15px" }}>
-                  <div className="audio_with_questiontext">
-                    {isEnglishStudentLevel && (
-                      <SpeakQuestionText readText={textNodes} />
-                    )}
-                    <div>
-                      {textNodes &&
-                        textNodes.length > 0 &&
-                        textNodes.map((item, key) => (
-                          <React.Fragment key={key}>
-                            {objectParser(item, key)}
-                          </React.Fragment>
-                        ))}
-                    </div>
-                  </div>
-                  {imageNodes &&
-                    imageNodes.length > 0 &&
-                    imageNodes.map((item, key) => (
-                      <React.Fragment key={key}>
-                        {objectParser(item, key)}
-                      </React.Fragment>
-                    ))}
-                </div>
-              </div>
-              <div
-                style={{
-                  marginTop: "5px",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                  width: "100%",
-                  height: "60vh",
-                }}
-              >
-                <AutoSizeTextarea
-                  studentTextRef={studentTextRef}
-                  hideCheckButton={hideCheckButton}
-                  response={questionResponse?.studentResponse || null}
-                  isShowingResponse={submitResponse || disabledQuestion}
-                />
-              </div>
-            </div>
           </div>
-        )}
-        {/* {questionData?.questionName?.length ? (
-          <>
-            {questionData?.questionName.map((item, key) => (
-              <React.Fragment key={key}>
-                {objectParser(item, key)}
-              </React.Fragment>
-            ))}
-          </>
-        ) : null} */}
-      </div>
-      {/* <div style={{ marginTop: 5 }}>
-        <AutoSizeTextarea
-          studentTextRef={studentTextRef}
-          hideCheckButton={hideCheckButton}
-          response={questionResponse?.studentResponse || null}
-          isShowingResponse={submitResponse || disabledQuestion}
-        />
-      </div> */}
+        
+       
+    
       {hideCheckButton && (
         <>
           {gptResponseLoading ? (
@@ -579,7 +379,7 @@ export default function Writing({
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-            
+
             <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>

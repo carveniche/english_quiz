@@ -21,8 +21,8 @@ export default function AudiPlayerComponent({ resources }) {
       <div
         onClick={handleAudioToggle}
         style={{
-          width: 115,
-          height: 115,
+          width: 80,
+          height: 80,
           backgroundImage: `url("https://d1t64bxz3n5cv1.cloudfront.net/Hearing.png")`, // Replace with your background image URL
           backgroundSize: "cover",
           backgroundPosition: "center",

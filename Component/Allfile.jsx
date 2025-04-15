@@ -12,12 +12,14 @@ import MainLabeling from "./QuizQuestion/Labeling/MainLabeling";
 export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
   const { setStudentAnswer, setSubmitResponse } = useContext(ValidationContext);
+
   useEffect(() => {
     if (data?.student_response) {
       setStudentAnswer(JSON.parse(data?.student_response));
       setSubmitResponse(true);
     }
   }, []);
+
   let questionType = {
     "Multiple choice": (
       <MainMultipleChoice wordsLength={wordsLength} obj={data} />
@@ -49,31 +51,56 @@ export default function Allfile({ data, questionData }) {
     "Math the Following": (
       <MainMatchTheFollowing wordsLength={wordsLength} obj={data} />
     ),
-    read_the_text: <Main_Speaking_Type wordsLength={wordsLength} obj={data} />,
-    hotspot: <MainHotSpot wordsLength={wordsLength} obj={data}  questionData={questionData} />,
+    read_the_text: (
+      <Main_Speaking_Type
+        wordsLength={wordsLength}
+        obj={data}
+        questionData={questionData}
+      />
+    ),
+    hotspot: (
+      <MainHotSpot
+        wordsLength={wordsLength}
+        obj={data}
+        questionData={questionData}
+      />
+    ),
     labeling: <MainLabeling wordsLength={wordsLength} obj={data} />,
   };
+
   const getQuestionId = () => {
     return data?.question_id;
   };
+
   useEffect(() => {
-if(data.question_type == "hotspot" || data.question_type == "labeling"){
-   
-    return
-}
-    if (data.question_data) {
-      
-      var wordsLength = JSON.parse(data.question_data)?.questionName.reduce(
-        (acc, node) =>
-          node.node == "text" && node.value
-            ? acc + node.value.split(" ").length
-            : acc,
-        0
-      );
-      setWordsLength(wordsLength);
+    if (data.question_type === "hotspot" || data.question_type === "labeling") {
+      return;
     }
-  }, []);
+    if (data.question_data) {
+      try {
+        const parsedData = JSON.parse(data.question_data);
+        const wordsLength = parsedData?.questionName?.reduce(
+          (acc, node) =>
+            node.node === "text" && node.value
+              ? acc + node.value.split(" ").length
+              : acc,
+          0
+        );
+        setWordsLength(wordsLength);
+      } catch (error) {
+        console.error("Error parsing question_data:", error);
+      }
+    }
+  }, [data]);
+
   window.getQuestionId = getQuestionId;
- 
+
+  if (!questionType[data?.question_type]) {
+    console.error(
+      `Unsupported question type: ${data?.question_type}. Data:`,
+      data
+    );
+  }
+
   return <>{questionType[data?.question_type] || "Yet to be Released"}</>;
 }

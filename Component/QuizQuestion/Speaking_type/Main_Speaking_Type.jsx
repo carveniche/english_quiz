@@ -5,6 +5,7 @@ import NotificationModal from "../GroupQuestion/ReadingComprehensive/Notificatio
 import { useState } from "react";
 
 export const Main_Speaking_Type = ({ obj, wordsLength }) => {
+  
   let question_text = JSON.parse(obj?.question_data);
 
   
