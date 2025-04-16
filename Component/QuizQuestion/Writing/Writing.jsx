@@ -354,7 +354,7 @@ const  longText= (qstnText?.split(" ").length > 30)
 
             <div
               style={{
-                width: longText ? "50%" : "100%",
+                width: longText ? "60%" : "100%",
                 maxHeight: longText ?"250px" : "200px"
               }}
             >
