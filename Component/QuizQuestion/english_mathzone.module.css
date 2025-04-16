@@ -421,7 +421,13 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-right: 4%;
+ 
+}
+@media screen and (min-width: 1020px) {
+  .imageArea {
+    margin-right: 10%;
+  }
+  
 }
 
 .audioWithText {
