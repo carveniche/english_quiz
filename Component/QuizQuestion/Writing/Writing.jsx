@@ -355,7 +355,7 @@ const  longText= (qstnText?.split(" ").length > 30)
             <div
               style={{
                 width: longText ? "50%" : "100%",
-               
+                maxHeight:"250px"
               }}
             >
               <AutoSizeTextarea

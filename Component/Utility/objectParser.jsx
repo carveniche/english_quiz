@@ -44,8 +44,7 @@ const objectParser = (item, index) => {
           alt=""
           style={{
             width: "200px",
-            height: item?.height || "fit-content",
-            float: item?.float || "",
+            height: "200px" || "fit-content",
             aspectRatio:1/1
           }}
         />
@@ -77,8 +76,8 @@ function getVideoType(url) {
 
       <div className="video">
       <iframe
-    width="250"
-    height="150"
+    width="200"
+    height="200"
     src={url.replace("watch?v=", "embed/")}
     title="YouTube video player"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -90,7 +89,7 @@ function getVideoType(url) {
     return (
 
       <div className="video">
-      <video width="250" height="150" controls>
+      <video width="200" height="200" controls>
     <source src={url} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
