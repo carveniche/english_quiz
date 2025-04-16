@@ -16,7 +16,7 @@ import React_Base_Api from "../../../ReactConfigApi";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 const useStyles = {
   autoSizeTextarea: {
-    maxHeight: "100%",
+    height: "95%",
     width: "100%",
     maxWidth: "100%",
     minWidth: "100px",
@@ -69,7 +69,9 @@ const AutoSizeTextarea = ({
     <>
 
 
-      <TextareaAutosize
+    
+     <div style={{ width: "100%",height:"100%",display:"flex",flexDirection:"column",gap:"2px"}}> 
+     <TextareaAutosize
         onPasteCapture={handlePaste}
         ref={textareaRef}
         className={`${styles.blinking} blinking`}
@@ -84,9 +86,11 @@ const AutoSizeTextarea = ({
       // Minimum number of rows
       />
       <p
-        style={{ marginTop: "3px", textAlign: "right", width: "97%" }}
+        style={{ margin: "0px", textAlign: "right", width: "97%" }}
       >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
         }`}</p>
+ 
+      </div>
     </>
   );
 };
@@ -113,6 +117,7 @@ export default function Writing({
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
+    showSolution,
     readOut,
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -343,7 +348,7 @@ const  longText= (qstnText?.split(" ").length > 30)
               border: "1px solid #e0e0e0",
             }}
           >
-          <div style={{ display:'flex',flexDirection:`${longText ? "row":'column'}`, width: "100%" }}>
+          <div style={{ display:'flex',flexDirection:`${longText ? "row":'column'}`, gap:"10px", width: "100%" }}>
           <QuestionCommonContent
              longText={longText}
               obj={questionData}
@@ -354,8 +359,8 @@ const  longText= (qstnText?.split(" ").length > 30)
 
             <div
               style={{
-                width: longText ? "60%" : "100%",
-                maxHeight: longText ?"250px" : "200px"
+                width: longText ? "50%" : "100%",
+               
               }}
             >
               <AutoSizeTextarea
@@ -364,7 +369,6 @@ const  longText= (qstnText?.split(" ").length > 30)
                 response={questionResponse?.studentResponse || null}
                 isShowingResponse={submitResponse || disabledQuestion}
 
-            
               />
             </div>
           </div>
@@ -372,7 +376,7 @@ const  longText= (qstnText?.split(" ").length > 30)
         
        
     
-      {hideCheckButton && (
+      {/* {hideCheckButton && showSolution && (
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
@@ -383,7 +387,8 @@ const  longText= (qstnText?.split(" ").length > 30)
             <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
-      )}
+      )} */}
+
     </div>
   );
 }

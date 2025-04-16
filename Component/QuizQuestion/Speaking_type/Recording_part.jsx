@@ -11,6 +11,7 @@ import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import * as paused from "../../Solution/AudioPaused.json";
 import * as playing from "../../Solution/AudioPlaying.json";
+import * as AudioRecording from "../../Solution/AudioRecording.json";
 import React_Base_Api from "../../../ReactConfigApi";
 
 const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
@@ -163,6 +164,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     let questionText = questionData?.questionName;
     let instruction = questionData.prompt_text || "";
     questionText = getTextFromQuestion(questionText);
+    console.log(questionText,'questionText')
     let quizFrom = quizFromRef.current;
     let stateRef = [];
     let apiArray = [];
@@ -183,7 +185,22 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       stateRef.push(scoreRef);
       question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback.`;
       apiArray[0] = apiCalled(question_text);
-      question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and give the score as {{1}} if the response is correct otherwise give score as {{0}}.Please follow instruction correctly`;
+      question_text =   question_text = `The following question was asked to a student: '${questionText}'. 
+
+      A student responded:
+      '${prompt_text}'. 
+      
+      Use this instruction: ${instruction}. To evaluate the response, return the score as **1** if the response is correct; otherwise, return the score as **0**.  
+      
+      ### **Return Format:**  
+      Strictly return **only valid JSON** as shown below:  
+    
+      {
+          "score": <either 1 or 0>,
+          "feedback": "<Provide a brief explanation for the score>"
+      }
+  
+      Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;;
       apiArray[1] = apiCalled(question_text || "");
     }
 
@@ -198,6 +215,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
         console.log(data);
         stateRef[index].current = data[0]?.message?.content;
       });
+     
       setGptResponseLoading(false);
       handleSubmit();
     } catch (e) {
@@ -206,39 +224,27 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   };
 
   const handleSubmit = () => {
+  console.count('hi')
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
 
-    if (isNaN(Number(scoreRef.current))) {
-      console.log("this is scoreref", scoreRef.current);
-
-      let regex = /{{(\d+)}}/;
-      console.log("this is regex", regex);
-
-      let scoreValue = regex.exec(scoreRef.current);
-      console.log("this is score value", scoreValue);
-
-      // Extract the digit if score pattern is found
-      if (scoreValue !== null) {
-        scoreRef.current = scoreValue[1]; // The digit captured by the regex
-      } else {
-        // Second attempt if the score pattern isn't found
-        regex = /{{(\d+)}}/;
-        scoreValue = regex.exec(scoreRef.current) || [];
-        regex = /\d+/g;
-        scoreRef.current = regex.exec(scoreValue.pop());
+    try {
+      if (scoreRef?.current) {
+        const { score } = JSON.parse(scoreRef?.current);
+        scoreRef.current = score;
       }
+    } catch (error) {
+      console.log("error score", error);
     }
 
-    console.log("this is AA ", audioFileRef.current);
 
     let obj = {
       audio_response: audioFileRef.current,
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
-    console.log("this is object", obj);
+    
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
@@ -252,7 +258,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   };
 
   const AudioTransalator = async (audioF) => {
-    console.log("this is audio inside", audioF);
     let blobfile = new File([audioFileRef.current], "audio.mp3", {
       type: "audio/mp3",
       lastModified: Date.now(),
@@ -293,7 +298,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     formData.append("model", "whisper-1");
     formData.append("language", "en");
     formData.append("type", "audio");
-    console.log(`${CONFIG_URL12}app_teachers/gpt_response`);
     let config = {
       method: "POST",
       maxBodyLength: Infinity,
@@ -303,9 +307,9 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
 
     try {
       let audiotext = await axios(config);
-      console.log("this is audiotext", audiotext);
+      
       const data_text = audiotext.data.data.text;
-      console.log("this is dfsdfs", data_text);
+      console.log("audio to text", data_text);
       handlePromptRequest(data_text);
     } catch (error) {
       console.log(error);
@@ -341,7 +345,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
         setIsPlaying(false);
         console.error("Playback error:", error);
       });
-      
+
     }
     setIsPlaying(!isPlaying);
   };
@@ -356,10 +360,10 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const pausedOptions = {
+  const audioRecordingOptions = {
     loop: true,
     autoplay: true,
-    animationData: paused,
+    animationData: AudioRecording,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -376,8 +380,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
           justifyContent: "center",
           alignItems: "center",
           gap: "1rem",
-          flexDirection: "column",
-          marginTop: "20px",
+          marginTop: "5px",
           width: "100%",
         }}
       >
@@ -390,21 +393,23 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
             alignItems: "center",
           }}
         >
-          {stateIndex === 1 && (
-            <div className="timer" id="timer_speaking_type">
-              {formatTime(elapsedTime)}
-            </div>
-          )}
+
           {stateIndex === 1 && (
             <>
-              <img
-                id="message_img"
-                src="https://d1t64bxz3n5cv1.cloudfront.net/Talking+C.gif"
-                alt="Audio recording"
-                width="200"
-                height="200"
+              <Lottie
+                options={audioRecordingOptions}
+                height={"70px"}
+                width={"70px"}
+                cursor={"pointer"}
+                speed={1.5}
               />
-              <span>Recording...</span>
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                <div className="timer" id="timer_speaking_type">
+                  {formatTime(elapsedTime)}
+                </div>
+                <span className="timer" >Recording...</span>
+              </div>
             </>
           )}
           {(stateIndex === 2 || submitResponse || disabledQuestion) && (
@@ -422,7 +427,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
               }}
             >
               <img
-              style={{maxWidth:'100%'}}
+                style={{ maxWidth: '100%' }}
                 src={
                   isPlaying
                     ? "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PayingAudioAnimation.gif"
