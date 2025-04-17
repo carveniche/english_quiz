@@ -245,13 +245,14 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       score: Number(scoreRef.current),
     };
     
-    setSubmitResponse(true);
+    
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
     if (quizFromRef.current !== "diagnostic") {
       setIsCorrect(scoreRef.current == 1 ? 1 : 0);
     }
-    setStudentAnswer(JSON.stringify(obj));
+    setStudentAnswer(obj);
+    setSubmitResponse(true);
     typeof setHasQuizAnswerSubmitted === "function" &&
       setHasQuizAnswerSubmitted(true);
     return scoreRef.current == 0 ? 0 : 1;
