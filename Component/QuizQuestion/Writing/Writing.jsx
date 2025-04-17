@@ -376,18 +376,18 @@ const  longText= (qstnText?.split(" ").length > 30)
         
        
     
-      {/* {hideCheckButton && showSolution && (
+      {hideCheckButton && showSolution && (
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-
-            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+<></>
+            // <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
-      )} */}
+      )}
 
     </div>
   );

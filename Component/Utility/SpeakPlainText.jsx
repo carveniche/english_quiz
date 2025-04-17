@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Lottie from "react-lottie";
-import * as paused from "../Solution/AudioPaused.json";
-import * as playing from "../Solution/AudioPlaying.json";
+import Lottie from "lottie-react";
+import { cloneDeep } from "lodash";
+import paused from "../Solution/AudioPaused.json";
+import playing from "../Solution/AudioPlaying.json";
 
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -20,30 +21,26 @@ export default function SpeakPlainText({ readText }) {
       }
     };
 
-    // Attempt to load voices right away
     loadVoices();
-    // If voices aren't ready yet, listen for when they become available
-    window.speechSynthesis.onvoiceschanged = () => {
-      loadVoices();
-    };
+    window.speechSynthesis.onvoiceschanged = loadVoices;
   }, []);
 
   const readTheQuestionText = () => {
     if (!text || text.trim().length === 0) return;
 
     if (isSpeaking) {
-      // Stop if already speaking
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
       return;
     }
-    setIsSpeaking(true);
+
     if (voicesAvailable.length === 0) {
-      // Retry after delay if voices not ready
       console.log("Voices not yet available. Retrying...");
       setTimeout(readTheQuestionText, 200);
       return;
     }
+
+    setIsSpeaking(true);
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
@@ -56,56 +53,31 @@ export default function SpeakPlainText({ readText }) {
       "Microsoft Zira",
     ];
 
-  const selectedVoice = voicesAvailable.find(voice =>
+    const selectedVoice = voicesAvailable.find(voice =>
       preferredVoices.includes(voice.name)
     );
 
     utterance.voice = selectedVoice || voicesAvailable[0];
 
-    // 🔊 Triggers when speech starts
-    utterance.onstart = () => {
-      setIsSpeaking(true);
-    };
-
-    // 🛑 Triggers when speech ends or gets cancelled
-    utterance.onend = () => {
-      setIsSpeaking(false);
-    };
-
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = (event) => {
       setIsSpeaking(false);
-      console.error("Speech as synthesis error:", event.error);
+      console.error("Speech synthesis error:", event.error);
     };
 
     window.speechSynthesis.speak(utterance);
   };
-  const playingOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: playing,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-  const pausedOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: paused,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
 
   return (
-    <>
-      <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
-        <Lottie
-          options={isSpeaking ? playingOptions : pausedOptions}
-          height={"50px"}
-          width={"50px"}
-          cursor={"pointer"}
-        />
-      </div>
-    </>
+    <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
+      <Lottie
+        key={isSpeaking ? "playing" : "paused"}
+        animationData={cloneDeep(isSpeaking ? playing : paused)}
+        loop
+        autoplay
+        style={{ height: "50px", width: "50px", cursor: "pointer" }}
+      />
+    </div>
   );
 }

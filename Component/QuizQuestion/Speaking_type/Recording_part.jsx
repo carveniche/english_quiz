@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Lottie from "react-lottie";
 // import recordingGIF from "../../assets/Images/record.gif"
@@ -22,6 +23,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
+    showSolution
   } = useContext(ValidationContext);
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
@@ -395,16 +397,19 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
           }}
         >
 
-          {stateIndex === 1 && (
+          {stateIndex === 1 &&  !showSolution && (
             <>
-              <Lottie
+              {/* <Lottie
                 options={audioRecordingOptions}
                 height={"70px"}
                 width={"70px"}
                 cursor={"pointer"}
                 speed={1.5}
-              />
-
+              /> */}
+    <>
+              <img id="message_img" src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/record.gif" alt="Audio recording" width="100" height="100" />
+              {/* <span>Recording...</span> */}
+            </>
               <div style={{ display: "flex", gap: "10px" }}>
                 <div className="timer" id="timer_speaking_type">
                   {formatTime(elapsedTime)}
@@ -413,28 +418,33 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
               </div>
             </>
           )}
-          {(stateIndex === 2 || submitResponse || disabledQuestion) && (
+
+          {(stateIndex === 2 || submitResponse || showSolution) && (
             // <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
 
             <div
-              onClick={handleAudioToggle}
               style={{
-                width: 75,
-                height: 75,
+              
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                cursor: "pointer",
               }}
             >
-              <img
-                style={{ maxWidth: '100%' }}
+              {
+                 audioURL || questionResponse?.audio_response?
+                <>
+                <img
+              onClick={handleAudioToggle}
+                style={{  
+                   width: 75,
+                  height: 75, 
+                  cursor: "pointer",
+                }}
                 src={
-                  isPlaying
-                    ? "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PayingAudioAnimation.gif"
-                    : "https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/PlayAudioLottie.gif"
+                   `https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/${isPlaying?"PayingAudioAnimation.gif" :"PlayAudioLottie.gif"} `
                 }
               />
+              
               <audio
                 id="first"
                 ref={audioRefplay}
@@ -445,11 +455,14 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
                 }
                 onEnded={handleAudioEnd}
               ></audio>
+                </>
+                :""
+              }
             </div>
           )}
         </div>
 
-        {!questionResponse?.audio_response && (
+        {!questionResponse?.audio_response && !showSolution && (
           <div className="controllers">
             {stateIndex === 0 && (
               <button id="record" style={recordbtn} onClick={handleRecord}>
