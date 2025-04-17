@@ -86,7 +86,7 @@ const AutoSizeTextarea = ({
       // Minimum number of rows
       />
       <p
-        style={{ margin: "0px", textAlign: "right", width: "97%" }}
+        style={{ margin: "0px", textAlign: "right", width: "100%" }}
       >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
         }`}</p>
  
