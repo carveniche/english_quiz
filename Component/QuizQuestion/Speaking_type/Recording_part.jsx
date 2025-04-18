@@ -563,35 +563,36 @@ function GptFeedback({ chatGptResponse }) {
   };
 
   return (
-    <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
-      <button
-        style={{
-          border: "1px solid white",
-          cursor: "pointer",
-          fontSize: "13px",
-        }}
-        onClick={toggleSpeak}
-      >
-        🔊 Read Aloud
-      </button>
-      <div style={{ padding: 10, fontSize: 15 }}>
-        {chatGptResponse || "No Response"}
-      </div>
-      <div
-        style={{
-          width: "calc(100% - 10px)",
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: 5,
-          paddingTop: 5,
-          paddingBottom: 5,
-          color: "indigo",
-          fontWeight: "normal",
-        }}
-      >
-        Feedback From: AI
-      </div>
-    </div>
+    // <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
+    //   <button
+    //     style={{
+    //       border: "1px solid white",
+    //       cursor: "pointer",
+    //       fontSize: "13px",
+    //     }}
+    //     onClick={toggleSpeak}
+    //   >
+    //     🔊 Read Aloud
+    //   </button>
+    //   <div style={{ padding: 10, fontSize: 15 }}>
+    //     {chatGptResponse || "No Response"}
+    //   </div>
+    //   <div
+    //     style={{
+    //       width: "calc(100% - 10px)",
+    //       display: "flex",
+    //       justifyContent: "flex-end",
+    //       paddingRight: 5,
+    //       paddingTop: 5,
+    //       paddingBottom: 5,
+    //       color: "indigo",
+    //       fontWeight: "normal",
+    //     }}
+    //   >
+    //     Feedback From: AI
+    //   </div>
+    // </div>
+    <></>
   );
 }
 

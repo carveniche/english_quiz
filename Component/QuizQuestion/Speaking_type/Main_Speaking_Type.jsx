@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Speaking_Type from "./Speaking_Type";
 import { WRITING_GPT } from "../../Utility/Constant";
 import NotificationModal from "../GroupQuestion/ReadingComprehensive/NotificationModal";
 import { useState } from "react";
+import { ValidationContext } from "../../QuizPage";
 
 export const Main_Speaking_Type = ({ obj, wordsLength }) => {
-  
+  const {
+
+    showSolution
+  } = useContext(ValidationContext);
   let question_text = JSON.parse(obj?.question_data);
 
   
@@ -59,7 +63,7 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
         </div>
       </div> */}
 
-        {!hideNotification && (
+        {!hideNotification && !showSolution && (
           <NotificationModal
             msg={
               " Please sit in a quiet place and be loud and clear while recording"

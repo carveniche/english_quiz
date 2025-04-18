@@ -54,42 +54,43 @@ const AutoSizeTextarea = ({
     }
   };
 
-
   studentTextRef.current = textareaValue;
   const handlePaste = (event) => {
-    console.log('not allowed paste')
+    console.log("not allowed paste");
     event.preventDefault(); // This blocks the paste
   };
-
-
 
   //const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
 
   return (
     <>
-
-
-    
-     <div style={{ width: "100%",height:"100%",display:"flex",flexDirection:"column",gap:"2px"}}> 
-     <TextareaAutosize
-        onPasteCapture={handlePaste}
-        ref={textareaRef}
-        className={`${styles.blinking} blinking`}
-        style={useStyles.autoSizeTextarea}
-        value={isShowingResponse ? textareaValue || response : textareaValue}
-        onChange={handleTextareaChange}
-
-        placeholder="Type your response here..."
-        minRows={12}
-        maxRows={14}
-        aria-label="Auto-sizing Textarea"
-      // Minimum number of rows
-      />
-      <p
-        style={{ margin: "0px", textAlign: "right", width: "100%" }}
-      >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "2px",
+        }}
+      >
+        <TextareaAutosize
+          onPasteCapture={handlePaste}
+          ref={textareaRef}
+          className={`${styles.blinking} blinking`}
+          style={useStyles.autoSizeTextarea}
+          value={isShowingResponse ? textareaValue || response : textareaValue}
+          onChange={handleTextareaChange}
+          placeholder="Type your response here..."
+          minRows={12}
+          maxRows={14}
+          aria-label="Auto-sizing Textarea"
+          // Minimum number of rows
+        />
+        <p
+          style={{ margin: "0px", textAlign: "right", width: "100%" }}
+        >{`Word Count : ${
+          textareaValue.split(" ").filter((wrd) => wrd).length
         }`}</p>
- 
       </div>
     </>
   );
@@ -100,7 +101,6 @@ export default function Writing({
   wordsLength,
   questionGroupData,
 }) {
-
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
@@ -322,7 +322,7 @@ export default function Writing({
     }
   }, []);
 
-const  longText= (qstnText?.split(" ").length > 30)
+  const longText = qstnText?.split(" ").length > 30;
   return (
     <div style={{ width: "100%" }}>
       <SolveButton onClick={checkGptResponse} />
@@ -330,52 +330,56 @@ const  longText= (qstnText?.split(" ").length > 30)
         <CustomAlertBoxMathZone msg="Please begin writing" />
       )}
 
+      <div
+        style={{
+          backgroundRepeat: "no-repeat",
+          display: "flex",
+          gap: "10%",
+          padding: "20px",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          // minHeight: "80vh",
+          borderRadius: "15px",
+          height: "fit-content",
+          backgroundColor: "#e8f5e9",
+          // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
+          // backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/WritingGptBg-02.png)`,
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)", // subtle shadow for depth
+          border: "1px solid #e0e0e0",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: `${longText ? "row" : "column"}`,
+            gap: "10px",
+            width: "100%",
+          }}
+        >
+          <QuestionCommonContent
+            longText={longText}
+            obj={questionData}
+            wordsLength={wordsLength}
+            choicesRef={[]}
+            isEnglishStudentLevel={readOut}
+          />
+
           <div
             style={{
-              backgroundRepeat: "no-repeat",
-              display: "flex",
-              gap: "10%",
-              padding: "20px",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              // minHeight: "80vh",
-              borderRadius: "15px",
-              height: "fit-content",
-              backgroundColor: "#e8f5e9",
-              // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
-              // backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/WritingGptBg-02.png)`,
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)", // subtle shadow for depth
-              border: "1px solid #e0e0e0",
+              width: longText ? "50%" : "100%",
+              maxHeight: longText ? "250px" : "200px",
             }}
           >
-          <div style={{ display:'flex',flexDirection:`${longText ? "row":'column'}`, gap:"10px", width: "100%" }}>
-          <QuestionCommonContent
-             longText={longText}
-              obj={questionData}
-              wordsLength={wordsLength}
-              choicesRef={[]}
-              isEnglishStudentLevel={readOut}
+            <AutoSizeTextarea
+              studentTextRef={studentTextRef}
+              hideCheckButton={hideCheckButton}
+              response={questionResponse?.studentResponse || null}
+              isShowingResponse={submitResponse || disabledQuestion}
             />
-
-            <div
-              style={{
-                width: longText ? "50%" : "100%",
-               
-              }}
-            >
-              <AutoSizeTextarea
-                studentTextRef={studentTextRef}
-                hideCheckButton={hideCheckButton}
-                response={questionResponse?.studentResponse || null}
-                isShowingResponse={submitResponse || disabledQuestion}
-
-              />
-            </div>
           </div>
-          </div>
-        
-       
-    
+        </div>
+      </div>
+
       {hideCheckButton && showSolution && (
         <>
           {gptResponseLoading ? (
@@ -383,12 +387,11 @@ const  longText= (qstnText?.split(" ").length > 30)
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-<></>
+            <></>
             // <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
       )}
-
     </div>
   );
 }
