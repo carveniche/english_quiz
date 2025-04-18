@@ -166,11 +166,9 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     let questionText = questionData?.questionName;
     let instruction = questionData.prompt_text || "";
     questionText = getTextFromQuestion(questionText);
-    console.log(questionText,'questionText')
     let quizFrom = quizFromRef.current;
     let stateRef = [];
     let apiArray = [];
-    console.log("this is prompt_text", prompt_text);
     if (!prompt_text) {
       prompt_text = "No response";
     }
@@ -214,7 +212,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       allData.forEach(({ data }, index) => {
         data = data?.data || {};
         data = data.choices || [];
-        console.log(data);
         stateRef[index].current = data[0]?.message?.content;
       });
      
@@ -226,7 +223,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   };
 
   const handleSubmit = () => {
-  console.count('hi')
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
@@ -312,7 +308,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       let audiotext = await axios(config);
       
       const data_text = audiotext.data.data.text;
-      console.log("audio to text", data_text);
       handlePromptRequest(data_text);
     } catch (error) {
       console.log(error);
@@ -329,12 +324,9 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       setRedAlert(true);
       return -1;
     }
-    console.log("this is src", audioURL);
-    console.log("this is audioFileRef.current", audioFileRef.current);
+    
     isApiCalled.current = true;
-
     AudioTransalator(audioFileRef.current);
-    return 1;
   };
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -371,6 +363,13 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+
+  if (questionResponse?.audio_response) {
+    if (questionResponse.audio_response.includes('.mp3')) {
+      questionResponse.audio_response = questionResponse.audio_response.split('.mp3')[0] + '.mp3';
+    }
+  }
+  
   return (
     <div>
       <SolveButton onClick={passAudio} />
@@ -433,17 +432,26 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
               {
                  audioURL || questionResponse?.audio_response?
                 <>
+                <div onClick={handleAudioToggle}
+                  style={{  
+                    width: 75,
+                   height: 75, 
+                   cursor: "pointer",
+                 }}
+                 >
+
+               
                 <img
-              onClick={handleAudioToggle}
-                style={{  
-                   width: 75,
-                  height: 75, 
-                  cursor: "pointer",
-                }}
+                  style={{  
+                    maxWidth: "100%",
+                   maxHeight: "100%", 
+                   cursor: "pointer",
+                 }}
                 src={
                    `https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/${isPlaying?"PayingAudioAnimation.gif" :"PlayAudioLottie.gif"} `
                 }
               />
+               </div>
               
               <audio
                 id="first"
@@ -462,7 +470,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
           )}
         </div>
 
-        {!questionResponse?.audio_response && !showSolution && (
+        {!showSolution && (
           <div className="controllers">
             {stateIndex === 0 && (
               <button id="record" style={recordbtn} onClick={handleRecord}>
@@ -530,7 +538,6 @@ function GptFeedback({ chatGptResponse }) {
   useEffect(() => {
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      console.log("voices", voices);
       // Filter for female voices; you can adjust this as needed
       const femaleVoice = voices.find(
         (v) => v.name === "Microsoft Zira - English (United States)"
@@ -563,36 +570,37 @@ function GptFeedback({ chatGptResponse }) {
   };
 
   return (
-    // <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
-    //   <button
-    //     style={{
-    //       border: "1px solid white",
-    //       cursor: "pointer",
-    //       fontSize: "13px",
-    //     }}
-    //     onClick={toggleSpeak}
-    //   >
-    //     🔊 Read Aloud
-    //   </button>
-    //   <div style={{ padding: 10, fontSize: 15 }}>
-    //     {chatGptResponse || "No Response"}
-    //   </div>
-    //   <div
-    //     style={{
-    //       width: "calc(100% - 10px)",
-    //       display: "flex",
-    //       justifyContent: "flex-end",
-    //       paddingRight: 5,
-    //       paddingTop: 5,
-    //       paddingBottom: 5,
-    //       color: "indigo",
-    //       fontWeight: "normal",
-    //     }}
-    //   >
-    //     Feedback From: AI
-    //   </div>
-    // </div>
-    <></>
+  <>
+    <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
+      <button
+        style={{
+          border: "1px solid white",
+          cursor: "pointer",
+          fontSize: "13px",
+        }}
+        onClick={toggleSpeak}
+      >
+        🔊 Read Aloud
+      </button>
+      <div style={{ padding: 10, fontSize: 15 }}>
+        {chatGptResponse || "No Response"}
+      </div>
+      <div
+        style={{
+          width: "calc(100% - 10px)",
+          display: "flex",
+          justifyContent: "flex-end",
+          paddingRight: 5,
+          paddingTop: 5,
+          paddingBottom: 5,
+          color: "indigo",
+          fontWeight: "normal",
+        }}
+      >
+        Feedback From: AI
+      </div>
+    </div>
+    </>
   );
 }
 

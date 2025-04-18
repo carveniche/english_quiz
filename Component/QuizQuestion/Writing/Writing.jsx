@@ -380,15 +380,14 @@ export default function Writing({
         </div>
       </div>
 
-      {hideCheckButton && showSolution && (
+      {hideCheckButton && (
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
           ) : quizFromRef.current === "diagnostic" ? (
             ""
           ) : (
-            <></>
-            // <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
           )}
         </>
       )}
@@ -458,7 +457,7 @@ function GptFeedback({ chatGptResponse, scoreResponse }) {
       <div>
         {submitResponse && (
           <p style={{ margin: "0", padding: "10px 10px 0 10px" }}>
-            This anwser is :-{" "}
+            This answer is :-{" "}
             <b>{scoreResponse == "1" ? "correct" : "wrong"}</b>
           </p>
         )}
