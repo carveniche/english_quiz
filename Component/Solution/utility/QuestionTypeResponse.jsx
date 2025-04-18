@@ -74,7 +74,7 @@ useEffect(()=>{
 
   return (showSolution?
     <>
-      <div
+      {/* <div
         className={`${styles.correctAnswer} ${styles.correctAnswer2}`}
         style={{ display: "block" }}
       >
@@ -86,7 +86,7 @@ useEffect(()=>{
        {showSpeakIcon &&<SpeakPlainText readText={parseResponse?.chatGptResponse}/>}
         </div>
         <>{parseResponse?.chatGptResponse}</>
-      </div>
+      </div> */}
     </>:""
   );
 }
