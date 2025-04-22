@@ -14,6 +14,8 @@ import Book_back from "../../assets/Images/Book_Background.jpg";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 import React_Base_Api from "../../../ReactConfigApi";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
+import correctImages from "../../assets/Images/correct.png";
+import inCorrectImages from "../../assets/Images/incorrect.png";
 const useStyles = {
   autoSizeTextarea: {
     height: "95%",
@@ -147,7 +149,7 @@ export default function Writing({
     if (grpText)
       question_text = `this is passage text ${grpText} ,   please read the passage text and then give the feedback ${question_text}`;
     // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
-    if (quizFrom === "diagnostic") {
+    if (quizFrom === "diagnostic" && false) {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
       question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and  give feedback but don't provide score, in less than 100 words`;
@@ -158,8 +160,9 @@ export default function Writing({
     } else {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback but don't provide score, in less than 100 words`;
-      apiArray[0] = apiCalled(question_text);
+      // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback but don't provide score, in less than 100 words`;
+      //apiArray[0] = apiCalled(question_text);
+
       question_text = `The following question was asked to a student: '${questionText}'. 
 
       A student responded:
@@ -169,16 +172,17 @@ export default function Writing({
       
       ### **Return Format:**  
       Strictly return **only valid JSON** as shown below:  
-    
+
       {
           "score": <either 1 or 0>,
-          "feedback": "<Provide a brief explanation for the score>"
+          "feedback": "<To evaluate the response and give feedback but don't provide a score, in less than 100 words>"
       }
-  
+
       Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;
 
-      apiArray[1] = apiCalled(question_text || "");
-    }
+     apiArray[0] = apiCalled(question_text || "");
+
+      }
 
     try {
       let allData = await Promise.all(apiArray);
@@ -217,10 +221,12 @@ export default function Writing({
     // }
 
     try {
-      if (scoreRef?.current) {
-        const { score } = JSON.parse(scoreRef?.current);
+     
+      if (chatGptResponseRef?.current) {
+        const { feedback,score } = JSON.parse(chatGptResponseRef?.current);
         scoreRef.current = score;
-      }
+        chatGptResponseRef.current = feedback;
+      } 
     } catch (error) {
       console.log("error score", error);
     }
@@ -246,7 +252,6 @@ export default function Writing({
     //   }
     // }
 
-    console.log("this is scoreref before submit", scoreRef.current);
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponseRef.current,
@@ -262,7 +267,7 @@ export default function Writing({
     setStudentAnswer(JSON.stringify(obj));
     typeof setHasQuizAnswerSubmitted === "function" &&
       setHasQuizAnswerSubmitted(true);
-    return scoreRef.current == 0 ? 0 : 1;
+    return scoreRef.current;
   };
   const checkGptResponse = () => {
     if (submitResponse) return;
@@ -395,7 +400,7 @@ export default function Writing({
   );
 }
 
-function GptFeedback({ chatGptResponse, scoreResponse }) {
+export function GptFeedback({ chatGptResponse, scoreResponse }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voice, setVoice] = useState(null);
   const { submitResponse } = useContext(ValidationContext);
@@ -456,10 +461,10 @@ function GptFeedback({ chatGptResponse, scoreResponse }) {
       </button>
       <div>
         {submitResponse && (
-          <p style={{ margin: "0", padding: "10px 10px 0 10px" }}>
-            This answer is :-{" "}
-            <b>{scoreResponse == "1" ? "correct" : "wrong"}</b>
-          </p>
+          <div style={{ margin: "0", padding: "10px 10px 0 10px" ,display:"flex",alignItems:"center",gap:"5px"}}>
+            Student's Response :-{" "}
+            <img src={scoreResponse == "1" ? correctImages :inCorrectImages} width={30} height={30} />
+          </div>
         )}
         <p style={{ padding: 10, fontSize: 15, margin: "0" }}>
           {chatGptResponse || "No Response"}

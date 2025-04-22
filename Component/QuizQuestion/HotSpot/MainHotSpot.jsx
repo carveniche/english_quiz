@@ -6,6 +6,7 @@ import SpeakPlainText from '../../Utility/SpeakPlainText';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 import { Zoom } from '@mui/material';
 import  './hotSpot.css';
+import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
 
 export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
@@ -258,13 +259,20 @@ function HotSpotPreview({ data, question_text,questionData }) {
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className="hotspot_container">
         <div className="hotspot_question_text">
-          <div className='audio_with_questiontext'><SpeakPlainText readText={question_text?.questionName} /><p>{question_text?.questionName}</p></div>
+          <div className='audio_with_questiontext'>
+            <SpeakPlainText readText={question_text?.questionName} /><p>{question_text?.questionName}</p><br />
+           
+          </div>
+          {question_text?.resources?.length > 0 && (
+              <AudiPlayerComponent resources={question_text?.resources} />
+                  )}
         </div>
+
         <div className='flex-col relative'>
           {showSolution || submitResponse ?
 
             <div className='heading_slider_btn'>
-              <p className='show_heading'>{showStudentResponse ? "show the Correct Answer" : "Student Response"}</p>
+              <p className='show_heading'>{showStudentResponse ? "These answers are accurate" : "Student Response"}</p>
               {showStudentResponse ?
                 <ArrowBackIosNewRounded className='pointer' onClick={() => setShowStudentResponse(false)} />
                 : <ArrowForwardIosRounded className='pointer' onClick={() => setShowStudentResponse(true)} />

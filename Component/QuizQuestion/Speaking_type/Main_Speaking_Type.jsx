@@ -32,11 +32,11 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          height: `${questionResponse ? "75vh":"100vh"}`,
+          height: `${questionResponse ? "85vh":"100vh"}`,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "start",
         }}
       >
         {/* <div
@@ -75,9 +75,7 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
         <div
           style={{
             border: "1px solid transparent",
-            height: "350px",
-            maxHeight:'350px',
-            maxHeight: "350px",
+            maxHeight: "600px",
             width: "75%",
             overflowX: "hidden",
             scrollbarWidth: "thin",

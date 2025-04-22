@@ -14,6 +14,7 @@ import * as paused from "../../Solution/AudioPaused.json";
 import * as playing from "../../Solution/AudioPlaying.json";
 import * as AudioRecording from "../../Solution/AudioRecording.json";
 import React_Base_Api from "../../../ReactConfigApi";
+import { GptFeedback } from "../Writing/Writing";
 
 const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -173,7 +174,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       prompt_text = "No response";
     }
     let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
-    if (quizFrom === "diagnostic") {
+    if (quizFrom === "diagnostic" && false) {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
       question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback`;
@@ -183,8 +184,8 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     } else {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback.`;
-      apiArray[0] = apiCalled(question_text);
+      // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback.`;
+      // apiArray[0] = apiCalled(question_text);
       question_text =   question_text = `The following question was asked to a student: '${questionText}'. 
 
       A student responded:
@@ -197,11 +198,11 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     
       {
           "score": <either 1 or 0>,
-          "feedback": "<Provide a brief explanation for the score>"
+          "feedback": "<Give general feedback on the student's response without using exact words from the response. Do not suggest retrying or reattempting. Keep it under 100 words. Do not include the score in the feedback.>"
       }
   
       Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;;
-      apiArray[1] = apiCalled(question_text || "");
+      apiArray[0] = apiCalled(question_text || "");
     }
 
     try {
@@ -228,9 +229,10 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     setRedAlert(false);
 
     try {
-      if (scoreRef?.current) {
-        const { score } = JSON.parse(scoreRef?.current);
+      if (chatGptResponseRef?.current) {
+        const { feedback,score } = JSON.parse(chatGptResponseRef?.current);
         scoreRef.current = score;
+        chatGptResponseRef.current = feedback;
       }
     } catch (error) {
       console.log("error score", error);
@@ -374,6 +376,17 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     <div>
       <SolveButton onClick={passAudio} />
       {redAlert && !submitResponse && <CustomAlertBoxVoice />}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          marginTop: "5px",
+          width: "100%",
+        }}
+      >
+
 
       <div
         className="container"
@@ -497,16 +510,18 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
             )}
           </div>
         )}
+        </div>
+
 
         {hideCheckButton && (
           <>
-            <div style={{ position: "absolute", width: "80%", bottom: "5%" }}>
+            <div style={{width:'100%'}}>
               {gptResponseLoading ? (
                 <LinearProgressBar type={"speaking"} />
               ) : quizFromRef.current === "diagnostic" ? (
                 ""
               ) : (
-                <GptFeedback chatGptResponse={chatGptResponseRef.current} />
+                <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
               )}
             </div>
             <br />
@@ -520,88 +535,88 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
   );
 };
 
-function GptFeedback({ chatGptResponse }) {
-  // const [isSpeaking, setIsSpeaking] = useState(false);
-  // const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
+// function GptFeedback({ chatGptResponse }) {
+//   // const [isSpeaking, setIsSpeaking] = useState(false);
+//   // const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
 
-  // const toggleSpeak = () => {
-  //   if (isSpeaking) {
-  //     window.speechSynthesis.cancel(); // Stop speaking
-  //   } else {
-  //     window.speechSynthesis.speak(speech); // Start speaking
-  //   }
-  //   setIsSpeaking(!isSpeaking); // Toggle speaking state
-  // };
+//   // const toggleSpeak = () => {
+//   //   if (isSpeaking) {
+//   //     window.speechSynthesis.cancel(); // Stop speaking
+//   //   } else {
+//   //     window.speechSynthesis.speak(speech); // Start speaking
+//   //   }
+//   //   setIsSpeaking(!isSpeaking); // Toggle speaking state
+//   // };
 
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [voice, setVoice] = useState(null);
-  useEffect(() => {
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Filter for female voices; you can adjust this as needed
-      const femaleVoice = voices.find(
-        (v) => v.name === "Microsoft Zira - English (United States)"
-      );
-      setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
-    };
+//   const [isSpeaking, setIsSpeaking] = useState(false);
+//   const [voice, setVoice] = useState(null);
+//   useEffect(() => {
+//     const loadVoices = () => {
+//       const voices = window.speechSynthesis.getVoices();
+//       // Filter for female voices; you can adjust this as needed
+//       const femaleVoice = voices.find(
+//         (v) => v.name === "Microsoft Zira - English (United States)"
+//       );
+//       setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
+//     };
 
-    loadVoices(); // Initial load
+//     loadVoices(); // Initial load
 
-    window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
-  }, []);
+//     window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
+//   }, []);
 
-  const toggleSpeak = () => {
-    const speech = new SpeechSynthesisUtterance(
-      chatGptResponse || "No Response"
-    );
-    speech.voice = voice; // Set the selected voice
+//   const toggleSpeak = () => {
+//     const speech = new SpeechSynthesisUtterance(
+//       chatGptResponse || "No Response"
+//     );
+//     speech.voice = voice; // Set the selected voice
 
-    speech.onend = () => {
-      setIsSpeaking(false); // Reset speaking state when finished
-    };
+//     speech.onend = () => {
+//       setIsSpeaking(false); // Reset speaking state when finished
+//     };
 
-    if (isSpeaking) {
-      window.speechSynthesis.cancel(); // Stop speaking
-      setIsSpeaking(false); // Update state
-    } else {
-      window.speechSynthesis.speak(speech); // Start speaking
-      setIsSpeaking(true); // Update state
-    }
-  };
+//     if (isSpeaking) {
+//       window.speechSynthesis.cancel(); // Stop speaking
+//       setIsSpeaking(false); // Update state
+//     } else {
+//       window.speechSynthesis.speak(speech); // Start speaking
+//       setIsSpeaking(true); // Update state
+//     }
+//   };
 
-  return (
-  <>
-    <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
-      <button
-        style={{
-          border: "1px solid white",
-          cursor: "pointer",
-          fontSize: "13px",
-        }}
-        onClick={toggleSpeak}
-      >
-        🔊 Read Aloud
-      </button>
-      <div style={{ padding: 10, fontSize: 15 }}>
-        {chatGptResponse || "No Response"}
-      </div>
-      <div
-        style={{
-          width: "calc(100% - 10px)",
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: 5,
-          paddingTop: 5,
-          paddingBottom: 5,
-          color: "indigo",
-          fontWeight: "normal",
-        }}
-      >
-        Feedback From: AI
-      </div>
-    </div>
-    </>
-  );
-}
+//   return (
+//   <>
+//     <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
+//       <button
+//         style={{
+//           border: "1px solid white",
+//           cursor: "pointer",
+//           fontSize: "13px",
+//         }}
+//         onClick={toggleSpeak}
+//       >
+//         🔊 Read Aloud
+//       </button>
+//       <div style={{ padding: 10, fontSize: 15 }}>
+//         {chatGptResponse || "No Response"}
+//       </div>
+//       <div
+//         style={{
+//           width: "calc(100% - 10px)",
+//           display: "flex",
+//           justifyContent: "flex-end",
+//           paddingRight: 5,
+//           paddingTop: 5,
+//           paddingBottom: 5,
+//           color: "indigo",
+//           fontWeight: "normal",
+//         }}
+//       >
+//         Feedback From: AI
+//       </div>
+//     </div>
+//     </>
+//   );
+// }
 
 export default Recording_part;
