@@ -16,7 +16,6 @@ export default function Speaking_Type({
   wordsLength,
 }) {
 
-  const {readOut}=useContext(ValidationContext)
   // const objectParser = (item, index) => {
   //   let value = "";
   //   if (item?.node === "text") {
@@ -38,31 +37,16 @@ export default function Speaking_Type({
  
 
   return (
-    <div
-      className="red"
-      style={{
-        display: "flex",
-        flexDirection: `${direction}`,
-        justifyContent: "space-around",
-      }}
-    >
-    
-      <div>
-        
-       <QuestionCommonContent
-                obj={questionData}
-                wordsLength={wordsLength}
-                choicesRef={[]}
-                isEnglishStudentLevel={readOut}
-              />
-     
+    <>
+ 
       <Recording_part
         questionData={questionData}
         questionResponse={questionResponse}
         setIsTrue={setIsTrue}
+        wordsLength={wordsLength}
       />
-       </div>
+       </>
 
-    </div>
   );
 }
+

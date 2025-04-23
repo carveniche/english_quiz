@@ -1,14 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext,  useRef, useState } from "react";
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
-import styles from "../english_mathzone.module.css";
-import QuestionContent from "./QuestionContent";
 import { ValidationContext } from "../../QuizPage";
 import { STUDENTANSWER } from "../../Utility/Constant";
 import { checkTwoString } from "../../Utility/stringValidation";
-import objectParser from "../../Utility/objectParser";
-import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
-import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 export default function FillIntheBlanks({ obj, wordsLength }) {
   const [redAlert, setRedAlert] = useState(false);
@@ -26,7 +21,6 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   const data = obj?.choices.map((sda) => {
     const combinedValue = sda.value
       .split(/\s+/) // split by spaces
-      .map((val) => val.replace(/[^\w']/g, '')) // remove punctuation except apostrophes
       .filter(Boolean) // remove any empty strings
       .join(' '); // join back into one string
 
@@ -40,7 +34,6 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
 
   const choicesRef = useRef(data || []);
 
-  console.log(choicesRef, 'choicesRef')
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;

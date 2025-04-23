@@ -15,8 +15,9 @@ import * as playing from "../../Solution/AudioPlaying.json";
 import * as AudioRecording from "../../Solution/AudioRecording.json";
 import React_Base_Api from "../../../ReactConfigApi";
 import { GptFeedback } from "../Writing/Writing";
+import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 
-const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
+const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength }) => {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const {
     submitResponse,
@@ -24,7 +25,8 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
     setIsCorrect,
     setSubmitResponse,
     setStudentAnswer,
-    showSolution
+    showSolution,
+    readOut,
   } = useContext(ValidationContext);
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
@@ -186,7 +188,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       stateRef.push(scoreRef);
       // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback.`;
       // apiArray[0] = apiCalled(question_text);
-      question_text =   question_text = `The following question was asked to a student: '${questionText}'. 
+      question_text = question_text = `The following question was asked to a student: '${questionText}'. 
 
       A student responded:
       '${prompt_text}'. 
@@ -215,7 +217,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
         data = data.choices || [];
         stateRef[index].current = data[0]?.message?.content;
       });
-     
+
       setGptResponseLoading(false);
       handleSubmit();
     } catch (e) {
@@ -230,7 +232,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
 
     try {
       if (chatGptResponseRef?.current) {
-        const { feedback,score } = JSON.parse(chatGptResponseRef?.current);
+        const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
         scoreRef.current = score;
         chatGptResponseRef.current = feedback;
       }
@@ -244,8 +246,8 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
-    
-    
+
+
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
     if (quizFromRef.current !== "diagnostic") {
@@ -308,7 +310,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
 
     try {
       let audiotext = await axios(config);
-      
+
       const data_text = audiotext.data.data.text;
       handlePromptRequest(data_text);
     } catch (error) {
@@ -326,7 +328,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       setRedAlert(true);
       return -1;
     }
-    
+
     isApiCalled.current = true;
     AudioTransalator(audioFileRef.current);
   };
@@ -371,11 +373,13 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
       questionResponse.audio_response = questionResponse.audio_response.split('.mp3')[0] + '.mp3';
     }
   }
-  
+
   return (
-    <div>
+    <>
       <SolveButton onClick={passAudio} />
       {redAlert && !submitResponse && <CustomAlertBoxVoice />}
+
+
       <div
         style={{
           display: "flex",
@@ -386,136 +390,150 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
           width: "100%",
         }}
       >
+        <QuestionCommonContent
+          obj={questionData}
+          wordsLength={wordsLength}
+          choicesRef={[]}
+          isEnglishStudentLevel={readOut}
+        />
 
 
-      <div
-        className="container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1rem",
-          marginTop: "5px",
-          width: "100%",
-        }}
-      >
         <div
-          className="display"
+          className="container"
           style={{
             display: "flex",
             justifyContent: "center",
-            flexDirection: "column",
             alignItems: "center",
+            gap: "1rem",
+            width: "100%",
           }}
         >
+          <div
+            className="display"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
 
-          {stateIndex === 1 &&  !showSolution && (
-            <>
-              {/* <Lottie
+            {stateIndex === 1 && !showSolution && (
+              <>
+                {/* <Lottie
                 options={audioRecordingOptions}
                 height={"70px"}
                 width={"70px"}
                 cursor={"pointer"}
                 speed={1.5}
               /> */}
-    <>
-              <img id="message_img" src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/record.gif" alt="Audio recording" width="100" height="100" />
-              {/* <span>Recording...</span> */}
-            </>
-              <div style={{ display: "flex", gap: "10px" }}>
-                <div className="timer" id="timer_speaking_type">
-                  {formatTime(elapsedTime)}
-                </div>
-                <span className="timer" >Recording...</span>
-              </div>
-            </>
-          )}
-
-          {(stateIndex === 2 || submitResponse || showSolution) && (
-            // <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
-
-            <div
-              style={{
-              
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {
-                 audioURL || questionResponse?.audio_response?
                 <>
-                <div onClick={handleAudioToggle}
-                  style={{  
-                    width: 75,
-                   height: 75, 
-                   cursor: "pointer",
-                 }}
-                 >
-
-               
-                <img
-                  style={{  
-                    maxWidth: "100%",
-                   maxHeight: "100%", 
-                   cursor: "pointer",
-                 }}
-                src={
-                   `https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/${isPlaying?"PayingAudioAnimation.gif" :"PlayAudioLottie.gif"} `
-                }
-              />
-               </div>
-              
-              <audio
-                id="first"
-                ref={audioRefplay}
-                src={
-                  submitResponse || disabledQuestion
-                    ? audioURL || questionResponse?.audio_response
-                    : audioURL
-                }
-                onEnded={handleAudioEnd}
-              ></audio>
+                  <img id="message_img" src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/record.gif" alt="Audio recording" width="80" height="80" style={{ objectFit: "fill" }} />
+                  {/* <span>Recording...</span> */}
                 </>
-                :""
-              }
-            </div>
-          )}
-        </div>
-
-        {!showSolution && (
-          <div className="controllers">
-            {stateIndex === 0 && (
-              <button id="record" style={recordbtn} onClick={handleRecord}>
-                Start Recording
-              </button>
-            )}
-            {stateIndex === 1 && (
-              <button
-                id="stop"
-                style={stoprecord}
-                onClick={handleStopRecording}
-              >
-                Stop Recording
-              </button>
-            )}
-            {stateIndex === 2 && (
-              <>
-                {!hideCheckButton && (
-                  <button id="record" style={recordbtn} onClick={handleRecord}>
-                    Record Again
-                  </button>
-                )}
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <div className="timer" id="timer_speaking_type">
+                    {formatTime(elapsedTime)}
+                  </div>
+                  <span className="timer" >Recording...</span>
+                </div>
               </>
             )}
+
+            {(stateIndex === 2 || submitResponse || showSolution) && (
+              // <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
+
+              <div
+                style={{
+
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {
+                  audioURL || questionResponse?.audio_response ?
+                    <>
+                      <div onClick={handleAudioToggle}
+                        style={{
+                          width: "fit-content",
+                          height: "fit-content",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <button className={styles.audioPalyer}>
+                     
+                          <svg viewBox="0 0 384 512" height="20px" fill="#ffff" xmlns="http://www.w3.org/2000/svg" className="play" width="20px">
+                            {isPlaying ?
+                              <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"></path> :
+                              <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+
+                            }
+                          </svg>
+                        </button>
+
+                        {/* <img
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            cursor: "pointer",
+                          }}
+                          src={
+                            `https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/${isPlaying ? "PayingAudioAnimation.gif" : "PlayAudioLottie.gif"} `
+                          }
+                        /> */}
+                      </div>
+
+                      <audio
+                        id="first"
+                        ref={audioRefplay}
+                        src={
+                          submitResponse || disabledQuestion
+                            ? audioURL || questionResponse?.audio_response
+                            : audioURL
+                        }
+                        onEnded={handleAudioEnd}
+                      ></audio>
+                    </>
+                    : ""
+                }
+              </div>
+            )}
           </div>
-        )}
+
+          {!showSolution && (
+            <div className="controllers">
+              {stateIndex === 0 && (
+                <button id="record" style={recordbtn} onClick={handleRecord}>
+                  Start Recording
+                </button>
+              )}
+              {stateIndex === 1 && (
+                <button
+                  id="stop"
+                  style={stoprecord}
+                  onClick={handleStopRecording}
+                >
+                  Stop Recording
+                </button>
+              )}
+              {stateIndex === 2 && (
+                <>
+                  {!hideCheckButton && (
+                    <button id="record" style={recordbtn} onClick={handleRecord}>
+                      Record Again
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
 
 
         {hideCheckButton && (
           <>
-            <div style={{width:'100%'}}>
+            <div style={{ width: '100%' }}>
               {gptResponseLoading ? (
                 <LinearProgressBar type={"speaking"} />
               ) : quizFromRef.current === "diagnostic" ? (
@@ -524,99 +542,15 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue }) => {
                 <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
               )}
             </div>
-            <br />
-            <br />
+
           </>
         )}
 
         {/* <button id="audio_submit" onClick={passAudio}>Submit Audio</button> */}
       </div>
-    </div>
+    </>
   );
 };
 
-// function GptFeedback({ chatGptResponse }) {
-//   // const [isSpeaking, setIsSpeaking] = useState(false);
-//   // const speech = new SpeechSynthesisUtterance(chatGptResponse || "No Response");
-
-//   // const toggleSpeak = () => {
-//   //   if (isSpeaking) {
-//   //     window.speechSynthesis.cancel(); // Stop speaking
-//   //   } else {
-//   //     window.speechSynthesis.speak(speech); // Start speaking
-//   //   }
-//   //   setIsSpeaking(!isSpeaking); // Toggle speaking state
-//   // };
-
-//   const [isSpeaking, setIsSpeaking] = useState(false);
-//   const [voice, setVoice] = useState(null);
-//   useEffect(() => {
-//     const loadVoices = () => {
-//       const voices = window.speechSynthesis.getVoices();
-//       // Filter for female voices; you can adjust this as needed
-//       const femaleVoice = voices.find(
-//         (v) => v.name === "Microsoft Zira - English (United States)"
-//       );
-//       setVoice(femaleVoice || voices[0]); // Default to first available female voice or any voice
-//     };
-
-//     loadVoices(); // Initial load
-
-//     window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
-//   }, []);
-
-//   const toggleSpeak = () => {
-//     const speech = new SpeechSynthesisUtterance(
-//       chatGptResponse || "No Response"
-//     );
-//     speech.voice = voice; // Set the selected voice
-
-//     speech.onend = () => {
-//       setIsSpeaking(false); // Reset speaking state when finished
-//     };
-
-//     if (isSpeaking) {
-//       window.speechSynthesis.cancel(); // Stop speaking
-//       setIsSpeaking(false); // Update state
-//     } else {
-//       window.speechSynthesis.speak(speech); // Start speaking
-//       setIsSpeaking(true); // Update state
-//     }
-//   };
-
-//   return (
-//   <>
-//     <div className={`${styles.gpt_feedback_box} ${styles.speakingtype_gpt}`}>
-//       <button
-//         style={{
-//           border: "1px solid white",
-//           cursor: "pointer",
-//           fontSize: "13px",
-//         }}
-//         onClick={toggleSpeak}
-//       >
-//         🔊 Read Aloud
-//       </button>
-//       <div style={{ padding: 10, fontSize: 15 }}>
-//         {chatGptResponse || "No Response"}
-//       </div>
-//       <div
-//         style={{
-//           width: "calc(100% - 10px)",
-//           display: "flex",
-//           justifyContent: "flex-end",
-//           paddingRight: 5,
-//           paddingTop: 5,
-//           paddingBottom: 5,
-//           color: "indigo",
-//           fontWeight: "normal",
-//         }}
-//       >
-//         Feedback From: AI
-//       </div>
-//     </div>
-//     </>
-//   );
-// }
 
 export default Recording_part;
