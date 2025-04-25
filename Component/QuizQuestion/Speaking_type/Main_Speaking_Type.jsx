@@ -28,15 +28,20 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
     <>
       <div
         style={{
-          backgroundImage: `url('https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+stage.png')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          height: `${questionResponse ? "75vh":"100vh"}`,
+         // backgroundImage: `url('https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/Book+stage.png')`,
+          // backgroundSize: "cover",
+          // backgroundPosition: "center",
+          // backgroundRepeat: "no-repeat",
+          // height: `${questionResponse ? "85vh":"100vh"}`,
+          height:"100%",
+          backgroundColor: "#9575cd52",
+          padding:"1.5rem 1rem",
+          borderRadius:"15px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "start",
+          position: "relative",
         }}
       >
         {/* <div
@@ -72,24 +77,13 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           />
         )}
 
-        <div
-          style={{
-            border: "1px solid transparent",
-            height: "350px",
-            maxHeight:'350px',
-            maxHeight: "350px",
-            width: "75%",
-            overflowX: "hidden",
-            scrollbarWidth: "thin",
-          }}
-        >
+    
           <Speaking_Type
             questionData={question_text}
             questionResponse={questionResponse}
             wordsLength={wordsLength}
           />
         </div>
-      </div>
     </>
   );
 };
