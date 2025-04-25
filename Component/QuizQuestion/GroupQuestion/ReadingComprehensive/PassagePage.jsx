@@ -3,6 +3,8 @@ import Page from "./Page";
 import styles from "../../english_mathzone.module.css";
 import { GroupQuestionContext } from "../ContextProvider/GroupContextProvider";
 import NotificationModal from "./NotificationModal";
+import { ArrowBackIos, ArrowForwardIos, ArrowRight } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 export default function PassagePage({ groupData }) {
   const { handleShowQuestion } = useContext(GroupQuestionContext);
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,8 +36,7 @@ export default function PassagePage({ groupData }) {
     <div
       style={{
         height: "100%",
-
-        width: "fit-content",
+        width: "60%",
         margin: "auto",
         paddingBottom: "10px",
         height: "fit-content",
@@ -50,7 +51,10 @@ export default function PassagePage({ groupData }) {
               className={`${styles.leftButton} ${styles.naviagationButton} ${styles.prev_btn} ${styles.reading_comprehensive_btn} react_passage_change_page_change_btn react_passage_left_btn`}
               onClick={() => handleChangePage(-1)}
             >
-              <i className={`${styles.fa} ${styles["fa-caret-left"]}`}></i>
+             <IconButton  sx={{color:"black"}}>
+                <ArrowBackIos fontSize="large"/>
+                </IconButton>
+              {/* <i className={`${styles.fa} ${styles["fa-caret-left"]}`}></i> */}
             </button>
           )}
           {currentPage + 1 < groupData.length ? (
@@ -58,7 +62,10 @@ export default function PassagePage({ groupData }) {
               className={`${styles.next_btn} ${styles.naviagationButton} ${styles.reading_comprehensive_btn} react_passage_change_page_change_btn react_passage_right_btn`}
               onClick={() => handleChangePage(1)}
             >
-              <i className={`${styles.fa} ${styles["fa-caret-right"]}`}></i>
+              {/* <i className={`${styles.fa} ${styles["fa-caret-right"]}`}></i> */}
+              <IconButton  sx={{color:"black"}}>
+               <ArrowForwardIos  fontSize="large"/>
+               </IconButton>
             </button>
           ) : (
             <button
@@ -67,7 +74,10 @@ export default function PassagePage({ groupData }) {
                 !pageChangeRef.current && handleShowQuestion();
               }}
             >
-              <i className={`${styles.fa} ${styles["fa-caret-right"]}`}></i>
+              <IconButton  sx={{color:"black"}}>
+               <ArrowForwardIos fontSize="large"/>
+               </IconButton>
+              {/* <i className={`${styles.fa} ${styles["fa-caret-right"]}`}></i> */}
             </button>
           )}
         </>

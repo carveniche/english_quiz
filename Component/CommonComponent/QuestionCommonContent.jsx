@@ -12,9 +12,9 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
   const textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
   const imageNodes = obj?.questionName.filter((node) => mediaTags.has(node.node));
   const [open, setOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [url, setUrl] = useState("");
   function handleZoomOut(url) {
-    setImageUrl(url)
+    setUrl(url)
     setOpen(true)
   }
   return (
@@ -71,7 +71,7 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
       )}
 
 
-      <ImageZoomOut imageUrl={imageUrl} open={open} setOpen={setOpen} />
+      <ImageZoomOut url={url} open={open} setOpen={setOpen} />
 
     </div>
   );
@@ -84,14 +84,14 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
 function ZoomOutIcon({ handleZoomOut, item }) {
   return (
     <IconButton
-      onClick={() => handleZoomOut(item?.value)}
+      onClick={() => handleZoomOut(item)}
       sx={{
         position: 'absolute',
         bottom: 3,
         right: 3,
         boxShadow: '15',
         backgroundColor: 'black',
-        color:"#ffff",
+        color: "#ffff",
         '&:hover': {
           transform: 'scale(1.08)',
           backgroundColor: 'black',
@@ -108,8 +108,8 @@ function ZoomOutIcon({ handleZoomOut, item }) {
 
 
 
-function ImageZoomOut({ imageUrl, open, setOpen }) {
-  const handleClose = (e) =>{
+function ImageZoomOut({ url, open, setOpen }) {
+  const handleClose = (e) => {
     e.stopPropagation()
     setOpen(false);
 
@@ -118,7 +118,7 @@ function ImageZoomOut({ imageUrl, open, setOpen }) {
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
-         onClick={(e)=>handleClose(e)}
+        onClick={(e) => handleClose(e)}
         sx={{
           position: "absolute",
           top: "50%",
@@ -134,12 +134,12 @@ function ImageZoomOut({ imageUrl, open, setOpen }) {
           justifyContent: "center",
           alignItems: "center",
           p: 2,
-          
+
         }}
-       
+
       >
         <IconButton
-         onClick={(e)=>handleClose(e)}
+          onClick={(e) => handleClose(e)}
 
           sx={{
             position: 'absolute',
@@ -156,17 +156,24 @@ function ImageZoomOut({ imageUrl, open, setOpen }) {
         >
           <Close fontSize="small" />
         </IconButton>
+        {
+          url.node === "img" ?
+            <img
+              src={url?.value}
+              alt="Zoomed"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                backgroundColor: "#fff",
+              }}
+            />
+            :
+         <div style={{width:"80%",height:'100%'}}>{objectParser(url,'0')}</div>
+            
 
-        <img
-          src={imageUrl}
-          alt="Zoomed"
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-            objectFit: "contain",
-            backgroundColor: "#fff",
-          }}
-        />
+        }
+
       </Box>
 
 
