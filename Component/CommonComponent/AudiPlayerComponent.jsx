@@ -30,6 +30,8 @@ export default function AudiPlayerComponent({ resources }) {
           justifyContent: "center",
           alignItems: "center",
           cursor: "pointer",
+          marginLeft:"10px",
+          marginTop:"5px"
         }}
       >
         <img

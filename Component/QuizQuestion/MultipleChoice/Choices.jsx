@@ -58,7 +58,7 @@ export default function Choices({ choicesRef }) {
           {choice?.choice_image && (
             <div className="choiceImage">
               <img
-                style={{ maxWidth: "150px", maxHeight: "150px" }}
+                style={{ maxWidth: "150px", maxHeight: "100px" }}
                 src={choice?.choice_image}
               />
             </div>

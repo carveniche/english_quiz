@@ -38,17 +38,18 @@ const objectParser = (item, index) => {
     value = <span style={styleObject}>{` ${item?.value} `}</span>;
   } else if (item?.node === "img") {
     value = (
-      <div className="image">
+       <>
         <img
           src={item?.value}
           alt=""
           style={{
-            width: "200px",
-            height: "200px" || "fit-content",
+            width: "100%",
+            height: "100%" || "fit-content",
             aspectRatio:1/1
           }}
         />
-      </div>
+        </>
+      
     );
   } else if (item?.node === "audio") {
     value = <>Audio symbol</>;
@@ -74,26 +75,26 @@ function getVideoType(url) {
   if (youTubeRegex.test(url)) {
     return (
 
-      <div className="video">
+      <>
       <iframe
-    width="200"
-    height="200"
+    width="100%"
+    height="100%"
     src={url.replace("watch?v=", "embed/")}
     title="YouTube video player"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowFullScreen
   />
-      </div>
+      </>
     )
   }  else {
     return (
 
-      <div className="video">
-      <video width="200" height="200" controls>
+      <>
+      <video width="100%" height="100%" controls>
     <source src={url} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-      </div>
+      </>
     )
   }
 }
