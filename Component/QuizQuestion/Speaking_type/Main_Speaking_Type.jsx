@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import Speaking_Type from "./Speaking_Type";
+import "./Speaking_Type.css";
 import { WRITING_GPT } from "../../Utility/Constant";
 import NotificationModal from "../GroupQuestion/ReadingComprehensive/NotificationModal";
 import { useState } from "react";

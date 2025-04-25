@@ -7,14 +7,14 @@ import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-mater
 import { Zoom } from '@mui/material';
 import  './hotSpot.css';
 import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
-
+import styles from "../../QuizQuestion/english_mathzone.module.css";
 export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
 
   let question_text = JSON.parse(obj?.question_data);
 
   return (
-    <div><HotSpotPreview data={obj} question_text={question_text} questionData={questionData} /></div>
+    <><HotSpotPreview data={obj} question_text={question_text} questionData={questionData} /></>
   )
 }
 
@@ -260,7 +260,10 @@ function HotSpotPreview({ data, question_text,questionData }) {
       <div className="hotspot_container">
         <div className="hotspot_question_text">
           <div className='audio_with_questiontext'>
-            <SpeakPlainText readText={question_text?.questionName} /><p>{question_text?.questionName}</p><br />
+            <SpeakPlainText readText={question_text?.questionName} /><p>
+              <div className={styles.questionText}>
+                {question_text?.questionName}
+                </div></p>
            
           </div>
           {question_text?.resources?.length > 0 && (
