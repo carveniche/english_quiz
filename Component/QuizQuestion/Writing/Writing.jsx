@@ -371,8 +371,9 @@ export default function Writing({
 
           <div
             style={{
-              width: longText ? "50%" : "100%",
-              maxHeight: longText ? "250px" : "200px",
+              width: longText ? "80%" : "100%",
+              height: "100%",
+              maxHeight: longText ? "60%" : "280px",
             }}
           >
             <AutoSizeTextarea
