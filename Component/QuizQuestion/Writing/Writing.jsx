@@ -70,6 +70,7 @@ const AutoSizeTextarea = ({
         style={{
           width: "100%",
           height: "100%",
+          maxHeight: "100%",
           display: "flex",
           flexDirection: "column",
           gap: "2px",
@@ -372,8 +373,8 @@ export default function Writing({
           <div
             style={{
               width: longText ? "80%" : "100%",
-              height: "100%",
-              maxHeight: longText ? "60%" : "280px",
+              height:longText ? "300px" : "280px",
+              maxHeight: longText ? "300px" : "280px",
             }}
           >
             <AutoSizeTextarea

@@ -46,6 +46,7 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
           </div>
 
           {/* IMAGE SIDE */}
+          {imageNodes.length > 0 && (
           <div className={styles.imageArea}>
             {imageNodes.map((item, key) => (
               <div key={key} className={styles.imageArea_section} >
@@ -56,6 +57,7 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
             ))}
 
           </div>
+          )}
         </div>
 
       ) : (
