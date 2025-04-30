@@ -45,7 +45,6 @@ const objectParser = (item, index) => {
           style={{
             width: "100%",
             height: "100%" || "fit-content",
-            aspectRatio:1/1
           }}
         />
         </>
