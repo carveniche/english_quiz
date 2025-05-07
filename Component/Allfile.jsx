@@ -10,7 +10,6 @@ import MainHotSpot from "./QuizQuestion/HotSpot/MainHotSpot";
 import MainLabeling from "./QuizQuestion/Labeling/MainLabeling";
 
 export default function Allfile({ data, questionData }) {
-  console.log(data,questionData,"questionData questionData")
   const [wordsLength, setWordsLength] = useState(0);
   const { setStudentAnswer, setSubmitResponse } = useContext(ValidationContext);
 
