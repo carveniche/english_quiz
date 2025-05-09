@@ -1,80 +1,278 @@
-
 :root {
-  --accentcolor: #a04caf; /* Green */
-  --secondaryColor:#c85cc88f; /* Red */
-  --accent-color: #008CBA; /* Blue */
-  --background-color: #f0f0f0; /* Light Gray */
-  --text-color: #333; /* Dark Gray */
+    --accentcolor: #a04caf;
+    /* Green */
+    --secondaryColor: #c85cc88f;
+    /* Red */
+    --accent-color: #008CBA;
+    /* Blue */
+    --background-color: #f0f0f0;
+    /* Light Gray */
+    --text-color: #333;
+    /* Dark Gray */
 }
+
 .accentButton {
-  background-color:var(--accentcolor); /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  border-radius: 2px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.audioRecording_container{
-    background-color: var(--secondaryColor);
-    padding: 10px 15px;
-    border-radius: 8px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap:5px
-}
-.audio_popup_container{
-
-    width:60%;
-    height: 80%;
-    background-color:var(--accentcolor);
+    width: 171px;
     padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
+    flex-shrink: 0;
+    border-radius: var(--Radius-S, 8px);
+    border: 2px solid #9E92EB;
+    background: linear-gradient(120deg, #3F278C 21.14%, #9736A5 73.67%);
+    cursor: pointer;
+}
+
+.audioRecording_container {
+    display: flex;
+    height: 150px;
+    padding: 14px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    align-self: stretch;
+    border-radius: 25px;
+    border: 4px solid #59DBFF;
+    background: linear-gradient(180deg, rgba(0, 205, 216, 0.70) 0%, rgba(0, 51, 54, 0.70) 100%);
+    backdrop-filter: blur(7.900000095367432px);
+}
+
+.audio_popup_container {
+
+    display: flex;
+    width: 694px;
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 25px;
+    background: rgba(34, 34, 34, 0.54);
+    backdrop-filter: blur(15.199999809265137px);
     position: relative;
 
 }
-.audio_popup_footer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: var(--secondaryColor);
-}
-.audio_popup_body{
-    height: 80%;
+
+.audio_popup_section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: var(--secondaryColor);
+    gap: var(--Tab-V-Padding, 10px);
+    align-self: stretch;
 }
-.audio_popup_start_btn{
+
+.audio_popup_header {
     display: flex;
+    justify-content: space-between;
+    align-items: start;
+    align-self: stretch;
+}
+
+.audio_popup_footer {
+    display: flex;
+
     align-items: center;
     justify-content: center;
-    border: 2px solid #f9d5ff;
-    border-radius: 100%;
-    background: #fb5050;
-    padding: 2px;
-    width: 40px;
-    height: 40px;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 25px;
+    padding: 14px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(25.200000762939453px);
+}
+
+.audio_popup_body {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 25px;
+    background: rgba(136, 136, 136, 0.25);
+    /* backdrop-filter: blur(17px); */
+}
+
+.audio_popup_body_02 {
+    display: flex;
+    padding: var(--Card-Button-Full-Padding, 10px) var(--Card-Button-H-Padding, 10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-radius: 25px;
+    background: rgba(136, 136, 136, 0.25);
+    backdrop-filter: blur(17px);
+}
+
+.audio_popup_body_02 p {
+    margin: 0;
+}
+
+.audio_popup_body_content {
+    display: flex;
+
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 37px;
+}
+
+.audio_popup_start_btn {
+    width: 58px;
+    height: 58px;
     cursor: pointer;
 }
-.text{
-    color: white;
-    font-size: 20px;
-    font-weight: 600;
+
+.text {
+    color: var(--Greyscale-Surface-White, #FFF);
+    text-align: center;
+
+    /* Small/Body Text 6 Medium */
+    font-family: var(--font-family, "GothamRnd-Book");
+    font-size: var(--Typeface-Size-lg, 18px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    /* 23.4px */
+    margin: 0
+}
+
+.timer_show_container {
+    display: flex;
+    padding: 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 6px;
+    background: var(--Greyscale-Border-Darker, #131416);
+}
+
+.seek_bar_container {
+    display: flex;
+    padding: 0px 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: var(--Radius-XS, 6px);
+    background: #131416;
+}
+
+.audio_seek_bar_container {
+    background: #b0a7a7;
+    border-radius: 43px;
+    overflow: hidden;
+    flex: 1;
+    height: 13px;
+}
+
+.audio_seek_bar {
+    background: "#ffff";
+    flex: 1;
+    height: 100%;
+    transition: 'width 1s ease-in-out',
+}
+
+.recordAgain_submit_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.recording_container {
+    display: flex;
+    width: 100%;
+    padding: 6px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.cancel_retake_btns {
+    display: flex;
+    align-items: center;
+    gap: 23px;
+}
+
+.cancel_retake_btns .cancel_btn,
+.cancel_retake_btns .retake_btn {
+
+    display: flex;
+    padding: 6px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 6px;
+    background: #FFF;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+    font-family: var(--font-family, "GothamRnd-Book");
+}
+
+.small_body {
+    color: var(--Greyscale-Surface-White, #FFF);
+    /* text-align: center; */
+
+    /* Small/Body Text 6 Medium */
+    font-family: var(--font-family, "GothamRnd-Book");
+    font-size: var(--Typeface-Size-lg, 18px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    /* 23.4px */
+    margin: 0;
+}
+
+.cap_regular {
+    color: var(--Greyscale-Surface-Disabled, #B3B8BC);
+    text-align: center;
+
+    /* Caption/Subtitle Para Regular */
+    font-family: var(--font-family, "GothamRnd-Book");
+    font-size: var(--Typeface-Size-sm, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    /* 18.2px */
+    margin: 0;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.SecondaryButton {
+    display: flex;
+
+    padding: 14px 24px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 16.163px;
+    border: 2.694px solid var(--Grey, #ECECEC);
+    background: #00FFF6;
+    color: var(--Black, #000);
+    text-align: center;
+
+    /* Medium/Body Text 5 Medium */
+    font-family: var(--font-family, "GothamRnd-Book");
+    font-size: var(--Typeface-Size-xl, 24px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    /* 31.2px */
+    cursor: pointer;
+}
+
+.white_text {
+    color: var(--Greyscale-Surface-White, #FFF);
+    text-align: center;
 }

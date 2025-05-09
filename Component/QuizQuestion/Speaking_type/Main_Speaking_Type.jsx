@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Speaking_Type from "./Speaking_Type";
 import "./Speaking_Type.css";
 import { WRITING_GPT } from "../../Utility/Constant";
 import NotificationModal from "../GroupQuestion/ReadingComprehensive/NotificationModal";
 import { useState } from "react";
 import { ValidationContext } from "../../QuizPage";
+import { Alert } from "@mui/material";
 
 export const Main_Speaking_Type = ({ obj, wordsLength }) => {
   const {
@@ -21,9 +22,13 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
   } catch (e) {
     console.log(e);
   }
-
-  const [hideNotification, setHideNotification] = useState(false);
-
+ const [hideNotification, setHideNotification] = useState(false);
+useEffect(()=>{
+ const timeOut=setTimeout(()=>{
+  setHideNotification(true)
+ },2500)
+ return ()=>clearTimeout(timeOut)
+},[])
   // url('https://d1t64bxz3n5cv1.cloudfront.net/stage.png')
   return (
     <>
@@ -68,14 +73,22 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
           Please sit in a quiet place and be loud and clear while recording
         </div>
       </div> */}
+ {!hideNotification && !showSolution && (
+<>
+<Alert severity="warning"  onClose={() =>setHideNotification(true)}>
+Please sit in a quiet place and be loud and clear while recording
+</Alert>
 
-        {!hideNotification && !showSolution && (
-          <NotificationModal
-            msg={
-              " Please sit in a quiet place and be loud and clear while recording"
-            }
-            onClose={setHideNotification}
-          />
+
+</>
+
+
+          // <NotificationModal
+          //   msg={
+          //     " Please sit in a quiet place and be loud and clear while recording"
+          //   }
+          //   onClose={setHideNotification}
+          // />
         )}
 
     

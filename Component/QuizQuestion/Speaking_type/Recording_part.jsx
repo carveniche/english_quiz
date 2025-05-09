@@ -1,23 +1,22 @@
 
 import React, { useState, useEffect, useRef, useContext } from "react";
-import Lottie from "react-lottie";
 // import recordingGIF from "../../assets/Images/record.gif"
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxVoice from "../../CommonComponent/CustomAlertBoxVoice";
 import { ValidationContext } from "../../QuizPage";
 import LinearProgressBar from "../Writing/LinearProgressBar";
-import styles from "../english_mathzone.module.css";
 import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
-import * as paused from "../../Solution/AudioPaused.json";
-import * as playing from "../../Solution/AudioPlaying.json";
-import * as AudioRecording from "../../Solution/AudioRecording.json";
 import React_Base_Api from "../../../ReactConfigApi";
 import { GptFeedback } from "../Writing/Writing";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
+import { Circle, Close, FastForward, FastRewind, Headphones, KeyboardVoiceRounded, Mic, Pause, PauseCircleFilledOutlined, PauseCircleOutlineSharp, PlayArrow, Replay, Stop, StopCircle } from "@mui/icons-material";
+import { Alert, Box, IconButton, Modal } from "@mui/material";
+// import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
+import objectParser from "../../Utility/objectParser";
 
-const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength }) => {
+ export default function Recording_part  ({ questionData, questionResponse, setIsTrue, wordsLength }) {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const {
     submitResponse,
@@ -33,52 +32,19 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
   const [gptResponseLoading, setGptResponseLoading] = useState(false);
   const [redAlert, setRedAlert] = useState(false);
   const [hideCheckButton, setHideCheckButton] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [audioPermission, setAudioPermission] = useState(true);
   const isApiCalled = useRef(false);
   let quizFromRef = useRef(sessionStorage.getItem("engQuizFrom"));
 
   // recording part states
   const [stateIndex, setStateIndex] = useState(0);
   const [audioURL, setAudioURL] = useState("");
-  const [elapsedTime, setElapsedTime] = useState(0);
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
   const audioFileRef = useRef(null);
   const timerIntervalRef = useRef(null);
 
-  // button styles start
-  const recordbtn = {
-    border: "none",
-    // background: "#38c185",
-    background: "linear-gradient(45deg, #00CFC7 ,#0093CF)",
-    color: "white",
-    padding: "12px",
-    borderRadius: "20px",
-    cursor: "pointer",
-    fontSize: "13px",
-    // backgroundImage:
-    //   'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Start.png")',
-    // backgroundRepeat: "no-repeat",
-    // backgroundPosition: "center center",
-    // backgroundSize: "cover",
-    width: "150px",
-  };
-  const stoprecord = {
-    border: "none",
-    //background: "red",
-    background: "linear-gradient(45deg, #E97200, #E98E00)",
-    color: "white",
-    padding: "12px",
-    borderRadius: "20px",
-    cursor: "pointer",
-    fontSize: "13px",
-    // backgroundImage:
-    //   'url("https://d1t64bxz3n5cv1.cloudfront.net/Button_Stop.png")',
-    // backgroundRepeat: "no-repeat",
-    // backgroundPosition: "center center",
-    // backgroundSize: "cover",
-    width: "150px",
-  };
-  // button styles end
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -93,53 +59,67 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
 
           mediaRecorderRef.current.onstop = () => {
             clearInterval(timerIntervalRef.current); // Stop the timer
-            setElapsedTime(0); // Reset the timer
+            // setElapsedTime(0); // Reset the timer
 
             const blob = new Blob(chunksRef.current, {
-              type: "audio/mp3; codecs=opus",
+              type: "audio/webm; codecs=opus",
             });
             chunksRef.current = [];
             const url = window.URL.createObjectURL(blob);
             setAudioURL(url);
-
-            // Convert Blob to File
-            // audioFileRef.current = new File([blob], "audio.mp3", {
-            //   type: 'audio/mp3',
-            //   lastModified: Date.now(),
-            // });
             audioFileRef.current = blob;
           };
         })
         .catch((error) => {
+          if (error.name === 'NotAllowedError') {
+            setAudioPermission(false)
+          }
           console.error("Error accessing media devices.", error);
-          setStateIndex(3);
+          // setStateIndex(3);
         });
     } else {
-      setStateIndex(3);
+      // setStateIndex(3);
     }
+
   }, []);
 
   const startTimer = () => {
     const startTime = Date.now();
     timerIntervalRef.current = setInterval(() => {
       const elapsedTime = Date.now() - startTime;
-      setElapsedTime(elapsedTime);
+      const formattedTime = formatTime(elapsedTime);
+      setAudioDuration(formattedTime); // Update the timer display
     }, 1000);
   };
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60000);
     const seconds = Math.floor((time % 60000) / 1000);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
+    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+    return formattedTime;
   };
 
+
   const handleRecord = () => {
-    setStateIndex(1);
-    mediaRecorderRef.current.start();
-    startTimer(); // Start the timer when recording starts
+
+    if(!audioPermission) return
+
+    if (stateIndex === 1) {
+      handleStopRecording()
+      return;
+    }
+    setIsPlaying(false);
+    if (stateIndex == 2) {
+      setAudioDuration(0);
+      setStateIndex(0);
+
+    } else {
+      setStateIndex(1);
+      mediaRecorderRef.current.start();
+      startTimer(); // Start the timer when recording starts
+    }
+
+
   };
 
   const handleStopRecording = () => {
@@ -230,6 +210,8 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
     if (disabledQuestion) return;
     setRedAlert(false);
 
+    setSubmitResponse(true);
+   
     try {
       if (chatGptResponseRef?.current) {
         const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
@@ -254,7 +236,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
       setIsCorrect(scoreRef.current == 1 ? 1 : 0);
     }
     setStudentAnswer(obj);
-    setSubmitResponse(true);
     typeof setHasQuizAnswerSubmitted === "function" &&
       setHasQuizAnswerSubmitted(true);
     return scoreRef.current == 0 ? 0 : 1;
@@ -265,33 +246,6 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
       type: "audio/mp3",
       lastModified: Date.now(),
     });
-    // const formData = new FormData();
-    // formData.append("file", blobfile);
-    // formData.append("model", "whisper-1");
-    // formData.append("language", "en");
-    // try {
-    //     const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
-    //         method: "POST",
-    //         headers: {
-    //         "Authorization": ``
-    //         },
-    //         body: formData
-    //     });
-
-    //     if (!response.ok) {
-    //         throw new Error(`Error: ${response.statusText}`);
-    //     }
-
-    //     const data = await response.json();
-    //     console.log('this is dfsdfs',data)
-
-    //     handlePromptRequest(data.text);
-
-    // } catch (error) {
-    //     console.error('Error:', error);
-    //     alert("There was an error transcribing the audio.");
-    // }
-    // const CONFIG_URL12 = window.CONFIG_URL12 || "http://localhost:3000/";
 
     const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
     //  const CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
@@ -335,6 +289,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
 
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRefplay = useRef(null);
+
   const handleAudioToggle = () => {
     if (isPlaying) {
       audioRefplay.current.pause();
@@ -351,35 +306,105 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
   const handleAudioEnd = () => {
     setIsPlaying(false);
   };
-  const playingOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: playing,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-  const audioRecordingOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: AudioRecording,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
+
+
+
+  const [payedTime, setPayedTime] = useState("00:00");
+  const [audioDuration, setAudioDuration] = useState("00:00");
+
+  const formatTimToSeconds = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${minutes < 10 ? '0' : ''}${minutes}:${sec < 10 ? '0' : ''}${sec}`;
   };
 
-  if (questionResponse?.audio_response) {
-    if (questionResponse.audio_response.includes('.mp3')) {
-      questionResponse.audio_response = questionResponse.audio_response.split('.mp3')[0] + '.mp3';
+  // Event handler for when metadata is loaded
+  const handleTimeUpdate = (e) => {
+    const audio = e.target;
+    const formattedTime = formatTimToSeconds(audio.currentTime);
+    setPayedTime(formattedTime);
+  };
+
+  useEffect(() => {
+
+    if (!open && isPlaying) {
+      handleAudioToggle()
     }
-  }
+  }, [open])
 
+
+  const handleFastForwardRewind = (action) => {
+    if (audioRefplay.current) {
+      let newTime;
+
+      if (action === 'forward') {
+        // Fast forward by 6 seconds
+        newTime = Math.min(
+          audioRefplay.current.currentTime + 6,  // Add 6 seconds to current time
+          audioRefplay.current.duration  // Ensure the time doesn't exceed the duration
+        );
+      } else {
+        // Rewind by 6 seconds
+        newTime = Math.max(
+          audioRefplay.current.currentTime - 6,  // Subtract 6 seconds from current time
+          0  // Ensure the time doesn't go below 0
+        );
+      }
+
+      audioRefplay.current.currentTime = newTime;  // Set the new time
+      const formattedTime = formatTimToSeconds(newTime);  // Format the new time
+      setPayedTime(formattedTime);  // Update the state with the formatted time
+    }
+  };
+
+  useEffect(() => {
+    const audio = audioRefplay.current;
+    if (!audio) return;
+
+    const handleLoadedMetadata = () => {
+
+      if (audio.duration === Infinity) {
+        // Trick to force browser to load full duration
+        audio.currentTime = 1e101;
+        audio.ontimeupdate = () => {
+          audio.ontimeupdate = null;
+          audio.currentTime = 0;
+          const duration = audio.duration;
+          const formatSec = formatTimToSeconds(duration);
+          setAudioDuration(formatSec);
+          console.log("Duration after trick:", audio.duration);
+        };
+      } else {
+
+
+        console.log("Duration immediately:", audio.duration);
+      }
+    };
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+    };
+  }, [audioURL]);
+
+  useEffect(() => {
+    if (questionResponse?.audio_response) {
+      let audio_response = questionResponse.audio_response;
+  
+      if (audio_response.includes('.mp3')) {
+        audio_response = audio_response.split('.mp3')[0] + '.mp3';
+      }
+  
+      setAudioURL(audio_response);
+    }
+  }, [questionResponse]);
+  
   return (
     <>
+
+
       <SolveButton onClick={passAudio} />
       {redAlert && !submitResponse && <CustomAlertBoxVoice />}
-
-
       <div
         style={{
           display: "flex",
@@ -390,6 +415,7 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
           width: "100%",
         }}
       >
+
         <QuestionCommonContent
           obj={questionData}
           wordsLength={wordsLength}
@@ -397,139 +423,32 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
           isEnglishStudentLevel={readOut}
         />
 
+        <AudioRecorderInterface setOpen={setOpen} />
 
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "1rem",
-            width: "100%",
-          }}
-        >
-          <div
-            className="display"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+        <AudioRecordingModal
+          obj={questionData}
+          audioDuration={audioDuration}
+          audioPermission={audioPermission}
+          handleStartRecording={handleRecord}
+          open={open} setOpen={setOpen}
+          stateIndex={stateIndex}
+          handleAudioToggle={handleAudioToggle}
+          isPlaying={isPlaying}
+          payedTime={payedTime}
+          handleFastForwardRewind={handleFastForwardRewind}
+          audioURL={audioURL}
 
-            {stateIndex === 1 && !showSolution && (
-              <>
-                {/* <Lottie
-                options={audioRecordingOptions}
-                height={"70px"}
-                width={"70px"}
-                cursor={"pointer"}
-                speed={1.5}
-              /> */}
-                <>
-                  <img id="message_img" src="https://d325uq16osfh2r.cloudfront.net/Speaking_type/record.gif" alt="Audio recording" width="80" height="80" style={{ objectFit: "fill" }} />
-                  {/* <span>Recording...</span> */}
-                </>
-                <div style={{ display: "flex", gap: "10px" }}>
-                  <div className="timer" id="timer_speaking_type">
-                    {formatTime(elapsedTime)}
-                  </div>
-                  <span className="timer" >Recording...</span>
-                </div>
-              </>
-            )}
+        />
 
-            {(stateIndex === 2 || submitResponse || showSolution) && (
-              // <audio id="first" controls src={(submitResponse||disabledQuestion)?(audioURL||questionResponse?.audio_response):audioURL}></audio>
-
-              <div
-                style={{
-
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {
-                  audioURL || questionResponse?.audio_response ?
-                    <>
-                      <div onClick={handleAudioToggle}
-                        style={{
-                          width: "fit-content",
-                          height: "fit-content",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <button className={styles.audioPalyer}>
-                     
-                          <svg viewBox="0 0 384 512" height="20px" fill="#ffff" xmlns="http://www.w3.org/2000/svg" className="play" width="20px">
-                            {isPlaying ?
-                              <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"></path> :
-                              <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
-
-                            }
-                          </svg>
-                        </button>
-
-                        {/* <img
-                          style={{
-                            maxWidth: "100%",
-                            maxHeight: "100%",
-                            cursor: "pointer",
-                          }}
-                          src={
-                            `https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/${isPlaying ? "PayingAudioAnimation.gif" : "PlayAudioLottie.gif"} `
-                          }
-                        /> */}
-                      </div>
-
-                      <audio
-                        id="first"
-                        ref={audioRefplay}
-                        src={
-                          submitResponse || disabledQuestion
-                            ? audioURL || questionResponse?.audio_response
-                            : audioURL
-                        }
-                        onEnded={handleAudioEnd}
-                      ></audio>
-                    </>
-                    : ""
-                }
-              </div>
-            )}
-          </div>
-
-          {!showSolution && (
-            <div className="controllers">
-              {stateIndex === 0 && (
-                <button id="record" style={recordbtn} onClick={handleRecord}>
-                  Start Recording
-                </button>
-              )}
-              {stateIndex === 1 && (
-                <button
-                  id="stop"
-                  style={stoprecord}
-                  onClick={handleStopRecording}
-                >
-                  Stop Recording
-                </button>
-              )}
-              {stateIndex === 2 && (
-                <>
-                  {!hideCheckButton && (
-                    <button id="record" style={recordbtn} onClick={handleRecord}>
-                      Record Again
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-        </div>
-
+        {(stateIndex === 2 || submitResponse || showSolution) && audioURL && (
+          <audio
+            id="first"
+            ref={audioRefplay}
+            src={audioURL}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleAudioEnd}
+          />
+        )}
 
         {hideCheckButton && (
           <>
@@ -553,4 +472,320 @@ const Recording_part = ({ questionData, questionResponse, setIsTrue, wordsLength
 };
 
 
-export default Recording_part;
+function AudioRecorderInterface({ setOpen }) {
+  const {
+    submitResponse,
+    showSolution,
+
+  } = useContext(ValidationContext);
+
+  return (
+    <div className="audioRecording_container">
+      <div className="audioRecording">
+        <IconButton sx={{
+          backgroundColor: '#FFFFFF73',
+          color: 'white'
+        }}>
+          {showSolution || submitResponse ? <Headphones/> : <Mic /> }
+        </IconButton>
+      </div>
+      <button className="SecondaryButton" onClick={() => setOpen(true)}>{showSolution || submitResponse? "Play Recording" : "Open Audio Recoder"}</button>
+
+    </div>
+  );
+}
+
+
+
+function AudioRecordingModal({
+  obj,
+  isPlaying,
+  audioDuration,
+  audioPermission,
+  open,
+  setOpen,
+  handleStartRecording,
+  stateIndex,
+  handleAudioToggle,
+  payedTime,
+  handleFastForwardRewind,
+  audioURL
+
+}) {
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const {
+    submitResponse,
+    showSolution,
+  } = useContext(ValidationContext);
+
+  const [isRecordAgain, setIsRecordAgain] = useState(false);
+  const reRecording = () => {
+    setIsRecordAgain(false);
+    handleStartRecording();
+  }
+  const mediaTags = new Set(["img", "video", "a"]);
+  const textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
+
+  return (
+    <>
+    <Modal open={open} onClose={setOpen}>
+      <Box sx={BoxStyle} >
+
+        <div className="audio_popup_container">
+          <div className="audio_popup_section">
+            {!audioPermission && !showSolution &&  (
+              <Alert severity="error" style={{ textAlign: "center" }}>
+                {"Microphone access was denied"}
+              </Alert>
+
+            )}
+            <div className="audio_popup_header">
+              <div className="small_body">
+                {textNodes.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}</div>
+              <IconButton onClick={handleClose} sx={CloseStyle}>
+                <Close fontSize="small" />
+              </IconButton>
+            </div>
+
+          {!isRecordAgain && (
+              <>
+                {((stateIndex === 0 || stateIndex === 1) && !showSolution) && (
+                  <AudioRecordingGifComponent stateIndex={stateIndex} audioDuration={audioDuration} />
+                )}
+
+                {(stateIndex === 2 || submitResponse || showSolution) && audioURL ? (
+                  <AudioPlayIcon
+                    isPlaying={isPlaying}
+                    handleAudioToggle={handleAudioToggle}
+                    audioDuration={audioDuration}
+                    payedTime={payedTime}
+                    handleFastForwardRewind={handleFastForwardRewind}
+                  />
+                )
+                :
+                <p className="text">No audio available</p>
+                }
+              </>
+            )}
+
+
+            {
+              isRecordAgain &&  (
+                <div className="audio_popup_body">
+                  <div className="recording_container">
+                    <p className="small_body">Retake this recording?</p>
+                    <span className="cap_regular">you can re-record as many times as you want</span>
+                    <div className="cancel_retake_btns">
+                      <button className="cancel_btn" onClick={() => setIsRecordAgain(false)}>Cancel</button>
+                      <button className="retake_btn" style={{ color: '#FF570F' }} onClick={reRecording}>
+                        <Replay fontSize="small" />  Retake</button>
+                    </div>
+
+                  </div>
+                </div>
+              )
+            }
+
+            {!showSolution && !submitResponse &&
+              <div className="audio_popup_footer">
+                {
+                  stateIndex === 0 || stateIndex == 1 ?
+                    <div className="audio_popup_start_btn" onClick={handleStartRecording}>
+                      <AudioStartStopButton stateIndex={stateIndex} />
+
+                    </div>
+                    :
+                    <RecordAgainSubmitButton setIsRecordAgain={setIsRecordAgain} setOpen={setOpen} />
+
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+      </Box>
+
+
+    </Modal>
+    </>
+  );
+}
+
+
+
+function AudioStartStopButton({ stateIndex }) {
+  return (
+    <IconButton sx={{
+      border: "2px solid #b0a7a7",
+      color: 'red',
+      width: "58px",
+      height: "58px",
+
+    }}
+    >
+      {stateIndex == 0 ? <Circle sx={{ fontSize: 55 }} /> : <Stop fontSize="large" />}
+
+    </IconButton>
+
+  );
+}
+
+
+function AudioPlayIcon({ handleFastForwardRewind, isPlaying, audioDuration, handleAudioToggle, payedTime }) {
+
+  const convertToSeconds = (time) => {
+    const [minutes, seconds] = time.split(':').map(Number); // Split time into minutes and seconds
+    return minutes * 60 + seconds; // Convert to total seconds
+  };
+  const progressWidth = (convertToSeconds(payedTime) / convertToSeconds(audioDuration)) * 100;
+
+  const forwardStyle = (disabled) => ({
+    color: disabled ? "#888" : "#fff",
+    cursor: disabled ? "not-allowed" : "pointer",
+    pointerEvents: disabled ? "none" : "auto"
+  });
+
+  return (
+    <>
+      <div className="audio_popup_body">
+        <div className="audio_popup_body_content">
+          <IconButton
+            sx={{
+              backgroundColor: '#b0a7a7',
+              color: 'white',
+              width: "58px",
+              height: "58px",
+              '&:hover': {
+                backgroundColor: '#b0a7a7', // Keep background white
+                color: 'white',           // Change icon color
+              }
+            }}
+            onClick={handleAudioToggle}
+          >
+
+            {isPlaying ? <Pause fontSize="large" /> : <PlayArrow fontSize="large" />}
+
+          </IconButton>
+
+          <div className="seek_bar_container">
+            <>
+
+              <IconButton />
+              <FastRewind onClick={() => handleFastForwardRewind("rewind")}
+                sx={forwardStyle(progressWidth === 0)} />
+              <FastForward onClick={() => handleFastForwardRewind("forward")} sx={forwardStyle(progressWidth === 100)} />
+
+            </>
+
+            <div className="audio_seek_bar_container">
+              <div className="audio_seek_bar" style={{ width: `${progressWidth}%`, backgroundColor: '#fff' }} />
+            </div>
+            <div className="timer_show_container">
+              <p className="text">{payedTime} / {audioDuration}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </>
+
+  )
+}
+
+
+
+function RecordAgainSubmitButton({ setIsRecordAgain, setOpen }) {
+  return (
+    <div className="recordAgain_submit_container">
+      <IconButton
+            sx={{
+              backgroundImage: 'linear-gradient(to right, #9E92EB, #5E5CC8)',
+              color: 'white',
+              width: "36px",
+              height: "36px",
+              
+            }}
+            onClick={() => setIsRecordAgain(true)} className="pointer"
+          >
+            <Replay sx={{color: '#FFC760',}}/>
+            </IconButton>
+      <button className="accentButton white_text" onClick={() => setOpen(false)}>Submit</button>
+    </div>
+  )
+}
+
+
+
+
+function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartRecording }) {
+  return (
+    <div className="audio_popup_body">
+      <div className="audio_popup_body_content">
+
+
+        <p className="text"> {stateIndex == 1 ? "Recording now" : "Click to start recording"}</p>
+        <IconButton onClick={handleStartRecording}
+          sx={{
+            backgroundColor: '#b0a7a7',
+            color: 'white',
+            '&:hover': {
+              transform: 'scale(1.02)',
+              backgroundColor: '#b0a7a7', // Keep background white
+              color: 'white',           // Change icon color
+            }
+
+          }}>
+          <KeyboardVoiceRounded fontSize="large" />
+        </IconButton>
+
+        <div className="timer_show_container">
+          <p className="text"> {audioDuration || "00:00"}</p>
+        </div>
+
+      </div>
+
+
+    </div>
+  )
+}
+
+
+export const BoxStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  p: 2,
+  outline: "none",
+  maxWidth: "90%",
+  width: "90%",
+  height: "90%",
+  maxHeight: "90%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  p: 2,
+}
+export const CloseStyle = {
+  outline: "none",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: '#131416',
+  borderRadius: "100%",
+  width: "36px",
+  height: "36px",
+  color: '#fff',
+  '&:hover': {
+    transform: 'scale(1.02)',
+    backgroundColor: '#131416', // Keep background white
+    color: '#fff'           // Change icon color
+  }
+}
