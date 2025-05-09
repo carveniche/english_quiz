@@ -42,8 +42,12 @@ export default function PassagePage({ groupData }) {
         height: "fit-content",
       }}
     >
-      {/* {!hideNotification && <NotificationModal onClose={setHideNotification} />} */}
-      {hideNotification || true && (
+       {/* <Alert severity="warning"  onClose={()=>setHideNotification(true)}>
+      Please sit in a quiet place and be loud and clear while recording.
+      </Alert> } */}
+
+      {!hideNotification && <NotificationModal onClose={setHideNotification} />}
+      {hideNotification && (
         <>
           <Page passage={groupData[currentPage] || []} />
           {currentPage > 0 && (

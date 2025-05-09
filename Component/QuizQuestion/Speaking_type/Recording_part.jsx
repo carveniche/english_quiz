@@ -44,7 +44,7 @@ import objectParser from "../../Utility/objectParser";
   const chunksRef = useRef([]);
   const audioFileRef = useRef(null);
   const timerIntervalRef = useRef(null);
-
+  const [isRecorder,setIsRecorder]=useState(false)
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -112,16 +112,19 @@ import objectParser from "../../Utility/objectParser";
     if (stateIndex == 2) {
       setAudioDuration("00:00");
       setStateIndex(0);
+      setIsRecorder(false)
     } else {
       setStateIndex(1);
       mediaRecorderRef.current.start();
       startTimer(); // Start the timer when recording starts
+      setIsRecorder(true)
     }
 
 
   };
 
   const handleStopRecording = () => {
+    setIsRecorder(false)
     mediaRecorderRef.current.stop();
     clearInterval(timerIntervalRef.current); // Stop the timer when recording stops  
   if (timeToSeconds(audioDuration) >= timeToSeconds("00:05")) {
@@ -435,7 +438,7 @@ import objectParser from "../../Utility/objectParser";
           isEnglishStudentLevel={readOut}
         />
 
-        <AudioRecorderInterface setOpen={setOpen} />
+        <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />
 
         <AudioRecordingModal
           obj={questionData}
@@ -450,6 +453,7 @@ import objectParser from "../../Utility/objectParser";
           handleFastForwardRewind={handleFastForwardRewind}
           audioURL={audioURL}
           setAudioURL={setAudioURL}
+          isRecorder={isRecorder}
 
         />
 
@@ -485,12 +489,21 @@ import objectParser from "../../Utility/objectParser";
 };
 
 
-function AudioRecorderInterface({ setOpen }) {
+function AudioRecorderInterface({ setOpen,audioURL }) {
   const {
     submitResponse,
     showSolution,
-
   } = useContext(ValidationContext);
+
+const [isTrue,setIsTrue]=useState(false)
+useEffect(()=>{
+
+if(showSolution||submitResponse||audioURL){
+  setIsTrue(true)
+}else{
+  setIsTrue(false)
+}
+},[showSolution,submitResponse,audioURL])
 
   return (
     <div className="audioRecording_container">
@@ -501,10 +514,10 @@ function AudioRecorderInterface({ setOpen }) {
           backgroundColor: '#FFFFFF73',
           color: 'white'
         }}>
-          {showSolution || submitResponse ? <Headphones/> : <Mic /> }
+          {isTrue ? <Headphones/> : <Mic /> }
         </IconButton>
       </div>
-      <button className="SecondaryButton" onClick={() => setOpen(true)}>{showSolution || submitResponse? "Play Recording" : "Open Audio Recoder"}</button>
+      <button className="SecondaryButton" onClick={() => setOpen(true)}>{isTrue? "Play Recording" : "Open Audio Recorder "}</button>
 
     </div>
   );
@@ -525,12 +538,11 @@ function AudioRecordingModal({
   payedTime,
   handleFastForwardRewind,
   audioURL,
-  setAudioURL
+  setAudioURL,
+  isRecorder
+
 
 }) {
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const {
     submitResponse,
@@ -538,6 +550,16 @@ function AudioRecordingModal({
   } = useContext(ValidationContext);
 
   const [isRecordAgain, setIsRecordAgain] = useState(false);
+
+  const handleClose = () => {
+    if(isRecorder){
+      alert("Stop the recording and close")
+      return
+    }
+    setOpen(false);
+  };
+
+
   const reRecording = () => {
     setIsRecordAgain(false);
     setAudioURL("")
@@ -602,7 +624,7 @@ function AudioRecordingModal({
                     <div className="cancel_retake_btns">
                       <button className="cancel_btn" onClick={() => setIsRecordAgain(false)}>Cancel</button>
                       <button className="retake_btn" style={{ color: '#FF570F' }} onClick={reRecording}>
-                        <Replay fontSize="small" />  Retake</button>
+                        <Replay fontSize="small" /> Retake</button>
                     </div>
 
                   </div>
@@ -615,7 +637,7 @@ function AudioRecordingModal({
                 {
                   stateIndex === 0 || stateIndex == 1 ?
                     <div className="audio_popup_start_btn" onClick={handleStartRecording}>
-                      <AudioStartStopButton stateIndex={stateIndex} />
+                      <AudioStartStopButton isRecorder={isRecorder} />
 
                     </div>
                     :
@@ -637,7 +659,7 @@ function AudioRecordingModal({
 
 
 
-function AudioStartStopButton({ stateIndex }) {
+function AudioStartStopButton({ isRecorder }) {
   return (
     <IconButton sx={{
       border: "2px solid #b0a7a7",
@@ -647,7 +669,7 @@ function AudioStartStopButton({ stateIndex }) {
 
     }}
     >
-      {stateIndex == 0 ? <Circle sx={{ fontSize: 55 }} /> : <Stop fontSize="large" />}
+      {isRecorder ? <Stop fontSize="large" /> : <Circle sx={{ fontSize: 55 }} /> }
 
     </IconButton>
 
