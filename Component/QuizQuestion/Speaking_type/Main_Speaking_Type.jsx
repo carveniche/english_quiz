@@ -26,7 +26,7 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
 useEffect(()=>{
  const timeOut=setTimeout(()=>{
   setHideNotification(true)
- },2500)
+ },5000)
  return ()=>clearTimeout(timeOut)
 },[])
   // url('https://d1t64bxz3n5cv1.cloudfront.net/stage.png')
@@ -40,7 +40,7 @@ useEffect(()=>{
           // backgroundRepeat: "no-repeat",
           // height: `${questionResponse ? "85vh":"100vh"}`,
           height:"100%",
-          backgroundColor: "#9575cd52",
+          backgroundColor: "rgb(0 205 216 / 16%)",
           padding:"1.5rem 1rem",
           borderRadius:"15px",
           display: "flex",
@@ -76,7 +76,7 @@ useEffect(()=>{
  {!hideNotification && !showSolution && (
 <>
 <Alert severity="warning"  onClose={() =>setHideNotification(true)}>
-Please sit in a quiet place and be loud and clear while recording
+Please sit in a quiet place and be loud and clear while recording.
 </Alert>
 
 

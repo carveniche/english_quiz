@@ -36,14 +36,14 @@ export default function PassagePage({ groupData }) {
     <div
       style={{
         height: "100%",
-        width: "60%",
+        width: "100%",
         margin: "auto",
         paddingBottom: "10px",
         height: "fit-content",
       }}
     >
-      {!hideNotification && <NotificationModal onClose={setHideNotification} />}
-      {hideNotification && (
+      {/* {!hideNotification && <NotificationModal onClose={setHideNotification} />} */}
+      {hideNotification || true && (
         <>
           <Page passage={groupData[currentPage] || []} />
           {currentPage > 0 && (

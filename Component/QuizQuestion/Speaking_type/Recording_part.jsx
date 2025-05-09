@@ -11,8 +11,8 @@ import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageCont
 import React_Base_Api from "../../../ReactConfigApi";
 import { GptFeedback } from "../Writing/Writing";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
-import { Circle, Close, FastForward, FastRewind, Headphones, KeyboardVoiceRounded, Mic, Pause, PauseCircleFilledOutlined, PauseCircleOutlineSharp, PlayArrow, Replay, Stop, StopCircle } from "@mui/icons-material";
-import { Alert, Box, IconButton, Modal } from "@mui/material";
+import { Circle, Close, FastForward, FastRewind, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PauseCircleFilledOutlined, PauseCircleOutlineSharp, PlayArrow, Replay, Stop, StopCircle } from "@mui/icons-material";
+import { Alert, Box, duration, IconButton, Modal, Tooltip } from "@mui/material";
 // import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
 import objectParser from "../../Utility/objectParser";
 
@@ -110,9 +110,8 @@ import objectParser from "../../Utility/objectParser";
     }
     setIsPlaying(false);
     if (stateIndex == 2) {
-      setAudioDuration(0);
+      setAudioDuration("00:00");
       setStateIndex(0);
-
     } else {
       setStateIndex(1);
       mediaRecorderRef.current.start();
@@ -123,10 +122,23 @@ import objectParser from "../../Utility/objectParser";
   };
 
   const handleStopRecording = () => {
-    setStateIndex(2);
     mediaRecorderRef.current.stop();
-    clearInterval(timerIntervalRef.current); // Stop the timer when recording stops
+    clearInterval(timerIntervalRef.current); // Stop the timer when recording stops  
+  if (timeToSeconds(audioDuration) >= timeToSeconds("00:05")) {
+    setStateIndex(2);
+  }else{
+    setAudioDuration("00:00")
+    setStateIndex(0);
+    setAudioURL("")
+  }
+ 
   };
+
+
+  function timeToSeconds(t) {
+    const [min, sec] = t.split(":").map(Number);
+    return min * 60 + sec;
+  }
 
   const apiCalled = (prompt_text) => {
     const CONFIG_URL2 = window.CONFIG_URL || React_Base_Api;
@@ -388,7 +400,7 @@ import objectParser from "../../Utility/objectParser";
   }, [audioURL]);
 
   useEffect(() => {
-    if (questionResponse?.audio_response) {
+    if (showSolution && questionResponse?.audio_response) {
       let audio_response = questionResponse.audio_response;
   
       if (audio_response.includes('.mp3')) {
@@ -437,6 +449,7 @@ import objectParser from "../../Utility/objectParser";
           payedTime={payedTime}
           handleFastForwardRewind={handleFastForwardRewind}
           audioURL={audioURL}
+          setAudioURL={setAudioURL}
 
         />
 
@@ -482,7 +495,9 @@ function AudioRecorderInterface({ setOpen }) {
   return (
     <div className="audioRecording_container">
       <div className="audioRecording">
-        <IconButton sx={{
+        <IconButton 
+        onClick={() => setOpen(true)}
+        sx={{
           backgroundColor: '#FFFFFF73',
           color: 'white'
         }}>
@@ -509,7 +524,8 @@ function AudioRecordingModal({
   handleAudioToggle,
   payedTime,
   handleFastForwardRewind,
-  audioURL
+  audioURL,
+  setAudioURL
 
 }) {
   const handleClose = () => {
@@ -524,6 +540,7 @@ function AudioRecordingModal({
   const [isRecordAgain, setIsRecordAgain] = useState(false);
   const reRecording = () => {
     setIsRecordAgain(false);
+    setAudioURL("")
     handleStartRecording();
   }
   const mediaTags = new Set(["img", "video", "a"]);
@@ -560,18 +577,18 @@ function AudioRecordingModal({
                   <AudioRecordingGifComponent stateIndex={stateIndex} audioDuration={audioDuration} />
                 )}
 
-                {(stateIndex === 2 || submitResponse || showSolution) && audioURL ? (
-                  <AudioPlayIcon
-                    isPlaying={isPlaying}
-                    handleAudioToggle={handleAudioToggle}
-                    audioDuration={audioDuration}
-                    payedTime={payedTime}
-                    handleFastForwardRewind={handleFastForwardRewind}
-                  />
-                )
-                :
-                <p className="text">No audio available</p>
-                }
+                  {(stateIndex === 2 || submitResponse || showSolution) && audioURL ? (
+                    <AudioPlayIcon
+                      isPlaying={isPlaying}
+                      handleAudioToggle={handleAudioToggle}
+                      audioDuration={audioDuration}
+                      payedTime={payedTime}
+                      handleFastForwardRewind={handleFastForwardRewind}
+                    />
+                  ) : (
+                    (submitResponse || showSolution) && <p className="text">No audio available</p>
+                  )}
+
               </>
             )}
 
@@ -656,6 +673,7 @@ function AudioPlayIcon({ handleFastForwardRewind, isPlaying, audioDuration, hand
     <>
       <div className="audio_popup_body">
         <div className="audio_popup_body_content">
+          
           <IconButton
             sx={{
               backgroundColor: '#b0a7a7',
@@ -728,8 +746,11 @@ function RecordAgainSubmitButton({ setIsRecordAgain, setOpen }) {
 function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartRecording }) {
   return (
     <div className="audio_popup_body">
-      <div className="audio_popup_body_content">
+      <div className="audio_popup_body_content ">
 
+      <Tooltip title="Minimum audio length is 5 seconds">
+       <Info sx={{ position: 'absolute', right: 0, top: 0, color: 'white',cursor:"pointer" }} />
+     </Tooltip>
 
         <p className="text"> {stateIndex == 1 ? "Recording now" : "Click to start recording"}</p>
         <IconButton onClick={handleStartRecording}
