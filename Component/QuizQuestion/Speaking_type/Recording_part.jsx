@@ -706,22 +706,23 @@ function RecordAgainSubmitButton({ setIsRecordAgain, setOpen }) {
     <div className="recordAgain_submit_container">
       <IconButton
             sx={{
-              backgroundImage: 'linear-gradient(to right, #9E92EB, #5E5CC8)',
-              color: 'white',
+              backgroundColor: '#5E5CC8',
+              color: '#FFC760',
               width: "36px",
               height: "36px",
+              '&:hover': {
+                backgroundColor: '#5E5CC8',
+              }
               
             }}
             onClick={() => setIsRecordAgain(true)} className="pointer"
           >
-            <Replay sx={{color: '#FFC760',}}/>
+            <Replay sx={{color: '#FFC760'}}/>
             </IconButton>
       <button className="accentButton white_text" onClick={() => setOpen(false)}>Submit</button>
     </div>
   )
 }
-
-
 
 
 function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartRecording }) {
@@ -740,7 +741,6 @@ function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartReco
               backgroundColor: '#b0a7a7', // Keep background white
               color: 'white',           // Change icon color
             }
-
           }}>
           <KeyboardVoiceRounded fontSize="large" />
         </IconButton>
