@@ -18,7 +18,7 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
   } = useContext(ValidationContext);
 
 
-  const data = obj?.choices.map((sda) => {
+  const data = obj?.choices?.map((sda) => {
     const combinedValue = sda.value
       .split(/\s+/) // split by spaces
       .filter(Boolean) // remove any empty strings
