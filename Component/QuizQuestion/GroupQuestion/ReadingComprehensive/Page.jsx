@@ -6,11 +6,9 @@ import SpeakQuestionText from "../../../Utility/SpeakQuestionText";
 import QuestionCommonContent from "../../../CommonComponent/QuestionCommonContent";
 export default function Page({ passage }) {
   const [linesLength, setLinesLength] = useState(passage.length || 0);
-  const isEnglishStudentLevel =
-    localStorage.getItem("isEnglishStudentLevel") || false;
+ 
 const obj={questionName:passage}
   return (
-
     <>
      <QuestionCommonContent obj={obj}/>
     </>

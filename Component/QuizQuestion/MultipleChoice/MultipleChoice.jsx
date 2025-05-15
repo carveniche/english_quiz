@@ -55,7 +55,6 @@ export default function MultipleChoice({ obj, wordsLength }) {
     return status;
   };
 
- 
   return (
     <>
       <SolveButton onClick={handleSubmit} />

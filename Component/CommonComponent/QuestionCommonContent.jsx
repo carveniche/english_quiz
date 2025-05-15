@@ -8,18 +8,27 @@ import { Box, IconButton, Modal } from "@mui/material";
 import { Close, ZoomOut } from "@mui/icons-material";
 
 export default function QuestionCommonContent({ isFrom, obj, wordsLength, longText, choicesRef, isEnglishStudentLevel }) {
-  const mediaTags = new Set(["img", "video", "a"]);
-  const textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
-  const imageNodes = obj?.questionName.filter((node) => mediaTags.has(node.node));
+  const mediaTags = new Set(["img", "video", "a",'iframe']);
+
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(""); 
   function handleZoomOut(url) {
     setUrl(url)
     setOpen(true)
   }
+  let textNodes = []
+  let imageNodes = []
+  console.log(obj)
+  try{
+   textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
+   imageNodes = obj?.questionName.filter((node) => mediaTags.has(node.node));
+  }catch(error){
+    console.log(error)
+  }
   return (
     <div className={styles.questionContainer}>
       {textNodes && imageNodes ? (
+
         <div className={longText ? styles.flexCol : styles.flexRow}>
           {/* TEXT + AUDIO */}
           <div
@@ -126,7 +135,6 @@ function ImageZoomOut({ url, open, setOpen }) {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          p: 2,
           outline: "none",
           maxWidth: "90%",
           width: "90%",

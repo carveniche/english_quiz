@@ -39,7 +39,7 @@ export default function GroupFile({
   return (
    <>
     <div
-    style={{
+      style={{ 
       padding: "10px 20px",
       userSelect: "none",         // Prevents text selection
       WebkitUserSelect: "none",   // Safari
@@ -52,9 +52,8 @@ export default function GroupFile({
       
       {groupObject[data?.group_type]}
       {showQuestion && (
-        <div  style={{
-          padding: "10px 20px",}}
-        className={styles.groupPage}
+        <div  
+             className={styles.groupPage}
        
           >
             

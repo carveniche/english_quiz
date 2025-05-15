@@ -27,7 +27,7 @@ export default function ReadingComprehensive({
   }, [show_group_question]);
   if (loading) return <h1>It is loading...</h1>;
   return (
-    <>
+    <div >
       {showQuestion ? (
         <>
           {previewGroupData && (
@@ -39,7 +39,7 @@ export default function ReadingComprehensive({
             />
           )}
 
-          <div>
+          <>
             {!previewGroupData && (
               <Button
                 variant="contained"
@@ -50,14 +50,14 @@ export default function ReadingComprehensive({
                 Preview
               </Button>
             )}
-          </div>
-          <div style={{ clear: "both", paddingTop:10 }}></div>
+          </>
         </>
       ) : (
         <>
-          <PassagePage groupData={group_data} />
+       <PassagePage groupData={group_data} />
         </>
       )}
-    </>
+
+    </div>
   );
 }

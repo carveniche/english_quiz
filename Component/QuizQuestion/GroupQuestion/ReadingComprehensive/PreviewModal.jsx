@@ -3,10 +3,14 @@ import React from "react";
 import objectParser from "../../../Utility/objectParser";
 import styles from "../../english_mathzone.module.css";
 import CloseIcon from "@mui/icons-material/Close";
+import QuestionCommonContent from "../../../CommonComponent/QuestionCommonContent";
 export default function PreviewModal({ group_data, onClick }) {
   const handleClose = () => {
     typeof onClick === "function" && onClick();
   };
+
+  console.log(group_data,'group_data')
+  let obj=""
   return (
     <div>
       <Modal
@@ -37,13 +41,16 @@ export default function PreviewModal({ group_data, onClick }) {
           >
             <CloseIcon />
           </IconButton>
-          {group_data.map((passage, key) => (
-            <div key={key} style={{ marginTop: 10 }}>
-              <div className={styles.questionName}>
-                {passage.map((item, key) => objectParser(item, key))}
+          {Object.keys(group_data?.questionName).map((item, index) => {
+            const obj = { questionName: group_data.questionName[item] };
+            return (
+              <div style={{display:'flex',gap:"5px",marginTop:'10px'}} key={index}>
+                {Object.keys(group_data?.questionName).length >0 && (index+1)}.
+                <QuestionCommonContent obj={obj} />
               </div>
-            </div>
-          ))}
+            );
+          })}
+
         </Box>
       </Modal>
     </div>
