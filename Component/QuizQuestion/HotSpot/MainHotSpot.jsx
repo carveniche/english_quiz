@@ -8,6 +8,7 @@ import { Zoom } from '@mui/material';
 import  './hotSpot.css';
 import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
 import styles from "../../QuizQuestion/english_mathzone.module.css";
+import QuestionCommonContent from '../../CommonComponent/QuestionCommonContent';
 export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
 
@@ -259,16 +260,21 @@ function HotSpotPreview({ data, question_text,questionData }) {
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
       <div className="hotspot_container">
         <div className="hotspot_question_text">
+
+           {typeof question_text?.questionName ==="object" ? <QuestionCommonContent obj={question_text}/>
+          :
           <div className='audio_with_questiontext'>
-            <SpeakPlainText readText={question_text?.questionName} /><p>
+            <SpeakPlainText readText={question_text?.questionName} />
               <div className={styles.questionText}>
                 {question_text?.questionName}
-                </div></p>
+                </div>
            
           </div>
+          }
+
           {question_text?.resources?.length > 0 && (
               <AudiPlayerComponent resources={question_text?.resources} />
-                  )}
+          )}
         </div>
 
         <div className='flex-col relative'>

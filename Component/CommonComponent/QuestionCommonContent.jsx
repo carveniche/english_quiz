@@ -1,79 +1,94 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../QuizQuestion/english_mathzone.module.css";
 import objectParser from "../Utility/objectParser";
 import QuestionContent from "../QuizQuestion/FillInTheBlanks/QuestionContent";
 import AudiPlayerComponent from "./AudiPlayerComponent";
 import SpeakQuestionText from "../Utility/SpeakQuestionText";
 import { Box, IconButton, Modal } from "@mui/material";
-import { Close, ZoomOut } from "@mui/icons-material";
+import { Close, Fullscreen, ZoomOut } from "@mui/icons-material";
+import { ValidationContext } from "../QuizPage";
+import { useRef } from "react";
 
-export default function QuestionCommonContent({ isFrom, obj, wordsLength, longText, choicesRef, isEnglishStudentLevel }) {
-  const mediaTags = new Set(["img", "video", "a",'iframe']);
+const mediaTags = new Set(["img", "video", "a", "iframe"]);
 
+export default function QuestionCommonContent({
+  isFrom,
+  obj,
+  wordsLength,
+  longText,
+  choicesRef,
+  isEnglishStudentLevel,
+}) {
+  const {readOut} = useContext(ValidationContext);
   const [open, setOpen] = useState(false);
-  const [url, setUrl] = useState(""); 
-  function handleZoomOut(url) {
-    setUrl(url)
-    setOpen(true)
+  const [zoomItem, setZoomItem] = useState("");
+const questionTextRef=useRef(null)
+ const [isOverflowing, setIsOverflowing] = useState(false);
+  let textNodes = [];
+  let imageNodes = [];
+  try {
+    textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
+    imageNodes = obj?.questionName.filter((node) => mediaTags.has(node.node));
+  } catch (error) {
+    console.error("Error parsing question nodes:", error);
   }
-  let textNodes = []
-  let imageNodes = []
-  console.log(obj)
-  try{
-   textNodes = obj?.questionName.filter((node) => !mediaTags.has(node.node));
-   imageNodes = obj?.questionName.filter((node) => mediaTags.has(node.node));
-  }catch(error){
-    console.log(error)
-  }
+
+  const handleZoomOut = (item) => {
+    setZoomItem(item === "showText" ? "showText" : item);
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (questionTextRef.current) {
+      const height = questionTextRef.current.scrollHeight;
+      setIsOverflowing(height > 251)
+    }
+  }, []);
   return (
     <div className={styles.questionContainer}>
-      {textNodes && imageNodes ? (
-
+      {textNodes.length || imageNodes.length ? (
         <div className={longText ? styles.flexCol : styles.flexRow}>
           {/* TEXT + AUDIO */}
-          <div
-            className={`${styles.textArea}`}
-          >
+          <div className={styles.textArea}>
             <div className={styles.audioWithText}>
-              {isEnglishStudentLevel && <SpeakQuestionText readText={textNodes} />}
-              <div className={styles.questionText}>
-                {textNodes.map((item, key) => (
+              {readOut && <SpeakQuestionText readText={textNodes} />}
+              <div className={styles.questionText} ref={questionTextRef} style={{paddingRight:isOverflowing?"12px":'' }}>
+                <div>
+                  {textNodes.map((item, key) => (
                   <React.Fragment key={key}>
                     {objectParser(item, key)}
                   </React.Fragment>
                 ))}
+                  </div>
               </div>
+              {isOverflowing && <ZoomOutIcon handleZoomOut={handleZoomOut} item="showText" />}
             </div>
 
             {obj?.resources?.length > 0 && (
               <AudiPlayerComponent resources={obj.resources} />
             )}
 
-            {isFrom == "fill_in_the_blanks" && choicesRef?.current?.length > 0 && (
-              <QuestionContent choicesRef={choicesRef} />
-            )}
+            {isFrom === "fill_in_the_blanks" &&
+              choicesRef?.current?.length > 0 && (
+                <QuestionContent choicesRef={choicesRef} />
+              )}
           </div>
 
-          {/* IMAGE SIDE */}
+          {/* IMAGE AREA */}
           {imageNodes.length > 0 && (
-          <div className={styles.imageArea}>
-            {imageNodes.map((item, key) => (
-              <div key={key} className={styles.imageArea_section} >
-                {objectParser(item, key)}
-
-                <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
-              </div>
-            ))}
-
-          </div>
+            <div className={styles.imageArea}>
+              {imageNodes.map((item, key) => (
+                <div key={key} className={styles.imageArea_section}>
+                  {objectParser(item, key)}
+                  <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
-
       ) : (
-        // Fallback if no split text/image nodes
         <div className={styles.singleBlock}>
           {obj?.questionName?.map((item, key) => (
-
             <React.Fragment key={key}>
               {objectParser(item, key)}
             </React.Fragment>
@@ -81,112 +96,106 @@ export default function QuestionCommonContent({ isFrom, obj, wordsLength, longTe
         </div>
       )}
 
-
-      <ImageZoomOut url={url} open={open} setOpen={setOpen} />
-
+      {open && (
+        <ImageZoomOut
+          item={zoomItem}
+          open={open}
+          setOpen={setOpen}
+          textNodes={textNodes}
+          readOut={readOut}
+        />
+      )}
     </div>
   );
 }
-
-
-
-
 
 function ZoomOutIcon({ handleZoomOut, item }) {
   return (
     <IconButton
       onClick={() => handleZoomOut(item)}
       sx={{
-        position: 'absolute',
+        position: "absolute",
         bottom: 3,
         right: 3,
-        boxShadow: '15',
-        backgroundColor: 'black',
-        color: "#ffff",
-        '&:hover': {
-          transform: 'scale(1.08)',
-          backgroundColor: 'black',
-          //backgroundColor: '#fff', // Keep background white
-          //color: 'black'           // Change icon color
+        backgroundColor: "black",
+        color: "#fff",
+        boxShadow: 15,
+        "&:hover": {
+          transform: "scale(1.08)",
+          backgroundColor: "black",
         },
-        transition: 'transform 0.2s ease, color 0.2s ease',
+        transition: "transform 0.2s ease, color 0.2s ease",
       }}
     >
-      <ZoomOut fontSize="small" />
+      <Fullscreen fontSize="small" />
     </IconButton>
-  )
+  );
 }
 
-
-
-function ImageZoomOut({ url, open, setOpen }) {
+function ImageZoomOut({ item, open, setOpen, textNodes,readOut }) {
   const handleClose = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setOpen(false);
+  };
 
+  function handleBodyClick(e){
+    e.stopPropagation();
   }
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
-        onClick={(e) => handleClose(e)}
+      onClick={handleClose}
         sx={{
           position: "absolute",
-          top: "50%",
+          top: "0%",
           left: "50%",
-          transform: "translate(-50%, -50%)",
+          transform: "translate(-50%, 0%)",
+          width: "100%",
+          height: "100%",
           outline: "none",
-          maxWidth: "90%",
-          width: "90%",
-          height: "90%",
-          maxHeight: "90%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          p: 2,
-
         }}
-
       >
         <IconButton
-          onClick={(e) => handleClose(e)}
-
+          onClick={handleClose}
           sx={{
-            position: 'absolute',
-            top: 3,
-            right: 3,
-            backgroundColor: '#fff',
-            '&:hover': {
-              transform: 'scale(1.08)',
-              backgroundColor: '#fff', // Keep background white
-              color: 'black'           // Change icon color
+            position: "absolute",
+            top: '10px',
+            right: "35px",
+            zIndex:'35px',
+            backgroundColor: "#fff",
+            "&:hover": {
+              transform: "scale(1.08)",
+              backgroundColor: "#fff",
+              color: "black",
             },
-            transition: 'transform 0.2s ease, color 0.2s ease',
+            transition: "transform 0.2s ease, color 0.2s ease",
           }}
         >
           <Close fontSize="small" />
         </IconButton>
-        {
-          url.node === "img" ?
-            <img
-              src={url?.value}
-              alt="Zoomed"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-                backgroundColor: "#fff",
-              }}
-            />
-            :
-         <div style={{width:"80%",height:'100%'}}>{objectParser(url,'0')}</div>
-            
 
-        }
-
+        <div style={{ maxWidth: "80%",width:'80%', height: "80vh",background:"#ffff",padding:`${item === "showText" ?'20px':'5px'}`,borderRadius:'10px'}} onClick={handleBodyClick} >
+          {item === "showText" ? (
+             <div className={styles.audioWithText}>
+              {readOut && <SpeakQuestionText readText={textNodes} />}
+              <div className={styles.questionTextMaxView}>
+                {textNodes.map((item, key) => (
+                  <React.Fragment key={key}>
+                    {objectParser(item, key)}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          ) : (
+           <div className={styles.max_view_image_video}>
+             {objectParser(item, 0)}
+            </div>
+          )}
+        </div>
       </Box>
-
-
     </Modal>
   );
 }

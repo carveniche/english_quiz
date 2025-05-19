@@ -121,7 +121,7 @@ const objectParser = (item, index) => {
 if(item.node === 'img'){
   return ( 
   <>
-  <img src={item?.value} style={{width:'100%',height:'100%'}} />        
+  <img src={item?.value} alt="not found" />        
   </>
   )
 }

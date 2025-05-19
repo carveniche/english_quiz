@@ -11,12 +11,12 @@ import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageCont
 import React_Base_Api from "../../../ReactConfigApi";
 import { GptFeedback } from "../Writing/Writing";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
-import { Circle, Close, FastForward, FastRewind, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PauseCircleFilledOutlined, PauseCircleOutlineSharp, PlayArrow, Replay, Stop, StopCircle } from "@mui/icons-material";
-import { Alert, Box, duration, IconButton, Modal, Tooltip } from "@mui/material";
+import { Circle, Close, FastForward, FastRewind, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PlayArrow, Replay, Stop } from "@mui/icons-material";
+import { Alert, Box, IconButton, Modal, Tooltip } from "@mui/material";
 // import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
 import objectParser from "../../Utility/objectParser";
-
- export default function Recording_part  ({ questionData, questionResponse, setIsTrue, wordsLength }) {
+//import styles from "../../QuizQuestion/english_mathzone.module.css";
+export default function Recording_part({ questionData, questionResponse, setIsTrue, wordsLength }) {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const {
     submitResponse,
@@ -44,7 +44,11 @@ import objectParser from "../../Utility/objectParser";
   const chunksRef = useRef([]);
   const audioFileRef = useRef(null);
   const timerIntervalRef = useRef(null);
-  const [isRecorder,setIsRecorder]=useState(false)
+  const [isRecorder, setIsRecorder] = useState(false)
+  const [payedTime, setPayedTime] = useState("00:00");
+  const [audioDuration, setAudioDuration] = useState("00:00");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRefplay = useRef(null);
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -102,7 +106,7 @@ import objectParser from "../../Utility/objectParser";
 
   const handleRecord = () => {
 
-    if(!audioPermission) return
+    if (!audioPermission) return
 
     if (stateIndex === 1) {
       handleStopRecording()
@@ -127,14 +131,14 @@ import objectParser from "../../Utility/objectParser";
     setIsRecorder(false)
     mediaRecorderRef.current.stop();
     clearInterval(timerIntervalRef.current); // Stop the timer when recording stops  
-  if (timeToSeconds(audioDuration) >= timeToSeconds("00:05")) {
-    setStateIndex(2);
-  }else{
-    setAudioDuration("00:00")
-    setStateIndex(0);
-    setAudioURL("")
-  }
- 
+    if (timeToSeconds(audioDuration) >= timeToSeconds("00:05")) {
+      setStateIndex(2);
+    } else {
+      setAudioDuration("00:00")
+      setStateIndex(0);
+      setAudioURL("")
+    }
+
   };
 
 
@@ -142,6 +146,8 @@ import objectParser from "../../Utility/objectParser";
     const [min, sec] = t.split(":").map(Number);
     return min * 60 + sec;
   }
+
+
 
   const apiCalled = (prompt_text) => {
     const CONFIG_URL2 = window.CONFIG_URL || React_Base_Api;
@@ -170,21 +176,9 @@ import objectParser from "../../Utility/objectParser";
     if (!prompt_text) {
       prompt_text = "No response";
     }
-    let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
-    if (quizFrom === "diagnostic" && false) {
-      stateRef.push(chatGptResponseRef);
-      stateRef.push(scoreRef);
-      question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback`;
-      apiArray[0] = apiCalled(question_text);
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number.It should be only number as integer`;
-      apiArray[1] = apiCalled(question_text || questionData?.prompt_text || "");
-    } else {
-      stateRef.push(chatGptResponseRef);
-      stateRef.push(scoreRef);
-      // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give  feedback  but don't provide score, in less than 100 words.Provide only general feedback on the student's response. Avoid using specific words from the response in the feedback.`;
-      // apiArray[0] = apiCalled(question_text);
-      question_text = question_text = `The following question was asked to a student: '${questionText}'. 
+    //let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
 
+    let question_text = `The following question was asked to a student: '${questionText}'. 
       A student responded:
       '${prompt_text}'. 
       
@@ -199,8 +193,10 @@ import objectParser from "../../Utility/objectParser";
       }
   
       Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;;
-      apiArray[0] = apiCalled(question_text || "");
-    }
+    stateRef.push(chatGptResponseRef);
+    stateRef.push(scoreRef);
+
+    apiArray[0] = apiCalled(question_text || "");
 
     try {
       let allData = await Promise.all(apiArray);
@@ -226,7 +222,7 @@ import objectParser from "../../Utility/objectParser";
     setRedAlert(false);
 
     setSubmitResponse(true);
-   
+
     try {
       if (chatGptResponseRef?.current) {
         const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
@@ -263,7 +259,8 @@ import objectParser from "../../Utility/objectParser";
     });
 
     const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
-    //  const CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
+    //  co
+    // nst CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
 
     let formData = new FormData();
     formData.append("file", blobfile);
@@ -278,6 +275,10 @@ import objectParser from "../../Utility/objectParser";
     };
 
     try {
+      setHideCheckButton(true);
+      setIsTrue(true);
+      setGptResponseLoading(true);
+
       let audiotext = await axios(config);
 
       const data_text = audiotext.data.data.text;
@@ -302,8 +303,6 @@ import objectParser from "../../Utility/objectParser";
     AudioTransalator(audioFileRef.current);
   };
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRefplay = useRef(null);
 
   const handleAudioToggle = () => {
     if (isPlaying) {
@@ -324,8 +323,6 @@ import objectParser from "../../Utility/objectParser";
 
 
 
-  const [payedTime, setPayedTime] = useState("00:00");
-  const [audioDuration, setAudioDuration] = useState("00:00");
 
   const formatTimToSeconds = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -405,15 +402,15 @@ import objectParser from "../../Utility/objectParser";
   useEffect(() => {
     if (showSolution && questionResponse?.audio_response) {
       let audio_response = questionResponse.audio_response;
-  
+
       if (audio_response.includes('.mp3')) {
         audio_response = audio_response.split('.mp3')[0] + '.mp3';
       }
-  
+
       setAudioURL(audio_response);
     }
   }, [questionResponse]);
-  
+
   return (
     <>
 
@@ -438,7 +435,9 @@ import objectParser from "../../Utility/objectParser";
           isEnglishStudentLevel={readOut}
         />
 
-        <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />
+        {showSolution && audioURL && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />}
+
+        {!showSolution && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />}
 
         <AudioRecordingModal
           obj={questionData}
@@ -489,35 +488,35 @@ import objectParser from "../../Utility/objectParser";
 };
 
 
-function AudioRecorderInterface({ setOpen,audioURL }) {
+function AudioRecorderInterface({ setOpen, audioURL }) {
   const {
     submitResponse,
     showSolution,
   } = useContext(ValidationContext);
 
-const [isTrue,setIsTrue]=useState(false)
-useEffect(()=>{
+  const [isTrue, setIsTrue] = useState(false)
+  useEffect(() => {
 
-if(showSolution||submitResponse||audioURL){
-  setIsTrue(true)
-}else{
-  setIsTrue(false)
-}
-},[showSolution,submitResponse,audioURL])
+    if (showSolution || submitResponse || audioURL) {
+      setIsTrue(true)
+    } else {
+      setIsTrue(false)
+    }
+  }, [showSolution, submitResponse, audioURL])
 
   return (
     <div className="audioRecording_container">
       <div className="audioRecording">
-        <IconButton 
-        onClick={() => setOpen(true)}
-        sx={{
-          backgroundColor: '#FFFFFF73',
-          color: 'white'
-        }}>
-          {isTrue ? <Headphones/> : <Mic /> }
+        <IconButton
+          onClick={() => setOpen(true)}
+          sx={{
+            backgroundColor: '#FFFFFF73',
+            color: 'white'
+          }}>
+          {isTrue ? <Headphones /> : <Mic />}
         </IconButton>
       </div>
-      <button className="SecondaryButton" onClick={() => setOpen(true)}>{isTrue? "Play Recording" : "Open Audio Recorder "}</button>
+      <button className="SecondaryButton" onClick={() => setOpen(true)}>{isTrue ? "Play Recording" : "Open Audio Recorder "}</button>
 
     </div>
   );
@@ -552,7 +551,7 @@ function AudioRecordingModal({
   const [isRecordAgain, setIsRecordAgain] = useState(false);
 
   const handleClose = () => {
-    if(isRecorder){
+    if (isRecorder) {
       alert("Stop the recording and close")
       return
     }
@@ -570,34 +569,37 @@ function AudioRecordingModal({
 
   return (
     <>
-    <Modal open={open} onClose={setOpen}>
-      <Box sx={BoxStyle} >
+      <Modal open={open} onClose={setOpen}>
+        <Box sx={BoxStyle} >
 
-        <div className="audio_popup_container">
-          <div className="audio_popup_section">
-            {!audioPermission && !showSolution &&  (
-              <Alert severity="error" style={{ textAlign: "center" }}>
-                {"Microphone access was denied"}
-              </Alert>
+          <div className="audio_popup_container">
+            <div className="audio_popup_section">
+              {!audioPermission && !showSolution && (
+                <Alert severity="error" style={{ textAlign: "center" }}>
+                  {"Microphone access was denied"}
+                </Alert>
 
-            )}
-            <div className="audio_popup_header">
-              <div className="small_body">
-                {textNodes.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}</div>
-              <IconButton onClick={handleClose} sx={CloseStyle}>
-                <Close fontSize="small" />
-              </IconButton>
-            </div>
+              )}
+              <div className="audio_popup_header">
+                <div className="speaking_question_text">
+                  <div>
+                  {textNodes.map((item, key) => (
+                    <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
+                  </div>
+                  </div>
+                <IconButton onClick={handleClose} sx={CloseStyle}>
+                  <Close fontSize="small" />
+                </IconButton>
+              </div>
 
-          {!isRecordAgain && (
-              <>
-                {((stateIndex === 0 || stateIndex === 1) && !showSolution) && (
-                  <AudioRecordingGifComponent stateIndex={stateIndex} audioDuration={audioDuration} />
-                )}
+              {!isRecordAgain && (
+                <>
+                  {((stateIndex === 0 || stateIndex === 1) && !showSolution) && (
+                    <AudioRecordingGifComponent stateIndex={stateIndex} audioDuration={audioDuration} />
+                  )}
 
                   {(stateIndex === 2 || submitResponse || showSolution) && audioURL ? (
                     <AudioPlayIcon
@@ -611,48 +613,48 @@ function AudioRecordingModal({
                     (submitResponse || showSolution) && <p className="text">No audio available</p>
                   )}
 
-              </>
-            )}
+                </>
+              )}
 
 
-            {
-              isRecordAgain &&  (
-                <div className="audio_popup_body">
-                  <div className="recording_container">
-                    <p className="small_body">Retake this recording?</p>
-                    <span className="cap_regular">you can re-record as many times as you want</span>
-                    <div className="cancel_retake_btns">
-                      <button className="cancel_btn" onClick={() => setIsRecordAgain(false)}>Cancel</button>
-                      <button className="retake_btn" style={{ color: '#FF570F' }} onClick={reRecording}>
-                        <Replay fontSize="small" /> Retake</button>
+              {
+                isRecordAgain && (
+                  <div className="audio_popup_body">
+                    <div className="recording_container">
+                      <p className="small_body">Retake this recording?</p>
+                      <span className="cap_regular">you can re-record as many times as you want</span>
+                      <div className="cancel_retake_btns">
+                        <button className="cancel_btn" onClick={() => setIsRecordAgain(false)}>Cancel</button>
+                        <button className="retake_btn" style={{ color: '#FF570F' }} onClick={reRecording}>
+                          <Replay fontSize="small" /> Retake</button>
+                      </div>
+
                     </div>
-
                   </div>
+                )
+              }
+
+              {!showSolution && !submitResponse &&
+                <div className="audio_popup_footer">
+                  {
+                    stateIndex === 0 || stateIndex == 1 ?
+                      <div className="audio_popup_start_btn" onClick={handleStartRecording}>
+                        <AudioStartStopButton isRecorder={isRecorder} />
+
+                      </div>
+                      :
+                      <RecordAgainSubmitButton setIsRecordAgain={setIsRecordAgain} setOpen={setOpen} />
+
+                  }
                 </div>
-              )
-            }
-
-            {!showSolution && !submitResponse &&
-              <div className="audio_popup_footer">
-                {
-                  stateIndex === 0 || stateIndex == 1 ?
-                    <div className="audio_popup_start_btn" onClick={handleStartRecording}>
-                      <AudioStartStopButton isRecorder={isRecorder} />
-
-                    </div>
-                    :
-                    <RecordAgainSubmitButton setIsRecordAgain={setIsRecordAgain} setOpen={setOpen} />
-
-                }
-              </div>
-            }
+              }
+            </div>
           </div>
-        </div>
 
-      </Box>
+        </Box>
 
 
-    </Modal>
+      </Modal>
     </>
   );
 }
@@ -669,7 +671,7 @@ function AudioStartStopButton({ isRecorder }) {
 
     }}
     >
-      {isRecorder ? <Stop fontSize="large" /> : <Circle sx={{ fontSize: 55 }} /> }
+      {isRecorder ? <Stop fontSize="large" /> : <Circle sx={{ fontSize: 55 }} />}
 
     </IconButton>
 
@@ -695,7 +697,7 @@ function AudioPlayIcon({ handleFastForwardRewind, isPlaying, audioDuration, hand
     <>
       <div className="audio_popup_body">
         <div className="audio_popup_body_content">
-          
+
           <IconButton
             sx={{
               backgroundColor: '#b0a7a7',
@@ -745,20 +747,20 @@ function RecordAgainSubmitButton({ setIsRecordAgain, setOpen }) {
   return (
     <div className="recordAgain_submit_container">
       <IconButton
-            sx={{
-              backgroundColor: '#5E5CC8',
-              color: '#FFC760',
-              width: "36px",
-              height: "36px",
-              '&:hover': {
-                backgroundColor: '#5E5CC8',
-              }
-              
-            }}
-            onClick={() => setIsRecordAgain(true)} className="pointer"
-          >
-            <Replay sx={{color: '#FFC760'}}/>
-            </IconButton>
+        sx={{
+          backgroundColor: '#5E5CC8',
+          color: '#FFC760',
+          width: "36px",
+          height: "36px",
+          '&:hover': {
+            backgroundColor: '#5E5CC8',
+          }
+
+        }}
+        onClick={() => setIsRecordAgain(true)} className="pointer"
+      >
+        <Replay sx={{ color: '#FFC760' }} />
+      </IconButton>
       <button className="accentButton white_text" onClick={() => setOpen(false)}>Submit</button>
     </div>
   )
@@ -770,9 +772,9 @@ function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartReco
     <div className="audio_popup_body">
       <div className="audio_popup_body_content ">
 
-      <Tooltip title="Minimum audio length is 5 seconds">
-       <Info sx={{ position: 'absolute', right: 0, top: 0, color: 'white',cursor:"pointer" }} />
-     </Tooltip>
+        <Tooltip title="Minimum audio length is 5 seconds">
+          <Info sx={{ position: 'absolute', right: 0, top: 0, color: 'white', cursor: "pointer" }} />
+        </Tooltip>
 
         <p className="text"> {stateIndex == 1 ? "Recording now" : "Click to start recording"}</p>
         <IconButton onClick={handleStartRecording}
