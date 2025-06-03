@@ -284,7 +284,7 @@ export default function Writing({
 
     if (qstnText.split(" ").length > 30 && studentResWordLen < 10) {
       alert("Please make sure you write at least 10 words");
-      return;
+      return -1;
     }
 
     isApiCalled.current = true;
