@@ -122,6 +122,7 @@ export default function Writing({
     setStudentAnswer,
     showSolution,
     readOut,
+    isEnglishTest
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
@@ -391,10 +392,12 @@ export default function Writing({
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
-          ) : quizFromRef.current === "diagnostic" ? (
-            ""
           ) : (
-            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+          
+           !isEnglishTest && quizFromRef.current !== "diagnostic" &&
+            <GptFeedback 
+            chatGptResponse={chatGptResponseRef.current} 
+            scoreResponse={scoreRef.current} /> 
           )}
         </>
       )}

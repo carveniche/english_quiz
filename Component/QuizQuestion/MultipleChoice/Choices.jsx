@@ -3,7 +3,7 @@ import parse from "html-react-parser";
 import styles from "../english_mathzone.module.css";
 import { ValidationContext } from "../../QuizPage";
 export default function Choices({ choicesRef }) {
-  const { studentAnswer, submitResponse, disabledQuestion } =
+  const { studentAnswer, submitResponse, disabledQuestion,isEnglishTest } =
     useContext(ValidationContext);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const handleClick = (index) => {
@@ -27,7 +27,21 @@ export default function Choices({ choicesRef }) {
   }, []);
   return (
     <div className={styles.mathzoneMultipleChoiceFlexBox}>
-      {choicesRef?.current.map((choice, key) => (
+      {choicesRef?.current.map((choice, key) => {
+        const isSelected =  choice?.isStudentAnswer;
+        const showFeedback =   !isEnglishTest && submitResponse;
+        const isCorrect = choice.correct;
+
+        // Compose class names without external libraries
+        const classNames = [
+           isSelected && styles.mathzoneSelectedChoiceType,
+           showFeedback && isCorrect && styles.greenCorrect,
+           showFeedback && isSelected && !isCorrect && styles.redInCorrect
+        ]
+          .filter(Boolean)
+          .join(" ");
+          
+       return ( 
         <div
           key={key}
           style={{
@@ -36,19 +50,7 @@ export default function Choices({ choicesRef }) {
               "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 7px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset",
             border: "none",
           }}
-          className={`${
-            choice?.isStudentAnswer ? styles.mathzoneSelectedChoiceType : ""
-          } ${
-            submitResponse
-              ? selectedIndex === key
-                ? choice.correct
-                  ? styles.greenCorrect
-                  : styles.redInCorrect
-                : choice.correct
-                ? styles.greenCorrect
-                : ""
-              : ""
-          }`}
+          className={classNames}
           onClick={() => handleClick(key)}
         >
           <div className={styles["mathzone-circle-selectbox"]}>
@@ -64,7 +66,8 @@ export default function Choices({ choicesRef }) {
             </div>
           )}
         </div>
-      ))}
+       )
+   })}
     </div>
-  );
+  )
 }
