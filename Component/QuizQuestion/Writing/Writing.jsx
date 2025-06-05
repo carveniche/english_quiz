@@ -122,6 +122,7 @@ export default function Writing({
     setStudentAnswer,
     showSolution,
     readOut,
+    isEnglishTest
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const apiCalled = (prompt_text) => {
@@ -284,7 +285,7 @@ export default function Writing({
 
     if (qstnText.split(" ").length > 30 && studentResWordLen < 10) {
       alert("Please make sure you write at least 10 words");
-      return;
+      return -1;
     }
 
     isApiCalled.current = true;
@@ -391,10 +392,12 @@ export default function Writing({
         <>
           {gptResponseLoading ? (
             <LinearProgressBar />
-          ) : quizFromRef.current === "diagnostic" ? (
-            ""
           ) : (
-            <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+          
+           !isEnglishTest && quizFromRef.current !== "diagnostic" &&
+            <GptFeedback 
+            chatGptResponse={chatGptResponseRef.current} 
+            scoreResponse={scoreRef.current} /> 
           )}
         </>
       )}

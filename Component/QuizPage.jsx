@@ -11,12 +11,17 @@ export function ValidationContextProvider({ children,showSolution,readOut }) {
   const { showQuizResponse } = useContext(OuterPageContext);
   const [isCorrect, setIsCorrect] = useState(-1); //0-false,1-true,-1 not selected
   const [studentAnswer, setStudentAnswer] = useState("");
+  const [isEnglishTest, setIsEnglishText] = useState(false);
   useEffect(() => {
     if (showQuizResponse) {
       setDisabledQuestion(true);
     }
   }, [showQuizResponse]);
- 
+
+ function handleEnglishTest(isTrue=true) {
+    setIsEnglishText(isTrue);
+  }
+  window.handleEnglishTest = handleEnglishTest;
   return (
     <ValidationContext.Provider
       value={{
@@ -29,7 +34,8 @@ export function ValidationContextProvider({ children,showSolution,readOut }) {
         setStudentAnswer,
         studentAnswer,
         showSolution,
-        readOut
+        readOut,
+        isEnglishTest
       }}
     >
       {children}

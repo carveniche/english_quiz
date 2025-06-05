@@ -26,6 +26,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     setStudentAnswer,
     showSolution,
     readOut,
+    isEnglishTest,
   } = useContext(ValidationContext);
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
@@ -467,18 +468,18 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
         )}
 
         {hideCheckButton && (
-          <>
             <div style={{ width: '100%' }}>
               {gptResponseLoading ? (
                 <LinearProgressBar type={"speaking"} />
-              ) : quizFromRef.current === "diagnostic" ? (
-                ""
               ) : (
-                <GptFeedback chatGptResponse={chatGptResponseRef.current} scoreResponse={scoreRef.current} />
+                !isEnglishTest &&
+                 quizFromRef.current !== "diagnostic" && 
+                 <GptFeedback 
+                 chatGptResponse={chatGptResponseRef.current} 
+                 scoreResponse={scoreRef.current} /> 
               )}
             </div>
 
-          </>
         )}
 
         {/* <button id="audio_submit" onClick={passAudio}>Submit Audio</button> */}
