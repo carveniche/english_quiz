@@ -3,6 +3,8 @@ import Lottie from "lottie-react";
 import { cloneDeep } from "lodash";
 import paused from "../Solution/AudioPaused.json";
 import playing from "../Solution/AudioPlaying.json";
+import { VolumeUp } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -70,14 +72,29 @@ export default function SpeakPlainText({ readText }) {
   };
 
   return (
-    <div style={{ cursor: "pointer" }} onClick={readTheQuestionText}>
-      <Lottie
+    <>
+
+       <IconButton sx={speakingStyle(isSpeaking)} onClick={readTheQuestionText}>
+        <VolumeUp/>
+       </IconButton>
+      {/* <Lottie
         key={isSpeaking ? "playing" : "paused"}
         animationData={cloneDeep(isSpeaking ? playing : paused)}
         loop
         autoplay
         style={{ height: "50px", width: "50px", cursor: "pointer" }}
-      />
-    </div>
+      /> */}
+    </>
   );
 }
+const speakingStyle = (isSpeaking) => ({
+  backgroundColor: "transparent",
+  width:"32px",
+  height:"32px",
+  border: "none",
+  cursor: "pointer",
+  color: isSpeaking ? "#86C440" : "#32C7FF",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+  },
+});

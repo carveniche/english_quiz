@@ -78,7 +78,7 @@
     //   }));
     // }
     return (
-      <div>
+      <>
         <div
           className={styles.questionContent}
           style={{
@@ -116,6 +116,6 @@
             </div>
           ))}
         </div>
-      </div>
+      </>
     );
   }

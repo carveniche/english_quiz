@@ -18,6 +18,7 @@ export default function QuestionCommonContent({
   longText,
   choicesRef,
   isEnglishStudentLevel,
+  className
 }) {
   const {readOut} = useContext(ValidationContext);
   const [open, setOpen] = useState(false);
@@ -45,15 +46,15 @@ const questionTextRef=useRef(null)
     }
   }, []);
   return (
-    <div className={styles.questionContainer}>
+    <div className={styles.questionContainer} >
       {textNodes.length || imageNodes.length ? (
         <div className={longText ? styles.flexCol : styles.flexRow}>
           {/* TEXT + AUDIO */}
           <div className={styles.textArea}>
             <div className={styles.audioWithText}>
               {readOut && <SpeakQuestionText readText={textNodes} />}
-              <div className={styles.questionText} ref={questionTextRef} style={{paddingRight:isOverflowing?"12px":'' }}>
-                <div>
+              <div className={`${styles.questionText} ${className}`} ref={questionTextRef} style={{paddingRight:isOverflowing?"12px":'' }}>
+                <div className="common_question_text">
                   {textNodes.map((item, key) => (
                   <React.Fragment key={key}>
                     {objectParser(item, key)}
@@ -119,7 +120,7 @@ function ZoomOutIcon({ handleZoomOut, item }) {
         right: 3,
         backgroundColor: "black",
         color: "#fff",
-        boxShadow: 15,
+        boxShadow: 2,
         "&:hover": {
           transform: "scale(1.08)",
           backgroundColor: "black",

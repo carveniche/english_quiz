@@ -42,7 +42,8 @@ export default function Choices({ choicesRef }) {
           .join(" ");
           
        return ( 
-        <div
+        <div 
+      
           key={key}
           style={{
             padding: `1rem 1rem`,
@@ -50,7 +51,7 @@ export default function Choices({ choicesRef }) {
               "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 7px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset",
             border: "none",
           }}
-          className={classNames}
+          className={`${classNames} choice_card`}
           onClick={() => handleClick(key)}
         >
           <div className={styles["mathzone-circle-selectbox"]}>

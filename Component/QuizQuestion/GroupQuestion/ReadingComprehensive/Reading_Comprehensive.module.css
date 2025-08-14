@@ -1,0 +1,57 @@
+.readingComprehensiveContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 8px;
+    background: #FFF6E9;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+
+}
+
+.layout_section {
+    /* overflow-y: auto; */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+}
+
+/* For Webkit browsers */
+.layout_section::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+
+}
+
+.layout_section::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #FFB752;
+}
+
+.layout_section::-webkit-scrollbar-track {
+    background: #fff;
+    /* track color */
+    border-radius: 4px;
+}
+
+.title {
+    margin: 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(38, 91, 131, 0.20);
+    text-align: center;
+    height: 26px;
+    color: #265B83;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+    /* 20.8px */
+}
+.reading_comprehensive_page{
+    max-height:100% ;
+}
