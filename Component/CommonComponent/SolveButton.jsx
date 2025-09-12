@@ -3,9 +3,10 @@ import { ValidationContext } from "../QuizPage";
 import { flushSync } from "react-dom";
 
 export default function SolveButton({ onClick }) {
-  const { studentAnswer, isCorrect } = useContext(ValidationContext);
+  const { studentAnswer, isCorrect , setIsCorrect } = useContext(ValidationContext);
   const handleSubmit = () => {
     if (typeof onClick === "function") return flushSync(() => onClick());
+    setIsCorrect(-1);
     return -1;
   };
   window.handleSubmitReactQuestion = handleSubmit;

@@ -46,7 +46,7 @@ const questionTextRef=useRef(null)
     }
   }, []);
   return (
-    <div className={styles.questionContainer} >
+    <div className={styles.questionContainer}  style={{maxHeight: className ? "90%" : "100%"}}>
       {textNodes.length || imageNodes.length ? (
         <div className={longText ? styles.flexCol : styles.flexRow}>
           {/* TEXT + AUDIO */}
@@ -55,14 +55,19 @@ const questionTextRef=useRef(null)
               {readOut && <SpeakQuestionText readText={textNodes} />}
               <div className={`${styles.questionText} ${className}`} ref={questionTextRef} style={{paddingRight:isOverflowing?"12px":'' }}>
                 <div className="common_question_text">
-                  {textNodes.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}
+                  {obj?.questionName?.map((item, key) => (
+                    ['img','video','iframe'].includes(item?.node) ? 
+                    <div key={key} className={styles.imageArea_section}>
+                      {objectParser(item, key)}
+                      <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
+                    </div>
+                     :
+                     <React.Fragment key={key}>
+                      {objectParser(item, key)}
+                    </React.Fragment>
+                  ))}
                   </div>
               </div>
-              {isOverflowing && <ZoomOutIcon handleZoomOut={handleZoomOut} item="showText" />}
             </div>
 
             {obj?.resources?.length > 0 && (
@@ -75,7 +80,7 @@ const questionTextRef=useRef(null)
               )}
           </div>
 
-          {/* IMAGE AREA */}
+{/*         
           {imageNodes.length > 0 && (
             <div className={styles.imageArea}>
               {imageNodes.map((item, key) => (
@@ -85,7 +90,7 @@ const questionTextRef=useRef(null)
                 </div>
               ))}
             </div>
-          )}
+          )} */}
         </div>
       ) : (
         <div className={styles.singleBlock}>
@@ -118,12 +123,12 @@ function ZoomOutIcon({ handleZoomOut, item }) {
         position: "absolute",
         bottom: 3,
         right: 3,
-        backgroundColor: "black",
+        backgroundColor: "#000",
         color: "#fff",
         boxShadow: 2,
         "&:hover": {
           transform: "scale(1.08)",
-          backgroundColor: "black",
+          backgroundColor: "#000",
         },
         transition: "transform 0.2s ease, color 0.2s ease",
       }}
@@ -178,7 +183,7 @@ function ImageZoomOut({ item, open, setOpen, textNodes,readOut }) {
           <Close fontSize="small" />
         </IconButton>
 
-        <div style={{ maxWidth: "80%",width:'80%', height: "80vh",background:"#ffff",padding:`${item === "showText" ?'20px':'5px'}`,borderRadius:'10px'}} onClick={handleBodyClick} >
+        <div className={styles.popupQuestionTextContainer} style={{ padding: `${item === "showText" ? '20px' : '5px'}` }} onClick={handleBodyClick} >
           {item === "showText" ? (
              <div className={styles.audioWithText}>
               {readOut && <SpeakQuestionText readText={textNodes} />}

@@ -6,6 +6,7 @@
     padding-bottom: 6px;
     border-bottom: 1px solid rgba(38, 91, 131, 0.20);
     height: 26px;
+    position: relative;
    
 }
 .question_item {
@@ -16,4 +17,12 @@
 }
 .question_item.active {
     background-color: #FED325;
+}
+.question_navigate_section{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 8px;
 }

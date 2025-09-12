@@ -6,7 +6,7 @@ import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Alert, IconButton } from "@mui/material";
 import QuestionCommonContent from "../../../CommonComponent/QuestionCommonContent";
 
-export default function PassagePage({ groupData }) {
+export default function QuestionCommonContentPassagePage({ groupData }) {
 
 
   const { handleShowQuestion, showQuestion } = useContext(GroupQuestionContext);
@@ -66,7 +66,10 @@ export default function PassagePage({ groupData }) {
 
 const appendLine = { node: 'br', value: '<br>', inNewLine: true };
 const questionData = Object?.keys(questionName)?.flatMap((pageKey, index) => {
-  return [ ...questionName[pageKey],appendLine];
+  if (index !== 0) {
+    return [appendLine,appendLine, ...questionName[pageKey]];
+  }
+  return [...questionName[pageKey]];
 });
 const obj = {questionName:questionData}
 

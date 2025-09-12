@@ -21,6 +21,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
   } = useContext(ValidationContext);
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
+  
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;

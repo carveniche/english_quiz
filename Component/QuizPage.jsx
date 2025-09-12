@@ -12,6 +12,7 @@ export function ValidationContextProvider({ children,showSolution,readOut }) {
   const [isCorrect, setIsCorrect] = useState(-1); //0-false,1-true,-1 not selected
   const [studentAnswer, setStudentAnswer] = useState("");
   const [isEnglishTest, setIsEnglishText] = useState(false);
+  
   useEffect(() => {
     if (showQuizResponse) {
       setDisabledQuestion(true);
