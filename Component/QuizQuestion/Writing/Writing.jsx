@@ -16,6 +16,7 @@ import React_Base_Api from "../../../ReactConfigApi";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 import correctImages from "../../assets/Images/correct.png";
 import inCorrectImages from "../../assets/Images/incorrect.png";
+import SpeakPlainText from "../../Utility/SpeakPlainText";
 const useStyles = {
   autoSizeTextarea: {
     height: "95%",
@@ -406,55 +407,55 @@ export default function Writing({
 }
 
 export function GptFeedback({ chatGptResponse, scoreResponse }) {
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [voice, setVoice] = useState(null);
-  const { submitResponse } = useContext(ValidationContext);
-  useEffect(() => {
-    const loadVoices = () => {
-      const voices = window.speechSynthesis.getVoices();
-      // Filter for female voices; you can adjust this as needed
-      const preferredVoices = [
-        "Google UK English Male", // Chrome (Daniel equivalent)
-        "Google UK English Female",
-        "Daniel", // Safari
-        "Microsoft David", // Windows default
-        "Microsoft Zira",
-      ];
+  // const [isSpeaking, setIsSpeaking] = useState(false);
+  // const [voice, setVoice] = useState(null);
+  // const { submitResponse } = useContext(ValidationContext);
+  // useEffect(() => {
+  //   const loadVoices = () => {
+  //     const voices = window.speechSynthesis.getVoices();
+  //     // Filter for female voices; you can adjust this as needed
+  //     const preferredVoices = [
+  //       "Google UK English Male", // Chrome (Daniel equivalent)
+  //       "Google UK English Female",
+  //       "Daniel", // Safari
+  //       "Microsoft David", // Windows default
+  //       "Microsoft Zira",
+  //     ];
 
-      const selectedVoice = voices.find((voice) =>
-        preferredVoices.includes(voice.name)
-      );
+  //     const selectedVoice = voices.find((voice) =>
+  //       preferredVoices.includes(voice.name)
+  //     );
 
-      setVoice(selectedVoice || voices[0]); // Default to first available female voice or any voice
-    };
+  //     setVoice(selectedVoice || voices[0]); // Default to first available female voice or any voice
+  //   };
 
-    loadVoices(); // Initial load
+  //   loadVoices(); // Initial load
 
-    window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
-  }, []);
+  //   window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
+  // }, []);
 
-  const toggleSpeak = () => {
-    const speech = new SpeechSynthesisUtterance(
-      chatGptResponse || "No Response"
-    );
-    speech.voice = voice; // Set the selected voice
+  // const toggleSpeak = () => {
+  //   const speech = new SpeechSynthesisUtterance(
+  //     chatGptResponse || "No Response"
+  //   );
+  //   speech.voice = voice; // Set the selected voice
 
-    speech.onend = () => {
-      setIsSpeaking(false); // Reset speaking state when finished
-    };
+  //   speech.onend = () => {
+  //     setIsSpeaking(false); // Reset speaking state when finished
+  //   };
 
-    if (isSpeaking) {
-      window.speechSynthesis.cancel(); // Stop speaking
-      setIsSpeaking(false); // Update state
-    } else {
-      window.speechSynthesis.speak(speech); // Start speaking
-      setIsSpeaking(true); // Update state
-    }
-  };
+  //   if (isSpeaking) {
+  //     window.speechSynthesis.cancel(); // Stop speaking
+  //     setIsSpeaking(false); // Update state
+  //   } else {
+  //     window.speechSynthesis.speak(speech); // Start speaking
+  //     setIsSpeaking(true); // Update state
+  //   }
+  // };
 
   return (
     <div className={styles.gpt_feedback_box}>
-      <button
+      {/* <button
         style={{
           border: "1px solid white",
           cursor: "pointer",
@@ -463,14 +464,18 @@ export function GptFeedback({ chatGptResponse, scoreResponse }) {
         onClick={toggleSpeak}
       >
         🔊 Read Aloud
-      </button>
+      </button> */}
+
+       <SpeakPlainText readText={chatGptResponse} />
+
       <div>
-        {submitResponse && (
+        {/* {submitResponse && (
           <div style={{ margin: "0", padding: "10px 10px 0 10px" ,display:"flex",alignItems:"center",gap:"5px"}}>
             Student's Response :-{" "}
             <img src={scoreResponse == "1" ? correctImages :inCorrectImages} width={30} height={30} />
           </div>
-        )}
+        )} */}
+
         <p style={{ padding: 10, fontSize: 15, margin: "0" }}>
           {chatGptResponse || "No Response"}
         </p>

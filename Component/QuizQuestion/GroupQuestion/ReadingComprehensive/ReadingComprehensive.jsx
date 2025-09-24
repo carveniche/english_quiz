@@ -18,15 +18,7 @@ export default function ReadingComprehensive({
     handleChangeQuestion,
     handleShowQuestion,
   } = useContext(GroupQuestionContext);
-  // const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   if (show_group_question) {
-  //     handleShowQuestion();
-  //   }
-  //   setLoading(false);
-  // }, [show_group_question]);
-  // if (loading) return <h1>It is loading...</h1>;
+ 
   return (
     <div className={styles.readingComprehensiveContainer}>
       <div className={styles.layout_section}>
