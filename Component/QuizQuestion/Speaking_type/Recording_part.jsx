@@ -817,7 +817,6 @@ export const BoxStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  p: 2,
 }
 export const CloseStyle = {
   outline: "none",
