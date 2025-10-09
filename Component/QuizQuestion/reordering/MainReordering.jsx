@@ -12,7 +12,7 @@ export default function MainReordering({ obj, direction, wordsLength }) {
     questionResponse = JSON.parse(obj?.questionResponse);
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 
   return (

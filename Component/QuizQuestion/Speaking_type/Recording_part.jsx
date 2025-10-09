@@ -9,12 +9,12 @@ import getTextFromQuestion from "../../Utility/getTextFromQuestion";
 import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import React_Base_Api from "../../../ReactConfigApi";
-import { GptFeedback } from "../Writing/Writing";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 import { Circle, Close, FastForward, FastRewind, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PlayArrow, Replay, Stop } from "@mui/icons-material";
 import { Alert, Box, IconButton, Modal, Tooltip } from "@mui/material";
 // import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
 import objectParser from "../../Utility/objectParser";
+import GptFeedback from "../../Utility/GptFeedBack";
 //import styles from "../../QuizQuestion/english_mathzone.module.css";
 export default function Recording_part({ questionData, questionResponse, setIsTrue, wordsLength }) {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -30,9 +30,9 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
   } = useContext(ValidationContext);
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
-  const [gptResponseLoading, setGptResponseLoading] = useState(false);
+  const [gptResponseLoading, setGptResponseLoading] = useState(true);
   const [redAlert, setRedAlert] = useState(false);
-  const [hideCheckButton, setHideCheckButton] = useState(false);
+  const [showChatGptResponse, setShowChatGptResponse] = useState(false);
   const [open, setOpen] = useState(false);
   const [audioPermission, setAudioPermission] = useState(true);
   const isApiCalled = useRef(false);
@@ -52,11 +52,12 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
   const audioRefplay = useRef(null);
 
   useEffect(() => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && isRecorder) {
       navigator.mediaDevices
         .getUserMedia({ audio: true })
         .then((stream) => {
           mediaRecorderRef.current = new MediaRecorder(stream);
+          mediaRecorderRef.current.start();
 
           mediaRecorderRef.current.ondataavailable = (e) => {
             chunksRef.current.push(e.data);
@@ -65,7 +66,6 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
           mediaRecorderRef.current.onstop = () => {
             clearInterval(timerIntervalRef.current); // Stop the timer
             // setElapsedTime(0); // Reset the timer
-
             const blob = new Blob(chunksRef.current, {
               type: "audio/webm; codecs=opus",
             });
@@ -75,18 +75,26 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
             audioFileRef.current = blob;
           };
         })
+
         .catch((error) => {
           if (error.name === 'NotAllowedError') {
             setAudioPermission(false)
           }
           console.error("Error accessing media devices.", error);
-          // setStateIndex(3);
         });
-    } else {
-      // setStateIndex(3);
     }
 
-  }, []);
+    return () => {
+      if (mediaRecorderRef.current) {
+        if (mediaRecorderRef.current.state !== "inactive") {
+          mediaRecorderRef.current.stop(); // stop recording
+        }
+        // Stop all tracks to turn off mic
+        mediaRecorderRef.current.stream?.getTracks().forEach((track) => track.stop());
+      }
+    };
+
+  }, [isRecorder]);
 
   const startTimer = () => {
     const startTime = Date.now();
@@ -119,10 +127,9 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
       setStateIndex(0);
       setIsRecorder(false)
     } else {
-      setStateIndex(1);
-      mediaRecorderRef.current.start();
-      startTimer(); // Start the timer when recording starts
       setIsRecorder(true)
+      setStateIndex(1);
+      startTimer(); // Start the timer when recording starts
     }
 
 
@@ -165,7 +172,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
   };
 
   const handlePromptRequest = async (prompt_text) => {
-    setHideCheckButton(true);
+    setShowChatGptResponse(true);
     setIsTrue(true);
     setGptResponseLoading(true);
     let questionText = questionData?.questionName;
@@ -201,7 +208,6 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
     try {
       let allData = await Promise.all(apiArray);
-      // console.log(allData)
       allData = allData || [];
 
       allData.forEach(({ data }, index) => {
@@ -213,7 +219,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
       setGptResponseLoading(false);
       handleSubmit();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -231,7 +237,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
         chatGptResponseRef.current = feedback;
       }
     } catch (error) {
-      console.log("error score", error);
+      console.error("error score", error);
     }
 
 
@@ -253,46 +259,89 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     return scoreRef.current == 0 ? 0 : 1;
   };
 
+
+
   const AudioTransalator = async (audioF) => {
-    let blobfile = new File([audioFileRef.current], "audio.mp3", {
-      type: "audio/mp3",
-      lastModified: Date.now(),
-    });
-
-    const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
-    //  co
-    // nst CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
-
-    let formData = new FormData();
-    formData.append("file", blobfile);
-    formData.append("model", "whisper-1");
-    formData.append("language", "en");
-    formData.append("type", "audio");
-    let config = {
-      method: "POST",
-      maxBodyLength: Infinity,
-      url: `${CONFIG_URL12}app_teachers/gpt_response`,
-      data: formData,
-    };
-
     try {
-      setHideCheckButton(true);
+
+      let blobfile = new File([audioFileRef.current], "audio.mp3", {
+        type: "audio/mp3",
+        lastModified: Date.now(),
+      });
+
+      const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
+      // const CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
+
+      let formData = new FormData();
+      formData.append("file", blobfile);
+      formData.append("model", "whisper-1");
+      formData.append("language", "en");
+      formData.append("type", "audio");
+      let config = {
+        method: "POST",
+        maxBodyLength: Infinity,
+        url: `${CONFIG_URL12}app_teachers/gpt_response`,
+        data: formData,
+      };
+      let audiotext = await axios(config);
+      const data_text = audiotext.data.data.text;
+      setShowChatGptResponse(true);
       setIsTrue(true);
       setGptResponseLoading(true);
-
-      let audiotext = await axios(config);
-
-      const data_text = audiotext.data.data.text;
       handlePromptRequest(data_text);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    }
+  };
+
+  const AudioTransalator_new = async (audioF) => {
+    try {
+
+      let blobfile = new File([audioFileRef.current], "audio.mp3", {
+        type: "audio/mp3",
+        lastModified: Date.now(),
+      });
+
+      const CONFIG_URL12 = window.CONFIG_URL12 || React_Base_Api;
+      //  co
+      // nst CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
+
+      let formData = new FormData();
+      formData.append("file", blobfile);
+      formData.append("model", "whisper-1");
+      formData.append("language", "en");
+      formData.append("type", "audio");
+      let config = {
+        method: "POST",
+        maxBodyLength: Infinity,
+        url: `${CONFIG_URL12}app_teachers/gpt_response`,
+        data: formData,
+      };
+      let audiotext = await axios(config);
+      const data_text = audiotext.data.data.text;
+
+
+      setShowChatGptResponse(true);
+      setIsTrue(true);
+      setGptResponseLoading(true);
+      let obj = {
+        audio_response: audioFileRef.current,
+        audio_response_text: data_text,
+      }
+      setStudentAnswer(obj);
+      setIsCorrect('await');
+
+
+      // handlePromptRequest(data_text);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const passAudio = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
-    if (hideCheckButton) return;
+    if (showChatGptResponse) return;
     if (isApiCalled.current) return;
     setRedAlert(false);
     if (!audioURL) {
@@ -306,6 +355,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
 
   const handleAudioToggle = () => {
+   
     if (isPlaying) {
       audioRefplay.current.pause();
     } else {
@@ -318,6 +368,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     }
     setIsPlaying(!isPlaying);
   };
+  
   const handleAudioEnd = () => {
     setIsPlaying(false);
   };
@@ -345,6 +396,23 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     }
   }, [open])
 
+
+  window.handleShowChatGptResponse = setShowChatGptResponse
+  window.handleChatGptResponse = (response) => {
+    if (response) {
+      if (typeof response == "string") {
+        response = JSON.parse(response);
+      }
+      const { feedback, score } = response
+      scoreRef.current = score;
+      chatGptResponseRef.current = feedback;
+
+      setIsCorrect(score == 1 ? 1 : 0);
+      setGptResponseLoading(false);
+      // setChatGptResponse(response);
+    }
+
+  }
 
   const handleFastForwardRewind = (action) => {
     if (audioRefplay.current) {
@@ -385,12 +453,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
           const duration = audio.duration;
           const formatSec = formatTimToSeconds(duration);
           setAudioDuration(formatSec);
-          console.log("Duration after trick:", audio.duration);
         };
-      } else {
-
-
-        console.log("Duration immediately:", audio.duration);
       }
     };
 
@@ -414,8 +477,6 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
   return (
     <>
-
-
       <SolveButton onClick={passAudio} />
       {redAlert && !submitResponse && <CustomAlertBoxVoice />}
       <div
@@ -435,10 +496,8 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
           choicesRef={[]}
           isEnglishStudentLevel={readOut}
         />
-
-        {showSolution && audioURL && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />}
-
-        {!showSolution && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />}
+        {/* {showSolution && audioURL && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />} */}
+        <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />
 
         <AudioRecordingModal
           obj={questionData}
@@ -467,18 +526,18 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
           />
         )}
 
-        {hideCheckButton && (
-            <div style={{ width: '100%' }}>
-              {gptResponseLoading ? (
-                <LinearProgressBar type={"speaking"} />
-              ) : (
-                !isEnglishTest &&
-                 quizFromRef.current !== "diagnostic" && 
-                 <GptFeedback 
-                 chatGptResponse={chatGptResponseRef.current} 
-                 scoreResponse={scoreRef.current} /> 
-              )}
-            </div>
+        {showChatGptResponse && (
+          <div style={{ width: '100%' }}>
+            {gptResponseLoading ? (
+              <LinearProgressBar type={"speaking"} />
+            ) : (
+              !isEnglishTest &&
+              quizFromRef.current !== "diagnostic" &&
+              <GptFeedback
+                chatGptResponse={chatGptResponseRef.current}
+                scoreResponse={scoreRef.current} />
+            )}
+          </div>
 
         )}
 
@@ -517,8 +576,7 @@ function AudioRecorderInterface({ setOpen, audioURL }) {
           {isTrue ? <Headphones /> : <Mic />}
         </IconButton>
       </div>
-      <button className="SecondaryButton" onClick={() => setOpen(true)}>{isTrue ? "Play Recording" : "Open Audio Recorder "}</button>
-
+      <button className="SecondaryButton btn_txt_xl " onClick={() => setOpen(true)}>{isTrue ? "Play Recording" : "Open Audio Recorder "}</button>
     </div>
   );
 }
@@ -572,7 +630,6 @@ function AudioRecordingModal({
     <>
       <Modal open={open} onClose={setOpen}>
         <Box sx={BoxStyle} >
-
           <div className="audio_popup_container">
             <div className="audio_popup_section">
               {!audioPermission && !showSolution && (
@@ -583,14 +640,14 @@ function AudioRecordingModal({
               )}
               <div className="audio_popup_header">
                 <div className="speaking_question_text">
-                  <div>
-                  {textNodes.map((item, key) => (
-                    <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
-                  ))}
+                  <div className="para_text white">
+                    {textNodes.map((item, key) => (
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
+                    ))}
                   </div>
-                  </div>
+                </div>
                 <IconButton onClick={handleClose} sx={CloseStyle}>
                   <Close fontSize="small" />
                 </IconButton>
@@ -611,7 +668,7 @@ function AudioRecordingModal({
                       handleFastForwardRewind={handleFastForwardRewind}
                     />
                   ) : (
-                    (submitResponse || showSolution) && <p className="text">No audio available</p>
+                    (submitResponse || showSolution) && <p className="para_text white">No audio available</p>
                   )}
 
                 </>
@@ -622,12 +679,12 @@ function AudioRecordingModal({
                 isRecordAgain && (
                   <div className="audio_popup_body">
                     <div className="recording_container">
-                      <p className="small_body">Retake this recording?</p>
-                      <span className="cap_regular">you can re-record as many times as you want</span>
+                      <p className="small_body label_title white">Retake this recording?</p>
+                      <span className="cap_regular label_text white">you can re-record as many times as you want</span>
                       <div className="cancel_retake_btns">
-                        <button className="cancel_btn" onClick={() => setIsRecordAgain(false)}>Cancel</button>
-                        <button className="retake_btn" style={{ color: '#FF570F' }} onClick={reRecording}>
-                          <Replay fontSize="small" /> Retake</button>
+                        <button className="cancel_btn btn_txt_s" onClick={() => setIsRecordAgain(false)}>Cancel</button>
+                        <button className="retake_btn btn_txt_s" style={{ color: '#FF570F' }} onClick={reRecording}>
+                          <Replay fontSize="btn_txt_s" /> Retake</button>
                       </div>
 
                     </div>
@@ -731,7 +788,7 @@ function AudioPlayIcon({ handleFastForwardRewind, isPlaying, audioDuration, hand
               <div className="audio_seek_bar" style={{ width: `${progressWidth}%`, backgroundColor: '#fff' }} />
             </div>
             <div className="timer_show_container">
-              <p className="text">{payedTime} / {audioDuration}</p>
+              <p className="label_text white">{payedTime} / {audioDuration}</p>
             </div>
           </div>
 
@@ -762,7 +819,7 @@ function RecordAgainSubmitButton({ setIsRecordAgain, setOpen }) {
       >
         <Replay sx={{ color: '#FFC760' }} />
       </IconButton>
-      <button className="accentButton white_text" onClick={() => setOpen(false)}>Submit</button>
+      <button className="accentButton label_text white" onClick={() => setOpen(false)}>Submit</button>
     </div>
   )
 }
@@ -777,7 +834,8 @@ function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartReco
           <Info sx={{ position: 'absolute', right: 0, top: 0, color: 'white', cursor: "pointer" }} />
         </Tooltip>
 
-        <p className="text"> {stateIndex == 1 ? "Recording now" : "Click to start recording"}</p>
+        <p className="label_title white"> {stateIndex == 1 ? "Recording now" : "Click to start recording"}</p>
+
         <IconButton onClick={handleStartRecording}
           sx={{
             backgroundColor: '#b0a7a7',
@@ -792,7 +850,7 @@ function AudioRecordingGifComponent({ stateIndex, audioDuration, handleStartReco
         </IconButton>
 
         <div className="timer_show_container">
-          <p className="text"> {audioDuration || "00:00"}</p>
+          <p className="label_text white"> {audioDuration || "00:00"}</p>
         </div>
 
       </div>

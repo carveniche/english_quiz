@@ -28,7 +28,6 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
     setPlay(!play);
   };
   const handleMuteUnmute = (isMute) => {
-    console.log(isMute);
     setIsMute(isMute);
     audioRef.current.muted = isMute;
   };
@@ -72,7 +71,6 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
     else if (sliceTime > duration) {
       sliceTime = duration;
     }
-    console.log(sliceTime);
     audioRef.current.currentTime = sliceTime;
   };
   const timerFormatter = (currentTime) => {

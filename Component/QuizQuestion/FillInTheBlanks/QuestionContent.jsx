@@ -2,8 +2,6 @@
   import styles from "../english_mathzone.module.css";
   import { ValidationContext } from "../../QuizPage";
 
-
-
   export default function QuestionContent({ choicesRef }) {
     const [update, setUpdate] = useState(false);
     const { studentAnswer, submitResponse, disabledQuestion, showSolution } =

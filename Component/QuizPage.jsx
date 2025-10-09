@@ -4,22 +4,25 @@ import GroupFile from "./GroupFile";
 import OuterPageContextProvider, {
   OuterPageContext,
 } from "./QuizQuestion/GroupQuestion/ContextProvider/OuterPageContextProvider";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 export const ValidationContext = React.createContext("Validation Context");
-export function ValidationContextProvider({ children,showSolution,readOut }) {
+export function ValidationContextProvider({ children, isshowSolution, isreadOut }) {
   const [submitResponse, setSubmitResponse] = useState(false);
   const [disabledQuestion, setDisabledQuestion] = useState(false);
   const { showQuizResponse } = useContext(OuterPageContext);
   const [isCorrect, setIsCorrect] = useState(-1); //0-false,1-true,-1 not selected
   const [studentAnswer, setStudentAnswer] = useState("");
   const [isEnglishTest, setIsEnglishText] = useState(false);
-  
+  const [showSolution,setShowSolution]= useState(isshowSolution)
+  const [readOut,setReadOut]=useState(isreadOut)
   useEffect(() => {
     if (showQuizResponse) {
       setDisabledQuestion(true);
     }
   }, [showQuizResponse]);
 
- function handleEnglishTest(isTrue=true) {
+  function handleEnglishTest(isTrue = true) {
     setIsEnglishText(isTrue);
   }
   window.handleEnglishTest = handleEnglishTest;
@@ -35,7 +38,9 @@ export function ValidationContextProvider({ children,showSolution,readOut }) {
         setStudentAnswer,
         studentAnswer,
         showSolution,
+        setShowSolution,
         readOut,
+        setReadOut,
         isEnglishTest
       }}
     >
@@ -52,14 +57,16 @@ function RenderingQuizPage({
 }) {
   return (
     <div className={`${styles.bodyPage2} ${styles.bodyPage}`}>
-      <ValidationContextProvider>
-        <GroupFile
-          data={obj}
-          isShowQuestion={showQuestion}
-          showSolution={showSolution}
-          showCorrectIncorrect={showCorrectIncorrect}
-        />
-      </ValidationContextProvider>
+    <ValidationContextProvider showSolution={showSolution}>
+
+      <GroupFile
+        data={obj}
+        isShowQuestion={showQuestion}
+        showSolution={showSolution}
+        showCorrectIncorrect={showCorrectIncorrect}
+      />
+    </ValidationContextProvider>
+
     </div>
   );
 }
@@ -92,10 +99,11 @@ export const IntermediateQuizPage = ({
   showCorrectIncorrect,
 }) => {
   const { setShowQuizResponse } = useContext(OuterPageContext);
-  
+
   useEffect(() => {
     if (isResponse) setShowQuizResponse(true);
   }, [isResponse]);
+  
   return (
     <RenderingQuizPage
       obj={obj}

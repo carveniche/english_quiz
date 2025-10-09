@@ -22,7 +22,10 @@
     width: 100%;
 
 }
-
+.reading_comprehensive_page{
+    max-height:100% ;
+    overflow-y: auto;
+}
 /* For Webkit browsers */
 .layout_section::-webkit-scrollbar {
     width: 8px;

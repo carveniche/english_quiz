@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./Solution.module.css";
 import { ValidationContext } from "../QuizPage";
 import SpeakPlainText from "../Utility/SpeakPlainText";
@@ -11,20 +11,17 @@ export default function Explanation({ obj }) {
   return model?.length ? (
     <>
       <>
-        <div >
-
           <div style={{display:"flex",alignItems:"center"}}>
-          <SpeakPlainText readText={textNode}/>
+          {obj?.read_out && <SpeakPlainText readText={textNode}/> }
             {model?.map((item, index) => {
               return (
-                <div key={index} style={{display:'flex'}} className="para-text">
+                <div key={index} style={{display:'flex'}} className="para_text">
                   {item?.text && item?.text.replace(/^ {3,}/gm, "")}
                   {item?.images && <img src={item?.images} />}
                 </div>
               );
             })}
           </div>
-        </div>
       </>
     </>
   ) : (

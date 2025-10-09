@@ -21,8 +21,9 @@ export default function AudiPlayerComponent({ resources }) {
       <div
         onClick={handleAudioToggle}
         style={{
-          width: 80,
-          height: 80,
+          width: 46,
+          height: 70,
+          aspectRatio:"1",
           backgroundImage: `url("https://d1t64bxz3n5cv1.cloudfront.net/Hearing.png")`, // Replace with your background image URL
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -30,8 +31,7 @@ export default function AudiPlayerComponent({ resources }) {
           justifyContent: "center",
           alignItems: "center",
           cursor: "pointer",
-          marginLeft:"10px",
-          marginTop:"5px"
+         
         }}
       >
         <img
@@ -41,7 +41,7 @@ export default function AudiPlayerComponent({ resources }) {
               : "https://d1t64bxz3n5cv1.cloudfront.net/audio-active_11781836.gif"
           }
           alt="Audio Control"
-          style={{ width: 35, height: 35 }}
+          style={{ width: 26, height: 26 }}
         />
         <audio ref={audioRef} src={resources[0].url} onEnded={handleAudioEnd} />
       </div>

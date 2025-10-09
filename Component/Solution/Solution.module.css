@@ -16,15 +16,12 @@
 }
 
 .correctAnswerBox .correctAnswer {
-  font-family: "GothamRnd-Medium";
   color: #444444;
 }
 
 .correctAnswer>h6 {
   margin: 0;
   margin-bottom: 10px;
-  font-weight: 500;
-  font-size: 18px;
   margin: 0;
   padding: 0;
 }
@@ -37,9 +34,6 @@
   column-gap: 10px;
 }
 
-.correctAnswer2>h6 {
-  font-weight: 400;
-}
 
 .explanation {
   font-size: 16px;
@@ -103,7 +97,7 @@
 .quizCorrectInorrect {
   position: absolute;
   right: 0px;
-  top: 0px;
+  bottom: 0px;
   clear: both;
   display: flex;
   flex-direction: column;

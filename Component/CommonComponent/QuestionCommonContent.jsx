@@ -4,7 +4,7 @@ import objectParser from "../Utility/objectParser";
 import QuestionContent from "../QuizQuestion/FillInTheBlanks/QuestionContent";
 import AudiPlayerComponent from "./AudiPlayerComponent";
 import SpeakQuestionText from "../Utility/SpeakQuestionText";
-import { Box, IconButton, Modal } from "@mui/material";
+import { Box, Grow, IconButton, Modal } from "@mui/material";
 import { Close, Fullscreen, ZoomOut } from "@mui/icons-material";
 import { ValidationContext } from "../QuizPage";
 import { useRef } from "react";
@@ -20,11 +20,11 @@ export default function QuestionCommonContent({
   isEnglishStudentLevel,
   className
 }) {
-  const {readOut} = useContext(ValidationContext);
+  const { readOut } = useContext(ValidationContext);
   const [open, setOpen] = useState(false);
   const [zoomItem, setZoomItem] = useState("");
-const questionTextRef=useRef(null)
- const [isOverflowing, setIsOverflowing] = useState(false);
+  const questionTextRef = useRef(null)
+  const [isOverflowing, setIsOverflowing] = useState(false);
   let textNodes = [];
   let imageNodes = [];
   try {
@@ -46,27 +46,27 @@ const questionTextRef=useRef(null)
     }
   }, []);
   return (
-    <div className={styles.questionContainer}  style={{maxHeight: className ? "90%" : "100%"}}>
+    <div className={`${styles.questionContainer} ${className}`}>
       {textNodes.length || imageNodes.length ? (
         <div className={longText ? styles.flexCol : styles.flexRow}>
           {/* TEXT + AUDIO */}
           <div className={styles.textArea}>
             <div className={styles.audioWithText}>
               {readOut && <SpeakQuestionText readText={textNodes} />}
-              <div className={`${styles.questionText} ${className}`} ref={questionTextRef} style={{paddingRight:isOverflowing?"12px":'' }}>
+              <div className={`${styles.questionText} ${className}`} ref={questionTextRef} style={{ paddingRight: isOverflowing ? "12px" : '' }}>
                 <div className="common_question_text">
                   {obj?.questionName?.map((item, key) => (
-                    ['img','video','iframe'].includes(item?.node) ? 
-                    <div key={key} className={styles.imageArea_section}>
-                      {objectParser(item, key)}
-                      <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
-                    </div>
-                     :
-                     <React.Fragment key={key}>
-                      {objectParser(item, key)}
-                    </React.Fragment>
+                    ['img', 'video', 'iframe'].includes(item?.node) ?
+                      <div key={key} className={styles.imageArea_section}>
+                        {objectParser(item, key)}
+                        <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
+                      </div>
+                      :
+                      <React.Fragment key={key}>
+                        {objectParser(item, key)}
+                      </React.Fragment>
                   ))}
-                  </div>
+                </div>
               </div>
             </div>
 
@@ -80,17 +80,6 @@ const questionTextRef=useRef(null)
               )}
           </div>
 
-{/*         
-          {imageNodes.length > 0 && (
-            <div className={styles.imageArea}>
-              {imageNodes.map((item, key) => (
-                <div key={key} className={styles.imageArea_section}>
-                  {objectParser(item, key)}
-                  <ZoomOutIcon handleZoomOut={handleZoomOut} item={item} />
-                </div>
-              ))}
-            </div>
-          )} */}
         </div>
       ) : (
         <div className={styles.singleBlock}>
@@ -138,70 +127,79 @@ function ZoomOutIcon({ handleZoomOut, item }) {
   );
 }
 
-function ImageZoomOut({ item, open, setOpen, textNodes,readOut }) {
+function ImageZoomOut({ item, open, setOpen, textNodes, readOut }) {
   const handleClose = (e) => {
     e.stopPropagation();
     setOpen(false);
   };
 
-  function handleBodyClick(e){
+  function handleBodyClick(e) {
     e.stopPropagation();
   }
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box
-      onClick={handleClose}
-        sx={{
-          position: "absolute",
-          top: "0%",
-          left: "50%",
-          transform: "translate(-50%, 0%)",
-          width: "100%",
-          height: "100%",
-          outline: "none",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <IconButton
+
+    <Modal open={open} onClose={handleClose} closeAfterTransition>
+      <Grow in={open} timeout={300} mountOnEnter unmountOnExit style={{ width: '100%', height: '100%' }}>
+        <Box
           onClick={handleClose}
           sx={{
             position: "absolute",
-            top: '10px',
-            right: "35px",
-            zIndex:'35px',
-            backgroundColor: "#fff",
-            "&:hover": {
-              transform: "scale(1.08)",
-              backgroundColor: "#fff",
-              color: "black",
-            },
-            transition: "transform 0.2s ease, color 0.2s ease",
+            top: "0%",
+            left: "0%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            height: "100%",
+            outline: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Close fontSize="small" />
-        </IconButton>
 
-        <div className={styles.popupQuestionTextContainer} style={{ padding: `${item === "showText" ? '20px' : '5px'}` }} onClick={handleBodyClick} >
-          {item === "showText" ? (
-             <div className={styles.audioWithText}>
-              {readOut && <SpeakQuestionText readText={textNodes} />}
-              <div className={styles.questionTextMaxView}>
-                {textNodes.map((item, key) => (
-                  <React.Fragment key={key}>
-                    {objectParser(item, key)}
-                  </React.Fragment>
-                ))}
+
+          <div className={styles.popupQuestionTextContainer} onClick={(e) => e.stopPropagation()}>
+            {item === "showText" ? (
+              <div className={styles.audioWithText}>
+                {readOut && <SpeakQuestionText readText={textNodes} />}
+                <div className={styles.questionTextMaxView}>
+                  {textNodes.map((node, key) => (
+                    <React.Fragment key={key}>{objectParser(node, key)}</React.Fragment>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-           <div className={styles.max_view_image_video}>
-             {objectParser(item, 0)}
-            </div>
-          )}
-        </div>
-      </Box>
+            ) : (
+              <div className={styles.max_view_image_video}>
+                {objectParser(item, 0)}
+              </div>
+            )}
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                top: '0px',
+                right: "0px",
+                zIndex: '0',
+                width:'25px',
+                height:'25px',
+                borderRadius:'0',
+                backgroundColor: "trasparent",
+                color: "black",
+                "&:hover": {
+                  // transform: "scale(1.01)",
+                  backgroundColor: "#56abc5",
+                  color: "white",
+                },
+                transition: "all 0.2s ease",
+              }}
+            >
+              <Close fontSize="small" />
+            </IconButton>
+          </div>
+        </Box>
+      </Grow>
     </Modal>
+
+
+
   );
 }

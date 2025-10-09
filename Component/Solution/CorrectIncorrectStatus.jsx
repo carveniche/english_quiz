@@ -11,7 +11,7 @@ import pandaWrong from "../../../../assets/LottieAnimation/Wrong_answer.json";
 import { Zoom } from "@mui/material";
 import { ValidationContext } from "../QuizPage";
 
-export default function CorrectIncorrectStatus() {
+export default function CorrectIncorrectStatus({obj}) {
   const { isCorrect } = useContext(ValidationContext);
   const [triggerImage, setTriggerImage] = useState(false);
   const [triggerAnimation, setTriggerAnimation] = useState(false);
@@ -81,7 +81,9 @@ export default function CorrectIncorrectStatus() {
     setTriggerAnimation(true);
     randomAudio.play().catch((err) => console.warn("Audio play error:", err));
   };
-
+  const ishotspot = obj?.question_type === "hotspot";
+   const pageType = sessionStorage.getItem("page_type") == "review"
+   console.log(pageType,"pageType")
   return (
     <>
       {triggerAnimation && (
@@ -109,7 +111,13 @@ export default function CorrectIncorrectStatus() {
       )}
 
       <Zoom in={triggerImage} timeout={300}>
-        <div className={styles.quizCorrectInorrect}>
+        <div className={styles.quizCorrectInorrect}
+          style={{
+            top: pageType ? "unset" : ishotspot ? '28px' : '0px',
+            height: pageType ? 'fit-content' : '100%',
+            bottom: pageType ? '0px' : 'unset',
+          }}
+        >
           {triggerValue === "Skipped" ? (
             <button className={styles.skippedButton}>Skipped</button>
           ) : ["Not attempted","Notattempted"].includes(triggerValue) ? (

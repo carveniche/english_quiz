@@ -17,6 +17,7 @@
     padding: 12px;
     background-color: #2d76d11a;
     border-radius: 10px;
+    height: 100%;
   }
   .hotspot_question_text{
     flex: 1;

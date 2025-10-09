@@ -42,7 +42,7 @@ export default function QuestionCommonContentPassagePage({ groupData }) {
 
 
   const handleNavigationClick = (direction) => {
-    console.log(direction, 'direction')
+    // console.log(direction, 'direction')
     if (direction === "-1") {
       handleChangePage(-1);
     } else if (direction === "1") {

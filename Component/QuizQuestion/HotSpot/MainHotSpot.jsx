@@ -13,13 +13,6 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
 
   let question_text = JSON.parse(obj?.question_data);
-
-  return (
-    <><HotSpotPreview data={obj} question_text={question_text} questionData={questionData} /></>
-  )
-}
-
-function HotSpotPreview({ data, question_text,questionData }) {
   const canvasRef = useRef(null);
   const [redAlert, setRedAlert] = useState(false);
   const [choices, setChoices] = useState(question_text?.choices || []); // Store in state
@@ -150,8 +143,8 @@ function HotSpotPreview({ data, question_text,questionData }) {
 
 
     drawAll();
-    if (submitResponse) return
     function handleCanvasClick(e) {
+      if(showSolution  ||  submitResponse) return;
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width; // Scale factor in X direction
       const scaleY = canvas.height / rect.height; // Scale factor in Y direction
@@ -191,6 +184,7 @@ function HotSpotPreview({ data, question_text,questionData }) {
     }
 
     function handleCanvasHover(e) {
+      if(showSolution  || submitResponse) return;
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width; // Scale factor in X direction
       const scaleY = canvas.height / rect.height; // Scale factor in Y direction
@@ -261,11 +255,12 @@ function HotSpotPreview({ data, question_text,questionData }) {
       <div className="hotspot_container">
         <div className="hotspot_question_text">
 
-           {typeof question_text?.questionName ==="object" ? <QuestionCommonContent obj={question_text}/>
+           {typeof question_text?.questionName ==="object" ? 
+           <QuestionCommonContent obj={question_text}/>
           :
           <div className='audio_with_questiontext'>
             <SpeakPlainText readText={question_text?.questionName} />
-              <div className={styles.questionText}>
+              <div className='common_question_text'>
                 {question_text?.questionName}
                 </div>
            
@@ -281,7 +276,7 @@ function HotSpotPreview({ data, question_text,questionData }) {
           {showSolution || submitResponse ?
 
             <div className='heading_slider_btn'>
-              <p className='show_heading'>{showStudentResponse ? "These answers are accurate" : "Student Response"}</p>
+              <p className='label_title show_heading'>{showStudentResponse ? "These answers are accurate" : "Student Response"}</p>
               {showStudentResponse ?
                 <ArrowBackIosNewRounded className='pointer' onClick={() => setShowStudentResponse(false)} />
                 : <ArrowForwardIosRounded className='pointer' onClick={() => setShowStudentResponse(true)} />

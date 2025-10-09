@@ -17,6 +17,8 @@ import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
 import correctImages from "../../assets/Images/correct.png";
 import inCorrectImages from "../../assets/Images/incorrect.png";
 import SpeakPlainText from "../../Utility/SpeakPlainText";
+import AlertModal from "../../Modals/AlertModal";
+import GptFeedback from "../../Utility/GptFeedBack";
 const useStyles = {
   autoSizeTextarea: {
     height: "95%",
@@ -40,15 +42,16 @@ const useStyles = {
 
 const AutoSizeTextarea = ({
   studentTextRef,
-  hideCheckButton,
+  showChatGptResponse,
   isShowingResponse,
   response,
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { submitResponse, showSolution, disabledQuestion } = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
-    if (submitResponse || hideCheckButton) return;
+   
+    if (submitResponse || showSolution || showChatGptResponse) return;
     if (disabledQuestion) return;
     setTextareaValue(event.target.value);
     if (textareaRef.current) {
@@ -62,8 +65,12 @@ const AutoSizeTextarea = ({
     console.log("not allowed paste");
     event.preventDefault(); // This blocks the paste
   };
+  useEffect(() => {
+ if(response && isShowingResponse){
+    setTextareaValue(response);
+ }
+  },[response])
 
-  //const wordCount = textareaValue.trim().split(/\s+/).filter(Boolean).length;
 
   return (
     <>
@@ -82,23 +89,23 @@ const AutoSizeTextarea = ({
           ref={textareaRef}
           className={`${styles.blinking} blinking`}
           style={useStyles.autoSizeTextarea}
-          value={isShowingResponse ? textareaValue || response : textareaValue}
+          value={textareaValue}
           onChange={handleTextareaChange}
           placeholder="Type your response here..."
           minRows={12}
           maxRows={14}
           aria-label="Auto-sizing Textarea"
-          // Minimum number of rows
+        // Minimum number of rows
         />
         <p
           style={{ margin: "0px", textAlign: "right", width: "100%" }}
-        >{`Word Count : ${
-          textareaValue.split(" ").filter((wrd) => wrd).length
-        }`}</p>
+        >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
+          }`}</p>
       </div>
     </>
   );
 };
+
 export default function Writing({
   questionData,
   questionResponse,
@@ -110,7 +117,7 @@ export default function Writing({
   const studentTextRef = useRef("");
   const [gptResponseLoading, setGptResponseLoading] = useState(false);
   const [redAlert, setRedAlert] = useState(false);
-  const [hideCheckButton, setHideCheckButton] = useState(false);
+  const [showChatGptResponse, setShowChatGptResponse] = useState(false);
   let quizFromRef = useRef(sessionStorage.getItem("engQuizFrom"));
   const isApiCalled = useRef(false);
   const [grpText, setGrpText] = useState("");
@@ -147,20 +154,8 @@ export default function Writing({
     let quizFrom = quizFromRef.current;
     let stateRef = [];
     let apiArray = [];
-    let question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback  in less than 100 words`;
-    // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give concise feedback like a teacher but don't provide score, in less than 100 words`;
-    if (grpText)
-      question_text = `this is passage text ${grpText} ,   please read the passage text and then give the feedback ${question_text}`;
-    // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: .${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number`;
-    if (quizFrom === "diagnostic" && false) {
-      stateRef.push(chatGptResponseRef);
-      stateRef.push(scoreRef);
-      question_text = `The following question is asked to a student: '${questionText}'.'A student gives the following response to the question: ${prompt_text}'.Use this instruction ${instruction}. To Evaluate the response, and  give feedback but don't provide score, in less than 100 words`;
-      apiArray[0] = apiCalled(question_text);
-      question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give the score in one word in number.It should be only number as integer`;
-
-      apiArray[1] = apiCalled(question_text || questionData?.prompt_text || "");
-    } else {
+    let question_text = ""
+    if (true) {
       stateRef.push(chatGptResponseRef);
       stateRef.push(scoreRef);
       // question_text = `The following question is asked to a student: '${questionText}'.'\nA student gives the following response to the question: ${prompt_text}\n'.Use this instruction ${instruction}. To Evaluate the response, and give feedback but don't provide score, in less than 100 words`;
@@ -183,19 +178,17 @@ export default function Writing({
 
       Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;
 
-     apiArray[0] = apiCalled(question_text || "");
+      apiArray[0] = apiCalled(question_text || "");
 
-      }
+    }
 
     try {
       let allData = await Promise.all(apiArray);
-      console.log(allData);
       allData = allData || [];
 
       allData.forEach(({ data }, index) => {
         data = data?.data || {};
         data = data.choices || [];
-        console.log(data);
         stateRef[index].current = data[0]?.message?.content;
       });
       setGptResponseLoading(false);
@@ -204,63 +197,30 @@ export default function Writing({
       console.log(e);
     }
   };
-  useEffect(() => {
-    // handlePromptRequest();
-  }, []);
+
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
     setRedAlert(false);
 
-    // for (let num of scoreRef.current) {
-
-    //   if (!isNaN(num) && num !== ' ') {
-    //     if(num==='0'){
-    //       scoreRef.current = num
-    //     }else if(num==='1'){
-    //      scoreRef.current = num
-    //     }
-    //   }
-    // }
-
     try {
-     
+
       if (chatGptResponseRef?.current) {
-        const { feedback,score } = JSON.parse(chatGptResponseRef?.current);
+        const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
         scoreRef.current = score;
         chatGptResponseRef.current = feedback;
-      } 
+      }
     } catch (error) {
       console.log("error score", error);
     }
 
-    // if (isNaN(Number(scoreRef.current))) {
-    //   console.log("this is scoreref", scoreRef.current);
-
-    //   let regex = /{{(\d+)}}/;
-    //   console.log("this is regex", regex);
-
-    //   let scoreValue = regex.exec(scoreRef.current);
-    //   console.log("this is score value", scoreValue);
-
-    //   // Extract the digit if score pattern is found
-    //   if (scoreValue !== null) {
-    //     scoreRef.current = scoreValue[1]; // The digit captured by the regex
-    //   } else {
-    //     // Second attempt if the score pattern isn't found
-    //     regex = /{{(\d+)}}/;
-    //     scoreValue = regex.exec(scoreRef.current) || [];
-    //     regex = /\d+/g;
-    //     scoreRef.current = regex.exec(scoreValue.pop());
-    //   }
-    // }
 
     let obj = {
       studentResponse: studentTextRef.current,
       chatGptResponse: chatGptResponseRef.current,
       score: Number(scoreRef.current),
     };
-    console.log("this is obj", obj);
+
     setSubmitResponse(true);
     typeof window.handleChangeNextQuestion == "function" &&
       window.handleChangeNextQuestion(obj);
@@ -272,36 +232,57 @@ export default function Writing({
       setHasQuizAnswerSubmitted(true);
     return scoreRef.current;
   };
+
+    const [chatGptResponse, setChatGptResponse] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
+let message = "Please make sure you write at least 10 words"
   const checkGptResponse = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
-    if (hideCheckButton) return;
+    if (showChatGptResponse) return;
     if (isApiCalled.current) return;
     setRedAlert(false);
-    if (!studentTextRef.current) {
+
+    if (!studentTextRef.current || studentTextRef.current.trim() === "") {
       setRedAlert(true);
       return -1;
     }
+
     const studentResWordLen = studentTextRef.current.split(" ").length;
 
     if (qstnText.split(" ").length > 30 && studentResWordLen < 10) {
-      alert("Please make sure you write at least 10 words");
+      setShowAlert(true);
       return -1;
     }
 
     isApiCalled.current = true;
-    handlePromptRequest(studentTextRef.current);
-    setHideCheckButton(true);
-    return 1;
+    // handlePromptRequest(studentTextRef.current);
+    setStudentAnswer(studentTextRef.current);
+    setIsCorrect("await");
+    setShowChatGptResponse(true);
+    return "await";
   };
+
+
+  window.handleShowChatGptResponse = setShowChatGptResponse
+
+  window.handleChatGptResponse = (response) => {
+    if (response) {
+      if (typeof response == "string") {
+        response = JSON.parse(response);
+      }
+      const { feedback, score } = response
+      scoreRef.current = score;
+      chatGptResponseRef.current = feedback;
+
+      setIsCorrect(score == 1 ? 1 : 0);
+      setChatGptResponse(response);
+    }
+
+  }
   // console.log(chatGptResponse,score)
 
-  var textNodes = questionData?.questionName.filter(
-    (node) => node.node !== "img"
-  );
-  var imageNodes = questionData?.questionName.filter(
-    (node) => node.node === "img"
-  );
 
   useEffect(() => {
     if (
@@ -328,9 +309,10 @@ export default function Writing({
       }, "");
       setQstnText(xyu);
     }
+
   }, []);
 
-  const longText = qstnText?.split(" ").length > 30;
+  const longText = qstnText?.split(" ").length > 30 && questionGroupData?.group_type == "";
   return (
     <div style={{ width: "100%" }}>
       <SolveButton onClick={checkGptResponse} />
@@ -338,20 +320,20 @@ export default function Writing({
         <CustomAlertBoxMathZone msg="Please begin writing" />
       )}
 
+    {showAlert && <AlertModal msg={message} onClose={setShowAlert} />}
+
       <div
         style={{
           backgroundRepeat: "no-repeat",
           display: "flex",
           gap: "10%",
-          padding: "20px",
+          padding: "8px",
           backgroundSize: "cover",
           backgroundPosition: "center",
           // minHeight: "80vh",
           borderRadius: "15px",
           height: "fit-content",
           backgroundColor: "#e8f5e9",
-          // backgroundImage: `url(https://advancedcodingtraining.s3.ap-south-1.amazonaws.com/images/Book_Background_new.jpg)`,
-          // backgroundImage: `url(https://begalileo-english.s3.ap-south-1.amazonaws.com/Sub_icons/WritingGptBg-02.png)`,
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)", // subtle shadow for depth
           border: "1px solid #e0e0e0",
         }}
@@ -375,30 +357,28 @@ export default function Writing({
           <div
             style={{
               width: longText ? "80%" : "100%",
-              height:longText ? "300px" : "280px",
+              height: longText ? "300px" : "280px",
               maxHeight: longText ? "300px" : "280px",
             }}
           >
             <AutoSizeTextarea
               studentTextRef={studentTextRef}
-              hideCheckButton={hideCheckButton}
+              showChatGptResponse={showChatGptResponse}
               response={questionResponse?.studentResponse || null}
-              isShowingResponse={submitResponse || disabledQuestion}
+              isShowingResponse={submitResponse || showSolution || disabledQuestion}
             />
           </div>
         </div>
       </div>
 
-      {hideCheckButton && (
+      {showChatGptResponse && (
         <>
-          {gptResponseLoading ? (
+          {!chatGptResponse ? (
             <LinearProgressBar />
           ) : (
-          
-           !isEnglishTest && quizFromRef.current !== "diagnostic" &&
-            <GptFeedback 
-            chatGptResponse={chatGptResponseRef.current} 
-            scoreResponse={scoreRef.current} /> 
+            <GptFeedback
+              chatGptResponse={chatGptResponseRef.current}
+            />
           )}
         </>
       )}
@@ -406,94 +386,4 @@ export default function Writing({
   );
 }
 
-export function GptFeedback({ chatGptResponse, scoreResponse }) {
-  // const [isSpeaking, setIsSpeaking] = useState(false);
-  // const [voice, setVoice] = useState(null);
-  // const { submitResponse } = useContext(ValidationContext);
-  // useEffect(() => {
-  //   const loadVoices = () => {
-  //     const voices = window.speechSynthesis.getVoices();
-  //     // Filter for female voices; you can adjust this as needed
-  //     const preferredVoices = [
-  //       "Google UK English Male", // Chrome (Daniel equivalent)
-  //       "Google UK English Female",
-  //       "Daniel", // Safari
-  //       "Microsoft David", // Windows default
-  //       "Microsoft Zira",
-  //     ];
 
-  //     const selectedVoice = voices.find((voice) =>
-  //       preferredVoices.includes(voice.name)
-  //     );
-
-  //     setVoice(selectedVoice || voices[0]); // Default to first available female voice or any voice
-  //   };
-
-  //   loadVoices(); // Initial load
-
-  //   window.speechSynthesis.onvoiceschanged = loadVoices; // Update voices when available
-  // }, []);
-
-  // const toggleSpeak = () => {
-  //   const speech = new SpeechSynthesisUtterance(
-  //     chatGptResponse || "No Response"
-  //   );
-  //   speech.voice = voice; // Set the selected voice
-
-  //   speech.onend = () => {
-  //     setIsSpeaking(false); // Reset speaking state when finished
-  //   };
-
-  //   if (isSpeaking) {
-  //     window.speechSynthesis.cancel(); // Stop speaking
-  //     setIsSpeaking(false); // Update state
-  //   } else {
-  //     window.speechSynthesis.speak(speech); // Start speaking
-  //     setIsSpeaking(true); // Update state
-  //   }
-  // };
-
-  return (
-    <div className={styles.gpt_feedback_box}>
-      {/* <button
-        style={{
-          border: "1px solid white",
-          cursor: "pointer",
-          fontSize: "13px",
-        }}
-        onClick={toggleSpeak}
-      >
-        🔊 Read Aloud
-      </button> */}
-
-       <SpeakPlainText readText={chatGptResponse} />
-
-      <div>
-        {/* {submitResponse && (
-          <div style={{ margin: "0", padding: "10px 10px 0 10px" ,display:"flex",alignItems:"center",gap:"5px"}}>
-            Student's Response :-{" "}
-            <img src={scoreResponse == "1" ? correctImages :inCorrectImages} width={30} height={30} />
-          </div>
-        )} */}
-
-        <p style={{ padding: 10, fontSize: 15, margin: "0" }}>
-          {chatGptResponse || "No Response"}
-        </p>
-      </div>
-      <div
-        style={{
-          width: "calc(100% - 10px)",
-          display: "flex",
-          justifyContent: "flex-end",
-          paddingRight: 5,
-          paddingTop: 5,
-          paddingBottom: 5,
-          color: "indigo",
-          fontWeight: "normal",
-        }}
-      >
-        Feedback From: AI
-      </div>
-    </div>
-  );
-}

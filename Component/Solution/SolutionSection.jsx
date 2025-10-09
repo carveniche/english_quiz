@@ -22,10 +22,11 @@ export default function SolutionSection({
   const writingGpt = ["Writing ChatGpt", "read_the_text"];
   useEffect(() => {
     function disableTheQuestion() {
-      setDisabledQuestion(true);
+      setDisabledQuestion?.(true);
     }
     disableTheQuestion();
   }, []);
+
   return (
     <Slide direction="up" in={open} mountOnEnter unmountOnExit>
       <div className={styles.solution_modal_container}>
@@ -33,7 +34,7 @@ export default function SolutionSection({
           <CloseIcon />
         </IconButton>
         <div className={styles.solution_modal_content}>
-        <h5 className="h5 grey_text">Solution :-</h5>
+         {!writingGpt?.includes(question_type) && <h5 className="header_title grey_text">Solution :-</h5>}
           {reordering.includes(question_type) ? (
             <SolutionForReordering obj={obj} question_type={question_type} />
           ) : writingGpt?.includes(question_type) ? (
@@ -47,7 +48,7 @@ export default function SolutionSection({
             <SolutionForDragDrop obj={obj} question_type={question_type} />
           ) : (
             <div className={`${styles.correctAnswer} ${styles.correctAnswer2}`}>
-              <h6>The correct answer is:</h6>
+              <p className="para_text">The correct answer is :</p>
               <QuestionTypeResponse question_type={question_type} obj={obj} />
             </div>
           )}

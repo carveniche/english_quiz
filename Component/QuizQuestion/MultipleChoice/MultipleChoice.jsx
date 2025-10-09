@@ -47,7 +47,9 @@ export default function MultipleChoice({ obj, wordsLength }) {
       setRedAlert(false);
       for (let item of choices) {
         item[STUDENTANSWER] = item?.isStudentAnswer;
+        // delete item?.isStudentAnswer
       }
+
       setStudentAnswer(JSON.stringify(choices));
       setSubmitResponse(true);
     } else {
@@ -60,7 +62,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     <>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
-      <div>
+      <div  style={{display:"flex",flexDirection:"column",gap:"8px"}}>
         <QuestionCommonContent
           obj={obj}
           wordsLength={wordsLength}

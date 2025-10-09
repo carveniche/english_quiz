@@ -25,11 +25,12 @@ export default function SpeakPlainText({ readText }) {
 
     loadVoices();
     window.speechSynthesis.onvoiceschanged = loadVoices;
+    window.speechSynthesis.cancel();
   }, []);
 
   const readTheQuestionText = () => {
+  
     if (!text || text.trim().length === 0) return;
-
     if (isSpeaking) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
