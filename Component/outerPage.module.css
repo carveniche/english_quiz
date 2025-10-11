@@ -123,6 +123,30 @@
   max-height: 100%;
   padding-right: 5px;
 }
+/* App.module.css */
+
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slideInRight {
+  animation: slideInRight 0.5s ease forwards; /* adjust duration as needed */
+}
 
 @media screen and (max-width: 768px) {
   .main_layout_section {

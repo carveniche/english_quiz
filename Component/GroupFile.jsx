@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import MainReadingComprehensive from "./QuizQuestion/GroupQuestion/ReadingComprehensive/MainReadingComprehensive";
 import Allfile from "./Allfile";
 import {ValidationContextProvider } from "./QuizPage";
@@ -32,19 +32,35 @@ export default function GroupFile({
     if (!data?.group_type) return null;
 
     const map = {
-      "Reading Comprehension": (
-        <MainReadingComprehensive data={data} showQuestion={true} />
-      ),
+      "Reading Comprehension":<MainReadingComprehensive data={data} showQuestion={true} />,
       "Listening": <MainListening data={data} showQuestion={true} />,
     };
-
     return map[data.group_type] || null;
   }, [data?.group_type]); // ✅ only recompute when group_type changes
 
+  const mainContainerRef = useRef(null);
+
+  useEffect(() => {
+    const el = mainContainerRef.current;
+    if (!el) return;
+    // Add the animation class
+    el.classList.add(styles.slideInRight);
+
+    // Remove the class after animation ends
+    const handleAnimationEnd = () => {
+      el.classList.remove(styles.slideInRight);
+    };
+   el.addEventListener("animationend", handleAnimationEnd);
+    // Cleanup
+    return () => {
+      el.removeEventListener("animationend", handleAnimationEnd);
+    };
+  }, []);
 
   return (
     <ValidationContextProvider>
       <div
+       ref={mainContainerRef}
         className={styles.main_layout_section}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}

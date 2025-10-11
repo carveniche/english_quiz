@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "../english_mathzone.module.css";
 import Choices from "./Choices";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
@@ -29,7 +29,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     let isValidate = false;
     let selectedItem = "";
     for (let item of choices) {
-      if (item?.isStudentAnswer) {
+      if (item?.studentAnswer) {
         selectedItem = item;
         isValidate = true;
         break;
@@ -37,7 +37,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     }
     let status = -1;
     if (isValidate) {
-      if (selectedItem?.correct && selectedItem?.isStudentAnswer) {
+      if (selectedItem?.correct && selectedItem?.studentAnswer) {
         setIsCorrect(1);
         status = 1;
       } else {
@@ -46,7 +46,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
       }
       setRedAlert(false);
       for (let item of choices) {
-        item[STUDENTANSWER] = item?.isStudentAnswer;
+        item[STUDENTANSWER] = item?.studentAnswer;
         // delete item?.isStudentAnswer
       }
 
@@ -57,6 +57,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     }
     return status;
   };
+
 
   return (
     <>

@@ -200,7 +200,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
           "feedback": "<Give general feedback on the student's response without using exact words from the response. Do not suggest retrying or reattempting. Keep it under 100 words. Do not include the score in the feedback.>"
       }
   
-      Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;;
+      Ensure that the score is always **either 1 or 0**. **Do not include any additional text, explanations, or formatting outside the JSON output.**`;
     stateRef.push(chatGptResponseRef);
     stateRef.push(scoreRef);
 
@@ -261,7 +261,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
 
 
-  const AudioTransalator = async (audioF) => {
+  const AudioTransalator_old = async (audioF) => {
     try {
 
       let blobfile = new File([audioFileRef.current], "audio.mp3", {
@@ -294,9 +294,11 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     }
   };
 
-  const AudioTransalator_new = async (audioF) => {
+  const AudioTransalator = async (audioF) => {
     try {
-
+      setShowChatGptResponse(true);
+      setIsTrue(true);
+      setGptResponseLoading(true);
       let blobfile = new File([audioFileRef.current], "audio.mp3", {
         type: "audio/mp3",
         lastModified: Date.now(),
@@ -306,32 +308,29 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
       //  co
       // nst CONFIG_URL12 = window.CONFIG_URL12 || "https://staging.begalileo.com/";
 
-      let formData = new FormData();
-      formData.append("file", blobfile);
-      formData.append("model", "whisper-1");
-      formData.append("language", "en");
-      formData.append("type", "audio");
-      let config = {
-        method: "POST",
-        maxBodyLength: Infinity,
-        url: `${CONFIG_URL12}app_teachers/gpt_response`,
-        data: formData,
-      };
-      let audiotext = await axios(config);
-      const data_text = audiotext.data.data.text;
-
-
-      setShowChatGptResponse(true);
-      setIsTrue(true);
-      setGptResponseLoading(true);
+      // let formData = new FormData();
+      // formData.append("file", blobfile);
+      // formData.append("model", "whisper-1");
+      // formData.append("language", "en");
+      // formData.append("type", "audio");
+      // let config = {
+      //   method: "POST",
+      //   maxBodyLength: Infinity,
+      //   url: `${CONFIG_URL12}app_teachers/gpt_response`,
+      //   data: formData,
+      // };
+      // let audiotext = await axios(config);
+      // const data_text = audiotext.data.data.text;
       let obj = {
         audio_response: audioFileRef.current,
-        audio_response_text: data_text,
+        // audio_response_text: data_text,
       }
       setStudentAnswer(obj);
       setIsCorrect('await');
-
-
+      setSubmitResponse(true);
+    typeof setHasQuizAnswerSubmitted === "function" &&
+      setHasQuizAnswerSubmitted(true);
+    return "await";
       // handlePromptRequest(data_text);
     } catch (error) {
       console.error(error);

@@ -16,6 +16,7 @@ export function ValidationContextProvider({ children, isshowSolution, isreadOut 
   const [isEnglishTest, setIsEnglishText] = useState(false);
   const [showSolution,setShowSolution]= useState(isshowSolution)
   const [readOut,setReadOut]=useState(isreadOut)
+  const [isGroup,setIsGroup]=useState(false)
   useEffect(() => {
     if (showQuizResponse) {
       setDisabledQuestion(true);
@@ -41,7 +42,9 @@ export function ValidationContextProvider({ children, isshowSolution, isreadOut 
         setShowSolution,
         readOut,
         setReadOut,
-        isEnglishTest
+        isEnglishTest,
+        isGroup,
+        setIsGroup
       }}
     >
       {children}

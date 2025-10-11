@@ -11,14 +11,16 @@ import MainLabeling from "./QuizQuestion/Labeling/MainLabeling";
 
 export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
-  const { setStudentAnswer, setSubmitResponse } = useContext(ValidationContext);
-
+  const { setStudentAnswer,showSolution, setSubmitResponse,setIsGroup } = useContext(ValidationContext);
   useEffect(() => {
-    if (data?.student_response) {
-      setStudentAnswer(JSON.parse(data?.student_response));
-      setSubmitResponse(true);
+    if (data?.student_response || data?.questionResponse) {
+      setStudentAnswer(JSON.parse(data?.student_response || data?.questionResponse))
+     if(showSolution) setSubmitResponse(true);
     }
-  }, []);
+    if(questionData?.group_type && questionData?.group_type !== ""){
+      setIsGroup(true)
+    }
+  }, [data,questionData]);
 
   let questionType = {
     "Multiple choice": (

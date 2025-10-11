@@ -83,7 +83,6 @@ export default function CorrectIncorrectStatus({obj}) {
   };
   const ishotspot = obj?.question_type === "hotspot";
    const pageType = sessionStorage.getItem("page_type") == "review"
-   console.log(pageType,"pageType")
   return (
     <>
       {triggerAnimation && (
