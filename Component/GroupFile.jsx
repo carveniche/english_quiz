@@ -29,8 +29,8 @@ export default function GroupFile({
 
   window.handleSolutionToggle = setShowSolutionState;
   const groupComponent = React.useMemo(() => {
+   
     if (!data?.group_type) return null;
-
     const map = {
       "Reading Comprehension":<MainReadingComprehensive data={data} showQuestion={true} />,
       "Listening": <MainListening data={data} showQuestion={true} />,
@@ -40,22 +40,7 @@ export default function GroupFile({
 
   const mainContainerRef = useRef(null);
 
-  useEffect(() => {
-    const el = mainContainerRef.current;
-    if (!el) return;
-    // Add the animation class
-    el.classList.add(styles.slideInRight);
-
-    // Remove the class after animation ends
-    const handleAnimationEnd = () => {
-      el.classList.remove(styles.slideInRight);
-    };
-   el.addEventListener("animationend", handleAnimationEnd);
-    // Cleanup
-    return () => {
-      el.removeEventListener("animationend", handleAnimationEnd);
-    };
-  }, []);
+ 
 
   return (
     <ValidationContextProvider>
@@ -78,6 +63,7 @@ export default function GroupFile({
           )}
 
           <div className={`${styles.question_section} scroll__bar`}>
+           
             <QuizDisplay
               obj={data?.question_data[0] || ""}
               data={data}

@@ -6,6 +6,7 @@ import { OuterPageContext } from "../../QuizQuestion/GroupQuestion/ContextProvid
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import { ValidationContext } from "../../QuizPage";
 import SpeakPlainText from "../../Utility/SpeakPlainText";
+import GptFeedback from "../../Utility/GptFeedBack";
 export default function QuestionTypeResponse({ obj, question_type }) {
   let questionData = JSON.parse(obj?.question_data);
   let choices = questionData?.choices || [];
@@ -64,30 +65,18 @@ export function SolutionForWritingGpt({ obj, question_type, showSolution, userRe
   }
   const requireQuestionType = ['Writing ChatGpt', 'read_the_text']
 
-
-
   useEffect(() => {
     if (question_type && readOut && requireQuestionType.includes(question_type)) {
       setShowSpeakIcon(true)
     }
   }, [question_type])
 
-  return (showSolution ?
+  return (
+    showSolution ?
     <>
-      <div
-        className={`${styles.correctAnswer} ${styles.correctAnswer2}`}
-        style={{ display: "block" }}
-      >
-        {
-          showQuizResponse && parseResponse?.score >= 0 && <h6 style={{ marginBottom: 5 }}>Score: {parseResponse?.score}</h6>
-        }
-        <div className={styles.ai_audio_player_section}>
-          {parseResponse?.chatGptResponse && <h5 className="header_title grey_text">Feedback:</h5>}
-          {showSpeakIcon && <SpeakPlainText readText={parseResponse?.chatGptResponse} />}
-        </div>
-        <p className="para-text">{parseResponse?.chatGptResponse}</p>
-      </div>
-    </> : ""
+      <GptFeedback chatGptResponse={parseResponse?.chatGptResponse}/>
+    </> 
+    :""
   );
 }
 

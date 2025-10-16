@@ -11,6 +11,7 @@ import { VolumeUp } from "@mui/icons-material";
 import styles from "./Listening.module.css";
 import { IconButton } from "@mui/material";
 import PandaSvg from "./PandaSvg";
+import stopAllMedia from "../../../CommonComponent/stopAllMedia";
 export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const audioRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
@@ -18,12 +19,18 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const [progress, setProgress] = React.useState(0);
   const [play, setPlay] = useState(false);
   const [isMute, setIsMute] = useState(false);
+
+
+
+
   const handlePlayPause = () => {
+     stopAllMedia()
     if (play) {
       audioRef.current.pause();
     } else {
       audioRef.current.play();
     }
+   
     audioRef.current.muted = isMute;
     setPlay(!play);
   };
@@ -64,6 +71,7 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
       }
     };
   }, []);
+
   const handleSliceAudio = (val) => {
     const { currentTime, duration } = audioRef.current;
     let sliceTime = currentTime + val;
@@ -81,9 +89,10 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
       .toString()
       .padStart(2, "0")}`;
   };
+
   return (
     <div className={styles.listening_player_container}>
-      <audio ref={audioRef} src={audioUrl} style={{ display: "none" }}></audio>
+      <audio ref={audioRef} src={audioUrl} style={{ display: "none" }} onPause={()=>setPlay(false)}></audio>
      
       <div className={styles.audio_control_section}>
 

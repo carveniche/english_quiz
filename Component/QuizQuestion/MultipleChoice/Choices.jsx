@@ -59,7 +59,7 @@ export default function Choices({ choicesRef }) {
                   <b>{String.fromCharCode(65 + key)}</b>
                 </div>
                 <div className={`${styles.choice_text}`}>
-                  {choice?.value && <div className="para_text">{parse(choice.value)}</div>}
+                  {choice?.value && <>{parse(choice.value)}</>}
                   {choice?.choice_image && (
                     <div className="choiceImage">
                       <img

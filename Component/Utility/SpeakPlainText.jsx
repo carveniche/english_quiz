@@ -5,6 +5,7 @@ import paused from "../Solution/AudioPaused.json";
 import playing from "../Solution/AudioPlaying.json";
 import { VolumeUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import stopAllMedia from "../CommonComponent/stopAllMedia";
 
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -16,6 +17,7 @@ export default function SpeakPlainText({ readText }) {
   }, [readText]);
 
   useEffect(() => {
+
     const loadVoices = () => {
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
@@ -26,16 +28,21 @@ export default function SpeakPlainText({ readText }) {
     loadVoices();
     window.speechSynthesis.onvoiceschanged = loadVoices;
     window.speechSynthesis.cancel();
+    return () => {
+      window.speechSynthesis.cancel();
+    }
   }, []);
 
+
   const readTheQuestionText = () => {
-  
     if (!text || text.trim().length === 0) return;
+
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
       setIsSpeaking(false);
+      window.speechSynthesis.cancel();
       return;
     }
+    stopAllMedia()
 
     if (voicesAvailable.length === 0) {
       console.log("Voices not yet available. Retrying...");
@@ -75,9 +82,9 @@ export default function SpeakPlainText({ readText }) {
   return (
     <>
 
-       <IconButton sx={speakingStyle(isSpeaking)} onClick={readTheQuestionText}>
-        <VolumeUp/>
-       </IconButton>
+      <IconButton sx={speakingStyle(isSpeaking)} onClick={readTheQuestionText}>
+        <VolumeUp />
+      </IconButton>
       {/* <Lottie
         key={isSpeaking ? "playing" : "paused"}
         animationData={cloneDeep(isSpeaking ? playing : paused)}
@@ -90,8 +97,8 @@ export default function SpeakPlainText({ readText }) {
 }
 const speakingStyle = (isSpeaking) => ({
   backgroundColor: "transparent",
-  width:"32px",
-  height:"32px",
+  width: "32px",
+  height: "32px",
   border: "none",
   cursor: "pointer",
   color: isSpeaking ? "#86C440" : "#32C7FF",

@@ -27,9 +27,7 @@ const useStyles = {
     minWidth: "100px",
     minHeight: "150px",
     resize: "none",
-    padding: "8px 12px",
-    fontFamily: "Reddit Sans, sans-serif",
-    fontSize: "inherit",
+    padding: "8px 12px", 
     boxShadow:
       "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
     lineHeight: "inherit",
@@ -48,9 +46,10 @@ const AutoSizeTextarea = ({
 }) => {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState("");
+  const [wordCount, setWordCount] = useState(0)
   const { submitResponse, showSolution, disabledQuestion } = useContext(ValidationContext);
   const handleTextareaChange = (event) => {
-   
+
     if (submitResponse || showSolution || showChatGptResponse) return;
     if (disabledQuestion) return;
     setTextareaValue(event.target.value);
@@ -65,11 +64,23 @@ const AutoSizeTextarea = ({
     console.log("not allowed paste");
     event.preventDefault(); // This blocks the paste
   };
+
+ useEffect(() => {
+  if (response && isShowingResponse) {
+    const question_response =
+      typeof response === "object" && response.studentResponse
+        ? response.studentResponse
+        : response || "";
+
+    setTextareaValue(question_response);
+  }
+}, [response, isShowingResponse]);
+
+
   useEffect(() => {
- if(response && isShowingResponse){
-    setTextareaValue(response);
- }
-  },[response])
+    const words = textareaValue?.trim().split(/\s+/).filter(Boolean);
+    setWordCount(words?.length);
+  }, [textareaValue]);
 
 
   return (
@@ -87,7 +98,7 @@ const AutoSizeTextarea = ({
         <TextareaAutosize
           onPasteCapture={handlePaste}
           ref={textareaRef}
-          className={`${styles.blinking} blinking`}
+          className={`para_text`}
           style={useStyles.autoSizeTextarea}
           value={textareaValue}
           onChange={handleTextareaChange}
@@ -97,10 +108,10 @@ const AutoSizeTextarea = ({
           aria-label="Auto-sizing Textarea"
         // Minimum number of rows
         />
-        <p
+        <p 
+          className="btn_txt_s"
           style={{ margin: "0px", textAlign: "right", width: "100%" }}
-        >{`Word Count : ${textareaValue.split(" ").filter((wrd) => wrd).length
-          }`}</p>
+        >{`Word Count : ${wordCount}`}</p>
       </div>
     </>
   );
@@ -233,10 +244,10 @@ export default function Writing({
     return scoreRef.current;
   };
 
-    const [chatGptResponse, setChatGptResponse] = useState("");
+  const [chatGptResponse, setChatGptResponse] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-let message = "Please make sure you write at least 10 words"
+  let message = "Please make sure you write at least 10 words"
   const checkGptResponse = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
@@ -249,16 +260,19 @@ let message = "Please make sure you write at least 10 words"
       return -1;
     }
 
-    const studentResWordLen = studentTextRef.current.split(" ").length;
-
-    if (qstnText.split(" ").length > 30 && studentResWordLen < 10) {
+   
+   const studentResWordLen = studentTextRef.current?.trim().split(/\s+/).filter(Boolean);
+    if (qstnText.split(" ").length > 30 && studentResWordLen.length < 10) {
       setShowAlert(true);
       return -1;
     }
 
     isApiCalled.current = true;
     // handlePromptRequest(studentTextRef.current);
-    setStudentAnswer(studentTextRef.current);
+    let temObj = {
+      studentResponse: studentTextRef.current
+    }
+    setStudentAnswer(JSON.stringify(temObj));
     setIsCorrect("await");
     setShowChatGptResponse(true);
     return "await";
@@ -311,7 +325,6 @@ let message = "Please make sure you write at least 10 words"
     }
 
   }, []);
-
   const longText = qstnText?.split(" ").length > 30 && questionGroupData?.group_type == "";
   return (
     <div style={{ width: "100%" }}>
@@ -320,7 +333,7 @@ let message = "Please make sure you write at least 10 words"
         <CustomAlertBoxMathZone msg="Please begin writing" />
       )}
 
-    {showAlert && <AlertModal msg={message} onClose={setShowAlert} />}
+      {showAlert && <AlertModal msg={message} onClose={setShowAlert} />}
 
       <div
         style={{
@@ -364,7 +377,7 @@ let message = "Please make sure you write at least 10 words"
             <AutoSizeTextarea
               studentTextRef={studentTextRef}
               showChatGptResponse={showChatGptResponse}
-              response={questionResponse?.studentResponse || null}
+              response={questionResponse || null}
               isShowingResponse={submitResponse || showSolution || disabledQuestion}
             />
           </div>

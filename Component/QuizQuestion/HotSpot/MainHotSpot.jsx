@@ -5,18 +5,17 @@ import { ValidationContext } from '../../QuizPage';
 import SpeakPlainText from '../../Utility/SpeakPlainText';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 import { Zoom } from '@mui/material';
-import  './hotSpot.css';
+import './hotSpot.css';
 import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
 import styles from "../../QuizQuestion/english_mathzone.module.css";
 import QuestionCommonContent from '../../CommonComponent/QuestionCommonContent';
-export default function MainHotSpot({ obj, wordsLength, questionData}) {
+export default function MainHotSpot({ obj, wordsLength, questionData }) {
 
-
-  let question_text = JSON.parse(obj?.question_data);
   const canvasRef = useRef(null);
   const [redAlert, setRedAlert] = useState(false);
-  const [choices, setChoices] = useState(question_text?.choices || []); // Store in state
+  const [choices, setChoices] = useState([]); // Store in state
   const [showStudentResponse, setShowStudentResponse] = useState(false)
+  const [questionText, setQuestionText] = useState({})
   const {
     submitResponse,
     disabledQuestion,
@@ -24,10 +23,19 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
     setSubmitResponse,
     showSolution,
     setStudentAnswer,
-    readOut
+    readOut,
+    isGroup
   } = useContext(ValidationContext);
 
   const studentSelected = useRef(false); // Track selection
+
+  useEffect(() => {
+    if (obj?.question_data) {
+      let question_text = JSON.parse(obj?.question_data);
+      setQuestionText(question_text)
+      setChoices(question_text?.choices)
+    }
+  }, [obj])
 
   useEffect(() => {
 
@@ -40,7 +48,7 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
     function drawAll() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (question_text?.choice_type === "rectangle") {
+      if (questionText?.choice_type === "rectangle") {
         choices?.forEach((rect) => {
           const isShowAll = submitResponse && !showStudentResponse ? rect.studentAnswer : showStudentResponse
 
@@ -133,8 +141,8 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
     }
 
-    if (showSolution &&questionData?.studentResponse) {
-      let question_response = JSON.parse(questionData?.studentResponse);
+    if (showSolution && obj?.questionResponse) {
+      let question_response = JSON.parse(obj?.questionResponse);
       setChoices(question_response)
       setSubmitResponse(showSolution)
       drawAll()
@@ -144,7 +152,7 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
 
     drawAll();
     function handleCanvasClick(e) {
-      if(showSolution  ||  submitResponse) return;
+      if (showSolution || submitResponse) return;
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width; // Scale factor in X direction
       const scaleY = canvas.height / rect.height; // Scale factor in Y direction
@@ -158,7 +166,7 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
         const dx = clickX - element.x;
         const dy = clickY - element.y;
 
-        if (question_text?.choice_type == "rectangle") {
+        if (questionText?.choice_type == "rectangle") {
           if (
             clickX >= element.x &&
             clickX <= element.x + element.width &&
@@ -184,7 +192,7 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
     }
 
     function handleCanvasHover(e) {
-      if(showSolution  || submitResponse) return;
+      if (showSolution || submitResponse) return;
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width; // Scale factor in X direction
       const scaleY = canvas.height / rect.height; // Scale factor in Y direction
@@ -221,7 +229,8 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
       canvas.removeEventListener("click", handleCanvasClick);
       canvas.removeEventListener("mousemove", handleCanvasHover);
     };
-  }, [question_text, showStudentResponse]); // Depend on question_text
+
+  }, [questionText, showStudentResponse]); // Depend on questionText
 
   function handleSubmit() {
 
@@ -252,23 +261,23 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
     <>
       <SolveButton onClick={handleSubmit} />
       {redAlert && !submitResponse && <CustomAlertBoxMathZone />}
-      <div className="hotspot_container">
-        <div className="hotspot_question_text">
+      <div className={`hotspot_container ${isGroup ? "_group" : ""} `} >
+        <div className="hotspot_questionText">
 
-           {typeof question_text?.questionName ==="object" ? 
-           <QuestionCommonContent obj={question_text}/>
-          :
-          <div className='audio_with_questiontext'>
-            <SpeakPlainText readText={question_text?.questionName} />
-              <div className='common_question_text'>
-                {question_text?.questionName}
-                </div>
-           
-          </div>
+          {typeof questionText?.questionName === "object" ?
+            <QuestionCommonContent obj={questionText} />
+            :
+            <div className='audio_with_questiontext'>
+              <SpeakPlainText readText={questionText?.questionName} />
+              <div className='common_questionText'>
+                {questionText?.questionName}
+              </div>
+
+            </div>
           }
 
-          {question_text?.resources?.length > 0 && (
-              <AudiPlayerComponent resources={question_text?.resources} />
+          {questionText?.resources?.length > 0 && (
+            <AudiPlayerComponent resources={questionText?.resources} />
           )}
         </div>
 
@@ -287,11 +296,11 @@ export default function MainHotSpot({ obj, wordsLength, questionData}) {
           <Zoom
             key={showStudentResponse}  // Forces re-render on state change
             in={true}
-            timeout={500}  // Adjust duration for smooth zoom
+            timeout={400}  // Adjust duration for smooth zoom
             mountOnEnter
             unmountOnExit
           >
-            <div className="hotspot_image" style={{ backgroundImage: `url(${question_text?.image})` }}>
+            <div className="hotspot_image" style={{ backgroundImage: `url(${questionText?.image})` }}>
               <canvas className="canvas" ref={canvasRef} width="610" height="400"></canvas>
             </div>
           </Zoom>

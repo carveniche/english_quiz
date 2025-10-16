@@ -20,7 +20,9 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
   let questionResponse = null;
   try {
     questionResponse = obj[WRITING_GPT.questionResponse] || null;
+    if(typeof questionResponse =="string"){
     questionResponse = JSON.parse(questionResponse);
+    }
   } catch (e) {
     console.log(e);
   }

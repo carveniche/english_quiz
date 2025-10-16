@@ -10,11 +10,12 @@ import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import React_Base_Api from "../../../ReactConfigApi";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
-import { Circle, Close, FastForward, FastRewind, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PlayArrow, Replay, Stop } from "@mui/icons-material";
+import { Circle, Close, FastForward, FastRewind, FlashOnOutlined, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PlayArrow, Replay, Stop } from "@mui/icons-material";
 import { Alert, Box, IconButton, Modal, Tooltip } from "@mui/material";
 // import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
 import objectParser from "../../Utility/objectParser";
 import GptFeedback from "../../Utility/GptFeedBack";
+import stopAllMedia from "../../CommonComponent/stopAllMedia";
 //import styles from "../../QuizQuestion/english_mathzone.module.css";
 export default function Recording_part({ questionData, questionResponse, setIsTrue, wordsLength }) {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
@@ -49,11 +50,12 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
   const [payedTime, setPayedTime] = useState("00:00");
   const [audioDuration, setAudioDuration] = useState("00:00");
   const [isPlaying, setIsPlaying] = useState(false);
+  const [checkAudioPermision,setCheckAudioPermision]=useState(false)
   const audioRefplay = useRef(null);
 
   useEffect(() => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && isRecorder) {
-      navigator.mediaDevices
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
         .getUserMedia({ audio: true })
         .then((stream) => {
           mediaRecorderRef.current = new MediaRecorder(stream);
@@ -79,6 +81,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
         .catch((error) => {
           if (error.name === 'NotAllowedError') {
             setAudioPermission(false)
+           
           }
           console.error("Error accessing media devices.", error);
         });
@@ -94,7 +97,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
       }
     };
 
-  }, [isRecorder]);
+  }, [navigator.mediaDevices]);
 
   const startTimer = () => {
     const startTime = Date.now();
@@ -114,13 +117,12 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
 
   const handleRecord = () => {
-
     if (!audioPermission) return
-
     if (stateIndex === 1) {
       handleStopRecording()
       return;
     }
+    stopAllMedia()
     setIsPlaying(false);
     if (stateIndex == 2) {
       setAudioDuration("00:00");
@@ -131,13 +133,13 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
       setStateIndex(1);
       startTimer(); // Start the timer when recording starts
     }
-
-
-  };
+  }
 
   const handleStopRecording = () => {
     setIsRecorder(false)
-    mediaRecorderRef.current.stop();
+    if(mediaRecorderRef.current){
+      mediaRecorderRef.current.stop();
+    }
     clearInterval(timerIntervalRef.current); // Stop the timer when recording stops  
     if (timeToSeconds(audioDuration) >= timeToSeconds("00:05")) {
       setStateIndex(2);
@@ -354,10 +356,10 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
 
 
   const handleAudioToggle = () => {
-   
+    
     if (isPlaying) {
       audioRefplay.current.pause();
-    } else {
+     } else {
       audioRefplay.current.play().catch(error => {
         alert("There was an error playing the audio.");
         setIsPlaying(false);

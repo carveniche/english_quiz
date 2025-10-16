@@ -159,9 +159,22 @@
 
 .choice_text {
   white-space: normal;
+    font-family: var(--fn)!important;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #585555;
+    font-style: normal;
+
 }
 
 .notHoverClass {
   pointer-events: none !important;
   cursor: default !important;
+}
+
+@media screen and (max-width:768px) {
+  .choice_text{
+     font-size: 14px;
+  }
 }
