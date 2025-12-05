@@ -4,10 +4,10 @@
 import React, { useState, useEffect,useRef, useContext } from "react";
 import styles from "./Solution.module.css";
 import Lottie from "lottie-react";
-import correctlottie from "../../../../assets/LottieAnimation/CorrectAimation.json";
-import incorrectlottie from "../../../../assets/LottieAnimation/IncorrectAnimation.json";
-import pandaRight from "../../../../assets/LottieAnimation/Right_answer.json";
-import pandaWrong from "../../../../assets/LottieAnimation/Wrong_answer.json";
+import correctlottie from "../assets/LottieAnimation/CorrectAimation.json";
+import incorrectlottie from "../assets/LottieAnimation/IncorrectAnimation.json";
+import pandaRight from "../assets/LottieAnimation/Right_answer.json";
+import pandaWrong from "../assets/LottieAnimation/Wrong_answer.json";
 import { Zoom } from "@mui/material";
 import { ValidationContext } from "../QuizPage";
 

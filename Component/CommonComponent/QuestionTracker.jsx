@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styles from "./common.module.css";
-import { useAppContext } from "../../../englishzone_view/store/AppContext";
+// import { useAppContext } from "../../../englishzone_view/store/AppContext";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
 export default function QuestionTracker({ data }) {
 
   const { group_question_count = 0 } = data || {};
-  const { showHeader, showQuestionIndex } = useAppContext()
+  const [showHeader,setShowHeader]=useState()
+  const [showQuestionIndex,setShowQuestionIndex]= useState(1)
+  // const { showHeader, showQuestionIndex } = useAppContext()
   return (
     <div className={styles.question_tracker}>
       {Array.from({ length: group_question_count }, (_, index) => (

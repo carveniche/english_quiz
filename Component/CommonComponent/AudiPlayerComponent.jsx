@@ -1,6 +1,6 @@
 import Lottie from "lottie-react";
 import React, { useState, useRef } from "react";
-import audioPlayer from "../../../../assets/LottieAnimation/audioPlayer.json";
+// import audioPlayer from "../../../../assets/LottieAnimation/audioPlayer.json";
 import paused from '../assets/Images/Svg/Paused.svg'
 import playing from '../assets/Images/Svg/Playing.svg'
 import { transform } from "lodash";
@@ -41,18 +41,7 @@ export default function AudiPlayerComponent({ resources }) {
 
         }}
       >
-        {
-          !initialAnimate && (
-            <Lottie
-              width={'100%'}
-              animationData={audioPlayer}
-              loop={true}
-              autoplay
-
-            />
-          )
-
-        }
+       
         <Svg isPlaying={isPlaying} initialAnimate={initialAnimate} />
 
         {/* <img  src={isPlaying ? playing:paused } alt="not found" style={imgStyle(initialAnimate)}/> */}

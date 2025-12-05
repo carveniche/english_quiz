@@ -10,7 +10,7 @@ import { VolumeOff } from "@mui/icons-material";
 import { VolumeUp } from "@mui/icons-material";
 import styles from "./Listening.module.css";
 import { IconButton } from "@mui/material";
-import PandaSvg from "./PandaSvg";
+// import PandaSvg from "./PandaSvg";
 import stopAllMedia from "../../../CommonComponent/stopAllMedia";
 export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const audioRef = useRef();
