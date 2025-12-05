@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+.listening_container {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 8px;
+    background: #ebebf8;
+    padding: 10px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.layout_section {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90%;
+    margin: auto;
+
+}
+
+.listening_player_container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.audio_control_section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.audio_info_title {
+    color: #265B83;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    /* 16px */
+}
+
+.audio_time {
+    color: #265B83;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    /* 14px */
+
+}
+
+.audio_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+}
+
+.audio_progress_section {
+    display: flex;
+    width: 100%;
+    height: 4px;
+    border-radius: 20px;
+    background: #FFF;
+    overflow: hidden;
+}
+
+.audio_progress_bar {
+    height: 100%;
+    background-color: #FF8652;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.audio_controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio_control_button {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.audio_control_button svg {
+    width: 17px;
+    height: 17px;
+}
+
+.listening_body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.listening_content_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.listening_content_section :global(.common_question_text) {
+    color: #265B83;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+    /* 20.8px */
+}

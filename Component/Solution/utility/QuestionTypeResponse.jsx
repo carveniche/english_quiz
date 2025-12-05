@@ -6,23 +6,24 @@ import { OuterPageContext } from "../../QuizQuestion/GroupQuestion/ContextProvid
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import { ValidationContext } from "../../QuizPage";
 import SpeakPlainText from "../../Utility/SpeakPlainText";
+import GptFeedback from "../../Utility/GptFeedBack";
 export default function QuestionTypeResponse({ obj, question_type }) {
   let questionData = JSON.parse(obj?.question_data);
   let choices = questionData?.choices || [];
   let correctValues = choices.filter((item) => item?.correct);
 
   return (
-    <h6>
+    <>
       {correctValues?.map((item, key) => {
         return (
-          <React.Fragment key={key}>
+          <p className="para-text" key={key} style={{ display: "inline" }}>
             {item?.value && item?.value}
             {item?.choice_image && <img src={item?.choice_image} />}
             {key < correctValues.length - 1 ? ", " : ""}
-          </React.Fragment>
+          </p>
         );
       })}
-    </h6>
+    </>
   );
 }
 
@@ -50,44 +51,32 @@ export function SolutionForReordering({ obj, question_type }) {
   );
 }
 
-export function SolutionForWritingGpt({ obj, question_type,showSolution ,userResponse}) {
+export function SolutionForWritingGpt({ obj, question_type, showSolution, userResponse }) {
   let data = JSON.parse(obj);
-  const [showSpeakIcon,setShowSpeakIcon]=useState(false)
+  const [showSpeakIcon, setShowSpeakIcon] = useState(false)
   const { showQuizResponse } = useContext(OuterPageContext);
-   const {readOut} = useContext(ValidationContext);
-  let parseResponse=null;
-  try{
-    parseResponse=JSON.parse(userResponse)||null
+  const { readOut } = useContext(ValidationContext);
+  let parseResponse = null;
+  try {
+    parseResponse = JSON.parse(userResponse) || null
   }
-  catch(e){
-    console.log(e)
+  catch (e) {
+    console.warn(e)
   }
-const requireQuestionType=['Writing ChatGpt','read_the_text']
-const isEnglishStudentLevel = readOut || false
+  const requireQuestionType = ['Writing ChatGpt', 'read_the_text']
 
-  
-useEffect(()=>{
-  if(question_type && isEnglishStudentLevel && requireQuestionType.includes(question_type)){
-    setShowSpeakIcon(true)
-  }
-} ,[question_type])
+  useEffect(() => {
+    if (question_type && readOut && requireQuestionType.includes(question_type)) {
+      setShowSpeakIcon(true)
+    }
+  }, [question_type])
 
-  return (showSolution?
+  return (
+    showSolution ?
     <>
-      <div
-        className={`${styles.correctAnswer} ${styles.correctAnswer2}`}
-        style={{ display: "block" }}
-      >
-        {
-          showQuizResponse&&parseResponse?.score>=0&&<h6 style={{marginBottom:5}}>Score: {parseResponse?.score}</h6>
-        }
-        <div className={styles.ai_audio_player_section}>
-       { parseResponse?.chatGptResponse &&<h6 className="flex-1">Feedback:</h6>}
-       {showSpeakIcon &&<SpeakPlainText readText={parseResponse?.chatGptResponse}/>}
-        </div>
-        <>{parseResponse?.chatGptResponse}</>
-      </div>
-    </>:""
+      <GptFeedback chatGptResponse={parseResponse?.chatGptResponse}/>
+    </> 
+    :""
   );
 }
 
@@ -104,7 +93,7 @@ export function SolutionForDragDrop({ obj, question_type }) {
         <DragDropSolution
           questionContent={questionData?.question_content
             || []}
-          
+
         />
       </div>
     </>

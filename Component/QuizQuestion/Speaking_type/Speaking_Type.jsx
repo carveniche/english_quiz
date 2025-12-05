@@ -16,22 +16,7 @@ export default function Speaking_Type({
   wordsLength,
 }) {
 
-  // const objectParser = (item, index) => {
-  //   let value = "";
-  //   if (item?.node === "text") {
-  //     value = <>{item?.value}</>;
-  //   } else if (item?.node === "img") {
-  //     value = <img src={item?.value} />;
-  //   } else if (item?.node === "audio") {
-  //     value = <>Audio symbol</>;
-  //   }
-  //   if (item?.inNewLine) return <div>{value}</div>;
-  //   return value;
-  // };
  
-
-    // localStorage.getItem("isEnglishStudentLevel") || false;
-
   const [isTrue, setIsTrue] = useState(false);
  
 

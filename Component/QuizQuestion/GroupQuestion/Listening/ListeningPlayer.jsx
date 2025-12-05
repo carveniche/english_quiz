@@ -8,24 +8,33 @@ import Replay10Icon from "@mui/icons-material/Replay10";
 import Button from "@mui/material/Button";
 import { VolumeOff } from "@mui/icons-material";
 import { VolumeUp } from "@mui/icons-material";
-export default function ListeningPlayer({ audioUrl,autoPlay }) {
+import styles from "./Listening.module.css";
+import { IconButton } from "@mui/material";
+import PandaSvg from "./PandaSvg";
+import stopAllMedia from "../../../CommonComponent/stopAllMedia";
+export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const audioRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
   let [totalTime, setTotalTime] = useState(0);
   const [progress, setProgress] = React.useState(0);
   const [play, setPlay] = useState(false);
   const [isMute, setIsMute] = useState(false);
+
+
+
+
   const handlePlayPause = () => {
+     stopAllMedia()
     if (play) {
       audioRef.current.pause();
     } else {
       audioRef.current.play();
     }
+   
     audioRef.current.muted = isMute;
     setPlay(!play);
   };
   const handleMuteUnmute = (isMute) => {
-    console.log(isMute);
     setIsMute(isMute);
     audioRef.current.muted = isMute;
   };
@@ -39,17 +48,17 @@ export default function ListeningPlayer({ audioUrl,autoPlay }) {
     setCurrentTime(Math.floor(currentTime));
   };
   useEffect(() => {
-     
+
     if (audioRef.current) {
-      
+
       audioRef.current.ontimeupdate = handleTimeUpdate;
       audioRef.current.onloadedmetadata = function () {
         if (!audioRef.current) return;
-          audioRef.current.ontimeupdate = handleTimeUpdate;
+        audioRef.current.ontimeupdate = handleTimeUpdate;
 
         setIsMute(audioRef.current.muted || false);
-        if(autoPlay)
-        handlePlayPause()
+        if (autoPlay)
+          handlePlayPause()
         setTotalTime(audioRef.current.duration);
         audioRef.current.onended = function () {
           setPlay(false);
@@ -62,6 +71,7 @@ export default function ListeningPlayer({ audioUrl,autoPlay }) {
       }
     };
   }, []);
+
   const handleSliceAudio = (val) => {
     const { currentTime, duration } = audioRef.current;
     let sliceTime = currentTime + val;
@@ -69,7 +79,6 @@ export default function ListeningPlayer({ audioUrl,autoPlay }) {
     else if (sliceTime > duration) {
       sliceTime = duration;
     }
-    console.log(sliceTime);
     audioRef.current.currentTime = sliceTime;
   };
   const timerFormatter = (currentTime) => {
@@ -80,74 +89,75 @@ export default function ListeningPlayer({ audioUrl,autoPlay }) {
       .toString()
       .padStart(2, "0")}`;
   };
+
   return (
-    <div
-      style={{
-        width: "calc(100% + 64px )",
-        padding: 10,
-        margin: "auto",
-        marginLeft: -32,
-        background: "rgba(0, 255, 255, 0.5)",
-        marginBottom: -32,
-        boxShadow: "border-box",
-        boxSizing:"border-box"
-      }}
-    >
-      <audio ref={audioRef} src={audioUrl} style={{ display: "none" }}></audio>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.5rem",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {play ? (
-          <Button onClick={handlePlayPause}>
-            <PauseIcon />
-          </Button>
-        ) : (
-          <Button onClick={handlePlayPause}>
-            <PlayArrowIcon />
-          </Button>
-        )}
-        <Box sx={{ width: "350px" }}>
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{ height: 10 }}
-          />
-        </Box>
-        <div>
-          <p style={{ fontWeight: "bold", fontSize: 12, fontColor: "black" }}>
-            {timerFormatter(currentTime)} | {timerFormatter(totalTime)}
+    <div className={styles.listening_player_container}>
+      <audio ref={audioRef} src={audioUrl} style={{ display: "none" }} onPause={()=>setPlay(false)}></audio>
+     
+      <div className={styles.audio_control_section}>
+
+        <div className={styles.audio_info}>
+          <h3 className={styles.audio_info_title}>Story Title</h3>
+          <p className={styles.audio_time}>
+            {timerFormatter(currentTime)} / {timerFormatter(totalTime)}
           </p>
+
+        </div>
+
+        <div className={styles.audio_progress_section}>
+          <div className={styles.audio_progress_bar} style={{ width: `${progress}%` }}></div>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
 
-          justifyContent: "center",
-          width: "100%",
-        }}
-      >
-        <Button onClick={() => handleSliceAudio(-10)}>
+      <div className={styles.audio_controls}>
+        <IconButton onClick={() => handleMuteUnmute(true)} sx={audio_control_button(isMute==true)}>
+          <VolumeOff />
+        </IconButton>
+
+        <IconButton onClick={() => handleSliceAudio(-10)} sx={audio_control_button(false)}>
           <Replay10Icon />
-        </Button>
-        {isMute ? (
-          <Button onClick={() => handleMuteUnmute(false)}>
-            <VolumeOff />
-          </Button>
-        ) : (
-          <Button>
-            <VolumeUp onClick={() => handleMuteUnmute(true)} />
-          </Button>
-        )}
-        <Button>
-          <Forward10Icon onClick={() => handleSliceAudio(10)} />
-        </Button>
+        </IconButton>
+        <IconButton onClick={handlePlayPause} sx={audio_control_button_big}>
+          {play ? <PauseIcon /> : <PlayArrowIcon />}
+        </IconButton>
+        <IconButton onClick={() => handleSliceAudio(10)} sx={audio_control_button(false)} >
+          <Forward10Icon />
+        </IconButton>
+        <IconButton onClick={() => handleMuteUnmute(false)} sx={audio_control_button(isMute==false)}>
+          <VolumeUp />
+        </IconButton>
+
       </div>
     </div>
   );
 }
+
+const audio_control_button = (isMute=false) => ({
+  width: `${30}px`,
+  height: `${30}px`,
+  backgroundColor: isMute ? "#3e3b3b" :"rgba(0, 0, 0, 0.25)",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.35)"
+  },
+  "& svg": {
+    width: "17px",
+    height: "17px"
+  }
+});
+const audio_control_button_big = {
+  width: "46px",
+  height: "46px",
+  backgroundColor: "rgba(0, 0, 0, 0.25)",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.35)"
+  },
+  "& svg": {
+    width: "28px",
+    height: "28px"
+  }
+};
+
+
+
