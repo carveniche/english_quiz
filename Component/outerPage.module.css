@@ -90,9 +90,9 @@
 .solution_button {
   position: absolute;
   left: 10px;
-  bottom: 10px;
+  bottom: -10px;
   border-radius: 8px;
-  z-index: 2;
+  z-index: 0;
   border: none;
   background-color: #4DB6AC;
   color: white;

@@ -112,7 +112,7 @@ export default function CorrectIncorrectStatus({obj}) {
       <Zoom in={triggerImage} timeout={300}>
         <div className={styles.quizCorrectInorrect}
           style={{
-            top: pageType ? "unset" : ishotspot ? '28px' : '0px',
+            top: pageType ? "unset" : ishotspot ? '28px' : '-35px',
             height: pageType ? 'fit-content' : '100%',
             bottom: pageType ? '0px' : 'unset',
           }}
