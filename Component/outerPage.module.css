@@ -90,7 +90,7 @@
 .solution_button {
   position: absolute;
   left: 10px;
-  bottom: -10px;
+  bottom: 5px;
   border-radius: 8px;
   z-index: 0;
   border: none;

@@ -4,12 +4,14 @@
 import React, { useState, useEffect,useRef, useContext } from "react";
 import styles from "./Solution.module.css";
 import Lottie from "lottie-react";
+import axios from "axios";
 import correctlottie from "../assets/LottieAnimation/CorrectAimation.json";
 import incorrectlottie from "../assets/LottieAnimation/IncorrectAnimation.json";
 import pandaRight from "../assets/LottieAnimation/Right_answer.json";
 import pandaWrong from "../assets/LottieAnimation/Wrong_answer.json";
 import { Zoom } from "@mui/material";
 import { ValidationContext } from "../QuizPage";
+import { loadPandaJson } from "./usePandaJson";
 
 export default function CorrectIncorrectStatus({obj}) {
   const { isCorrect } = useContext(ValidationContext);
@@ -35,6 +37,16 @@ export default function CorrectIncorrectStatus({obj}) {
     setTriggerValue(answer);
     setAnimationKey((prev) => prev + 1); // restart animation
   };
+ 
+
+  const [correctJson, setCorrectJson] = useState(null);
+  const [incorrectJson, setIncorrectJson] = useState(null);
+
+  useEffect(() => {
+    loadPandaJson("correct").then(setCorrectJson);
+    loadPandaJson("incorrect").then(setIncorrectJson);
+  }, []);
+
 
 
   function handleAnimationComplete() {
@@ -100,7 +112,7 @@ export default function CorrectIncorrectStatus({obj}) {
             <Lottie
               onComplete={handleAnimationComplete}
               key={`panda-${animationKey}`}
-              animationData={triggerValue ? pandaRight : pandaWrong}
+              animationData={triggerValue ? correctJson : incorrectJson}
               loop={false}
               autoplay
 
@@ -112,7 +124,7 @@ export default function CorrectIncorrectStatus({obj}) {
       <Zoom in={triggerImage} timeout={300}>
         <div className={styles.quizCorrectInorrect}
           style={{
-            top: pageType ? "unset" : ishotspot ? '28px' : '-35px',
+            top: pageType ? "unset" : ishotspot ? '28px' : '10px',
             height: pageType ? 'fit-content' : '100%',
             bottom: pageType ? '0px' : 'unset',
           }}

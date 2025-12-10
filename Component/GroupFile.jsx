@@ -18,6 +18,7 @@ export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
   );
 }
 export default function GroupFile({
+  fromPage,
   data,
   isShowQuestion,
   showSolution,
@@ -46,7 +47,9 @@ export default function GroupFile({
     <ValidationContextProvider>
       <div
        ref={mainContainerRef}
-        className={styles.main_layout_section}
+        className={`${styles.main_layout_section} ${
+          fromPage === "Review" ? "![position:unset]" : ""
+        }`}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
       >
