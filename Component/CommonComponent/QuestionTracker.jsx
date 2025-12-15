@@ -7,9 +7,9 @@ import { IconButton } from "@mui/material";
 export default function QuestionTracker({ data }) {
 
   const { group_question_count = 0 } = data || {};
-  const [showHeader,setShowHeader]=useState()
-  const [showQuestionIndex,setShowQuestionIndex]= useState(1)
-  // const { showHeader, showQuestionIndex } = useAppContext()
+
+  const { showHeader,question_index:showQuestionIndex   } = data || {}
+  
   return (
     <div className={styles.question_tracker}>
       {Array.from({ length: group_question_count }, (_, index) => (
