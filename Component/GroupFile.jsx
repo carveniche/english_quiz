@@ -40,7 +40,13 @@ export default function GroupFile({
   }, [data?.group_type]); // ✅ only recompute when group_type changes
 
   const mainContainerRef = useRef(null);
-
+  if (typeof window !== "undefined") {
+    window.ShowAnswer = ShowAnswer;
+  }
+  function ShowAnswer() {
+    console.log("SubmoduleHandler ShowAnser")
+    setShowSolutionModal(true)
+  }
  
 
   return (
@@ -77,7 +83,7 @@ export default function GroupFile({
         </div>
 
         {
-          (showSolution || showSolutionState) && (
+          (showSolution || showSolutionState) && (fromPage !=="Review") && (
             <button
               onClick={() => setShowSolutionModal(true)}
               className={`${styles.solution_button} btn_txt_s `}
