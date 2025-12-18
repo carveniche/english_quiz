@@ -43,12 +43,14 @@ export default function GroupFile({
   if (typeof window !== "undefined") {
     window.ShowAnswer = ShowAnswer;
   }
-  function ShowAnswer() {
-    console.log("SubmoduleHandler ShowAnser")
-    setShowSolutionModal(true)
+  function ShowAnswer(data) {
+    if(data){
+      
+      setShowSolutionModal(true)
+    }else if( data=== false){
+      setShowSolutionModal(false)
+    }
   }
- 
-
   return (
     <ValidationContextProvider>
       <div
