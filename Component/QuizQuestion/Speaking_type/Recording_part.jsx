@@ -10,10 +10,8 @@ import axios from "axios";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 import React_Base_Api from "../../../ReactConfigApi";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
-import { Circle, Close, FastForward, FastRewind, FlashOnOutlined, Headphones, Info, KeyboardVoiceRounded, Mic, Pause, PlayArrow, Replay, Stop } from "@mui/icons-material";
-import { Alert, Box, IconButton, Modal, Tooltip } from "@mui/material";
-// import recordAgain from "../../../Component/assets/Images/Svg/recordAgain.svg";
-import objectParser from "../../Utility/objectParser";
+import { Headphones, Mic} from "@mui/icons-material";
+import { IconButton} from "@mui/material";
 import GptFeedback from "../../Utility/GptFeedBack";
 import stopAllMedia from "../../CommonComponent/stopAllMedia";
 import AudioRecordingModal from "./AudioRecordingModal";
@@ -69,10 +67,82 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
   };
 }, []);
 
+ function isSafari() {
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+
+function startWavRecorder(stream) {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioContextClass();
+  const source = audioCtx.createMediaStreamSource(stream);
+  const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+  const chunks = [];
+
+  processor.onaudioprocess = (e) => {
+    chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+  };
+
+  source.connect(processor);
+  processor.connect(audioCtx.destination);
+
+  return {
+    stop: () => {
+      processor.disconnect();
+      source.disconnect();
+      audioCtx.close();
+      return encodeWav(chunks, audioCtx.sampleRate);
+    }
+  };
+}
+
+
+function encodeWav(chunks, sampleRate) {
+  let totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+
+  // WAV header + PCM data
+  let buffer = new ArrayBuffer(44 + totalLength * 2);
+  let view = new DataView(buffer);
+
+  function writeString(offset, string) {
+    for (let i = 0; i < string.length; i++) {
+      view.setUint8(offset + i, string.charCodeAt(i));
+    }
+  }
+
+  // RIFF header
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + totalLength * 2, true);
+  writeString(8, "WAVE");
+
+  // fmt chunk
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);      // PCM header size
+  view.setUint16(20, 1, true);       // Audio format = PCM
+  view.setUint16(22, 1, true);       // Channels = 1
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true); // Byte rate
+  view.setUint16(32, 2, true);       // Block align
+  view.setUint16(34, 16, true);      // Bits per sample
+
+  // data chunk
+  writeString(36, "data");
+  view.setUint32(40, totalLength * 2, true);
+
+  // PCM samples
+  let offset = 44;
+  chunks.forEach(chunk => {
+    for (let i = 0; i < chunk.length; i++) {
+      let s = Math.max(-1, Math.min(1, chunk[i]));  
+      view.setInt16(offset, s * 0x7FFF, true);
+      offset += 2;
+    }
+  });
+
+  return new Blob([view], { type: "audio/wav" });
+}
 
 function audioRecordingStoping() {
-
-  chunksRef.current = [];        // reset
+  chunksRef.current = [];
   audioFileRef.current = null;
   setAudioURL("");
   setPayedTime("00:00");
@@ -80,31 +150,50 @@ function audioRecordingStoping() {
   navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
 
-      mediaRecorderRef.current = new MediaRecorder(stream);
+      if (isSafari()) {
+        // SAFARI → WAV RECORDER
+        const wavRecorder = startWavRecorder(stream);
 
-      mediaRecorderRef.current.ondataavailable = (e) => {
-        chunksRef.current.push(e.data);
-      };
+        mediaRecorderRef.current = {
+          type: "wav",
+          recorder: wavRecorder,
+          stream
+        };
 
-      mediaRecorderRef.current.onstop = () => {
-        clearInterval(timerIntervalRef.current);
-        const blob = new Blob(chunksRef.current, { type: "audio/mp3" });
-        chunksRef.current = [];
-        const url = URL.createObjectURL(blob);
-        setAudioURL(url);
-        audioFileRef.current = blob;
-      };
+      } else {
+        // CHROME / FIREFOX → WEBM RECORDER
+        const mimeType = "audio/webm;codecs=opus";
+        const recorder = new MediaRecorder(stream, { mimeType });
 
-      mediaRecorderRef.current.start();
-    })
-    .catch((error) => {
-      if (error.name === "NotAllowedError") {
-        setAudioPermission(false);
+        recorder.ondataavailable = (e) => {
+          chunksRef.current.push(e.data);
+        };
+
+        recorder.onstop = () => {
+          clearInterval(timerIntervalRef.current);
+
+          const blob = new Blob(chunksRef.current, { type: mimeType });
+          chunksRef.current = [];
+
+          const url = URL.createObjectURL(blob);
+          audioFileRef.current = blob;
+          setAudioURL(url);
+        };
+
+        mediaRecorderRef.current = {
+          type: "webm",
+          recorder,
+          stream
+        };
+
+        recorder.start();
       }
-      console.error(error);
+    })
+    .catch((err) => {
+      if (err.name === "NotAllowedError") setAudioPermission(false);
+      console.error(err);
     });
 }
-
 
   const startTimer = () => {
     const startTime = Date.now();
@@ -143,30 +232,103 @@ function audioRecordingStoping() {
     }
   }
 
-const handleStopRecording = () => {
-    setIsRecorder(false);
-    if (mediaRecorderRef.current) {
-        try {
-            mediaRecorderRef.current.stop();
-        } catch (e) {}
+  const handleStopRecording = () => {
+  setIsRecorder(false);
+
+  // ---- SAFARI WAV FALLBACK ----
+  if (mediaRecorderRef.current?.type === "wav") {
+    clearInterval(timerIntervalRef.current);
+
+    const seconds = timeToSeconds(audioDuration);
+
+    if (seconds >= 5) {
+      const wavBlob = mediaRecorderRef.current.recorder.stop();
+      const url = URL.createObjectURL(wavBlob);
+
+      audioFileRef.current = wavBlob;
+      setAudioURL(url);
+
+      setStateIndex(2);  // show playback UI
+    } else {
+      setStateIndex(0);
+      setTimeout(() => {
+        setAudioURL("");
+        setAudioDuration("00:00");
+      }, 200);
     }
+
+    return; 
+  }
+
+  // ---- NORMAL MEDIARECORDER (WEBM) ----
+  if (mediaRecorderRef.current?.type === "webm") {
+    try {
+      mediaRecorderRef.current.recorder.stop();
+    } catch (e) {}
 
     clearInterval(timerIntervalRef.current);
 
     const seconds = timeToSeconds(audioDuration);
+
     if (seconds >= 5) {
-        // show playback UI
-        setStateIndex(2); 
+      setStateIndex(2);
     } else {
-        // too short → retry
-        setStateIndex(0);
-       setTimeout(() => {
+      setStateIndex(0);
+      setTimeout(() => {
         setAudioURL("");
         setAudioDuration("00:00");
-       }, 200);
-        
+      }, 200);
     }
+
+    return;
+  }
+
+  // ---- BACKUP: YOU HAD old logic ----
+  if (mediaRecorderRef.current) {
+    try {
+      mediaRecorderRef.current.stop();
+    } catch (e) {}
+  }
+
+  clearInterval(timerIntervalRef.current);
+  const seconds = timeToSeconds(audioDuration);
+
+  if (seconds >= 5) {
+    setStateIndex(2);
+  } else {
+    setStateIndex(0);
+    setTimeout(() => {
+      setAudioURL("");
+      setAudioDuration("00:00");
+    }, 200);
+  }
 };
+
+
+// const handleStopRecording = () => {
+//     setIsRecorder(false);
+//     if (mediaRecorderRef.current) {
+//         try {
+//             mediaRecorderRef.current.stop();
+//         } catch (e) {}
+//     }
+
+//     clearInterval(timerIntervalRef.current);
+
+//     const seconds = timeToSeconds(audioDuration);
+//     if (seconds >= 5) {
+//         // show playback UI
+//         setStateIndex(2); 
+//     } else {
+//         // too short → retry
+//         setStateIndex(0);
+//        setTimeout(() => {
+//         setAudioURL("");
+//         setAudioDuration("00:00");
+//        }, 200);
+        
+//     }
+// };
 
 
   function timeToSeconds(t) {
@@ -458,26 +620,30 @@ const handleStopRecording = () => {
     const audio = audioRefplay.current;
     if (!audio) return;
 
-    const handleLoadedMetadata = () => {
+    const extractDuration = () => {
+      let dur = audio.duration;
 
-      if (audio.duration === Infinity) {
-        // Trick to force browser to load full duration
-        audio.currentTime = 1e101;
+      if (!isFinite(dur) || dur === Infinity || dur === 0) {
+        // Force Safari / WebKit to calculate duration
+        audio.currentTime = Number.MAX_SAFE_INTEGER;
         audio.ontimeupdate = () => {
           audio.ontimeupdate = null;
           audio.currentTime = 0;
-          const duration = audio.duration;
-          const formatSec = formatTimToSeconds(duration);
-          setAudioDuration(formatSec);
+
+          const realDuration = audio.duration;
+          setAudioDuration(formatTimToSeconds(realDuration));
         };
+      } else {
+        // Normal browser case
+        setAudioDuration(formatTimToSeconds(dur));
       }
     };
 
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    return () => {
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-    };
+    audio.addEventListener("loadedmetadata", extractDuration);
+    return () => audio.removeEventListener("loadedmetadata", extractDuration);
+
   }, [audioURL]);
+
 
   useEffect(() => {
     if (showSolution && questionResponse?.audio_response) {

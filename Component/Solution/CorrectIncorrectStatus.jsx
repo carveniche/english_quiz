@@ -1,18 +1,21 @@
-
-
-
-import React, { useState, useEffect,useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styles from "./Solution.module.css";
-import Lottie from "lottie-react";
-import correctlottie from "../../../../assets/LottieAnimation/CorrectAimation.json";
-import incorrectlottie from "../../../../assets/LottieAnimation/IncorrectAnimation.json";
-import pandaRight from "../../../../assets/LottieAnimation/Right_answer.json";
-import pandaWrong from "../../../../assets/LottieAnimation/Wrong_answer.json";
+import "@lottiefiles/lottie-player"; // ★ IMPORTANT
 import { Zoom } from "@mui/material";
 import { ValidationContext } from "../QuizPage";
 
-export default function CorrectIncorrectStatus({obj}) {
+export default function CorrectIncorrectStatus({ obj }) {
+  const pandaCorrect =
+    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Correct_panda.json";
+  const pandaWrong =
+    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Wrong_Panda.json";
+  const correctlottie =
+    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/CorrectAimation.json";
+  const incorrectlottie =
+    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/IncorrectAnimation.json";
+
   const { isCorrect } = useContext(ValidationContext);
+
   const [triggerImage, setTriggerImage] = useState(false);
   const [triggerAnimation, setTriggerAnimation] = useState(false);
   const [triggerValue, setTriggerValue] = useState(null);
@@ -20,33 +23,25 @@ export default function CorrectIncorrectStatus({obj}) {
 
   const audioRefs = useRef({ correct: [], incorrect: [] });
 
-  // Expose handlers globally
+  // Expose global handler (your original logic)
   window.handleShowCorrectIncorrectImage = (val) => {
     setTriggerAnimation(false);
     setTriggerImage(true);
     setTriggerValue(val);
   };
 
-  window.handleShowCorrectIncorrectAnimation = (val) => {
+  window.handleShowCorrectIncorrectAnimation = () => {
     const answer = window.checkAnswerStatus();
-    if(answer == -1) return;
+    if (answer == -1) return;
+
     playRandomAudio(answer);
+
     setTriggerImage(false);
     setTriggerValue(answer);
     setAnimationKey((prev) => prev + 1); // restart animation
   };
 
-
-  function handleAnimationComplete() {
-    console.log("Animation completed");
-    // Hide animation, show image after animation finishes
-   setTimeout(() => {
-    setTriggerAnimation(false);
-    setTriggerImage(true);
-   }, 500);
-  }
-
-
+  // Audio list
   const audioLists = {
     correct: [
       "Nice-work.mp3",
@@ -60,71 +55,93 @@ export default function CorrectIncorrectStatus({obj}) {
     incorrect: ["Wrong_answer.mp3"],
   };
 
+  // Load audio files
   useEffect(() => {
-    const audioBaseUrl = "https://d3g74fig38xwgn.cloudfront.net/app-sounds/mathzone/";
+    const base = "https://d3g74fig38xwgn.cloudfront.net/app-sounds/mathzone/";
     Object.keys(audioLists).forEach((type) => {
       audioRefs.current[type] = audioLists[type].map((file) => {
-        const audio = new Audio(`${audioBaseUrl}${file}`);
+        const audio = new Audio(base + file);
         audio.preload = "auto";
         return audio;
       });
     });
   }, []);
 
+  // Play random audio
   const playRandomAudio = (answer) => {
-    if (answer === -1) return;
     const type = answer ? "correct" : "incorrect";
     const list = audioRefs.current[type];
-    if (!list?.length) return;
-    const randomAudio = list[Math.floor(Math.random() * list.length)];
-    randomAudio.currentTime = 0;
+    if (!list.length) return;
+
+    const audio = list[Math.floor(Math.random() * list.length)];
+    audio.currentTime = 0;
+
     setTriggerAnimation(true);
-    randomAudio.play().catch((err) => console.warn("Audio play error:", err));
+    audio.play().catch(() => {});
   };
+
+  const handleAnimationComplete = () => {
+    setTimeout(() => {
+      setTriggerAnimation(false);
+      setTriggerImage(true);
+    }, 300);
+  };
+
   const ishotspot = obj?.question_type === "hotspot";
-   const pageType = sessionStorage.getItem("page_type") == "review"
+  const pageType = sessionStorage.getItem("page_type") === "review";
+
   return (
     <>
+      {/* Lottie Animation Section */}
       {triggerAnimation && (
         <div className={styles.quizCorrectInorrect}>
+          {/* Correct / Incorrect Animation */}
           <div style={{ maxWidth: 140 }}>
-            <Lottie
+            <lottie-player
               key={`main-${animationKey}`}
-              animationData={triggerValue ? correctlottie : incorrectlottie}
-              loop={false}
+              src={triggerValue ? correctlottie : incorrectlottie}
               autoplay
-              onComplete={handleAnimationComplete} // ✅ now calls function
-            />
+              loop="false"
+              style={{ width: "140px" }}
+            ></lottie-player>
           </div>
-          <div style={{ maxWidth: 200 }}>
-            <Lottie
-              onComplete={handleAnimationComplete}
-              key={`panda-${animationKey}`}
-              animationData={triggerValue ? pandaRight : pandaWrong}
-              loop={false}
-              autoplay
 
-            />
+          {/* Panda Animation */}
+          <div style={{ maxWidth: 200 }}>
+            <lottie-player
+              key={`panda-${animationKey}`}
+              src={triggerValue ? pandaCorrect : pandaWrong}
+              autoplay
+              loop="false"
+              style={{ width: "200px" }}
+              onEvent="complete"
+              onComplete={handleAnimationComplete}
+            ></lottie-player>
           </div>
         </div>
       )}
 
+      {/* Image Section */}
       <Zoom in={triggerImage} timeout={300}>
-        <div className={styles.quizCorrectInorrect}
+        <div
+          className={styles.quizCorrectInorrect}
           style={{
-            top: pageType ? "unset" : ishotspot ? '28px' : '0px',
-            height: pageType ? 'fit-content' : '100%',
-            bottom: pageType ? '0px' : 'unset',
+            top: pageType ? "unset" : ishotspot ? "28px" : "0px",
+            height: pageType ? "fit-content" : "100%",
+            bottom: pageType ? "0px" : "unset",
           }}
         >
           {triggerValue === "Skipped" ? (
             <button className={styles.skippedButton}>Skipped</button>
-          ) : ["Not attempted","Notattempted"].includes(triggerValue) ? (
-            <button className={styles.skippedButton} style={{backgroundColor:'#1976D2'}}>Not Attempted</button>
+          ) : ["Not attempted", "Notattempted"].includes(triggerValue) ? (
+            <button className={styles.skippedButton} style={{ backgroundColor: "#1976D2" }}>
+              Not Attempted
+            </button>
           ) : (
             <img
-              src={`https://d2jhdcglwxx007.cloudfront.net/${triggerValue ? "correct.png" : "incorrect.png"
-                }`}
+              src={`https://d2jhdcglwxx007.cloudfront.net/${
+                triggerValue ? "correct.png" : "incorrect.png"
+              }`}
               alt="correct/incorrect"
             />
           )}
@@ -133,4 +150,3 @@ export default function CorrectIncorrectStatus({obj}) {
     </>
   );
 }
-

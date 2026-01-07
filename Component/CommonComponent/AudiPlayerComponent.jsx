@@ -1,10 +1,11 @@
 import Lottie from "lottie-react";
 import React, { useState, useRef } from "react";
-import audioPlayer from "../../../../assets/LottieAnimation/audioPlayer.json";
+
 import paused from '../assets/Images/Svg/Paused.svg'
 import playing from '../assets/Images/Svg/Playing.svg'
 import { transform } from "lodash";
 export default function AudiPlayerComponent({ resources }) {
+  const audioPlayer = "https://d2jhdcglwxx007.cloudfront.net/lottie-json/audioPlayer.json"
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const [initialAnimate, setInitialAnimate] = useState(false)
