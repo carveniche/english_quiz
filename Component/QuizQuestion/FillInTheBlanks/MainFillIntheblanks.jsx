@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import FillIntheBlanks from "./FillIntheBlanks";
 
 export default function MainFillIntheblanks({ obj, wordsLength }) {

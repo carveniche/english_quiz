@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import parse from "html-react-parser";
 import styles from "./choice.module.css";
 import { ValidationContext } from "../../QuizPage";
-export default function Choices({ choicesRef}) {
+export default function Choices({ choicesRef,choices}) {
 
   const { studentAnswer, isGroup,submitResponse, disabledQuestion, showSolution } =
     useContext(ValidationContext);

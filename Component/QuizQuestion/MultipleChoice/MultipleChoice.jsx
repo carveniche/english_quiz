@@ -22,16 +22,18 @@ export default function MultipleChoice({ obj, wordsLength }) {
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
   const [refreshKey,setRefreshKey] = useState(0)
+  const answeChoicesRef = useRef(obj?.choices || []);
 
   useEffect(() => {
     if (!obj?.choices) return;
-
+    if (submitResponse) return;
+    if (disabledQuestion) return;
     choicesRef.current = obj.choices.map(choice => ({
       ...choice
     }));
+    
     setRefreshKey((prev)=>prev+1)
-
-  }, [obj,obj?.choices]);
+  }, [obj?.choices]);
 
   const handleSubmit = () => {
     if (submitResponse) return;
@@ -81,7 +83,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
           choicesRef={choicesRef}
           isEnglishStudentLevel={readOut}
         />
-        <Choices choicesRef={choicesRef} key={refreshKey}  />
+        <Choices choicesRef={choicesRef}  key={refreshKey}  />
       </div>
     </>
   );
