@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styles from "./Solution.module.css";
-import "@lottiefiles/lottie-player"; // ★ IMPORTANT
+// import "@lottiefiles/lottie-player"; // ★ IMPORTANT
 import { Zoom } from "@mui/material";
 import { ValidationContext } from "../QuizPage";
-
+import correctlottie from "./CorrectAimation.json";
+import incorrectlottie from "./IncorrectAnimation.json";
+import pandaCorrect from "./Right_answer.json";
+import pandaWrong from "./Wrong_answer.json";
+import Lottie from "lottie-react";
 export default function CorrectIncorrectStatus({ obj }) {
-  const pandaCorrect =
-    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Correct_panda.json";
-  const pandaWrong =
-    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Wrong_Panda.json";
-  const correctlottie =
-    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/CorrectAimation.json";
-  const incorrectlottie =
-    "https://d2jhdcglwxx007.cloudfront.net/lottie-json/IncorrectAnimation.json";
+  // const pandaCorrect =
+  //   "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Correct_panda.json";
+  // const pandaWrong =
+  //   "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Wrong_Panda.json";
+  // const correctlottie =
+  //   "https://d2jhdcglwxx007.cloudfront.net/lottie-json/CorrectAimation.json";
+  // const incorrectlottie =
+  //   "https://d2jhdcglwxx007.cloudfront.net/lottie-json/IncorrectAnimation.json";
 
   const { isCorrect } = useContext(ValidationContext);
 
@@ -97,26 +101,27 @@ export default function CorrectIncorrectStatus({ obj }) {
         <div className={styles.quizCorrectInorrect}>
           {/* Correct / Incorrect Animation */}
           <div style={{ maxWidth: 140 }}>
-            <lottie-player
+
+             <Lottie
               key={`main-${animationKey}`}
-              src={triggerValue ? correctlottie : incorrectlottie}
+              animationData={triggerValue ? correctlottie : incorrectlottie}
+              loop={false}
               autoplay
-              loop="false"
-              style={{ width: "140px" }}
-            ></lottie-player>
+              onComplete={handleAnimationComplete} // ✅ now calls function
+            />
           </div>
 
           {/* Panda Animation */}
           <div style={{ maxWidth: 200 }}>
-            <lottie-player
-              key={`panda-${animationKey}`}
-              src={triggerValue ? pandaCorrect : pandaWrong}
+
+             <Lottie
+              key={`main-${animationKey}`}
+              animationData={triggerValue ? pandaCorrect : pandaWrong}
+              loop={false}
               autoplay
-              loop="false"
-              style={{ width: "200px" }}
-              onEvent="complete"
-              onComplete={handleAnimationComplete}
-            ></lottie-player>
+              onComplete={handleAnimationComplete} // ✅ now calls function
+            />
+         
           </div>
         </div>
       )}

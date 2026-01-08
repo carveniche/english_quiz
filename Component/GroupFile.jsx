@@ -5,9 +5,9 @@ import {ValidationContextProvider } from "./QuizPage";
 // import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import MainListening from "./QuizQuestion/GroupQuestion/Listening/MainListening";
 import styles from "../Component/outerPage.module.css";
-import QuestionTracker from "./CommonComponent/QuestionTracker";
 import SolutionSection from "./Solution/SolutionSection";
 import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
+import QuestionTracker from "../../group_question_navigation/QuestionTracker";
 export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
   return (
     <>

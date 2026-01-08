@@ -14,7 +14,7 @@ export default function QuestionTracker({ data }) {
         <div key={index}
           className={`${styles.question_item} ${(index + 1) == showQuestionIndex ? styles.active : ""}`}
         />
-
+        
       ))}
 
       {showHeader === "review" && <QuestionNavigator data={data} group_question_count={group_question_count} />}
