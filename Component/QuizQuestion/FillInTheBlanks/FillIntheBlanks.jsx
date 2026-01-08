@@ -1,4 +1,4 @@
-import React, { useContext,  useRef, useState } from "react";
+import React, { useContext,  useEffect,  useRef, useState } from "react";
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import { ValidationContext } from "../../QuizPage";
@@ -33,6 +33,9 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
 
 
   const choicesRef = useRef(data || []);
+  useEffect(()=>{
+    choicesRef.current = data
+  },[obj])
 
   const handleSubmit = () => {
     if (submitResponse) return;
