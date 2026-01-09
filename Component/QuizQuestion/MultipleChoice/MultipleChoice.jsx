@@ -21,7 +21,20 @@ export default function MultipleChoice({ obj, wordsLength }) {
   } = useContext(ValidationContext);
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
-  
+ 
+  const [refreshKey,setRefreshKey] = useState(0)
+ 
+  useEffect(() => {
+    if (!obj?.choices) return;
+    if (submitResponse) return;
+    if (disabledQuestion) return;
+    choicesRef.current = obj.choices.map(choice => ({
+      ...choice
+    }));
+    
+    setRefreshKey((prev)=>prev+1)
+  }, [obj?.choices]);
+
   const handleSubmit = () => {
     if (submitResponse) return;
     if (disabledQuestion) return;
@@ -70,7 +83,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
           choicesRef={choicesRef}
           isEnglishStudentLevel={readOut}
         />
-        <Choices choicesRef={choicesRef} />
+        <Choices choicesRef={choicesRef}  key={refreshKey}  />
       </div>
     </>
   );

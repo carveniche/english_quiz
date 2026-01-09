@@ -18,6 +18,7 @@ export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
   );
 }
 export default function GroupFile({
+  fromPage,
   data,
   isShowQuestion,
   showSolution,
@@ -39,14 +40,24 @@ export default function GroupFile({
   }, [data?.group_type]); // ✅ only recompute when group_type changes
 
   const mainContainerRef = useRef(null);
-
- 
-
+  if (typeof window !== "undefined") {
+    window.ShowAnswer = ShowAnswer;
+  }
+  function ShowAnswer(data) {
+    if(data){
+      
+      setShowSolutionModal(true)
+    }else if( data=== false){
+      setShowSolutionModal(false)
+    }
+  }
   return (
     <ValidationContextProvider>
       <div
        ref={mainContainerRef}
-        className={styles.main_layout_section}
+        className={`${styles.main_layout_section} ${
+          fromPage === "Review" ? "![position:unset]" : ""
+        }`}
         onCopy={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
       >
@@ -74,7 +85,7 @@ export default function GroupFile({
         </div>
 
         {
-          (showSolution || showSolutionState) && (
+          (showSolution || showSolutionState) && (fromPage !=="Review") && (
             <button
               onClick={() => setShowSolutionModal(true)}
               className={`${styles.solution_button} btn_txt_s `}
@@ -99,5 +110,4 @@ export default function GroupFile({
 
   );
 }
-
 
