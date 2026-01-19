@@ -33,9 +33,11 @@ export default function FillIntheBlanks({ obj, wordsLength }) {
 
 
   const choicesRef = useRef(data || []);
+ 
   useEffect(()=>{
     choicesRef.current = data
   },[obj])
+
 
   const handleSubmit = () => {
     if (submitResponse) return;

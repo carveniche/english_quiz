@@ -21,9 +21,9 @@ export default function MultipleChoice({ obj, wordsLength }) {
   } = useContext(ValidationContext);
   const choicesRef = useRef(obj?.choices || []);
   const [redAlert, setRedAlert] = useState(false);
+ 
   const [refreshKey,setRefreshKey] = useState(0)
-  const answeChoicesRef = useRef(obj?.choices || []);
-
+ 
   useEffect(() => {
     if (!obj?.choices) return;
     if (submitResponse) return;
