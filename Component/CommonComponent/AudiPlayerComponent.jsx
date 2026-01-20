@@ -5,7 +5,7 @@ import audioPlayer from '../Solution/audioPlayer.json'
 export default function AudiPlayerComponent({ resources }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-  const [initialAnimate, setInitialAnimate] = useState(false)
+  const [initialAnimate, setInitialAnimate] = useState(true)
   const handleAudioToggle = () => {
     setInitialAnimate(true)
     if (isPlaying) {
@@ -21,9 +21,6 @@ export default function AudiPlayerComponent({ resources }) {
   };
   return (
     <>
-
-
-
       <div
         onClick={handleAudioToggle}
         style={{

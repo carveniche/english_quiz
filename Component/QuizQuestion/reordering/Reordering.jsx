@@ -9,6 +9,7 @@ import ResourceViewer from "../../CommonComponent/ResourceViewer";
 import SpeakQuestionText from "../../Utility/SpeakQuestionText";
 import AudiPlayerComponent from "../../CommonComponent/AudiPlayerComponent";
 import QuestionCommonContent from "../../CommonComponent/QuestionCommonContent";
+import DndKitDragDrop from "./DndDragDrop";
 export default function Reordering({ obj, direction, questionResponse }) {
 
 
@@ -55,14 +56,14 @@ export default function Reordering({ obj, direction, questionResponse }) {
           choicesRef={obj?.questionContent}
           isEnglishStudentLevel={readOut}
         />
-
-        <Dragdrop
+        <DndKitDragDrop
           choiceRef={choiceRef}
           questionData={obj?.questionContent}
           response={questionResponse || []}
           direction={direction}
 
         />
+
 
 
       </div>
