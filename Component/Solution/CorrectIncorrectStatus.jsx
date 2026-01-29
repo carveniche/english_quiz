@@ -108,7 +108,11 @@ export default function CorrectIncorrectStatus({ obj }) {
     <>
       {/* Lottie Animation Section */}
       {triggerAnimation && (
-        <div className={styles.quizCorrectInorrect}>
+        <div className={styles.quizCorrectInorrect}
+        style={{
+          right:"100px"
+        }}
+        >
           {/* Correct / Incorrect Animation */}
           <div style={{ maxWidth: 140 }}>
 
