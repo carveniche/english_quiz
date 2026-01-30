@@ -24,6 +24,7 @@ export default function GroupFile({
   isShowQuestion,
   showSolution,
   showCorrectIncorrect,
+  isLiveClass = false,
 }) {
 
   const [showSolutionModal, setShowSolutionModal] = useState(false);
@@ -104,7 +105,7 @@ export default function GroupFile({
           question_type={data?.question_data[0]?.question_type}
 
         />
-        <CorrectIncorrectStatus obj={data?.question_data[0]} />
+        <CorrectIncorrectStatus obj={data?.question_data[0]} isLiveClass={isLiveClass} />
 
       </div>
     </ValidationContextProvider>

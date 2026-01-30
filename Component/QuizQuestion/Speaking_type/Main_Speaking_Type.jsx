@@ -39,7 +39,8 @@ export const Main_Speaking_Type = ({ obj, wordsLength }) => {
     <>
       <div
         style={{
-         height:"100vh",
+          // height: "100%",
+          flex: 1,
           backgroundColor: "rgb(0 205 216 / 16%)",
           padding: "1.5rem 1rem",
           borderRadius: "15px",

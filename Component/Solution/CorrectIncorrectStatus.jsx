@@ -8,7 +8,7 @@ import incorrectlottie from "./IncorrectAnimation.json";
 import pandaCorrect from "./Right_answer.json";
 import pandaWrong from "./Wrong_answer.json";
 import Lottie from "lottie-react";
-export default function CorrectIncorrectStatus({ obj }) {
+export default function CorrectIncorrectStatus({ obj,isLiveClass }) {
   // const pandaCorrect =
   //   "https://d2jhdcglwxx007.cloudfront.net/lottie-json/Correct_panda.json";
   // const pandaWrong =
@@ -110,7 +110,7 @@ export default function CorrectIncorrectStatus({ obj }) {
       {triggerAnimation && (
         <div className={styles.quizCorrectInorrect}
         style={{
-          right:"100px"
+          right: isLiveClass ? "100px" : "auto"
         }}
         >
           {/* Correct / Incorrect Animation */}
@@ -148,6 +148,7 @@ export default function CorrectIncorrectStatus({ obj }) {
             top: pageType ? "unset" : ishotspot ? "28px" : "0px",
             height: pageType ? "fit-content" : "100%",
             bottom: pageType ? "0px" : "unset",
+            right: isLiveClass ? "100px" : "auto"
           }}
         >
           {triggerValue === "Skipped" ? (
