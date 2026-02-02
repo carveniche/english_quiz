@@ -325,6 +325,14 @@ export default function Writing({
     }
 
   }, []);
+  const responseRef = useRef(null);
+  useEffect(() => {
+  setTimeout(() => {
+    if (showChatGptResponse && responseRef.current) {
+      responseRef.current.scrollIntoView({ behavior: 'smooth' });
+    } 
+  }, 300);
+}, [showChatGptResponse]);
   const longText = qstnText?.split(" ").length > 30 && questionGroupData?.group_type == "";
   return (
     <div style={{ width: "100%" }}>
@@ -395,6 +403,7 @@ export default function Writing({
           )}
         </>
       )}
+      <div style={{ width: '100%' }} ref={responseRef}></div>
     </div>
   );
 }

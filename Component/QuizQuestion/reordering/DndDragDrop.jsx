@@ -70,14 +70,13 @@ export default function DndKitDragDrop({
   isSolution,
   response,
 }) {
-  const { submitResponse, disabledQuestion } = useContext(ValidationContext);
+  const { submitResponse, disabledQuestion,showSolution } = useContext(ValidationContext);
   const { showQuizResponse } = useContext(OuterPageContext);
 
   // We need stable IDs even if item is string/ReactNode
   const [items, setItems] = useState([]);
 
-  const disabled = submitResponse || disabledQuestion;
-
+  const disabled = submitResponse || disabledQuestion || showSolution;
   // Sensors (smooth drag)
   const sensors = useSensors(
     useSensor(PointerSensor, {

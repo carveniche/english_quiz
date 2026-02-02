@@ -35,7 +35,7 @@ export default function Choices({ choicesRef,choices}) {
       {choiceData && choiceData.map((choice, key) => {
         const isSumbit = showSolution || submitResponse
         const isSelected = choice?.studentAnswer
-        const isCorrect = choice.correct;
+        const isCorrect = (submitResponse || disabledQuestion)  && choice.correct;
         const isInCorrect = choice?.studentAnswer == true && choice.correct == false
         // Compose class names without external libraries
         const classNames = [

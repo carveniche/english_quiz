@@ -657,6 +657,15 @@ function audioRecordingStoping() {
     }
   }, [questionResponse]);
 
+  const responseRef = useRef(null);
+    useEffect(() => {
+    setTimeout(() => {
+      if (showChatGptResponse && responseRef.current) {
+        responseRef.current.scrollIntoView({ behavior: 'smooth' });
+      } 
+    }, 300);
+  }, [showChatGptResponse]);
+
   return (
     <>
       <SolveButton onClick={passAudio} />
@@ -679,6 +688,7 @@ function audioRecordingStoping() {
           isEnglishStudentLevel={readOut}
         />
         {/* {showSolution && audioURL && <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />} */}
+        
         <AudioRecorderInterface setOpen={setOpen} audioURL={audioURL} />
 
         <AudioRecordingModal
@@ -724,6 +734,7 @@ function audioRecordingStoping() {
         )}
 
         {/* <button id="audio_submit" onClick={passAudio}>Submit Audio</button> */}
+        <div style={{ width: '100%' }} ref={responseRef}></div>
       </div>
     </>
   );
