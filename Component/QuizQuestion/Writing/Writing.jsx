@@ -325,14 +325,25 @@ export default function Writing({
     }
 
   }, []);
-  const responseRef = useRef(null);
-  useEffect(() => {
+  
+ const responseRef = useRef(null);
+
+useEffect(() => {
+  const parent = document.getElementById("parent_scroll__bar");
+
   setTimeout(() => {
-    if (showChatGptResponse && responseRef.current) {
-      responseRef.current.scrollIntoView({ behavior: 'smooth' });
-    } 
+    if (showChatGptResponse && parent && responseRef.current) {
+      const childTop =
+        responseRef.current.offsetTop - parent.offsetTop;
+
+      parent.scrollTo({
+        top: childTop,
+        behavior: "smooth",
+      });
+    }
   }, 300);
 }, [showChatGptResponse]);
+
   const longText = qstnText?.split(" ").length > 30 && questionGroupData?.group_type == "";
   return (
     <div style={{ width: "100%" }}>
@@ -393,7 +404,7 @@ export default function Writing({
       </div>
 
       {showChatGptResponse && (
-        <>
+        <div>
           {!chatGptResponse ? (
             <LinearProgressBar />
           ) : (
@@ -401,7 +412,7 @@ export default function Writing({
               chatGptResponse={chatGptResponseRef.current}
             />
           )}
-        </>
+        </div>
       )}
       <div style={{ width: '100%' }} ref={responseRef}></div>
     </div>

@@ -110,7 +110,7 @@ export default function CorrectIncorrectStatus({ obj,isLiveClass }) {
       {triggerAnimation && (
         <div className={styles.quizCorrectInorrect}
         style={{
-          right: isLiveClass ? "100px" : "auto"
+          right: isLiveClass ? "100px" : "0px"
         }}
         >
           {/* Correct / Incorrect Animation */}
@@ -148,7 +148,7 @@ export default function CorrectIncorrectStatus({ obj,isLiveClass }) {
             top: pageType ? "unset" : ishotspot ? "28px" : "0px",
             height: pageType ? "fit-content" : "100%",
             bottom: pageType ? "0px" : "unset",
-            right: isLiveClass ? "100px" : "auto"
+            right: isLiveClass ? "100px" : "0px"
           }}
         >
           {triggerValue === "Skipped" ? (

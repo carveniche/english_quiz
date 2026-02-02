@@ -10,6 +10,7 @@ import SolutionSection from "./Solution/SolutionSection";
 import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import QuestionTracker from "../../group_question_navigation/QuestionTracker";
 export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
+  
   return (
     <>
       <ValidationContextProvider key={obj?.question_id} isshowSolution={showSolution} isreadOut={obj?.read_out}>
@@ -43,9 +44,9 @@ export default function GroupFile({
 
   const mainContainerRef = useRef(null);
   if (typeof window !== "undefined") {
-    window.ShowAnswer = ShowAnswer;
+    window.handleShowSolution = handleShowSolution;
   }
-  function ShowAnswer(data) {
+  function handleShowSolution(data) {
     if(data){
       
       setShowSolutionModal(true)
@@ -75,7 +76,7 @@ export default function GroupFile({
             <QuestionTracker data={data} />
           )}
 
-          <div className={`${styles.question_section} scroll__bar`}>
+          <div className={`${styles.question_section} scroll__bar`} id="parent_scroll__bar">
            
             <QuizDisplay
               obj={data?.question_data[0] || ""}

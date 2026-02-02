@@ -657,14 +657,23 @@ function audioRecordingStoping() {
     }
   }, [questionResponse]);
 
-  const responseRef = useRef(null);
-    useEffect(() => {
-    setTimeout(() => {
-      if (showChatGptResponse && responseRef.current) {
-        responseRef.current.scrollIntoView({ behavior: 'smooth' });
-      } 
-    }, 300);
-  }, [showChatGptResponse]);
+ const responseRef = useRef(null);
+
+useEffect(() => {
+  const parent = document.getElementById("parent_scroll__bar");
+
+  setTimeout(() => {
+    if (showChatGptResponse && parent && responseRef.current) {
+      const childTop =
+        responseRef.current.offsetTop - parent.offsetTop;
+
+      parent.scrollTo({
+        top: childTop,
+        behavior: "smooth",
+      });
+    }
+  }, 300);
+}, [showChatGptResponse]);
 
   return (
     <>
@@ -719,7 +728,7 @@ function audioRecordingStoping() {
         )}
 
         {showChatGptResponse && (
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%' }} ref={responseRef}>
             {gptResponseLoading ? (
               <LinearProgressBar type={"speaking"} />
             ) : (
@@ -734,7 +743,6 @@ function audioRecordingStoping() {
         )}
 
         {/* <button id="audio_submit" onClick={passAudio}>Submit Audio</button> */}
-        <div style={{ width: '100%' }} ref={responseRef}></div>
       </div>
     </>
   );

@@ -20,20 +20,21 @@ export default function MultipleChoice({ obj, wordsLength }) {
     readOut
   } = useContext(ValidationContext);
   const choicesRef = useRef(obj?.choices || []);
+  const [choiceData, setChoiceData] = useState([]);
   const [redAlert, setRedAlert] = useState(false);
  
-  const [refreshKey,setRefreshKey] = useState(0)
  
-  useEffect(() => {
-    if (!obj?.choices) return;
-    if (submitResponse) return;
-    if (disabledQuestion) return;
-    choicesRef.current = obj.choices.map(choice => ({
-      ...choice
-    }));
-    
-    setRefreshKey((prev)=>prev+1)
-  }, [obj?.choices]);
+ useEffect(() => {
+  if (!obj?.choices) return;
+  if (submitResponse) return;
+  if (disabledQuestion) return;
+
+  choicesRef.current = obj.choices.map(choice => ({
+    ...choice
+  }));
+  setChoiceData(choicesRef.current);
+}, [obj?.choices]);
+
 
   const handleSubmit = () => {
     if (submitResponse) return;
@@ -42,7 +43,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     let isValidate = false;
     let selectedItem = "";
     for (let item of choices) {
-      if (item?.studentAnswer) {
+      if (item?.isSelected) {
         selectedItem = item;
         isValidate = true;
         break;
@@ -50,7 +51,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
     }
     let status = -1;
     if (isValidate) {
-      if (selectedItem?.correct && selectedItem?.studentAnswer) {
+      if (selectedItem?.correct && selectedItem?.isSelected) {
         setIsCorrect(1);
         status = 1;
       } else {
@@ -58,12 +59,13 @@ export default function MultipleChoice({ obj, wordsLength }) {
         status = 0;
       }
       setRedAlert(false);
-      for (let item of choices) {
-        item[STUDENTANSWER] = item?.studentAnswer;
-        // delete item?.isStudentAnswer
-      }
+      const finalChoices = choices.map(item => ({
+        ...item,
+        [STUDENTANSWER]: item.isSelected,
+        isSelected: undefined
+      }));
 
-      setStudentAnswer(JSON.stringify(choices));
+      setStudentAnswer(JSON.stringify(finalChoices));
       setSubmitResponse(true);
     } else {
       setRedAlert(true);
@@ -83,7 +85,7 @@ export default function MultipleChoice({ obj, wordsLength }) {
           choicesRef={choicesRef}
           isEnglishStudentLevel={readOut}
         />
-        <Choices choicesRef={choicesRef}  key={refreshKey}  />
+        <Choices choicesRef={choicesRef}  setChoiceData={setChoiceData} choiceData={choiceData}/>
       </div>
     </>
   );
