@@ -5,7 +5,7 @@ import { ValidationContext } from "../../QuizPage";
 export default function Choices({ choicesRef,choiceData,setChoiceData}) {
   const { studentAnswer, isGroup, submitResponse, disabledQuestion, showSolution } =
     useContext(ValidationContext);
-
+    
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const handleClick = (index) => {
@@ -29,9 +29,9 @@ export default function Choices({ choicesRef,choiceData,setChoiceData}) {
       {choiceData && choiceData.map((choice, key) => {
         const isSumbit = showSolution || submitResponse || disabledQuestion;
         const isSelected = choice?.isSelected
-        const isCorrect = (submitResponse || disabledQuestion) && choice.correct;
+        const isCorrect = ( submitResponse || disabledQuestion) && choice.correct;
         const isInCorrect = choice?.isSelected == true && choice.correct == false
-        const isInCorrectAnswer = disabledQuestion && choice?.studentAnswer && choice?.studentAnswer == true && choice.correct == false;
+        const isInCorrectAnswer = (submitResponse || disabledQuestion) && choice?.studentAnswer && choice?.studentAnswer == true && choice.correct == false;
         const classNames = [
           styles.choiceType,
           !isSumbit && isSelected && styles.selectedChoiceType,
