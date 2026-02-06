@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PassagePage from "./PassagePage";
 import PreviewModal from "./PreviewModal";
 import { Button } from "@mui/material";
+import styles from "./Reading_Comprehensive.module.css";
 import { GroupQuestionContext } from "../ContextProvider/GroupContextProvider";
 
 export default function ReadingComprehensive({
@@ -17,47 +18,13 @@ export default function ReadingComprehensive({
     handleChangeQuestion,
     handleShowQuestion,
   } = useContext(GroupQuestionContext);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(true);
-    if (show_group_question) {
-      handleShowQuestion();
-    }
-    setLoading(false);
-  }, [show_group_question]);
-  if (loading) return <h1>It is loading...</h1>;
+ 
   return (
-    <div >
-      {showQuestion ? (
-        <>
-          {previewGroupData && (
-            <PreviewModal
-              group_data={group_data}
-              onClick={() => {
-                handleShowPreviewData(false);
-              }}
-            />
-          )}
-
-          <>
-            {!previewGroupData && (
-              <Button
-                variant="contained"
-                sx={{ float: "right", display: "none" }}
-                onClick={() => handleShowPreviewData(true)}
-                id="react_preview_btn"
-              >
-                Preview
-              </Button>
-            )}
-          </>
-        </>
-      ) : (
-        <>
-       <PassagePage groupData={group_data} />
-        </>
-      )}
-
+    <div className={styles.readingComprehensiveContainer}>
+      <div className={styles.layout_section}>
+        <h4 className={styles.title}>Read the passage and answer the questions.</h4>
+        <PassagePage groupData={group_data} />
+      </div>
     </div>
   );
 }

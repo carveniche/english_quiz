@@ -1,13 +1,11 @@
-@font-face {
+/* @font-face {
   font-family: "GothamRnd-Book";
   src: url("assets/fonts/GothamRounded-Book.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
-:root{
-  --font-family: "GothamRnd-Book";
-}
+} */
+
 
 .bodyPage div,
 .bodyPage span,
@@ -19,19 +17,18 @@
 .bodyPage p {
   /* H3 Desktop 18 pt */
 
-  font-family: "Reddit Sans", sans-serif !important;
-  /* font-family: "GothamRnd-Book2"; */
-  font-style: normal;
-  font-size: 18px;
+  font-family: var(--fn);
+
 }
 
 .bodyPage2 {
   height: 100%;
+  width: 100%;
 }
 
 .bodyPage2 img {
   /* max-width: 350px;*/
-  max-height: 350px; 
+  max-height: 350px;
 }
 
 .bodyPage2 h2,
@@ -48,10 +45,7 @@
 .groupPage p {
   /* H3 Desktop 18 pt */
 
-  font-family: "Reddit Sans", sans-serif !important;
-  /* font-family: "GothamRnd-Book2"; */
-  font-style: normal;
-  font-size: 18px;
+  font-family: var(--fn)
 }
 
 
@@ -62,4 +56,111 @@
 
 .groupPage {
   display: block;
+}
+
+.main_layout_section {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.question_container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.group_active {
+  padding: 10px;
+}
+
+.group_active :global(.choice_card) {
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+.group_container {
+  width: 50%;
+}
+
+.solution_button {
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+  border-radius: 8px;
+  z-index: 0;
+  border: none;
+  background-color: #4DB6AC;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  padding: 8px 10px;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 10px;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid #38c185;
+  border: 1px solid var(--Primary-Border-Default, #38c185);
+  background: #c0edd9;
+  background: var(--Primary-Surface-Lighter, #c0edd9);
+  color: #1a5b3f;
+  color: var(--Primary-Surface-Dark, #1a5b3f);
+  cursor: pointer;
+
+}
+
+.question_section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  max-height: 100%;
+  padding-right: 5px;
+}
+/* App.module.css */
+
+.mainContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slideInRight {
+  animation: slideInRight 0.5s ease forwards; /* adjust duration as needed */
+}
+
+@media screen and (max-width: 768px) {
+  .main_layout_section {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .question_container,
+  .question_section {
+    overflow: unset;
+  }
+
+  .group_container {
+    width: 100%;
+  }
 }

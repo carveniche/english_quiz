@@ -81,6 +81,7 @@ export default function DragDrop({
                   )}
                 </Draggable>
               ))}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
