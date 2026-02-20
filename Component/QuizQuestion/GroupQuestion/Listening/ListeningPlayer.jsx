@@ -1,6 +1,6 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import Forward10Icon from "@mui/icons-material/Forward10";
@@ -12,6 +12,7 @@ import styles from "./Listening.module.css";
 import { IconButton } from "@mui/material";
 // import PandaSvg from "./PandaSvg";
 import stopAllMedia from "../../../CommonComponent/stopAllMedia";
+import { ValidationContext } from "../../../QuizPage";
 export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const audioRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
@@ -21,10 +22,10 @@ export default function ListeningPlayer({ audioUrl, autoPlay }) {
   const [isMute, setIsMute] = useState(false);
 
 
-
+  const { isLiveClass } = useContext(ValidationContext);
 
   const handlePlayPause = () => {
-     stopAllMedia()
+     stopAllMedia(isLiveClass)
     if (play) {
       audioRef.current.pause();
     } else {

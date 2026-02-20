@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { cloneDeep } from "lodash";
 import paused from "../Solution/AudioPaused.json";
@@ -6,12 +6,13 @@ import playing from "../Solution/AudioPlaying.json";
 import { VolumeUp } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import stopAllMedia from "../CommonComponent/stopAllMedia";
+import { ValidationContext } from "../QuizPage";
 
 export default function SpeakPlainText({ readText }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [text, setText] = useState("");
   const [voicesAvailable, setVoicesAvailable] = useState([]);
-
+  const { isLiveClass } = useContext(ValidationContext);
   useEffect(() => {
     if (readText) setText(readText);
   }, [readText]);
@@ -42,7 +43,7 @@ export default function SpeakPlainText({ readText }) {
       window.speechSynthesis.cancel();
       return;
     }
-    stopAllMedia()
+    stopAllMedia(isLiveClass)
 
     if (voicesAvailable.length === 0) {
       console.log("Voices not yet available. Retrying...");

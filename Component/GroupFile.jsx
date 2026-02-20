@@ -9,11 +9,10 @@ import styles from "../Component/outerPage.module.css";
 import SolutionSection from "./Solution/SolutionSection";
 import CorrectIncorrectStatus from "./Solution/CorrectIncorrectStatus";
 import QuestionTracker from "../../group_question_navigation/QuestionTracker";
-export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data }) {
-  
+export function QuizDisplay({ obj, showCorrectIncorrect, showSolution, data,isLiveClass }) {
   return (
     <>
-      <ValidationContextProvider key={obj?.question_id} isshowSolution={showSolution} isreadOut={obj?.read_out}>
+      <ValidationContextProvider key={obj?.question_id} isshowSolution={showSolution} isreadOut={obj?.read_out} isLiveclass={isLiveClass}>
         <Allfile data={obj} questionData={data} />
       </ValidationContextProvider>
     </>
@@ -83,6 +82,7 @@ export default function GroupFile({
               data={data}
               showCorrectIncorrect={showCorrectIncorrect}
               showSolution={showSolution}
+              isLiveClass={isLiveClass}
             />
           </div>
         </div>

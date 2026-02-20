@@ -7,7 +7,7 @@ import OuterPageContextProvider, {
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 export const ValidationContext = React.createContext("Validation Context");
-export function ValidationContextProvider({ children, isshowSolution, isreadOut }) {
+export function ValidationContextProvider({ children, isshowSolution, isreadOut,isLiveclass }) {
   const [submitResponse, setSubmitResponse] = useState(false);
   const [disabledQuestion, setDisabledQuestion] = useState(false);
   const { showQuizResponse } = useContext(OuterPageContext);
@@ -17,6 +17,7 @@ export function ValidationContextProvider({ children, isshowSolution, isreadOut 
   const [showSolution,setShowSolution]= useState(isshowSolution)
   const [readOut,setReadOut]=useState(isreadOut)
   const [isGroup,setIsGroup]=useState(false)
+  const isLiveClass = isLiveclass 
   useEffect(() => {
     if (showQuizResponse) {
       setDisabledQuestion(true);
@@ -44,7 +45,8 @@ export function ValidationContextProvider({ children, isshowSolution, isreadOut 
         setReadOut,
         isEnglishTest,
         isGroup,
-        setIsGroup
+        setIsGroup,
+        isLiveClass,
       }}
     >
       {children}

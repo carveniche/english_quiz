@@ -27,6 +27,7 @@ export default function Recording_part({ questionData, questionResponse, setIsTr
     showSolution,
     readOut,
     isEnglishTest,
+    isLiveClass,
   } = useContext(ValidationContext);
   const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
@@ -218,7 +219,7 @@ function audioRecordingStoping() {
       handleStopRecording()
       return;
     }
-    stopAllMedia()
+    stopAllMedia(isLiveClass)
     setIsPlaying(false);
     if (stateIndex == 2) {
       setAudioDuration("00:00");
