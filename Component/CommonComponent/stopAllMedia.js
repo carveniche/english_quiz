@@ -1,5 +1,5 @@
 
-export default function stopAllMedia() {
+export default function stopAllMedia(isLiveClass) {
   try {
     // stop any ongoing text-to-speech
     if (window.speechSynthesis) {
@@ -7,6 +7,9 @@ export default function stopAllMedia() {
     }
 
     // pause all playing <audio> and <video> safely
+    if(isLiveClass){
+      return ;
+    }
     const mediaElements = document.querySelectorAll('audio, video');
     mediaElements.forEach(media => {
       if (media && typeof media.pause === "function" && !media.paused) {
