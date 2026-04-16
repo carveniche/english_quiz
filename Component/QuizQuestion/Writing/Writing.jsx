@@ -106,6 +106,12 @@ const AutoSizeTextarea = ({
           minRows={12}
           maxRows={14}
           aria-label="Auto-sizing Textarea"
+           autoComplete="new-password"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            data-gramm="false"
+          data-enable-grammarly="false"
         // Minimum number of rows
         />
         <p 
