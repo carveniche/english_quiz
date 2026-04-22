@@ -48,17 +48,33 @@ const AutoSizeTextarea = ({
   const [textareaValue, setTextareaValue] = useState("");
   const [wordCount, setWordCount] = useState(0)
   const { submitResponse, showSolution, disabledQuestion } = useContext(ValidationContext);
-  const handleTextareaChange = (event) => {
+  const prevValueRef = useRef("");
+ const handleTextareaChange = (e) => {
+  if (submitResponse || showSolution || showChatGptResponse) return;
+  if (disabledQuestion) return;
 
-    if (submitResponse || showSolution || showChatGptResponse) return;
-    if (disabledQuestion) return;
-    setTextareaValue(event.target.value);
-    if (textareaRef.current) {
-      // textareaRef.current.style.height = "auto";
-      // textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  };
+  const newValue = e.target.value;
+  const prevValue = prevValueRef.current;
 
+  const lengthDiff = newValue.length - prevValue.length;
+
+  const prevWords = prevValue.trim().split(/\s+/).filter(Boolean);
+  const newWords = newValue.trim().split(/\s+/).filter(Boolean);
+
+  const wordDiff = newWords.length - prevWords.length;
+
+  // 🚫 block suggestion / paste / bulk insert
+  if (lengthDiff > 1 || wordDiff > 1) {
+    // console.log("Blocked non-manual input");
+    return;
+  }
+
+  prevValueRef.current = newValue;
+  setTextareaValue(newValue);
+};
+useEffect(() => {
+  prevValueRef.current = textareaValue;
+}, [textareaValue]);
   studentTextRef.current = textareaValue;
   const handlePaste = (event) => {
     console.log("not allowed paste");
