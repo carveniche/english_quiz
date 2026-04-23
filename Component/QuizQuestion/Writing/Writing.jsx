@@ -27,7 +27,7 @@ const useStyles = {
     minWidth: "100px",
     minHeight: "150px",
     resize: "none",
-    padding: "8px 12px", 
+    padding: "8px 12px",
     boxShadow:
       "rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset",
     lineHeight: "inherit",
@@ -49,54 +49,53 @@ const AutoSizeTextarea = ({
   const [wordCount, setWordCount] = useState(0)
   const { submitResponse, showSolution, disabledQuestion } = useContext(ValidationContext);
   const prevValueRef = useRef("");
- const handleTextareaChange = (e) => {
-  if (submitResponse || showSolution || showChatGptResponse) return;
-  if (disabledQuestion) return;
-
-  const newValue = e.target.value;
-  const prevValue = prevValueRef.current;
-
-  const lengthDiff = newValue.length - prevValue.length;
-
-  const prevWords = prevValue.trim().split(/\s+/).filter(Boolean);
-  const newWords = newValue.trim().split(/\s+/).filter(Boolean);
-
-  const wordDiff = newWords.length - prevWords.length;
-
-  // 🚫 block suggestion / paste / bulk insert
-  if (lengthDiff > 1 || wordDiff > 1) {
-    // console.log("Blocked non-manual input");
-    return;
-  }
-
-  prevValueRef.current = newValue;
-  setTextareaValue(newValue);
+const lastKeyRef = useRef(null);
+const handleKeyDown = (e) => {
+  lastKeyRef.current = e.key;
+  
 };
-useEffect(() => {
-  prevValueRef.current = textareaValue;
-}, [textareaValue]);
+
+  const handleTextareaChange = (e) => {
+    if (submitResponse || showSolution || showChatGptResponse) return;
+    if (disabledQuestion) return;
+    const type = e.nativeEvent.inputType
+    const dataLength = e.nativeEvent?.data?.split('')?.length
+    
+   if(type === "deleteContentBackward" && lastKeyRef.current !=="Backspace" ){
+      return ''
+     }else if (type == "insertCompositionText") {
+      return "";
+    }else if(type=="insertText" && dataLength > 1) {
+      return ""
+    }
+    const newValue = e.target.value;
+    setTextareaValue(newValue);
+  };
+
+
   studentTextRef.current = textareaValue;
   const handlePaste = (event) => {
     console.log("not allowed paste");
     event.preventDefault(); // This blocks the paste
   };
 
- useEffect(() => {
-  if (response && isShowingResponse) {
-    const question_response =
-      typeof response === "object" && response.studentResponse
-        ? response.studentResponse
-        : response || "";
+  useEffect(() => {
+    if (response && isShowingResponse) {
+      const question_response =
+        typeof response === "object" && response.studentResponse
+          ? response.studentResponse
+          : response || "";
 
-    setTextareaValue(question_response);
-  }
-}, [response, isShowingResponse]);
+      setTextareaValue(question_response);
+    }
+  }, [response, isShowingResponse]);
 
 
   useEffect(() => {
     const words = textareaValue?.trim().split(/\s+/).filter(Boolean);
     setWordCount(words?.length);
   }, [textareaValue]);
+
 
 
   return (
@@ -112,6 +111,7 @@ useEffect(() => {
         }}
       >
         <TextareaAutosize
+          onKeyDown={handleKeyDown}
           onPasteCapture={handlePaste}
           ref={textareaRef}
           className={`para_text`}
@@ -122,15 +122,15 @@ useEffect(() => {
           minRows={12}
           maxRows={14}
           aria-label="Auto-sizing Textarea"
-           autoComplete="new-password"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            data-gramm="false"
+          autoComplete="new-password"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          data-gramm="false"
           data-enable-grammarly="false"
         // Minimum number of rows
         />
-        <p 
+        <p
           className="btn_txt_s"
           style={{ margin: "0px", textAlign: "right", width: "100%" }}
         >{`Word Count : ${wordCount}`}</p>
@@ -282,8 +282,8 @@ export default function Writing({
       return -1;
     }
 
-   
-   const studentResWordLen = studentTextRef.current?.trim().split(/\s+/).filter(Boolean);
+
+    const studentResWordLen = studentTextRef.current?.trim().split(/\s+/).filter(Boolean);
     if (qstnText.split(" ").length > 30 && studentResWordLen.length < 10) {
       setShowAlert(true);
       return -1;
@@ -347,24 +347,24 @@ export default function Writing({
     }
 
   }, []);
-  
- const responseRef = useRef(null);
 
-useEffect(() => {
-  const parent = document.getElementById("parent_scroll__bar");
+  const responseRef = useRef(null);
 
-  setTimeout(() => {
-    if (showChatGptResponse && parent && responseRef.current) {
-      const childTop =
-        responseRef.current.offsetTop - parent.offsetTop;
+  useEffect(() => {
+    const parent = document.getElementById("parent_scroll__bar");
 
-      parent.scrollTo({
-        top: childTop,
-        behavior: "smooth",
-      });
-    }
-  }, 300);
-}, [showChatGptResponse]);
+    setTimeout(() => {
+      if (showChatGptResponse && parent && responseRef.current) {
+        const childTop =
+          responseRef.current.offsetTop - parent.offsetTop;
+
+        parent.scrollTo({
+          top: childTop,
+          behavior: "smooth",
+        });
+      }
+    }, 300);
+  }, [showChatGptResponse]);
 
   const longText = qstnText?.split(" ").length > 30 && questionGroupData?.group_type == "";
   return (
