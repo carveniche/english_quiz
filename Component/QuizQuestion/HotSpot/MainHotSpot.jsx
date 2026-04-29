@@ -47,7 +47,6 @@ export default function MainHotSpot({ obj, wordsLength, questionData }) {
 
     function drawAll() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (questionText?.choice_type === "rectangle") {
         choices?.forEach((rect) => {
           const isShowAll = submitResponse && !showStudentResponse ? rect.studentAnswer : showStudentResponse
@@ -60,18 +59,23 @@ export default function MainHotSpot({ obj, wordsLength, questionData }) {
           ctx.lineWidth = 2;
           ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
           if (rect.studentAnswer && !submitResponse) {
-            let circleRadius = 14;
-            let circleX = rect.x + rect.width / 2;
-            let circleY = rect.y + rect.height / 2;
-            ctx.beginPath();
-            ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
-            ctx.fillStyle = "#ffcc00";
-            ctx.fill();
+             ctx.fillStyle = "#ffd9516c"
+             ctx.strokeStyle = "#ffcc00"
+             ctx.lineWidth = 2;
+             ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+             ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+            // let circleRadius = 14;
+            // let circleX = rect.x + rect.width / 2;
+            // let circleY = rect.y + rect.height / 2;
+            // ctx.beginPath();
+            // ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
+            // ctx.fillStyle = "#ffcc00";
+            // ctx.fill();
           }
 
 
           // Selected State (Smaller Filled Rectangle)
-          if (isShowAll) {
+          if (isShowAll && questionText?.choice_type !== "rectangle") {
             // Small White Circle (10px × 10px)
             let circleRadius = 10;
             let circleX = rect.x + rect.width / 2;
@@ -230,7 +234,7 @@ export default function MainHotSpot({ obj, wordsLength, questionData }) {
       canvas.removeEventListener("mousemove", handleCanvasHover);
     };
 
-  }, [questionText, showStudentResponse]); // Depend on questionText
+  }, [questionText, showStudentResponse,submitResponse]); // Depend on questionText
 
   function handleSubmit() {
 
