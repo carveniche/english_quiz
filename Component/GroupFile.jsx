@@ -54,7 +54,7 @@ export default function GroupFile({
     }
   }
   return (
-    <ValidationContextProvider>
+    <ValidationContextProvider isLiveclass={isLiveClass}>
       <div
        ref={mainContainerRef}
         className={`${styles.main_layout_section} ${
