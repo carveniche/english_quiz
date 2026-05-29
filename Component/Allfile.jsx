@@ -8,6 +8,7 @@ import { Main_Speaking_Type } from "./QuizQuestion/Speaking_type/Main_Speaking_T
 import { ValidationContext } from "./QuizPage";
 import MainHotSpot from "./QuizQuestion/HotSpot/MainHotSpot";
 import MainLabeling from "./QuizQuestion/Labeling/MainLabeling";
+import FillInTheBlank from "./QuizQuestion/FillinTheBlank/FillInTheBlank";
 
 export default function Allfile({ data, questionData }) {
   const [wordsLength, setWordsLength] = useState(0);
@@ -81,6 +82,7 @@ export default function Allfile({ data, questionData }) {
       />
     ),
     labeling: <MainLabeling wordsLength={wordsLength} obj={data} />,
+    fill_in_the_blank: <FillInTheBlank wordsLength={wordsLength} obj={data} />,
   };
 
   const getQuestionId = () => {
@@ -88,7 +90,8 @@ export default function Allfile({ data, questionData }) {
   };
 
   useEffect(() => {
-    if (data.question_type === "hotspot" || data.question_type === "labeling") {
+    const specialType = ["hotspot","labeling","fill_in_the_blank"]
+    if (specialType.includes(data.question_type)) {
       return;
     }
     if (data.question_data) {
