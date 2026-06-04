@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import styles from "../QuizQuestion/english_mathzone.module.css";
+import styles from "../QuizQuestion/english_zone.module.css";
 import objectParser from "../Utility/objectParser";
 import QuestionContent from "../QuizQuestion/FillInTheBlanks/QuestionContent";
 import AudiPlayerComponent from "./AudiPlayerComponent";

@@ -3,7 +3,7 @@ import SolveButton from "../../CommonComponent/SolveButton";
 import { ValidationContext } from "../../QuizPage";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import objectParser from "../../Utility/objectParser";
 import DragDrop from "./DragDrop";
 import { checkTwoString } from "../../Utility/stringValidation";

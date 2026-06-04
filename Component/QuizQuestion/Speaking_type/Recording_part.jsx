@@ -15,7 +15,7 @@ import { IconButton} from "@mui/material";
 import GptFeedback from "../../Utility/GptFeedBack";
 import stopAllMedia from "../../CommonComponent/stopAllMedia";
 import AudioRecordingModal from "./AudioRecordingModal";
-//import styles from "../../QuizQuestion/english_mathzone.module.css";
+//import styles from "../../QuizQuestion/english_zone.module.css";
 export default function Recording_part({ questionData, questionResponse, setIsTrue, wordsLength }) {
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
   const {

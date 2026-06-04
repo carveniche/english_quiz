@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
 import React from "react";
 import objectParser from "../../../Utility/objectParser";
-import styles from "../../english_mathzone.module.css";
+import styles from "../../english_zone.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import QuestionCommonContent from "../../../CommonComponent/QuestionCommonContent";
 export default function PreviewModal({ group_data, onClick }) {

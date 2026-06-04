@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import objectParser from "../../Utility/objectParser";
 import Recording_part from "./Recording_part";
 // import ResourceViewer from "../../CommonComponent/ResourceViewer";

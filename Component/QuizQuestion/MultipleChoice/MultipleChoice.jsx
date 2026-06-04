@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import Choices from "./Choices";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import { ValidationContext } from "../../QuizPage";

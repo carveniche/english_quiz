@@ -260,6 +260,7 @@ gap: 7px;
 flex-shrink: 0;
 border-radius: 16px;
 background: #FFF7D8;
+position: relative;
 }
 
 .checkButton {
@@ -605,4 +606,95 @@ background: #FFF7D8;
   margin: auto;
   border-radius: 5px;
   overflow: hidden;
+}
+@media screen and (max-width: 600px) {
+  .question_container{
+    height: 70vh;
+    overflow-y: auto;
+    
+}
+
+}
+
+@media screen and (max-width: 768px) {
+  .question_container{
+    flex-direction: column !important;
+}
+
+}
+
+
+
+.question_content {
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  position: relative;
+  transition: max-height 0.4s ease;
+  /* smooth scrollbar */
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #b2dfdb transparent;
+}
+
+/* webkit browsers */
+.question_content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.question_content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.question_content::-webkit-scrollbar-thumb {
+  background-color: #b2dfdb;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.question_content::-webkit-scrollbar-thumb:hover {
+  background-color: #26a69a;
+}
+
+.question_content.expanded {
+  max-height: calc(100vh - 25px);
+  overflow-y: auto;        /* scrollbar appears only after expanded */
+  animation: fadeInScroll 0.3s ease forwards;
+}
+
+/* scrollbar fades in smoothly when expanded */
+@keyframes fadeInScroll {
+  from { scrollbar-color: transparent transparent; }
+  to   { scrollbar-color: #b2dfdb transparent; }
+}
+
+.close_icon{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+.show_feedback_btn{
+   position: absolute;
+  left: 10px;
+  bottom: 5px;
+  border-radius: 8px;
+  z-index: 0;
+  border: none;
+  background-color: #4DB6AC;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  padding: 8px 10px;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 10px;
+  gap: 10px;
+  border-radius: 12px;
+  border: 1px solid #38c185;
+  border: 1px solid var(--Primary-Border-Default, #38c185);
+  background: #c0edd9;
+  background: var(--Primary-Surface-Lighter, #c0edd9);
+  color: #1a5b3f;
+  color: var(--Primary-Surface-Dark, #1a5b3f);
+  cursor: pointer;
 }

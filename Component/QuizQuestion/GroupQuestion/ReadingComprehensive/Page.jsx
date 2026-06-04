@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import objectParser from "../../../Utility/objectParser";
-import styles from "../../english_mathzone.module.css";
+import styles from "../../english_zone.module.css";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import SpeakQuestionText from "../../../Utility/SpeakQuestionText";
 import QuestionCommonContent from "../../../CommonComponent/QuestionCommonContent";

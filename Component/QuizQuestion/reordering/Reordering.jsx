@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import Dragdrop from "./Dragdrop";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import { ValidationContext } from "../../QuizPage";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import objectParser from "../../Utility/objectParser";
 import SolveButton from "../../CommonComponent/SolveButton";
 import ResourceViewer from "../../CommonComponent/ResourceViewer";

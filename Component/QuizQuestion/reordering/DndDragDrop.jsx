@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import shuffle from "shuffle-array";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 
 import { ValidationContext } from "../../QuizPage";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
@@ -195,7 +195,7 @@ export default function DndKitDragDrop({
 // import { HTML5Backend } from "react-dnd-html5-backend";
 // import shuffle from "shuffle-array";
 
-// import styles from "../english_mathzone.module.css";
+// import styles from "../english_zone.module.css";
 // import { ValidationContext } from "../../QuizPage";
 // import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 

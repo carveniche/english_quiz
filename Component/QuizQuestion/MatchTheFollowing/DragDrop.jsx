@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import Draggable from "react-draggable";
 import { dragdropPointCordinate } from "../../Utility/CommonDragMethod/dragDropCoordinate";
 import { validateCoordiante } from "../../Utility/CommonDragMethod/validateCoordinate";

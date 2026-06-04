@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import shuffle from "shuffle-array";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import { ValidationContext } from "../../QuizPage";
 import { OuterPageContext } from "../GroupQuestion/ContextProvider/OuterPageContextProvider";
 // a little function to help us with reordering the result

@@ -1,0 +1,201 @@
+.writing_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    flex: 1;
+}
+
+.question_container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+
+}
+
+.textarea_container {
+    min-width: 40%;
+    max-width: 40%;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.question_content_container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    position: relative;
+}
+
+.question_content {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    position: relative;
+    transition: max-height 0.4s ease;
+    /* smooth scrollbar */
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #b2dfdb transparent;
+    border-right: 1px solid #ececec;
+}
+
+/* webkit browsers */
+.question_content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.question_content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.question_content::-webkit-scrollbar-thumb {
+    background-color: #b2dfdb;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.question_content::-webkit-scrollbar-thumb:hover {
+    background-color: #26a69a;
+}
+
+.question_content.expanded {
+    max-height: calc(100vh - 25px);
+    overflow-y: auto;
+    /* scrollbar appears only after expanded */
+    animation: fadeInScroll 0.3s ease forwards;
+}
+.writing_textarea {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: auto;
+    resize: none;
+    overflow: auto;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    color: #1a2340;
+    box-sizing: border-box;
+    caret-color: rgb(45,140,240);
+    font-family: "Merienda", cursive;
+    background-attachment: local;
+    background-color: #fff;
+}
+.writing_textarea::placeholder {
+    color: #e2e2e2;
+}
+
+/* scrollbar fades in smoothly when expanded */
+@keyframes fadeInScroll {
+    from {
+        scrollbar-color: transparent transparent;
+    }
+
+    to {
+        scrollbar-color: #b2dfdb transparent;
+    }
+}
+
+.readMore {
+    position: absolute;
+    bottom: 40px;
+    left: calc(50% - 73px);
+    height: fit-content;
+    width: fit-content;
+    border-radius: 15px;
+    padding: 10px 25px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(rgb(186, 151, 226), rgb(252, 164, 252));
+    color: white;
+
+}
+
+
+.pdfLoading {
+    position: relative;
+    overflow: hidden;
+}
+
+.pdfLoading::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(240, 248, 255, 0.75);
+}
+
+.pdfLoading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(45, 140, 240, 0.8),
+            transparent);
+
+    filter: blur(10px);
+
+    will-change: transform;
+    animation: pdfSweep 1.5s linear infinite;
+}
+.gpt_response_container{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius:16px;
+    z-index:2;
+}
+@keyframes pdfSweep {
+    from {
+        transform: translateX(20);
+    }
+
+    to {
+        transform: translateX(350%);
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .question_container {
+        height: 70vh;
+        overflow-y: auto;
+
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .question_container {
+        flex-direction: column !important;
+    }
+
+    .textarea_container {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .question_content_container {
+        min-height: 30%;
+        max-height: 50% !important;
+    }
+
+}

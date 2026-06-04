@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../english_mathzone.module.css";
+import styles from "../english_zone.module.css";
 import Draggable from "react-draggable";
 import { STUDENTANSWER } from "../../Utility/Constant";
 export default function DragDropSolution({

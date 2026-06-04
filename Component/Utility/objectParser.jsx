@@ -72,7 +72,6 @@ import React from "react";
 // };
 
 const objectParser = (item, index) => {
-
   if (item.node === 'text') {
 
     
@@ -108,8 +107,8 @@ const objectParser = (item, index) => {
     // If `inNewLine` is true, return with <br />
     return (
       <React.Fragment key={index}>
-        {item.inNewLine ? <br /> : null}
         {styledElement}
+        {item.inNewLine ? <br /> : null}
       </React.Fragment>
     );
   }

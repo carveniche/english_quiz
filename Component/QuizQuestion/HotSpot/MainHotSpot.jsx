@@ -7,7 +7,7 @@ import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-mater
 import { Zoom } from '@mui/material';
 import './hotSpot.css';
 import AudiPlayerComponent from '../../CommonComponent/AudiPlayerComponent';
-import styles from "../../QuizQuestion/english_mathzone.module.css";
+import styles from "../../QuizQuestion/english_zone.module.css";
 import QuestionCommonContent from '../../CommonComponent/QuestionCommonContent';
 export default function MainHotSpot({ obj, wordsLength, questionData }) {
 

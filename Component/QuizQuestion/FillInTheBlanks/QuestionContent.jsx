@@ -1,5 +1,5 @@
   import React, { useContext, useEffect, useRef, useState } from "react";
-  import styles from "../english_mathzone.module.css";
+  import styles from "../english_zone.module.css";
   import { ValidationContext } from "../../QuizPage";
 
   export default function QuestionContent({ choicesRef }) {
