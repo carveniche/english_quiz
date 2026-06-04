@@ -1,0 +1,32 @@
+.question_content_wrapper {
+    white-space: pre-wrap;
+    line-height: 47px;
+    text-transform: lowercase;
+}
+
+.question_content_wrapper span::first-letter,
+.question_content_wrapper::first-letter,
+.question_content_wrapper input::first-letter{
+  text-transform: uppercase !important;
+}
+.question_content_wrapper input{
+     text-transform: lowercase;
+}
+
+.inputFieldWrapper{
+    display: inline-flex;
+    gap: 6px;
+}
+.inputField {
+    height: 40px;
+    border: 1.8px solid #2CB8C7;
+    border-radius: 8px;
+    padding:10px;
+    text-align: center;
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: #2CB8C7;
+    box-shadow: 0 0 5px rgba(44, 184, 199, 0.5);
+}

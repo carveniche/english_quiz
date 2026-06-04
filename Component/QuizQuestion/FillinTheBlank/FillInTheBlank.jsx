@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import SolveButton from "../../CommonComponent/SolveButton";
 import CustomAlertBoxMathZone from "../../CommonComponent/CustomAlertBoxMathZone";
 import { ValidationContext } from "../../QuizPage";
+import style from "./fill_in_the_blank.module.css";
 
 export default function FillInTheBlank({ obj }) {
    const [redAlert, setRedAlert] = useState(false);
@@ -14,16 +15,16 @@ export default function FillInTheBlank({ obj }) {
       showSolution,
       readOut,
    } = useContext(ValidationContext);
+   const [studentAnswers, setStudentAnswers] = useState({});
 
    const parsedData = useMemo(() => {
       try {
-         return JSON.parse(obj.question_data);
+         const tempObj = JSON.parse(obj.question_data);
+         return tempObj;
       } catch {
          return null;
       }
    }, [obj]);
-
-   const [studentAnswers, setStudentAnswers] = useState({});
 
    if (!parsedData) return null;
 
@@ -32,6 +33,7 @@ export default function FillInTheBlank({ obj }) {
    /* update answer */
 
    const handleChange = (blankId, value, index) => {
+    
       setStudentAnswers((prev) => {
          const updated = {
             ...prev,
@@ -52,64 +54,13 @@ export default function FillInTheBlank({ obj }) {
       });
    };
 
-   /* validate */
 
-   const validateAnswer = () => {
-      const blanks = parts.filter((part) => part.type === "blank");
-      let allAnswered = true;
-      let allCorrect = true;
-
-      for (const blank of blanks) {
-         const studentValue = studentAnswers[blank.id];
-         /* single */
-
-         if (blank.inputType === "single") {
-            if (!studentValue || !studentValue.trim()) {
-               allAnswered = false;
-               continue;
-            }
-
-            if (studentValue.trim().toUpperCase() !== blank.answer.trim().toUpperCase()) {
-               allCorrect = false;
-            }
-         } else if (blank.inputType === "missing") {
-            /* missing/separate */
-            const correct = blank.slots.filter((item) => item.missed == true);
-            const correctValues = correct.map((item) => item.letter).join("");
-            const joined = (studentValue || []).join("").toUpperCase();
-            if (joined.length !== correct.length) {
-               allAnswered = false;
-               continue;
-            }
-            if (joined !== correctValues) {
-               allCorrect = false;
-            }
-         } else {
-            /* missing/separate */
-            const correct = blank?.answer.toUpperCase();
-            const joined = (studentValue || []).join("").toUpperCase();
-            if (joined.length !== correct.length) {
-               allAnswered = false;
-               continue;
-            }
-            if (joined !== correct) {
-               allCorrect = false;
-            }
-         }
-      }
-
-      if (!allAnswered) return -1;
-
-      return allCorrect ? 1 : 0;
-   };
 
    const handleInputChange = (e, blankId, si) => {
       const value = e.target.value.toUpperCase();
-
+      if(value && value.length > 1) return;
       handleChange(blankId, value, si);
-
       /* auto next */
-
       if (value && e.target.nextElementSibling?.tagName === "INPUT") {
          e.target.nextElementSibling.focus();
          e.target.nextElementSibling.select();
@@ -154,21 +105,86 @@ export default function FillInTheBlank({ obj }) {
       }
    };
 
+   /* validate */
+   const validateAnswer = () => {
+      const blanks = parts.filter((part) => part.type === "blank");
+      let allAnswered = true;
+      let allCorrect = true;
+
+      // ✅ take full parts array — inject studentAnswer only into blanks
+      const updatedResponse = parts.map((part) => {
+
+         // text and newline — pass through untouched
+         if (part.type === "text" || part.type === "newline") {
+            return { ...part };
+         }
+
+         const studentValue = studentAnswers[part.id];
+
+         // ── single ────────────────────────────────────────────────────────────
+         if (part.inputType === "single") {
+            if (!studentValue || !studentValue.trim()) allAnswered = false;
+            else if (studentValue.trim().toUpperCase() !== part.answer.trim().toUpperCase()) allCorrect = false;
+
+            return {
+               ...part,
+               studentAnswer: studentValue || "",  // ✅ flat string
+            };
+         }
+
+         // ── missing ───────────────────────────────────────────────────────────
+         if (part.inputType === "missing") {
+            const correct = part.slots.filter((s) => s.missed).map((s) => s.letter.toUpperCase()).join("");
+            const joined = (studentValue || []).join("").toUpperCase();
+            if (joined.length !== correct.length) allAnswered = false;
+            else if (joined !== correct) allCorrect = false;
+
+            return {
+               ...part,
+               slots: part.slots.map((slot, si) => ({
+                  ...slot,
+                  studentAnswer: slot.missed ? (studentValue?.[si] || "") : slot.letter, // ✅ per slot
+               })),
+            };
+         }
+
+         // ── separate ──────────────────────────────────────────────────────────
+         const correct = part.answer.toUpperCase();
+         const joined = (studentValue || []).join("").toUpperCase();
+         if (joined.length !== correct.length) allAnswered = false;
+         else if (joined !== correct) allCorrect = false;
+
+         return {
+            ...part,
+            slots: part.slots.map((slot, si) => ({
+               ...slot,
+               studentAnswer: studentValue?.[si] || "",  // ✅ per slot
+            })),
+         };
+      });
+      if (!allAnswered) return { status: -1, response: null };
+
+      return { status: allCorrect ? 1 : 0, response: updatedResponse };
+   };
+
+
    const handleSubmit = () => {
       if (submitResponse) return;
       if (disabledQuestion) return;
 
-      const answerStatus = validateAnswer();
-      if (answerStatus == -1) {
+      const { status, response } = validateAnswer();
+
+      if (status == -1) {
          setRedAlert(true);
          return -1;
       }
       setSubmitResponse(true);
-      // setStudentAnswer(JSON.stringify(arr));
-      setIsCorrect(answerStatus);
+      setStudentAnswer(JSON.stringify(response));
+      setIsCorrect(status);
 
-      return answerStatus;
+      return status;
    };
+   const isReadOnly = disabledQuestion || submitResponse || showSolution;
    return (
       <>
          <SolveButton onClick={handleSubmit} />
@@ -177,39 +193,40 @@ export default function FillInTheBlank({ obj }) {
          )}
 
          <div
-            style={{
-               flexWrap: "wrap",
-               gap: 8,
-               lineHeight: "53px",
-               whiteSpace: "pre-wrap",
-            }}
+          className={style.question_content_wrapper}
          >
             {parts.map((part, index) => {
                /* text */
 
                if (part.type === "text") {
-                  return <span key={index}>{part.value}</span>;
+                  return <span key={index} className="para_text">{part.value}</span>;
                }
                if (part.type === "newline") {
                   return <br key={index} />;
-               }         
+               }
 
                /* single */
                if (part.inputType === "single") {
                   return (
                      <input
-                        readOnly={disabledQuestion || submitResponse}
+                       className={ ` para_text ${style.inputField}`}
+                     onPaste={(e) => e.preventDefault()}
+                        readOnly={isReadOnly}
                         key={index}
                         type="text"
-                        value={studentAnswers[part.id] || ""}
+                        value={showSolution ? part?.studentAnswer : studentAnswers[part.id] || ""}
                         onChange={(e) => handleChange(part.id, e.target.value)}
                         style={{
-                           width: 180,
-                           height: 40,
-                           border: "1px solid #ccc",
-                           borderRadius: 8,
-                           padding: "0 12px",
+                           width: 12 * (part.answer.length || 1),
+                           textAlign:"left"
+                        
                         }}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        data-gramm="false"
+                        data-enable-grammarly="false"
                      />
                   );
                }
@@ -218,16 +235,15 @@ export default function FillInTheBlank({ obj }) {
                return (
                   <div
                      key={index}
-                     style={{
-                        display: "inline-flex",
-                        gap: 6,
-                     }}
+                     className={style.inputFieldWrapper}
+                   
                   >
                      {part.slots.map((slot, si) => {
                         /* missing static */
                         if (part.inputType === "missing" && !slot.missed) {
                            return (
                               <div
+                              className="para_text"
                                  key={si}
                                  style={{
                                     width: 40,
@@ -244,23 +260,29 @@ export default function FillInTheBlank({ obj }) {
                               </div>
                            );
                         }
-
                         return (
                            <input
-                              readOnly={disabledQuestion || submitResponse}
+                          className={ `para_text ${style.inputField}`}
+                             onPaste={(e) => e.preventDefault()}
+                              readOnly={isReadOnly}
                               key={si}
                               type="text"
                               maxLength={1}
-                              value={studentAnswers[part.id]?.[si] || ""}
+                              value={showSolution ? part?.slots[si]?.studentAnswer : studentAnswers[part.id]?.[si] || ""}
                               onChange={(e) => handleInputChange(e, part.id, si)}
                               onKeyDown={handleInputKeyDown}
                               style={{
                                  width: 40,
-                                 height: 40,
-                                 textAlign: "center",
-                                 border: "1px solid #ccc",
-                                 borderRadius: 8,
-                              }}
+                            
+                              }} 
+                           autoComplete="off"        
+                           autoCorrect="off"
+                           autoCapitalize="off"
+                           spellCheck={false}
+                           data-gramm="false"
+                           data-enable-grammarly="false"
+                           data-form-type="other"     // ✅ blocks LastPass / browser form fill
+                           inputMode="text"
                            />
                         );
                      })}
