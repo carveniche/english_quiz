@@ -143,15 +143,15 @@
     width: 40%;
     height: 100%;
 
-    background: linear-gradient(90deg,
+    /* background: linear-gradient(90deg,
             transparent,
             rgba(45, 140, 240, 0.8),
-            transparent);
+            transparent); */
 
-    filter: blur(10px);
+    /* filter: blur(10px);
 
     will-change: transform;
-    animation: pdfSweep 1.5s linear infinite;
+    animation: pdfSweep 1.5s linear infinite; */
 }
 .gpt_response_container{
     position: absolute;
