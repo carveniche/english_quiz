@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ValidationContext } from "../../QuizPage";
 import styles from "./writing.module.css";
-
-
-
+import React_Base_Api from "../../../ReactConfigApi";
 
 // ─── AutoSizeTextarea ────────────────────────────────────────────────────────
 const AutoSizeTextarea = ({
@@ -13,12 +11,14 @@ const AutoSizeTextarea = ({
     response,
     setValueRef,
     pdfLoading,
+    obj
 }) => {
     const textareaRef = useRef(null);
     const [textareaValue, setTextareaValue] = useState("");
     const [wordCount, setWordCount] = useState(0);
     const { submitResponse, showSolution, disabledQuestion } = useContext(ValidationContext);
     const lastKeyRef = useRef(null);
+    const [objData,setObjData] = useState({})
 
     useEffect(() => {
         if (setValueRef) setValueRef.current = setTextareaValue;
@@ -65,15 +65,59 @@ const AutoSizeTextarea = ({
         el.style.height = `${el.scrollHeight}px`;
     }, [textareaValue]);
 
+
+const handleSaveDraft = async () => {
+  if (!studentTextRef.current) return;
+
+  try {
+    const formData = new FormData();
+
+    formData.append("response", studentTextRef.current);
+    formData.append("student_id", objData.student_id);
+    formData.append("at_from", objData.at_form);
+    formData.append("english_question_id", objData.english_question_id);
+
+    const response = await fetch(
+      `${React_Base_Api}/app_teachers/save_student_response_drafts`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.status) {
+      alert("Draft saved");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+    useEffect(()=>{
+        if(obj){
+            const temp={
+                student_id:obj?.student_id,
+                at_form:"english_zone_web",
+                english_question_id:obj?.question_data[0]?.question_id
+            }
+            setObjData(temp)
+        }
+    },[obj])
+
     return (
-        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 4, flex: 1, height: "100%" }}>
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 4, flex: 1, height: "100%", position: "relative" }}>
+            {!pdfLoading && 
+            <button className={styles.save_draft} onClick={handleSaveDraft}>save (draft)</button>
+            }
 
             {/* ── notebook wrapper — no fixed height, grows with content ── */}
             <div
                 className={'scroll__bar'}
                 style={{
                     position: "relative",
-                    borderRadius: 8,
+                    borderRadius: "8px 0 8px 8px",
                     overflowY: "auto",
                     boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
                     border: "1px solid #d0d7e2",
@@ -135,9 +179,9 @@ const AutoSizeTextarea = ({
                         #dde8f5 ${LINE_HEIGHT}px
                         )`,
                         backgroundPositionY: `${TOP_PADDING}px`,
-                       fontFamily: '"Merienda", cursive'
+                        fontFamily: '"Merienda", cursive'
 
-                      
+
                     }}
                 />
             </div>

@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 import { createWorker } from "tesseract.js";
+import React_Base_Api from "../../../ReactConfigApi";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url
-  ).toString();
-
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs";
 
 // ─── PdfUploader (OCR, no API) ────────────────────────────────────────────────
 export default function PdfUploader ({ onExtracted, disabled ,pdfLoading, setPdfLoading}) {
@@ -30,10 +26,42 @@ export default function PdfUploader ({ onExtracted, disabled ,pdfLoading, setPdf
     setError("Please upload a PDF or image file.");
     return;
   }
+ setPdfLoading(true);
+const validationResult = await validateFileWithAI(file);
+if (!validationResult?.status || !validationResult?.data) {
+  setError("Failed to validate file");
+  setPdfLoading(false);
+  return;
+
+}
+
+let res;
+
+try {
+  const cleaned = validationResult.data
+  .replace(/```json\s*/gi, "")
+  .replace(/```/g, "")
+  .trim();
+
+ res = JSON.parse(cleaned);
+} catch (e) {
+   setPdfLoading(false);
+  setError("Invalid validation response");
+  return;
+}
+
+if (!res?.approved) {
+  setError(
+    res?.reason ||
+    "Please upload your own handwritten work."
+  );
+   setPdfLoading(false);
+  return;
+}
 
   setError("");
   setDone(false);
-  setPdfLoading(true);
+ 
   setPdfProgress(0);
   setStatusMsg("Loading…");
 
@@ -124,6 +152,57 @@ export default function PdfUploader ({ onExtracted, disabled ,pdfLoading, setPdf
   }
 
   e.target.value = "";
+};
+
+
+const validateFileWithAI = async (file) => {
+const prompt = `
+Analyze the uploaded image or PDF.
+
+Determine whether the content appears to be genuinely handwritten by a person.
+
+Consider:
+- Natural variations in letter shapes
+- Uneven spacing and alignment
+- Pen or pencil stroke characteristics
+- Human handwriting imperfections
+- Signs of typed, printed, AI-generated, or digitally rendered text
+
+Return ONLY valid JSON:
+
+{
+  "approved": true,
+  "reason": "Appears to be genuine handwritten text"
+}
+
+or
+
+{
+  "approved": false,
+  "reason": "Appears to be typed, printed, or AI-generated text"
+}
+
+Do not return any text outside the JSON.
+`;
+
+try{
+  const formData = new FormData();
+formData.append("upload_file", file);
+formData.append("prompt", prompt);  // ✅ pass the variable
+
+  const response = await fetch(`${React_Base_Api}/app_teachers/validate_student_writing_question`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Validation failed");
+  }
+  return response.json();
+}catch(e){
+  console.error(e)
+  return null
+}
 };
 
   return (

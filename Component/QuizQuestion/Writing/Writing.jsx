@@ -11,8 +11,8 @@ import AlertModal from "../../Modals/AlertModal";
 import GptFeedback from "../../Utility/GptFeedBack";
 import PdfUploader from "./PdfUploader";
 import AutoSizeTextarea from "./AutoSizeTextarea";
-
 import Zoom from "@mui/material/Zoom";
+import TextEditor from "./TextEditor";
 
 // ─── Writing ─────────────────────────────────────────────────────────────────
 export default function Writing({
@@ -21,10 +21,10 @@ export default function Writing({
   wordsLength,
   questionGroupData,
 }) {
-  const chatGptResponseRef = useRef("beGalileo is a Bengaluru-based ed-tech platform that provides personalized 1-on-1 live online classes and AI-driven adaptive learning for children aged 4 to 16");
+
+  const chatGptResponseRef = useRef("");
   const scoreRef = useRef(null);
   const studentTextRef = useRef("");
-  const textareaExternalSetValue = useRef(null);
   const [redAlert, setRedAlert] = useState(false);
   const [showChatGptResponse, setShowChatGptResponse] = useState(false);
   const [chatGptResponse, setChatGptResponse] = useState("");
@@ -35,10 +35,9 @@ export default function Writing({
   const [atBottom, setAtBottom] = useState(false);
   const questionContentRef = useRef(null);
   const isApiCalled = useRef(false);
-   const [pdfLoading, setPdfLoading] = useState(false);
- 
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [extractedText,setExtractedText]=useState("")
   let quizFromRef = useRef(sessionStorage.getItem("engQuizFrom"));
-
   const {
     submitResponse,
     disabledQuestion,
@@ -54,11 +53,7 @@ export default function Writing({
 
   // ── PDF extracted text → replace textarea content ──────────────────────────────
 const handlePdfExtracted = (text) => {
-  if (textareaExternalSetValue.current) {
-    textareaExternalSetValue.current(text);
-  }
-
-  studentTextRef.current = text;
+  setExtractedText(text)
 };
 
   // ── scroll / read-more ────────────────────────────────────────────────────
@@ -88,45 +83,57 @@ const handlePdfExtracted = (text) => {
 
 
 
-  // ── submit ────────────────────────────────────────────────────────────────
-  const handleSubmit = () => {
-    if (submitResponse || disabledQuestion) return;
-    setRedAlert(false);
-    try {
-      if (chatGptResponseRef?.current) {
-        const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
-        scoreRef.current = score;
-        chatGptResponseRef.current = feedback;
-      }
-    } catch {}
-    const obj = {
-      studentResponse: studentTextRef.current,
-      chatGptResponse: chatGptResponseRef.current,
-      score: Number(scoreRef.current),
-    };
-    setSubmitResponse(true);
-    typeof window.handleChangeNextQuestion === "function" &&
-      window.handleChangeNextQuestion(obj);
-    if (quizFromRef.current !== "diagnostic")
-      setIsCorrect(scoreRef.current == 1 ? 1 : 0);
-    setStudentAnswer(JSON.stringify(obj));
-    typeof setHasQuizAnswerSubmitted === "function" &&
-      setHasQuizAnswerSubmitted(true);
-    return scoreRef.current;
-  };
+  // // ── submit ────────────────────────────────────────────────────────────────
+  // const handleSubmit = () => {
+  //   if (submitResponse || disabledQuestion) return;
+  //   setRedAlert(false);
+  //   try {
+  //     if (chatGptResponseRef?.current) {
+  //       const { feedback, score } = JSON.parse(chatGptResponseRef?.current);
+  //       scoreRef.current = score;
+  //       chatGptResponseRef.current = feedback;
+  //     }
+  //   } catch {}
+  //   const obj = {
+  //     studentResponse: studentTextRef.current,
+  //     chatGptResponse: chatGptResponseRef.current,
+  //     score: Number(scoreRef.current),
+  //   };
+  //   setSubmitResponse(true);
+  //   typeof window.handleChangeNextQuestion === "function" &&
+  //     window.handleChangeNextQuestion(obj);
+  //   if (quizFromRef.current !== "diagnostic")
+  //     setIsCorrect(scoreRef.current == 1 ? 1 : 0);
+  //   setStudentAnswer(JSON.stringify(obj));
+  //   typeof setHasQuizAnswerSubmitted === "function" &&
+  //     setHasQuizAnswerSubmitted(true);
+  //   return scoreRef.current;
+  // };
 
   const checkGptResponse = () => {
+
     if (submitResponse || disabledQuestion || showChatGptResponse || isApiCalled.current) return;
     setRedAlert(false);
-    if (!studentTextRef.current || studentTextRef.current.trim() === "") {
-      setRedAlert(true);
-      return -1;
-    }
-    const wordLen = studentTextRef.current?.trim().split(/\s+/).filter(Boolean);
-    if (qstnText.split(" ").length > 30 && wordLen.length < 10) {
-      setShowAlert(true);
-      return -1;
-    }
+  const plainText = Array.isArray(studentTextRef.current)
+    ? studentTextRef.current
+        .map(item => item.insert || "")
+        .join("")
+        .trim()
+    : (studentTextRef.current || "").trim();
+
+  if (!plainText) {
+    setRedAlert(true);
+    return -1;
+  }
+
+  const wordLen = plainText
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (qstnText.split(" ").length > 30 && wordLen.length < 10) {
+    setShowAlert(true);
+    return -1;
+  }
     isApiCalled.current = true;
     setStudentAnswer(JSON.stringify({ studentResponse: studentTextRef.current }));
     setIsCorrect("await");
@@ -205,23 +212,33 @@ const handlePdfExtracted = (text) => {
           {/* ── textarea + PDF uploader ── */}
           <div className={styles.textarea_container} >
             {/* PDF uploader — hidden after submit */}
-            {/* {!submitResponse && !disabledQuestion && (
+            {!submitResponse && !disabledQuestion && (
               <PdfUploader
                 onExtracted={handlePdfExtracted}
                 disabled={showChatGptResponse}
                 setPdfLoading={setPdfLoading}
                 pdfLoading={pdfLoading}
               />
-            )} */}
-
-            <AutoSizeTextarea
+            )}
+            <TextEditor
+              obj ={questionGroupData}
+              pdfLoading={pdfLoading}
+              studentTextRef={studentTextRef}
+              showChatGptResponse={showChatGptResponse}
+              response={questionResponse || null}
+              isShowingResponse={submitResponse || showSolution || disabledQuestion||showChatGptResponse}
+              extractedText={extractedText}
+            
+            />
+            {/* <AutoSizeTextarea
+              obj ={questionGroupData}
               pdfLoading={pdfLoading}
               studentTextRef={studentTextRef}
               showChatGptResponse={showChatGptResponse}
               response={questionResponse || null}
               isShowingResponse={submitResponse || showSolution || disabledQuestion}
               setValueRef={textareaExternalSetValue}
-            />
+            /> */}
           </div>
         </div>
 
