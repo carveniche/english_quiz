@@ -166,8 +166,9 @@ const handlePdfExtracted = (text) => {
     }
   }, []);
 
+console.log()
 
-
+const isGroup = questionGroupData?.group_type ? true  :  false
 
   return (
     <div className={styles.writing_container}>
@@ -181,7 +182,7 @@ const handlePdfExtracted = (text) => {
       )}
 
      
-        <div className={styles.question_container}>
+        <div className={styles.question_container} style={{flexDirection:isGroup ? "column" :"row"}}>
           {/* ── question content ── */}
          <div className={styles.question_content_container} > 
            <div
@@ -211,7 +212,7 @@ const handlePdfExtracted = (text) => {
            
 
           {/* ── textarea + PDF uploader ── */}
-          <div className={styles.textarea_container} >
+          <div className={`${styles.textarea_container} ${isGroup ? styles.group_textarea_container : ''}`}>
             {/* PDF uploader — hidden after submit */}
             {!submitResponse && !disabledQuestion && (
               <PdfUploader

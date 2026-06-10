@@ -34,11 +34,10 @@ export default function TextEditor({
   const [isShowMsg, setIsShowMsg] = useState(false);
   const [objData, setObjData] = useState({})
   const debounceRef = useRef(null);
-  
-
+  const isSubmitedRef = useRef(isShowingResponse);
+  const isSavingRef = useRef(false);
 
   const handleChange = (value) => {
-
     const editor = quillRef.current.getEditor();
     const text = editor.getText().trim(); // plain text without HTML
     // Count words by splitting on whitespace and filtering empty words
@@ -70,14 +69,14 @@ export default function TextEditor({
     // ✅ Auto-save draft after 1.5s of inactivity
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
+    if(isSubmitedRef.current) return 
       handleSaveDraft();
-    }, 6000);
+    }, 6000); 
 
   };
 
   const applyFormat = (format, value = true, label) => {
     try {
-
 
       if (!quillRef.current) return;
       const editor = quillRef.current.getEditor();
@@ -346,8 +345,8 @@ export default function TextEditor({
 
 
   const handleSaveDraft = useCallback(async (from="auto") => {
-   
-    if (!studentTextRef.current) return;
+    if (isSavingRef.current) return;
+    isSavingRef.current = true;
     if(!obj?.student_id) return;
     const temp = {
         student_id: obj?.student_id,
@@ -358,7 +357,6 @@ export default function TextEditor({
 
     try {
       const formData = new FormData();
-
       formData.append("response", JSON.stringify(studentTextRef.current));
       formData.append("student_id", temp.student_id);
       formData.append("at_from", temp.at_form);
@@ -378,12 +376,28 @@ export default function TextEditor({
         if(from ==="manual"){
           alert("Draft saved")
         }
-        console.log("Draft saved");
+        // console.log("Draft saved");
       }
     } catch (err) {
       console.error(err);
-    }
-}, [obj, studentTextRef]);
+    }finally {
+    isSavingRef.current = false;
+  }
+}, [obj,studentTextRef,isShowingResponse,pdfLoading]);
+
+useEffect(() => {
+  isSubmitedRef.current = isShowingResponse;
+}, [isShowingResponse]);
+
+
+const handleManualSave = () => {
+  if (debounceRef.current) {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = null;
+  }
+
+  handleSaveDraft("manual");
+};
 
   return (
     <div className={`${style.custom__editor__container} rounded-md h-full overflow-x-auto bg-white`}>
@@ -392,7 +406,7 @@ export default function TextEditor({
         {/* <ErrorPopup open={isErrorMsg?.type} onClose={setIsErrorMsg} message={isErrorMsg?.msg} /> */}
         {!isShowingResponse && !showChatGptResponse &&
           <>
-            {!pdfLoading && <button className={`${writing_style.save_draft}`} onClick={()=>handleSaveDraft("manual")} >Save (draft)</button>}
+            {!pdfLoading && <button className={`${writing_style.save_draft}`} onClick={handleManualSave} >Save (draft)</button>}
             <ToolBarIcons
               content={content}
               applyFormat={applyFormat}
