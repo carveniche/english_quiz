@@ -135,7 +135,8 @@ const handlePdfExtracted = (text) => {
     return -1;
   }
     isApiCalled.current = true;
-    setStudentAnswer(JSON.stringify({ studentResponse: studentTextRef.current }));
+    const isFileUpload = extractedText ? true : false
+    setStudentAnswer(JSON.stringify({ studentResponse: studentTextRef.current,isFileUpload:isFileUpload }));
     setIsCorrect("await");
     setShowChatGptResponse(true);
     return "await";
@@ -228,6 +229,7 @@ const handlePdfExtracted = (text) => {
               response={questionResponse || null}
               isShowingResponse={submitResponse || showSolution || disabledQuestion||showChatGptResponse}
               extractedText={extractedText}
+              setExtractedText={setExtractedText}
             
             />
             {/* <AutoSizeTextarea

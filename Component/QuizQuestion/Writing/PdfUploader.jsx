@@ -6,7 +6,7 @@ import React_Base_Api from "../../../ReactConfigApi";
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs";
 
 // ─── PdfUploader (OCR, no API) ────────────────────────────────────────────────
-export default function PdfUploader ({ onExtracted, disabled ,pdfLoading, setPdfLoading}) {
+export default function PdfUploader ({onExtracted, disabled ,pdfLoading, setPdfLoading}) {
   const [pdfProgress, setPdfProgress] = useState(0);
   const [statusMsg, setStatusMsg] = useState("");
   const [done, setDone] = useState(false);
@@ -27,6 +27,7 @@ export default function PdfUploader ({ onExtracted, disabled ,pdfLoading, setPdf
     return;
   }
  setPdfLoading(true);
+ setError("")
 const validationResult = await validateFileWithAI(file);
 if (!validationResult?.status || !validationResult?.data) {
   setError("Failed to validate file");
@@ -58,132 +59,195 @@ if (!res?.approved) {
    setPdfLoading(false);
   return;
 }
-
-  setError("");
-  setDone(false);
- 
-  setPdfProgress(0);
-  setStatusMsg("Loading…");
-
-  try {
-    // await loadLibraries();
-
-    // ── IMAGE: direct OCR ─────────────────────────────────────────────────
-    if (isImage) {
-      setStatusMsg("Reading image…");
-     workerRef.current = await createWorker("eng");
-
-      const { data: { text } } = await workerRef.current.recognize(file);
-
-      await workerRef.current.terminate();
-      workerRef.current = null;
-
-      setPdfProgress(100);
-      setStatusMsg("Done!");
-      setDone(true);
-
-      setTimeout(() => {
-        onExtracted(text.trim());
-        setUploadedFileName(file?.name);
-        setPdfLoading(false);
-        setStatusMsg("");
-        setTimeout(() => { setDone(false); setPdfProgress(0); }, 1500);
-      }, 400);
-
-      return;
-    }
-
-    // ── PDF: page by page ─────────────────────────────────────────────────
-    setStatusMsg("Reading PDF…");
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    const total = pdf.numPages;
-    let fullText = "";
-
-    workerRef.current = await createWorker("eng");
-
-    for (let i = 1; i <= total; i++) {
-      const page = await pdf.getPage(i);
-
-      const content = await page.getTextContent();
-      const layerText = content.items.map((item) => item.str).join(" ").trim();
-
-      if (layerText.length > 20) {
-        fullText += layerText + "\n";
-        setStatusMsg(`Reading page ${i}/${total}…`);
-        setPdfProgress(Math.round((i / total) * 100));
-      } else {
-        setStatusMsg(`page ${i}/${total}…`);
-        const viewport = page.getViewport({ scale: 2.5 });
-        const canvas = document.createElement("canvas");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
-
-        const { data: { text } } = await workerRef.current.recognize(canvas);
-        fullText += text + "\n";
-        setPdfProgress(Math.round((i / total) * 100));
-      }
-    }
-    await workerRef.current.terminate();
-    workerRef.current = null;
-
-    setPdfProgress(100);
-    setStatusMsg("Done!");
-    setDone(true);
-
-    setTimeout(() => {
-      onExtracted(fullText.trim());
-      setPdfLoading(false);
-      setStatusMsg("");
-      setTimeout(() => { setDone(false); setPdfProgress(0); }, 1500);
-    }, 400);
-
-  } catch (err) {
-    console.error("OCR failed", err);
-    if (workerRef.current) {
-      await workerRef.current.terminate().catch(() => {});
-      workerRef.current = null;
-    }
-    setError("Failed to read file. Try another.");
-    setPdfLoading(false);
-    setPdfProgress(0);
-    setStatusMsg("");
+onExtracted(res.text);
+setUploadedFileName(file.name);
+setPdfLoading(false);
+setError("")
   }
 
-  e.target.value = "";
-};
+//   const handlePdfUpload = async (e) => {
+//   setUploadedFileName("")
+//   const file = e.target.files[0];
+//   if (!file) return;
+//   const isPdf = file.type === "application/pdf";
+//   const isImage = file.type.startsWith("image/");
+
+//   if (!isPdf && !isImage) {
+//     setError("Please upload a PDF or image file.");
+//     return;
+//   }
+//  setPdfLoading(true);
+// const validationResult = await validateFileWithAI(file);
+// if (!validationResult?.status || !validationResult?.data) {
+//   setError("Failed to validate file");
+//   setPdfLoading(false);
+//   return;
+
+// }
+
+// let res;
+
+// try {
+//   const cleaned = validationResult.data
+//   .replace(/```json\s*/gi, "")
+//   .replace(/```/g, "")
+//   .trim();
+
+//  res = JSON.parse(cleaned);
+// } catch (e) {
+//    setPdfLoading(false);
+//   setError("Invalid validation response");
+//   return;
+// }
+
+// if (!res?.approved) {
+//   setError(
+//     res?.reason ||
+//     "Please upload your own handwritten work."
+//   );
+//    setPdfLoading(false);
+//   return;
+// }
+
+//   setError("");
+//   setDone(false);
+ 
+//   setPdfProgress(0);
+//   setStatusMsg("Loading…");
+
+//   try {
+//     // await loadLibraries();
+
+//     // ── IMAGE: direct OCR ─────────────────────────────────────────────────
+//     if (isImage) {
+//       setStatusMsg("Reading image…");
+//      workerRef.current = await createWorker("eng");
+
+//       const { data: { text } } = await workerRef.current.recognize(file);
+
+//       await workerRef.current.terminate();
+//       workerRef.current = null;
+
+//       setPdfProgress(100);
+//       setStatusMsg("Done!");
+//       setDone(true);
+
+//       setTimeout(() => {
+//         onExtracted(text.trim());
+//         setUploadedFileName(file?.name);
+//         setPdfLoading(false);
+//         setStatusMsg("");
+//         setTimeout(() => { setDone(false); setPdfProgress(0); }, 1500);
+//       }, 400);
+
+//       return;
+//     }
+
+//     // ── PDF: page by page ─────────────────────────────────────────────────
+//     setStatusMsg("Reading PDF…");
+//     const arrayBuffer = await file.arrayBuffer();
+//     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+//     const total = pdf.numPages;
+//     let fullText = "";
+
+//     workerRef.current = await createWorker("eng");
+
+//     for (let i = 1; i <= total; i++) {
+//       const page = await pdf.getPage(i);
+
+//       const content = await page.getTextContent();
+//       const layerText = content.items.map((item) => item.str).join(" ").trim();
+
+//       if (layerText.length > 20) {
+//         fullText += layerText + "\n";
+//         setStatusMsg(`Reading page ${i}/${total}…`);
+//         setPdfProgress(Math.round((i / total) * 100));
+//       } else {
+//         setStatusMsg(`page ${i}/${total}…`);
+//         const viewport = page.getViewport({ scale: 2.5 });
+//         const canvas = document.createElement("canvas");
+//         canvas.width = viewport.width;
+//         canvas.height = viewport.height;
+//         await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+
+//         const { data: { text } } = await workerRef.current.recognize(canvas);
+//         fullText += text + "\n";
+//         setPdfProgress(Math.round((i / total) * 100));
+//       }
+//     }
+//     await workerRef.current.terminate();
+//     workerRef.current = null;
+
+//     setPdfProgress(100);
+//     setStatusMsg("Done!");
+//     setDone(true);
+
+//     setTimeout(() => {
+//       onExtracted(fullText.trim());
+//       setPdfLoading(false);
+//       setStatusMsg("");
+//       setTimeout(() => { setDone(false); setPdfProgress(0); }, 1500);
+//     }, 400);
+
+//   } catch (err) {
+//     console.error("OCR failed", err);
+//     if (workerRef.current) {
+//       await workerRef.current.terminate().catch(() => {});
+//       workerRef.current = null;
+//     }
+//     setError("Failed to read file. Try another.");
+//     setPdfLoading(false);
+//     setPdfProgress(0);
+//     setStatusMsg("");
+//   }
+
+//   e.target.value = "";
+// };
 
 
 const validateFileWithAI = async (file) => {
 const prompt = `
 Analyze the uploaded image or PDF.
 
-Determine whether the content appears to be genuinely handwritten by a person.
+Tasks:
 
-Consider:
-- Natural variations in letter shapes
-- Uneven spacing and alignment
-- Pen or pencil stroke characteristics
-- Human handwriting imperfections
-- Signs of typed, printed, AI-generated, or digitally rendered text
+1. Determine whether the visible content is genuinely handwritten by a person.
+2. Extract the text exactly as it appears.
+3. Do NOT correct spelling.
+4. Do NOT correct grammar.
+5. Do NOT add missing words.
+6. Do NOT remove words.
+7. Do NOT summarize.
+8. Preserve line breaks where possible.
+9. If a word is unclear, return it exactly as seen. If unreadable, use "[unclear]".
+10. Return ONLY valid JSON.
 
-Return ONLY valid JSON:
+Response format:
 
 {
-  "approved": true,
-  "reason": "Appears to be genuine handwritten text"
+"approved": true,
+"reason": "Appears to be genuine handwritten text",
+"text": "exact extracted text"
 }
 
 or
 
 {
-  "approved": false,
-  "reason": "Appears to be typed, printed, or AI-generated text"
+"approved": false,
+"reason": "Appears to be typed, printed, AI-generated, or digitally rendered text",
+"text": "exact extracted text"
 }
 
-Do not return any text outside the JSON.
-`;
+Rules:
+
+* The "text" field must contain only the extracted text from the image/PDF.
+* Do not rewrite the content.
+* Do not improve the content.
+* Do not explain the content.
+* Do not include markdown.
+* Do not wrap the JSON in '''json.
+* Return ONLY the JSON object.
+  `;
 
 try{
   const formData = new FormData();
