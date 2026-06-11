@@ -1,7 +1,7 @@
 
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { useState, useRef, useEffect, useContext,useCallback } from 'react';
+import { useState, useRef, useEffect, useContext, useCallback } from 'react';
 import ToolBarIcons from './ToolBarIcons';
 import style from "./TextEditor.module.css"
 import writing_style from "./writing.module.css"
@@ -20,7 +20,7 @@ export default function TextEditor({
   setExtractedText
 }) {
 
-  const { showSolution } = useContext(ValidationContext);
+  const { showSolution, isLiveClass } = useContext(ValidationContext);
   const [content, setContent] = useState('');
   const [activeIcon, setActiveIcon] = useState(null);
   const [worldCount, setWordCount] = useState(Infinity);
@@ -69,9 +69,9 @@ export default function TextEditor({
     // ✅ Auto-save draft after 1.5s of inactivity
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-    if(isSubmitedRef.current) return 
+      if (isSubmitedRef.current) return
       handleSaveDraft();
-    }, 6000); 
+    }, 6000);
 
   };
 
@@ -244,7 +244,75 @@ export default function TextEditor({
 
   // 1️⃣ Upload file and get server URL
 
+  useEffect(() => {
+    if (!quillRef.current) return;
 
+    const editor = quillRef.current.getEditor();
+
+    let blocking = false;
+
+    const handler = (delta, oldDelta, source) => {
+      if (source !== "user") return;
+      if (blocking) return;
+
+      let hasDelete = false;
+      let insertText = "";
+
+      delta.ops.forEach(op => {
+
+        if (op.delete) {
+          hasDelete = true;
+        }
+
+        if (typeof op.insert === "string") {
+          insertText += op.insert;
+        }
+
+      });
+
+      // Block OS replacement:
+      // delete old + insert suggestion
+      const isReplacement =
+        hasDelete &&
+        insertText.length > 0;
+
+      // Block suspicious autosuggestion bulk insert
+      const isBulkInsert =
+        !hasDelete &&
+        insertText.length > 1;
+
+      if (
+        isReplacement ||
+        isBulkInsert
+      ) {
+
+        blocking = true;
+
+        setTimeout(() => {
+
+          editor.history.undo();
+          blocking = false;
+
+        }, 0);
+
+        return;
+      }
+
+    };
+
+    editor.on(
+      "text-change",
+      handler
+    );
+
+    return () => {
+      editor.off(
+        "text-change",
+        handler
+      );
+    };
+
+  }, []);
 
 
 
@@ -294,7 +362,11 @@ export default function TextEditor({
       try {
         const studentResponse = JSON.parse(obj.question_data[0]?.questionResponse)?.studentResponse
         const editor = quillRef.current.getEditor();
-        editor.setContents(studentResponse)
+        setTimeout(() => {
+          editor.setContents(studentResponse);
+          const html = editor.root.innerHTML;
+          setContent(html);
+        }, 100);
       } catch (e) {
         console.error(e)
       }
@@ -302,19 +374,19 @@ export default function TextEditor({
   }, [showSolution, obj])
 
 
- useEffect(() => {
-  if (!extractedText || !quillRef.current) return;
+  useEffect(() => {
+    if (!extractedText || !quillRef.current) return;
 
-  const editor = quillRef.current.getEditor();
-  // Clear existing content
-  editor.setText("");
-  // Add extracted text
-  editor.insertText(0, extractedText);
-  setContent(editor.root.innerHTML);
-  if (studentTextRef) {
-    studentTextRef.current = editor.getContents()?.ops;
-  }
-}, [extractedText]);
+    const editor = quillRef.current.getEditor();
+    // Clear existing content
+    editor.setText("");
+    // Add extracted text
+    editor.insertText(0, extractedText);
+    setContent(editor.root.innerHTML);
+    if (studentTextRef) {
+      studentTextRef.current = editor.getContents()?.ops;
+    }
+  }, [extractedText]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -344,16 +416,16 @@ export default function TextEditor({
 
 
 
-  const handleSaveDraft = useCallback(async (from="auto") => {
+  const handleSaveDraft = useCallback(async (from = "auto") => {
     if (isSavingRef.current) return;
     isSavingRef.current = true;
-    if(!obj?.student_id) return;
+    if (!obj?.student_id) return;
     const temp = {
-        student_id: obj?.student_id,
-        at_form: "english_zone_web",
-        english_question_id: obj?.question_data[0]?.question_id,
-        save_type : from
-      }
+      student_id: obj?.student_id,
+      at_form: "english_zone_web",
+      english_question_id: obj?.question_data[0]?.question_id,
+      save_type: from
+    }
 
     try {
       const formData = new FormData();
@@ -373,31 +445,31 @@ export default function TextEditor({
       const data = await response.json();
 
       if (data.status) {
-        if(from ==="manual"){
+        if (from === "manual") {
           alert("Draft saved")
         }
         // console.log("Draft saved");
       }
     } catch (err) {
       console.error(err);
-    }finally {
-    isSavingRef.current = false;
-  }
-}, [obj,studentTextRef,isShowingResponse,pdfLoading]);
+    } finally {
+      isSavingRef.current = false;
+    }
+  }, [obj, studentTextRef, isShowingResponse, pdfLoading]);
 
-useEffect(() => {
-  isSubmitedRef.current = isShowingResponse;
-}, [isShowingResponse]);
+  useEffect(() => {
+    isSubmitedRef.current = isShowingResponse;
+  }, [isShowingResponse]);
 
 
-const handleManualSave = () => {
-  if (debounceRef.current) {
-    clearTimeout(debounceRef.current);
-    debounceRef.current = null;
-  }
+  const handleManualSave = () => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
 
-  handleSaveDraft("manual");
-};
+    handleSaveDraft("manual");
+  };
 
   return (
     <div className={`${style.custom__editor__container} rounded-md h-full overflow-x-auto bg-white`}>
@@ -406,7 +478,7 @@ const handleManualSave = () => {
         {/* <ErrorPopup open={isErrorMsg?.type} onClose={setIsErrorMsg} message={isErrorMsg?.msg} /> */}
         {!isShowingResponse && !showChatGptResponse &&
           <>
-            {!pdfLoading && <button className={`${writing_style.save_draft}`} onClick={handleManualSave} >Save (draft)</button>}
+            {!pdfLoading && !isLiveClass && <button className={`${writing_style.save_draft}`} onClick={handleManualSave} >Save (draft)</button>}
             <ToolBarIcons
               content={content}
               applyFormat={applyFormat}

@@ -46,6 +46,7 @@ export default function Writing({
     setStudentAnswer,
     showSolution,
     readOut,
+    isLiveClass
   } = useContext(ValidationContext);
   const { setHasQuizAnswerSubmitted } = useContext(OuterPageContext);
 
@@ -166,7 +167,6 @@ const handlePdfExtracted = (text) => {
     }
   }, []);
 
-console.log()
 
 const isGroup = questionGroupData?.group_type ? true  :  false
 
@@ -214,7 +214,7 @@ const isGroup = questionGroupData?.group_type ? true  :  false
           {/* ── textarea + PDF uploader ── */}
           <div className={`${styles.textarea_container} ${isGroup ? styles.group_textarea_container : ''}`}>
             {/* PDF uploader — hidden after submit */}
-            {!submitResponse && !disabledQuestion && (
+            {!submitResponse && !disabledQuestion && !isLiveClass && (
               <PdfUploader
                 onExtracted={handlePdfExtracted}
                 disabled={showChatGptResponse}
