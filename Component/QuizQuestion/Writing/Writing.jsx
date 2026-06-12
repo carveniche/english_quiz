@@ -58,31 +58,37 @@ const handlePdfExtracted = (text) => {
 };
 
   // ── scroll / read-more ────────────────────────────────────────────────────
-  useEffect(() => {
-    const el = questionContentRef.current;
-    if (el && longText) setShowReadMore(el.scrollHeight > el.clientHeight);
-  }, [longText]);
+useEffect(() => {
+  const el = questionContentRef.current;
+  if (!el || !longText) return;
+  // Check AFTER paint so scrollHeight is accurate
+  requestAnimationFrame(() => {
+    setShowReadMore(el.scrollHeight > el.clientHeight);
+  });
+}, [longText, qstnText]); // recheck when text changes too
 
-  const handleScroll = () => {
-    const el = questionContentRef.current;
-    if (!el) return;
-    const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
-    setAtBottom(nearBottom);
-    setShowReadMore(!nearBottom);
-  };
+const handleScroll = () => {
+  const el = questionContentRef.current;
+  if (!el || isExpanded) return; // if expanded, no need to track scroll
+  const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
+  setAtBottom(nearBottom);
+  setShowReadMore(!nearBottom);
+};
 
-  const handleReadMore = () => {
-    const el = questionContentRef.current;
-    if (!el) return;
-    setIsExpanded(true);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-      });
+const handleReadMore = () => {
+  const el = questionContentRef.current;
+  if (!el) return;
+  // setIsExpanded(true);
+  setShowReadMore(false); // hide button immediately
+  requestAnimationFrame(() => {
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: "smooth",
     });
-  };
+  });
 
 
+};
 
   // // ── submit ────────────────────────────────────────────────────────────────
   // const handleSubmit = () => {
@@ -182,7 +188,7 @@ const isGroup = questionGroupData?.group_type ? true  :  false
       )}
 
      
-        <div className={styles.question_container} style={{flexDirection:isGroup ? "column" :"row"}}>
+        <div className={`${styles.question_container} scroll__bar`} style={{flexDirection:isGroup ? "column" :"row"}}>
           {/* ── question content ── */}
          <div className={styles.question_content_container} > 
            <div
