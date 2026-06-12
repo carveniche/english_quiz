@@ -16,6 +16,8 @@ export default function PdfUploader ({onExtracted, disabled ,pdfLoading, setPdfL
   const [uploadedFileName, setUploadedFileName] = useState("");
 
   const handlePdfUpload = async (e) => {
+    try{
+
   setUploadedFileName("")
   const file = e.target.files[0];
   if (!file) return;
@@ -28,6 +30,7 @@ export default function PdfUploader ({onExtracted, disabled ,pdfLoading, setPdfL
   }
  setPdfLoading(true);
  setError("")
+ setPdfProgress(0)
 const validationResult = await validateFileWithAI(file);
 if (!validationResult?.status || !validationResult?.data) {
   setError("Failed to validate file");
@@ -63,6 +66,13 @@ onExtracted(res.text);
 setUploadedFileName(file.name);
 setPdfLoading(false);
 setError("")
+e.target.value = "";
+if (pdfInputRef.current) {
+  pdfInputRef.current.value = "";
+}
+ }catch(e){
+      console.log(e)
+    }
   }
 
 //   const handlePdfUpload = async (e) => {
@@ -206,6 +216,17 @@ setError("")
 
 
 const validateFileWithAI = async (file) => {
+
+   let progress = 0;
+
+  const interval = setInterval(() => {
+    progress += 2;
+
+    if (progress <= 90) {
+      setPdfProgress(progress);
+    }
+  }, 50);
+
 const prompt = `
 Analyze the uploaded image or PDF.
 
@@ -262,6 +283,7 @@ formData.append("prompt", prompt);  // ✅ pass the variable
   if (!response.ok) {
     throw new Error("Validation failed");
   }
+  setPdfProgress(100)
   return response.json();
 }catch(e){
   console.error(e)

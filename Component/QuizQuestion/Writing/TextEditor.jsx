@@ -472,7 +472,10 @@ export default function TextEditor({
   };
 
   return (
-    <div className={`${style.custom__editor__container} rounded-md h-full overflow-x-auto bg-white`}>
+    <div className={` ${isLiveClass
+        ? style.custom__editor__container_live
+        : style.custom__editor__container
+      }  rounded-md h-full overflow-x-auto bg-white`}>
       <div className={`${style.editor__container} `}>
 
         {/* <ErrorPopup open={isErrorMsg?.type} onClose={setIsErrorMsg} message={isErrorMsg?.msg} /> */}
